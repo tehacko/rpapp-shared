@@ -25,6 +25,11 @@ function getEnvBool(key, defaultValue) {
     const value = getEnvVar(key, defaultValue.toString());
     return value === 'true';
 }
+function getEnvNumber(key, defaultValue) {
+    const value = getEnvVar(key, defaultValue.toString());
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? defaultValue : parsed;
+}
 // Centralized service URLs configuration
 const SERVICE_URLS = {
     development: {
@@ -57,6 +62,13 @@ function getConfigForEnvironment(env) {
             kioskUrl: getEnvVar('REACT_APP_KIOSK_URL', urls.kiosk),
             adminUrl: getEnvVar('REACT_APP_ADMIN_URL', urls.admin),
             backendUrl: getEnvVar('REACT_APP_BACKEND_URL', urls.backend),
+            // SSE Configuration
+            sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
+            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
+            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 1800000), // 30 minutes max
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 24), // 24 attempts (~2 hours at max interval)
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 7200000), // 2 hours default (7200000ms = 2 * 60 * 60 * 1000)
         };
     }
     else {
@@ -75,6 +87,13 @@ function getConfigForEnvironment(env) {
             kioskUrl: getEnvVar('REACT_APP_KIOSK_URL', urls.kiosk),
             adminUrl: getEnvVar('REACT_APP_ADMIN_URL', urls.admin),
             backendUrl: getEnvVar('REACT_APP_BACKEND_URL', urls.backend),
+            // SSE Configuration
+            sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
+            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
+            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 1800000), // 30 minutes max
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 24), // 24 attempts (~2 hours at max interval)
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 7200000), // 2 hours default (7200000ms = 2 * 60 * 60 * 1000)
         };
     }
 }
@@ -134,3 +153,4 @@ export const getUIConfig = () => {
         logLevel: config.logLevel,
     };
 };
+//# sourceMappingURL=environments.js.map

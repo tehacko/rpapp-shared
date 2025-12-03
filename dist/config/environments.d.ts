@@ -10,6 +10,12 @@ export interface EnvironmentConfig {
     kioskUrl: string;
     adminUrl: string;
     backendUrl: string;
+    sseHealthCheckInterval: number;
+    sseHealthCheckInitialInterval: number;
+    sseHealthCheckBackoffMultiplier: number;
+    sseHealthCheckMaxInterval: number;
+    sseHealthCheckMaxAttempts: number;
+    sseHealthCheckMaxTotalTime: number;
 }
 export declare const getCurrentEnvironment: () => Environment;
 export declare const getEnvironmentConfig: () => EnvironmentConfig;
@@ -29,3 +35,4 @@ export declare const getUIConfig: () => {
     showDebugInfo: boolean;
     logLevel: "debug" | "info" | "warn" | "error";
 };
+//# sourceMappingURL=environments.d.ts.map
