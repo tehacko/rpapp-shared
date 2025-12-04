@@ -28,9 +28,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "jest --config jest.config.cjs",
+    "test:watch": "jest --config jest.config.cjs --watch",
+    "test:coverage": "jest --config jest.config.cjs --coverage",
     "clean": "rimraf dist",
     "publish:local": "npm run build && npm pack --pack-destination ../",
     "prepublishOnly": "npm run build",
