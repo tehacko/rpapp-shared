@@ -66,9 +66,9 @@ function getConfigForEnvironment(env) {
             sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
             sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
             sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
-            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 1800000), // 30 minutes max
-            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 24), // 24 attempts (~2 hours at max interval)
-            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 7200000), // 2 hours default (7200000ms = 2 * 60 * 60 * 1000)
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes max (reduced from 30 min to preserve battery)
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8), // 8 attempts (~30 min max at 15 min interval, reduced from 24 to preserve battery)
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes default (reduced from 2 hours to preserve battery)
         };
     }
     else {
@@ -91,9 +91,9 @@ function getConfigForEnvironment(env) {
             sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
             sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
             sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
-            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 1800000), // 30 minutes max
-            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 24), // 24 attempts (~2 hours at max interval)
-            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 7200000), // 2 hours default (7200000ms = 2 * 60 * 60 * 1000)
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes max (reduced from 30 min to preserve battery)
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8), // 8 attempts (~30 min max at 15 min interval, reduced from 24 to preserve battery)
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes default (reduced from 2 hours to preserve battery)
         };
     }
 }
