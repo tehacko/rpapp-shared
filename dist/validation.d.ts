@@ -10,6 +10,9 @@ export declare const validators: {
     positiveNumber: (value: number, fieldName: string) => string | null;
     username: (value: string) => string | null;
     password: (value: string) => string | null;
+    kioskId: (value: number) => string | null;
+    quantity: (value: number, fieldName?: string) => string | null;
+    price: (value: number, fieldName?: string) => string | null;
 };
 export interface ValidationSchema {
     [field: string]: Array<(value: any) => string | null>;
@@ -25,7 +28,19 @@ export declare const validationSchemas: {
     };
     product: {
         name: ((value: any) => string | null)[];
-        price: ((value: any) => string | null)[];
+        price: ((value: number, fieldName?: string) => string | null)[];
         description: ((value: any) => string | null)[];
     };
+    kioskId: {
+        kioskId: ((value: number) => string | null)[];
+    };
+    inventory: {
+        quantityInStock: ((value: number, fieldName?: string) => string | null)[];
+    };
+    payment: {
+        productId: ((value: any) => string | null)[];
+        kioskId: ((value: number) => string | null)[];
+        amount: ((value: number, fieldName?: string) => string | null)[];
+    };
 };
+//# sourceMappingURL=validation.d.ts.map

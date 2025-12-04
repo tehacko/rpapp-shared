@@ -110,3 +110,4 @@ export const ROUTES = {
     ADMIN_PRODUCTS: '/admin/products',
     ADMIN_KIOSKS: '/admin/kiosks',
 };
+//# sourceMappingURL=constants.js.map

@@ -19,3 +19,4 @@ export declare function useAsyncOperation<T = any>(options?: UseAsyncOperationOp
     error: Error | null;
 };
 export {};
+//# sourceMappingURL=useAsyncOperation.d.ts.map

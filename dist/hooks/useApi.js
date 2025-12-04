@@ -49,3 +49,4 @@ export function useApi(_apiClient) {
         hasData: !!state.data
     };
 }
+//# sourceMappingURL=useApi.js.map

@@ -56,3 +56,4 @@ export function useAsyncOperation(options = {}) {
         isIdle: !state.loading && !state.error && !state.data
     };
 }
+//# sourceMappingURL=useAsyncOperation.js.map

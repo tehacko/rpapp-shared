@@ -88,3 +88,4 @@ export declare const ROUTES: {
     readonly ADMIN_PRODUCTS: "/admin/products";
     readonly ADMIN_KIOSKS: "/admin/kiosks";
 };
+//# sourceMappingURL=constants.d.ts.map

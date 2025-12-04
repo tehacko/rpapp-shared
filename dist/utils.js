@@ -7,7 +7,32 @@ export const validateEmail = (email) => {
     return emailRegex.test(email);
 };
 export const formatPrice = (price) => {
-    return `${price} Kč`;
+    return new Intl.NumberFormat('cs-CZ', {
+        style: 'currency',
+        currency: 'CZK',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(price);
+};
+// Price precision handling utilities
+export const PRICE_PRECISION = 2; // 2 decimal places for CZK
+export const roundPrice = (price) => {
+    return Math.round(price * 100) / 100;
+};
+export const parsePrice = (value) => {
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    return roundPrice(num);
+};
+export const validatePrice = (price) => {
+    return !isNaN(price) && price > 0 && price <= 999999.99;
+};
+// Convert decimal to string for API calls to avoid precision issues
+export const priceToString = (price) => {
+    return price.toFixed(PRICE_PRECISION);
+};
+// Convert string back to number for calculations
+export const stringToPrice = (priceStr) => {
+    return parseFloat(priceStr);
 };
 export const getKioskIdFromUrl = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -55,39 +80,80 @@ export const createEmptyCart = () => ({
     totalItems: 0
 });
 export const addToCart = (cart, product, quantity = 1) => {
-    const existingItem = cart.items.find((item) => item.product.id === product.id);
-    if (existingItem) {
-        existingItem.quantity += quantity;
+    const existingItemIndex = cart.items.findIndex((item) => item.product.id === product.id);
+    // Create a new items array
+    const newItems = [...cart.items];
+    if (existingItemIndex !== -1) {
+        // Create a new item object with updated quantity (immutable update)
+        const existingItem = cart.items[existingItemIndex];
+        newItems[existingItemIndex] = {
+            ...existingItem,
+            quantity: existingItem.quantity + quantity
+        };
     }
     else {
-        cart.items.push({ product, quantity });
+        // Add new item to the array
+        newItems.push({ product, quantity });
     }
-    cart.totalAmount = cart.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-    cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-    return cart;
+    // Calculate totals
+    const totalAmount = roundPrice(newItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0));
+    const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
+    // Return a new cart object (immutable)
+    return {
+        ...cart,
+        items: newItems,
+        totalAmount,
+        totalItems
+    };
 };
 export const removeFromCart = (cart, productId) => {
-    cart.items = cart.items.filter((item) => item.product.id !== productId);
-    cart.totalAmount = cart.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-    cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-    return cart;
+    // Create a new items array (immutable)
+    const newItems = cart.items.filter((item) => item.product.id !== productId);
+    // Calculate totals
+    const totalAmount = roundPrice(newItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0));
+    const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
+    // Return a new cart object (immutable)
+    return {
+        ...cart,
+        items: newItems,
+        totalAmount,
+        totalItems
+    };
 };
 export const updateCartItemQuantity = (cart, productId, quantity) => {
-    const item = cart.items.find((item) => item.product.id === productId);
-    if (item) {
-        if (quantity <= 0) {
-            return removeFromCart(cart, productId);
-        }
-        item.quantity = quantity;
-        cart.totalAmount = cart.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-        cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+    if (quantity <= 0) {
+        return removeFromCart(cart, productId);
     }
-    return cart;
+    const itemIndex = cart.items.findIndex((item) => item.product.id === productId);
+    if (itemIndex === -1) {
+        return cart;
+    }
+    // Create a new items array with updated item (immutable)
+    const newItems = [...cart.items];
+    const existingItem = cart.items[itemIndex];
+    newItems[itemIndex] = {
+        ...existingItem,
+        quantity
+    };
+    // Calculate totals
+    const totalAmount = roundPrice(newItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0));
+    const totalItems = newItems.reduce((sum, item) => sum + item.quantity, 0);
+    // Return a new cart object (immutable)
+    return {
+        ...cart,
+        items: newItems,
+        totalAmount,
+        totalItems
+    };
 };
 export const clearCart = (cart) => {
-    cart.items = [];
-    cart.totalAmount = 0;
-    cart.totalItems = 0;
-    return cart;
+    // Return a new cart object (immutable)
+    return {
+        ...cart,
+        items: [],
+        totalAmount: 0,
+        totalItems: 0
+    };
 };
 // Note: getErrorMessage is now exported from ./errors.ts instead
+//# sourceMappingURL=utils.js.map

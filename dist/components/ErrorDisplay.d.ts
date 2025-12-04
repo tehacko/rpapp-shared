@@ -10,3 +10,4 @@ interface ErrorDisplayProps {
 }
 export declare function ErrorDisplay({ error, onRetry, onDismiss, className, showDetails, retryLabel, dismissLabel }: ErrorDisplayProps): import("react/jsx-runtime").JSX.Element;
 export {};
+//# sourceMappingURL=ErrorDisplay.d.ts.map

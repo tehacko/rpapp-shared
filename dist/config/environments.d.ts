@@ -10,7 +10,6 @@ export interface EnvironmentConfig {
     kioskUrl: string;
     adminUrl: string;
     backendUrl: string;
-    sseHealthCheckInterval: number;
     sseHealthCheckInitialInterval: number;
     sseHealthCheckBackoffMultiplier: number;
     sseHealthCheckMaxInterval: number;

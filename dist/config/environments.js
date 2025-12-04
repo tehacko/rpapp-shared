@@ -62,13 +62,12 @@ function getConfigForEnvironment(env) {
             kioskUrl: getEnvVar('REACT_APP_KIOSK_URL', urls.kiosk),
             adminUrl: getEnvVar('REACT_APP_ADMIN_URL', urls.admin),
             backendUrl: getEnvVar('REACT_APP_BACKEND_URL', urls.backend),
-            // SSE Configuration
-            sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
-            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
-            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
-            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes max (reduced from 30 min to preserve battery)
-            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8), // 8 attempts (~30 min max at 15 min interval, reduced from 24 to preserve battery)
-            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes default (reduced from 2 hours to preserve battery)
+            // SSE Health Check Configuration
+            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes
+            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2),
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8),
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes
         };
     }
     else {
@@ -87,13 +86,12 @@ function getConfigForEnvironment(env) {
             kioskUrl: getEnvVar('REACT_APP_KIOSK_URL', urls.kiosk),
             adminUrl: getEnvVar('REACT_APP_ADMIN_URL', urls.admin),
             backendUrl: getEnvVar('REACT_APP_BACKEND_URL', urls.backend),
-            // SSE Configuration
-            sseHealthCheckInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INTERVAL', 300000), // 5 minutes default (deprecated, use sseHealthCheckInitialInterval)
-            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes default
-            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2), // Double interval on each failure
-            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes max (reduced from 30 min to preserve battery)
-            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8), // 8 attempts (~30 min max at 15 min interval, reduced from 24 to preserve battery)
-            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes default (reduced from 2 hours to preserve battery)
+            // SSE Health Check Configuration
+            sseHealthCheckInitialInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_INITIAL_INTERVAL', 300000), // 5 minutes
+            sseHealthCheckBackoffMultiplier: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_BACKOFF_MULTIPLIER', 2),
+            sseHealthCheckMaxInterval: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_INTERVAL', 900000), // 15 minutes
+            sseHealthCheckMaxAttempts: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_ATTEMPTS', 8),
+            sseHealthCheckMaxTotalTime: getEnvNumber('REACT_APP_SSE_HEALTH_CHECK_MAX_TOTAL_TIME', 1800000), // 30 minutes
         };
     }
 }
@@ -102,6 +100,13 @@ export const getCurrentEnvironment = () => {
     // Check for process.env (Node.js environment)
     if (typeof process !== 'undefined' && process.env) {
         return process.env.NODE_ENV === 'production' ? 'production' : 'development';
+    }
+    // Check if we're on Railway domain (most reliable for production detection)
+    if (typeof window !== 'undefined' && window.location) {
+        if (window.location.hostname.includes('railway.app') ||
+            window.location.hostname.includes('up.railway.app')) {
+            return 'production';
+        }
     }
     // Check for import.meta.env (Vite environment)
     if (typeof window !== 'undefined') {
@@ -113,12 +118,23 @@ export const getCurrentEnvironment = () => {
             }
         }
         catch (e) {
-            // Fallback: check if we're on Railway domain
-            if (window.location &&
-                (window.location.hostname.includes('railway.app') ||
-                    window.location.hostname.includes('up.railway.app'))) {
-                return 'production';
+            // Ignore errors
+        }
+    }
+    // Additional fallback: check for production URLs in environment variables
+    if (typeof window !== 'undefined') {
+        try {
+            // @ts-ignore - Vite environment
+            const meta = globalThis.import?.meta;
+            if (meta && meta.env) {
+                const apiUrl = meta.env.VITE_API_URL || meta.env.REACT_APP_API_URL;
+                if (apiUrl && apiUrl.includes('railway.app')) {
+                    return 'production';
+                }
             }
+        }
+        catch (e) {
+            // Ignore errors
         }
     }
     return 'development';

@@ -11,27 +11,30 @@ export const API_ENDPOINTS = {
     PAYMENT_COMPLETE_MULTI: '/api/payments/complete-multi',
     PAYMENT_CANCEL: '/api/payments/cancel',
     PAYMENT_START_MONITORING: '/api/payments/start-monitoring',
+    PAYMENT_STOP_MONITORING: '/api/payments/stop-monitoring',
     // ThePay.eu payment endpoints
     PAYMENT_THEPAY_CREATE: '/api/payments/create-thepay',
     PAYMENT_THEPAY_STATUS: '/api/payments/thepay-status/:paymentId',
     PAYMENT_THEPAY_CANCEL: '/api/payments/thepay-cancel',
     PAYMENT_THEPAY_METHODS: '/api/payments/thepay-methods',
     // Admin endpoints
-    ADMIN_LOGIN: '/admin/login',
-    ADMIN_PRODUCTS: '/admin/products',
-    ADMIN_PRODUCTS_INVENTORY: '/admin/products/inventory/:kioskId',
-    ADMIN_PRODUCT_INVENTORY: '/admin/products/:id/inventory',
-    ADMIN_PRODUCT_INVENTORY_UPDATE: '/admin/products/:productId/inventory/:kioskId',
-    ADMIN_PRODUCT_KIOSK_VISIBILITY: '/admin/products/:productId/kiosk/:kioskId',
-    ADMIN_KIOSKS: '/admin/kiosks',
-    ADMIN_KIOSK_DETAILS: '/admin/kiosks/:id',
-    ADMIN_LOGS: '/admin/logs',
+    ADMIN_LOGIN: '/api/admin/login',
+    ADMIN_PRODUCTS: '/api/admin/products',
+    ADMIN_PRODUCTS_INVENTORY: '/api/admin/products/inventory/:kioskId',
+    ADMIN_PRODUCT_INVENTORY: '/api/admin/products/:id/inventory',
+    ADMIN_PRODUCT_INVENTORY_UPDATE: '/api/admin/products/:productId/inventory/:kioskId',
+    ADMIN_PRODUCT_KIOSK_VISIBILITY: '/api/admin/products/:productId/kiosk/:kioskId',
+    ADMIN_KIOSKS: '/api/admin/kiosks',
+    ADMIN_KIOSK_DETAILS: '/api/admin/kiosks/:id',
+    ADMIN_LOGS: '/api/admin/logs',
     // System endpoints
     HEALTH: '/health',
     CHECK_TRANSACTIONS: '/api/check-new-transactions',
     EVENTS: '/events/:kioskId'
 };
 export class APIClient {
+    baseUrl;
+    kioskSecret;
     constructor(baseUrl, kioskSecret) {
         this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
         this.kioskSecret = kioskSecret;
@@ -79,3 +82,4 @@ export const createAPIClient = (baseUrl, kioskSecret) => {
     const url = baseUrl || getEnvironmentConfig().apiUrl;
     return new APIClient(url, kioskSecret);
 };
+//# sourceMappingURL=api.js.map

@@ -1,8 +1,9 @@
 // Centralized logging system with environment-aware configuration
 import { getEnvironmentConfig, getCurrentEnvironment } from './environments';
 class Logger {
+    sessionId;
+    config = getEnvironmentConfig();
     constructor() {
-        this.config = getEnvironmentConfig();
         this.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     shouldLog(level) {
@@ -115,3 +116,4 @@ export const log = {
     paymentEvent: (event, paymentId, data) => logger.paymentEvent(event, paymentId, data),
     apiCall: (method, endpoint, duration, error) => logger.apiCall(method, endpoint, duration, error),
 };
+//# sourceMappingURL=logger.js.map

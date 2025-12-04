@@ -8,19 +8,20 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_COMPLETE_MULTI: "/api/payments/complete-multi";
     readonly PAYMENT_CANCEL: "/api/payments/cancel";
     readonly PAYMENT_START_MONITORING: "/api/payments/start-monitoring";
+    readonly PAYMENT_STOP_MONITORING: "/api/payments/stop-monitoring";
     readonly PAYMENT_THEPAY_CREATE: "/api/payments/create-thepay";
     readonly PAYMENT_THEPAY_STATUS: "/api/payments/thepay-status/:paymentId";
     readonly PAYMENT_THEPAY_CANCEL: "/api/payments/thepay-cancel";
     readonly PAYMENT_THEPAY_METHODS: "/api/payments/thepay-methods";
-    readonly ADMIN_LOGIN: "/admin/login";
-    readonly ADMIN_PRODUCTS: "/admin/products";
-    readonly ADMIN_PRODUCTS_INVENTORY: "/admin/products/inventory/:kioskId";
-    readonly ADMIN_PRODUCT_INVENTORY: "/admin/products/:id/inventory";
-    readonly ADMIN_PRODUCT_INVENTORY_UPDATE: "/admin/products/:productId/inventory/:kioskId";
-    readonly ADMIN_PRODUCT_KIOSK_VISIBILITY: "/admin/products/:productId/kiosk/:kioskId";
-    readonly ADMIN_KIOSKS: "/admin/kiosks";
-    readonly ADMIN_KIOSK_DETAILS: "/admin/kiosks/:id";
-    readonly ADMIN_LOGS: "/admin/logs";
+    readonly ADMIN_LOGIN: "/api/admin/login";
+    readonly ADMIN_PRODUCTS: "/api/admin/products";
+    readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:kioskId";
+    readonly ADMIN_PRODUCT_INVENTORY: "/api/admin/products/:id/inventory";
+    readonly ADMIN_PRODUCT_INVENTORY_UPDATE: "/api/admin/products/:productId/inventory/:kioskId";
+    readonly ADMIN_PRODUCT_KIOSK_VISIBILITY: "/api/admin/products/:productId/kiosk/:kioskId";
+    readonly ADMIN_KIOSKS: "/api/admin/kiosks";
+    readonly ADMIN_KIOSK_DETAILS: "/api/admin/kiosks/:id";
+    readonly ADMIN_LOGS: "/api/admin/logs";
     readonly HEALTH: "/health";
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
     readonly EVENTS: "/events/:kioskId";
@@ -36,3 +37,4 @@ export declare class APIClient {
     delete<T>(endpoint: string): Promise<T>;
 }
 export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string) => APIClient;
+//# sourceMappingURL=api.d.ts.map

@@ -18,3 +18,4 @@ export declare function useApi<T = any>(_apiClient: APIClient): {
     loading: boolean;
     error: Error | null;
 };
+//# sourceMappingURL=useApi.d.ts.map

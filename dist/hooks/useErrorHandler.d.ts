@@ -12,3 +12,4 @@ export declare function useErrorHandler(): {
     clearError: () => void;
     retryAction: (action: () => Promise<void> | void) => void;
 };
+//# sourceMappingURL=useErrorHandler.d.ts.map

@@ -16,6 +16,18 @@ export declare class AuthenticationError extends AppError {
 export declare class NotFoundError extends AppError {
     constructor(resource?: string);
 }
+export declare class PaymentError extends AppError {
+    constructor(message?: string);
+}
+export declare class InventoryError extends AppError {
+    constructor(message?: string);
+}
+export declare class KioskError extends AppError {
+    constructor(message?: string);
+}
+export declare class DatabaseError extends AppError {
+    constructor(message?: string);
+}
 export interface ErrorResponse {
     success: false;
     error: {
@@ -27,3 +39,4 @@ export interface ErrorResponse {
 }
 export declare const formatError: (error: Error | AppError, details?: any) => ErrorResponse;
 export declare const getErrorMessage: (error: Error | AppError) => string;
+//# sourceMappingURL=errors.d.ts.map

@@ -30,8 +30,8 @@ export const deploymentConfig = {
         production: {
             'NODE_ENV': 'production',
             'REACT_APP_ENVIRONMENT': 'production',
-            'REACT_APP_API_URL': 'https://kiosk-prod.railway.app',
-            'REACT_APP_WS_URL': 'wss://kiosk-prod.railway.app',
+            'REACT_APP_API_URL': 'https://rpapp-bckend-production.up.railway.app',
+            'REACT_APP_WS_URL': 'wss://rpapp-bckend-production.up.railway.app',
             'REACT_APP_PAYMENT_MODE': 'production',
             'REACT_APP_ENABLE_MOCK_PAYMENTS': 'false',
             'REACT_APP_SHOW_DEBUG_INFO': 'false',
@@ -131,7 +131,7 @@ export const railwayConfigs = {
                 source: './packages/backend',
                 env: {
                     ...deploymentConfig.environmentVariables.production,
-                    PORT: '3000'
+                    PORT: '3015'
                 }
             },
             {
@@ -151,3 +151,4 @@ export const railwayConfigs = {
         ]
     }
 };
+//# sourceMappingURL=deployment.js.map

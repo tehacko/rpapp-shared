@@ -1,0 +1,136 @@
+// Shared error handling system
+
+export class AppError extends Error {
+  public readonly code: string;
+  public readonly statusCode: number;
+  public readonly isOperational: boolean;
+
+  constructor(
+    message: string,
+    code: string = 'UNKNOWN_ERROR',
+    statusCode: number = 500,
+    isOperational: boolean = true
+  ) {
+    super(message);
+    this.name = 'AppError';
+    this.code = code;
+    this.statusCode = statusCode;
+    this.isOperational = isOperational;
+
+    // Ensure the stack trace is captured
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// Predefined error types
+export class ValidationError extends AppError {
+  constructor(message: string, _field?: string) {
+    super(message, 'VALIDATION_ERROR', 400);
+    this.name = 'ValidationError';
+  }
+}
+
+export class NetworkError extends AppError {
+  constructor(message: string = 'Chyba připojení k serveru') {
+    super(message, 'NETWORK_ERROR', 503);
+    this.name = 'NetworkError';
+  }
+}
+
+export class AuthenticationError extends AppError {
+  constructor(message: string = 'Neplatné přihlašovací údaje') {
+    super(message, 'AUTH_ERROR', 401);
+    this.name = 'AuthenticationError';
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(resource: string = 'Zdroj') {
+    super(`${resource} nebyl nalezen`, 'NOT_FOUND', 404);
+    this.name = 'NotFoundError';
+  }
+}
+
+export class PaymentError extends AppError {
+  constructor(message: string = 'Chyba při zpracování platby') {
+    super(message, 'PAYMENT_ERROR', 400);
+    this.name = 'PaymentError';
+  }
+}
+
+export class InventoryError extends AppError {
+  constructor(message: string = 'Chyba při správě zásob') {
+    super(message, 'INVENTORY_ERROR', 400);
+    this.name = 'InventoryError';
+  }
+}
+
+export class KioskError extends AppError {
+  constructor(message: string = 'Chyba konfigurace kiosku') {
+    super(message, 'KIOSK_ERROR', 400);
+    this.name = 'KioskError';
+  }
+}
+
+export class DatabaseError extends AppError {
+  constructor(message: string = 'Chyba databáze') {
+    super(message, 'DATABASE_ERROR', 503);
+    this.name = 'DatabaseError';
+  }
+}
+
+// Error formatter for consistent error responses
+export interface ErrorResponse {
+  success: false;
+  error: {
+    code: string;
+    message: string;
+    timestamp: string;
+    details?: any;
+  };
+}
+
+export const formatError = (error: Error | AppError, details?: any): ErrorResponse => {
+  const isAppError = error instanceof AppError;
+  
+  return {
+    success: false,
+    error: {
+      code: isAppError ? error.code : 'UNKNOWN_ERROR',
+      message: error.message || 'Došlo k neočekávané chybě',
+      timestamp: new Date().toISOString(),
+      ...(details && { details })
+    }
+  };
+};
+
+// Error handler hook for React components
+export const getErrorMessage = (error: Error | AppError): string => {
+  if (error instanceof NetworkError) {
+    return 'Problém s připojením. Zkuste to znovu.';
+  }
+  
+  if (error instanceof ValidationError) {
+    return error.message;
+  }
+  
+  if (error instanceof AuthenticationError) {
+    return 'Neplatné přihlašovací údaje.';
+  }
+  
+  if (error instanceof NotFoundError) {
+    return error.message;
+  }
+  
+  // Check for specific error messages
+  if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
+    return 'Problém s připojením. Zkuste to znovu.';
+  }
+  
+  if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+    return 'Neplatné přihlašovací údaje.';
+  }
+  
+  // Return original message if available, otherwise generic
+  return error.message || 'Něco se pokazilo. Zkuste to znovu.';
+};
