@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
     ADMIN_LOGS: '/api/admin/logs',
     // System endpoints
     HEALTH: '/health',
+    HEALTH_PAYMENT_PROVIDERS: '/health/payment-providers',
     CHECK_TRANSACTIONS: '/api/check-new-transactions',
     EVENTS: '/events/:kioskId'
 };

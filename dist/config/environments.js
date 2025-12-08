@@ -43,6 +43,17 @@ const SERVICE_URLS = {
         admin: 'https://extraordinary-healing-production-88f4.up.railway.app',
     }
 };
+function getRuntimeConfigOverride() {
+    if (typeof globalThis === 'undefined') {
+        return undefined;
+    }
+    const maybeWindow = globalThis;
+    const runtimeConfig = maybeWindow.__RUNTIME_CONFIG__;
+    if (!runtimeConfig || typeof runtimeConfig !== 'object') {
+        return undefined;
+    }
+    return runtimeConfig;
+}
 // Get environment configuration dynamically
 function getConfigForEnvironment(env) {
     const urls = SERVICE_URLS[env];
@@ -142,7 +153,15 @@ export const getCurrentEnvironment = () => {
 // Get current environment configuration
 export const getEnvironmentConfig = () => {
     const env = getCurrentEnvironment();
-    return getConfigForEnvironment(env);
+    const baseConfig = getConfigForEnvironment(env);
+    const runtimeOverride = getRuntimeConfigOverride();
+    if (!runtimeOverride) {
+        return baseConfig;
+    }
+    return {
+        ...baseConfig,
+        ...runtimeOverride,
+    };
 };
 // Simple environment checks
 export const isDevelopment = () => getCurrentEnvironment() === 'development';

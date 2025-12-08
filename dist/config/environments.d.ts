@@ -16,6 +16,11 @@ export interface EnvironmentConfig {
     sseHealthCheckMaxAttempts: number;
     sseHealthCheckMaxTotalTime: number;
 }
+declare global {
+    interface Window {
+        __RUNTIME_CONFIG__?: Partial<EnvironmentConfig>;
+    }
+}
 export declare const getCurrentEnvironment: () => Environment;
 export declare const getEnvironmentConfig: () => EnvironmentConfig;
 export declare const isDevelopment: () => boolean;

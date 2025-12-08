@@ -30,6 +30,12 @@ export interface EnvironmentConfig {
   sseHealthCheckMaxTotalTime: number;
 }
 
+declare global {
+  interface Window {
+    __RUNTIME_CONFIG__?: Partial<EnvironmentConfig>;
+  }
+}
+
 // Simplified environment variable helper
 function getEnvVar(key: string, defaultValue: string): string {
   // Check for process.env (Node.js environment)
@@ -77,6 +83,21 @@ const SERVICE_URLS = {
     admin: 'https://extraordinary-healing-production-88f4.up.railway.app',
   }
 } as const;
+
+function getRuntimeConfigOverride(): Partial<EnvironmentConfig> | undefined {
+  if (typeof globalThis === 'undefined') {
+    return undefined;
+  }
+
+  const maybeWindow = globalThis as typeof globalThis & { __RUNTIME_CONFIG__?: Partial<EnvironmentConfig> };
+  const runtimeConfig = maybeWindow.__RUNTIME_CONFIG__;
+
+  if (!runtimeConfig || typeof runtimeConfig !== 'object') {
+    return undefined;
+  }
+
+  return runtimeConfig;
+}
 
 // Get environment configuration dynamically
 function getConfigForEnvironment(env: Environment): EnvironmentConfig {
@@ -189,7 +210,17 @@ export const getCurrentEnvironment = (): Environment => {
 // Get current environment configuration
 export const getEnvironmentConfig = (): EnvironmentConfig => {
   const env = getCurrentEnvironment();
-  return getConfigForEnvironment(env);
+  const baseConfig = getConfigForEnvironment(env);
+  const runtimeOverride = getRuntimeConfigOverride();
+
+  if (!runtimeOverride) {
+    return baseConfig;
+  }
+
+  return {
+    ...baseConfig,
+    ...runtimeOverride,
+  };
 };
 
 // Simple environment checks
