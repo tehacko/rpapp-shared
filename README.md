@@ -1,34 +1,21 @@
 # @pi-kiosk/shared
 
-Shared components, utilities, and types for the Pi Kiosk system.
+Shared types, API contracts, and error classes for the Pi Kiosk system.
+
+This package contains only **contracts** - types, API endpoints, and error classes that are shared between the backend and frontend applications. All implementation details (components, hooks, utilities, config) have been moved to individual apps.
 
 ## Installation
 
 ```bash
-npm install @pi-kiosk/shared
+npm install pi-kiosk-shared
 ```
 
 ## Usage
 
-### Components
-
-```tsx
-import { ErrorDisplay, LoadingSpinner } from '@pi-kiosk/shared';
-
-function MyComponent() {
-  return (
-    <div>
-      <LoadingSpinner />
-      <ErrorDisplay error={new Error('Something went wrong')} />
-    </div>
-  );
-}
-```
-
 ### Types
 
 ```tsx
-import { Product, ApiResponse, KioskStatus } from '@pi-kiosk/shared';
+import type { Product, ApiResponse, KioskStatus, TransactionStatus } from 'pi-kiosk-shared';
 
 const product: Product = {
   id: 1,
@@ -36,33 +23,41 @@ const product: Product = {
   price: 25.0,
   description: 'Fresh coffee',
   image: '☕',
-  quantityInStock: 10,
   clickedOn: 0,
   numberOfPurchases: 0,
 };
 ```
 
-### Hooks
+### API Client
 
 ```tsx
-import { useApi, useErrorHandler } from '@pi-kiosk/shared';
+import { APIClient, createAPIClient, API_ENDPOINTS } from 'pi-kiosk-shared';
 
-function MyComponent() {
-  const api = useApi();
-  const { handleError } = useErrorHandler();
+const apiClient = createAPIClient('http://localhost:3015');
+const products = await apiClient.get(API_ENDPOINTS.PRODUCTS);
+```
 
-  // Use the hooks...
+### Error Classes
+
+```tsx
+import { NetworkError, ValidationError, AppError, getErrorMessage } from 'pi-kiosk-shared';
+
+try {
+  // ... some operation
+} catch (error) {
+  if (error instanceof NetworkError) {
+    console.error('Network error:', getErrorMessage(error));
+  }
 }
 ```
 
-### Utilities
+## What's NOT in this package
 
-```tsx
-import { formatPrice, validateEmail } from '@pi-kiosk/shared';
-
-const price = formatPrice(25.5); // "25,50 Kč"
-const isValid = validateEmail('user@example.com'); // true
-```
+- **Components**: Moved to `rpapp-kiosk/src/shared/components` and `admin-app/src/shared/components`
+- **Hooks**: Moved to `rpapp-kiosk/src/shared/hooks` and `admin-app/src/shared/hooks`
+- **Utilities**: Moved to `rpapp-kiosk/src/shared/utils` and `admin-app/src/shared/utils`
+- **Validation**: Moved to `admin-app/src/shared/validation`
+- **Config**: Moved to `rpapp-kiosk/src/config` and `admin-app/src/config`
 
 ## Development
 

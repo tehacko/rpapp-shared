@@ -178,17 +178,22 @@ export interface CreateMultiQRPaymentRequest {
   totalAmount: number;
   customerEmail: string;
   kioskId: number;
+  idempotencyKey?: string; // Optional client-provided key for duplicate prevention
+}
+
+export interface CreateMultiQRPaymentResponseData {
+  paymentId: string;
+  qrCodeData: string;
+  amount: number;
+  itemsCount: number;
+  customerEmail: string;
+  receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none'; // Status of receipt email (only in idempotent responses)
 }
 
 export interface CreateMultiQRPaymentResponse {
   success: boolean;
-  data: {
-    paymentId: string;
-    qrCodeData: string;
-    amount: number;
-    itemsCount: number;
-    customerEmail: string;
-  };
+  data: CreateMultiQRPaymentResponseData;
+  message?: string; // Optional message (e.g., "QR payment already exists (idempotent)")
 }
 
 export interface PaymentStatusResponse {

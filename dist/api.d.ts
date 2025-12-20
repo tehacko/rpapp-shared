@@ -23,6 +23,8 @@ export declare const API_ENDPOINTS: {
     readonly ADMIN_KIOSK_DETAILS: "/api/admin/kiosks/:id";
     readonly ADMIN_LOGS: "/api/admin/logs";
     readonly HEALTH: "/health";
+    readonly HEALTH_PAYMENT_PROVIDERS: "/health/payment-providers";
+    readonly HEALTH_PAYMENT_PROVIDERS_CHECK_FIO: "/health/payment-providers/check-fio";
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
     readonly EVENTS: "/events/:kioskId";
 };

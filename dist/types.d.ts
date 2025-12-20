@@ -151,16 +151,20 @@ export interface CreateMultiQRPaymentRequest {
     totalAmount: number;
     customerEmail: string;
     kioskId: number;
+    idempotencyKey?: string;
+}
+export interface CreateMultiQRPaymentResponseData {
+    paymentId: string;
+    qrCodeData: string;
+    amount: number;
+    itemsCount: number;
+    customerEmail: string;
+    receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none';
 }
 export interface CreateMultiQRPaymentResponse {
     success: boolean;
-    data: {
-        paymentId: string;
-        qrCodeData: string;
-        amount: number;
-        itemsCount: number;
-        customerEmail: string;
-    };
+    data: CreateMultiQRPaymentResponseData;
+    message?: string;
 }
 export interface PaymentStatusResponse {
     paymentId: string;

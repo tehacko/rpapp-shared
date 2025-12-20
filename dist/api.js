@@ -29,6 +29,8 @@ export const API_ENDPOINTS = {
     ADMIN_LOGS: '/api/admin/logs',
     // System endpoints
     HEALTH: '/health',
+    HEALTH_PAYMENT_PROVIDERS: '/health/payment-providers',
+    HEALTH_PAYMENT_PROVIDERS_CHECK_FIO: '/health/payment-providers/check-fio',
     CHECK_TRANSACTIONS: '/api/check-new-transactions',
     EVENTS: '/events/:kioskId'
 };
@@ -36,11 +38,24 @@ export class APIClient {
     baseUrl;
     kioskSecret;
     constructor(baseUrl, kioskSecret) {
+        if (!baseUrl || typeof baseUrl !== 'string') {
+            throw new Error('APIClient: baseUrl is required and must be a string');
+        }
         this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
         this.kioskSecret = kioskSecret;
     }
     async request(endpoint, options = {}) {
+        if (!endpoint || typeof endpoint !== 'string') {
+            throw new Error(`APIClient: endpoint is required and must be a string, got: ${typeof endpoint}`);
+        }
         const url = `${this.baseUrl}${endpoint}`;
+        // Validate URL before making request
+        try {
+            new URL(url);
+        }
+        catch (error) {
+            throw new Error(`APIClient: Invalid URL constructed: ${url}. baseUrl: ${this.baseUrl}, endpoint: ${endpoint}`);
+        }
         const headers = {
             'Content-Type': 'application/json',
             ...(options.headers || {}),
@@ -77,9 +92,9 @@ export class APIClient {
         return this.request(endpoint, { method: 'DELETE' });
     }
 }
-import { getEnvironmentConfig } from './config/environments';
 export const createAPIClient = (baseUrl, kioskSecret) => {
-    const url = baseUrl || getEnvironmentConfig().apiUrl;
+    // Fallback to default if not provided
+    const url = baseUrl || 'http://localhost:3015';
     return new APIClient(url, kioskSecret);
 };
 //# sourceMappingURL=api.js.map
