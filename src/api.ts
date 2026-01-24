@@ -7,10 +7,8 @@ export const API_ENDPOINTS = {
   
   // Payment endpoints
   PAYMENT_CREATE_QR: '/api/payments/create-qr',
-  PAYMENT_CREATE_MULTI_QR: '/api/payments/create-multi-qr',
   PAYMENT_CHECK_STATUS: '/api/payments/check-status/:paymentId',
   PAYMENT_COMPLETE: '/api/payments/complete',
-  PAYMENT_COMPLETE_MULTI: '/api/payments/complete-multi',
   PAYMENT_CANCEL: '/api/payments/cancel',
   PAYMENT_START_MONITORING: '/api/payments/start-monitoring',
   PAYMENT_STOP_MONITORING: '/api/payments/stop-monitoring',
@@ -21,6 +19,11 @@ export const API_ENDPOINTS = {
   PAYMENT_THEPAY_CANCEL: '/api/payments/thepay-cancel',
   PAYMENT_THEPAY_METHODS: '/api/payments/thepay-methods',
   
+  // Consent endpoints
+  CONSENT_ANALYTICS: '/api/consents/analytics',
+  CONSENT_MARKETING: '/api/consents/marketing',
+  ANALYTICS_EVENTS: '/api/analytics/events',
+
   // Admin endpoints
   ADMIN_LOGIN: '/api/admin/login',
   ADMIN_PRODUCTS: '/api/admin/products',
@@ -31,6 +34,7 @@ export const API_ENDPOINTS = {
   ADMIN_KIOSKS: '/api/admin/kiosks',
   ADMIN_KIOSK_DETAILS: '/api/admin/kiosks/:id',
   ADMIN_LOGS: '/api/admin/logs',
+  ADMIN_CATEGORIES: '/api/v1/admin/categories',
   
   // System endpoints
   HEALTH: '/health',
@@ -43,13 +47,28 @@ export const API_ENDPOINTS = {
 export class APIClient {
   private baseUrl: string;
   private kioskSecret?: string;
+  private tenantCode?: string;
 
-  constructor(baseUrl: string, kioskSecret?: string) {
+  constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string) {
     if (!baseUrl || typeof baseUrl !== 'string') {
       throw new Error('APIClient: baseUrl is required and must be a string');
     }
     this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
     this.kioskSecret = kioskSecret;
+    this.tenantCode = tenantCode;
+  }
+
+  private injectTenantIntoEndpoint(endpoint: string): string {
+    if (!this.tenantCode) {
+      return endpoint;
+    }
+    if (endpoint.startsWith('/api/')) {
+      // Handle query strings - split endpoint and query, inject tenant into path only
+      const [path, query] = endpoint.split('?');
+      const tenantPath = `/api/${this.tenantCode}${path.slice(4)}`;
+      return query ? `${tenantPath}?${query}` : tenantPath;
+    }
+    return endpoint;
   }
 
   private async request<T>(
@@ -60,7 +79,9 @@ export class APIClient {
       throw new Error(`APIClient: endpoint is required and must be a string, got: ${typeof endpoint}`);
     }
     
-    const url = `${this.baseUrl}${endpoint}`;
+    // Inject tenant into endpoint path if tenant is configured
+    const tenantEndpoint = this.injectTenantIntoEndpoint(endpoint);
+    const url = `${this.baseUrl}${tenantEndpoint}`;
     
     // Validate URL before making request
     try {
@@ -114,9 +135,9 @@ export class APIClient {
   }
 }
 
-export const createAPIClient = (baseUrl?: string, kioskSecret?: string) => {
+export const createAPIClient = (baseUrl?: string, kioskSecret?: string, tenantCode?: string) => {
   // Fallback to default if not provided
   const url = baseUrl || 'http://localhost:3015';
   
-  return new APIClient(url, kioskSecret);
+  return new APIClient(url, kioskSecret, tenantCode);
 };
