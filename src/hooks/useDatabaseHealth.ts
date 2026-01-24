@@ -43,7 +43,7 @@ export function useDatabaseHealth(
     enabled = true,
   } = options;
 
-  const [isDatabaseAvailable, setIsDatabaseAvailable] = useState<boolean>(true);
+  const [isDatabaseAvailable, setIsDatabaseAvailable] = useState<boolean>(true); // Default to true initially
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [nextRetryDelay, setNextRetryDelay] = useState<number>(0);
@@ -77,9 +77,12 @@ export function useDatabaseHealth(
 
       const data = (await response.json()) as HealthResponse;
 
+      // Debug: Log the response
+      console.log('[DatabaseHealth] Health check response:', { success: data.success, status: data.status, services: data.services });
+
       // Check if database service is healthy
-      const dbStatus = data.services?.database?.status;
-      const isDbHealthy = dbStatus === 'healthy' || (dbStatus === undefined && data.success);
+      // The health endpoint returns success: true when healthy
+      const isDbHealthy = data.success === true;
 
       if (isDbHealthy) {
         // Database is available - reset retry state
@@ -122,6 +125,7 @@ export function useDatabaseHealth(
     } catch (err) {
       // Network error or other failure
       const error = err instanceof Error ? err : new Error('Failed to check database health');
+      console.error('[DatabaseHealth] Health check error:', error);
       setError(error);
       setIsDatabaseAvailable(false);
 
