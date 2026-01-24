@@ -11,5 +11,7 @@ export * from './hooks/useApi';
 export * from './hooks/useAsyncOperation';
 export * from './components/LoadingSpinner';
 export * from './components/ErrorDisplay';
+export * from './components/DatabaseUnavailable';
+export * from './hooks/useDatabaseHealth';
 export * from './config/environments';
 export * from './config/logger';

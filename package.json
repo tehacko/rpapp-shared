@@ -1,6 +1,6 @@
 {
   "name": "pi-kiosk-shared",
-  "version": "2.1.4",
+  "version": "2.1.11",
   "private": false,
   "description": "Shared components and utilities for Pi Kiosk system",
   "keywords": [

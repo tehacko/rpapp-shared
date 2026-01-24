@@ -1,6 +1,7 @@
 export declare const API_ENDPOINTS: {
     readonly PRODUCTS: "/api/products";
     readonly PRODUCT_CLICK: "/api/products/:id/click";
+    readonly PRODUCT_LOOKUP_BARCODE: "/api/products/lookup-barcode";
     readonly PAYMENT_CREATE_QR: "/api/payments/create-qr";
     readonly PAYMENT_CREATE_MULTI_QR: "/api/payments/create-multi-qr";
     readonly PAYMENT_CHECK_STATUS: "/api/payments/check-status/:paymentId";

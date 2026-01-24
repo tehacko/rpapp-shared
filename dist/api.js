@@ -3,6 +3,7 @@ export const API_ENDPOINTS = {
     // Product endpoints
     PRODUCTS: '/api/products',
     PRODUCT_CLICK: '/api/products/:id/click',
+    PRODUCT_LOOKUP_BARCODE: '/api/products/lookup-barcode',
     // Payment endpoints
     PAYMENT_CREATE_QR: '/api/payments/create-qr',
     PAYMENT_CREATE_MULTI_QR: '/api/payments/create-multi-qr',
