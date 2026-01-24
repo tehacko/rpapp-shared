@@ -1,9 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { getErrorMessage } from '../errors';
-import { CSS_CLASSES } from '../constants';
-export function ErrorDisplay({ error, onRetry, onDismiss, className = '', showDetails = false, retryLabel = 'Zkusit znovu', dismissLabel = 'Zavřít' }) {
-    const userMessage = getErrorMessage(error);
-    const isNetworkError = error.name === 'NetworkError';
-    return (_jsx("div", { className: `error-display ${CSS_CLASSES.ERROR} ${className}`, role: "alert", "aria-live": "assertive", children: _jsxs("div", { className: "error-content", children: [_jsx("div", { className: "error-icon", "aria-hidden": "true", children: isNetworkError ? '🌐' : '❌' }), _jsxs("div", { className: "error-text", children: [_jsx("h3", { className: "error-title", children: isNetworkError ? 'Problém s připojením' : 'Došlo k chybě' }), _jsx("p", { className: "error-message", children: userMessage })] }), showDetails && process.env.NODE_ENV === 'development' && (_jsxs("details", { className: "error-details", children: [_jsx("summary", { children: "Technick\u00E9 detaily" }), _jsx("pre", { className: "error-stack", children: _jsx("code", { children: error.stack || error.message }) })] })), _jsxs("div", { className: "error-actions", children: [onRetry && (_jsxs("button", { onClick: onRetry, className: `retry-btn ${CSS_CLASSES.BUTTON_PRIMARY}`, type: "button", children: ["\uD83D\uDD04 ", retryLabel] })), onDismiss && (_jsxs("button", { onClick: onDismiss, className: `dismiss-btn ${CSS_CLASSES.BUTTON_SECONDARY}`, type: "button", children: ["\u2715 ", dismissLabel] }))] })] }) }));
-}
-//# sourceMappingURL=ErrorDisplay.js.map

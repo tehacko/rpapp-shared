@@ -29,6 +29,7 @@ export interface KioskProduct extends Product {
     quantityInStock: number;
     kioskClickedOn: number;
     kioskNumberOfPurchases: number;
+    categoryId?: number | null;
 }
 export interface Kiosk {
     id: number;
@@ -36,6 +37,8 @@ export interface Kiosk {
     location: string;
     description?: string;
     isActive: boolean;
+    defaultVatRate?: number | null;
+    lastHeartbeat?: string | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -132,35 +135,27 @@ export type WebSocketMessage = {
 };
 export type ScreenType = 'products' | 'payment' | 'confirmation' | 'admin-login' | 'admin-dashboard';
 export interface CreateQRPaymentRequest {
-    productId: number;
-    customerEmail: string;
-    kioskId: number;
-}
-export interface CreateQRPaymentResponse {
-    paymentId: string;
-    qrCodeData: string;
-    amount: number;
-    customerEmail: string;
-    variableSymbol: string;
-}
-export interface CreateMultiQRPaymentRequest {
     items: Array<{
         productId: number;
         quantity: number;
     }>;
-    totalAmount: number;
+    totalAmount?: number;
     customerEmail: string;
     kioskId: number;
+    idempotencyKey?: string;
 }
-export interface CreateMultiQRPaymentResponse {
+export interface CreateQRPaymentResponseData {
+    paymentId: string;
+    qrCodeData: string;
+    amount: number;
+    itemsCount: number;
+    customerEmail: string;
+    receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none';
+}
+export interface CreateQRPaymentResponse {
     success: boolean;
-    data: {
-        paymentId: string;
-        qrCodeData: string;
-        amount: number;
-        itemsCount: number;
-        customerEmail: string;
-    };
+    data: CreateQRPaymentResponseData;
+    message?: string;
 }
 export interface PaymentStatusResponse {
     paymentId: string;
