@@ -2,17 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface HealthResponse {
   success: boolean;
-  status: 'healthy' | 'unhealthy';
-  services?: {
-    database?: {
-      status: 'healthy' | 'unhealthy' | 'degraded';
-      message?: string;
-    };
-  };
+  status?: 'healthy' | 'unhealthy';
 }
 
 interface UseDatabaseHealthOptions {
-  healthEndpoint?: string;
   pollInterval?: number;
   maxRetries?: number;
   retryDelay?: number;
@@ -28,32 +21,40 @@ interface UseDatabaseHealthReturn {
   checkHealth: () => Promise<void>;
 }
 
-/**
- * Hook to monitor database health via backend health endpoint
- * Implements exponential backoff retry logic
- */
 export function useDatabaseHealth(
   options: UseDatabaseHealthOptions = {}
 ): UseDatabaseHealthReturn {
   const {
-    healthEndpoint = '/health',
-    pollInterval = 5000, // Poll every 5 seconds
+    pollInterval = 5000,
     maxRetries = 5,
-    retryDelay = 1000, // Initial delay: 1 second
+    retryDelay = 1000,
     enabled = true,
   } = options;
 
-  const [isDatabaseAvailable, setIsDatabaseAvailable] = useState<boolean>(true); // Default to true initially
+  const [isDatabaseAvailable, setIsDatabaseAvailable] = useState<boolean>(true);
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [nextRetryDelay, setNextRetryDelay] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
+  const [healthEndpoint, setHealthEndpoint] = useState<string>('http://localhost:3015/health');
 
-  const pollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const currentRetryCountRef = useRef<number>(0);
+  // Initialize health endpoint URL from runtime config
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const windowConfig = (window as any).__RUNTIME_CONFIG__;
+      const apiUrl = windowConfig?.apiUrl;
+      if (apiUrl) {
+        setHealthEndpoint(`${apiUrl}/health`);
+        console.log('[DatabaseHealth] Using API URL:', `${apiUrl}/health`);
+      }
+    }
+  }, []);
+
+  const retryCountRef = useRef<number>(0);
   const backoffMultiplierRef = useRef<number>(2);
   const currentDelayRef = useRef<number>(retryDelay);
+  const pollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const checkHealth = useCallback(async (): Promise<void> => {
     if (!enabled) return;
@@ -61,13 +62,12 @@ export function useDatabaseHealth(
     setIsChecking(true);
     setError(null);
 
+    console.log('[DatabaseHealth] Checking health at:', healthEndpoint);
+
     try {
       const response = await fetch(healthEndpoint, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // Add cache-busting to prevent stale responses
+        headers: { 'Content-Type': 'application/json' },
         cache: 'no-cache',
       });
 
@@ -75,80 +75,45 @@ export function useDatabaseHealth(
         throw new Error(`Health check failed: ${response.status} ${response.statusText}`);
       }
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType?.includes('application/json')) {
+        const text = await response.text();
+        console.error('[DatabaseHealth] Invalid response type:', { contentType, preview: text.substring(0, 100) });
+        throw new Error(`Invalid response: expected JSON, got ${contentType}`);
+      }
+
       const data = (await response.json()) as HealthResponse;
+      console.log('[DatabaseHealth] Health response:', { success: data.success, status: data.status });
 
-      // Debug: Log the response
-      console.log('[DatabaseHealth] Health check response:', { success: data.success, status: data.status, services: data.services });
-
-      // Check if database service is healthy
-      // The health endpoint returns success: true when healthy
-      const isDbHealthy = data.success === true;
-
-      if (isDbHealthy) {
-        // Database is available - reset retry state
+      if (data.success === true) {
         setIsDatabaseAvailable(true);
         setRetryCount(0);
         setNextRetryDelay(0);
-        currentRetryCountRef.current = 0;
+        retryCountRef.current = 0;
         currentDelayRef.current = retryDelay;
         backoffMultiplierRef.current = 2;
       } else {
-        // Database is unavailable
-        setIsDatabaseAvailable(false);
-        
-        // Increment retry count
-        const newRetryCount = currentRetryCountRef.current + 1;
-        currentRetryCountRef.current = newRetryCount;
-        setRetryCount(newRetryCount);
-
-        if (newRetryCount < maxRetries) {
-          // Calculate next delay with exponential backoff
-          const nextDelay = Math.min(
-            currentDelayRef.current * backoffMultiplierRef.current,
-            retryDelay * 30 // Cap at 30x initial delay
-          );
-          currentDelayRef.current = nextDelay;
-          setNextRetryDelay(nextDelay);
-
-          // Schedule next retry
-          retryTimeoutRef.current = setTimeout(() => {
-            void checkHealth();
-          }, nextDelay);
-        } else {
-          // Max retries reached - continue polling at regular interval
-          setNextRetryDelay(pollInterval);
-          retryTimeoutRef.current = setTimeout(() => {
-            void checkHealth();
-          }, pollInterval);
-        }
+        throw new Error('Database reported unhealthy status');
       }
     } catch (err) {
-      // Network error or other failure
-      const error = err instanceof Error ? err : new Error('Failed to check database health');
+      const error = err instanceof Error ? err : new Error('Health check failed');
       console.error('[DatabaseHealth] Health check error:', error);
       setError(error);
       setIsDatabaseAvailable(false);
 
-      // Increment retry count
-      const newRetryCount = currentRetryCountRef.current + 1;
-      currentRetryCountRef.current = newRetryCount;
+      const newRetryCount = retryCountRef.current + 1;
+      retryCountRef.current = newRetryCount;
       setRetryCount(newRetryCount);
 
       if (newRetryCount < maxRetries) {
-        // Calculate next delay with exponential backoff
-        const nextDelay = Math.min(
-          currentDelayRef.current * backoffMultiplierRef.current,
-          retryDelay * 30 // Cap at 30x initial delay
-        );
+        const nextDelay = Math.min(currentDelayRef.current * backoffMultiplierRef.current, retryDelay * 30);
         currentDelayRef.current = nextDelay;
         setNextRetryDelay(nextDelay);
 
-        // Schedule next retry
         retryTimeoutRef.current = setTimeout(() => {
           void checkHealth();
         }, nextDelay);
       } else {
-        // Max retries reached - continue polling at regular interval
         setNextRetryDelay(pollInterval);
         retryTimeoutRef.current = setTimeout(() => {
           void checkHealth();
@@ -159,23 +124,17 @@ export function useDatabaseHealth(
     }
   }, [enabled, healthEndpoint, maxRetries, retryDelay, pollInterval]);
 
-  // Initial health check and polling
   useEffect(() => {
     if (!enabled) return;
 
     // Initial check
     void checkHealth();
 
-    // Set up polling interval (only when database is available)
+    // Polling
     const startPolling = (): void => {
-      if (pollTimeoutRef.current) {
-        clearTimeout(pollTimeoutRef.current);
-      }
-
+      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
       pollTimeoutRef.current = setTimeout(() => {
-        if (isDatabaseAvailable) {
-          void checkHealth();
-        }
+        void checkHealth();
         startPolling();
       }, pollInterval);
     };
@@ -183,14 +142,10 @@ export function useDatabaseHealth(
     startPolling();
 
     return () => {
-      if (pollTimeoutRef.current) {
-        clearTimeout(pollTimeoutRef.current);
-      }
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current);
-      }
+      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
     };
-  }, [enabled, checkHealth, isDatabaseAvailable, pollInterval]);
+  }, [enabled, checkHealth, pollInterval]);
 
   return {
     isDatabaseAvailable,
@@ -201,4 +156,3 @@ export function useDatabaseHealth(
     checkHealth,
   };
 }
-
