@@ -1,4 +1,13 @@
-// Shared error handling system
+/**
+ * Shared Error Handling System
+ *
+ * Centralized error definitions and utilities for consistent
+ * error handling across all applications
+ */
+// ===== Base Error Classes =====
+/**
+ * Base application error with code and status code
+ */
 export class AppError extends Error {
     code;
     statusCode;
@@ -13,7 +22,7 @@ export class AppError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-// Predefined error types
+// ===== Predefined Error Types =====
 export class ValidationError extends AppError {
     constructor(message, _field) {
         super(message, 'VALIDATION_ERROR', 400);
@@ -62,19 +71,29 @@ export class DatabaseError extends AppError {
         this.name = 'DatabaseError';
     }
 }
+/**
+ * Format error for consistent API responses
+ */
 export const formatError = (error, details) => {
     const isAppError = error instanceof AppError;
+    const errorObj = {
+        code: isAppError ? error.code : 'UNKNOWN_ERROR',
+        message: error.message || 'Došlo k neočekávané chybě',
+        timestamp: new Date().toISOString(),
+    };
+    if (details) {
+        errorObj.details = details;
+    }
     return {
         success: false,
-        error: {
-            code: isAppError ? error.code : 'UNKNOWN_ERROR',
-            message: error.message || 'Došlo k neočekávané chybě',
-            timestamp: new Date().toISOString(),
-            ...(details && { details })
-        }
+        error: errorObj
     };
 };
-// Error handler hook for React components
+// ===== Error Messaging (Client-side) =====
+/**
+ * Get user-friendly error message from error object
+ * Used in React components to display to users
+ */
 export const getErrorMessage = (error) => {
     if (error instanceof NetworkError) {
         return 'Problém s připojením. Zkuste to znovu.';

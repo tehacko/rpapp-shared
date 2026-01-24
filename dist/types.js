@@ -1,5 +1,10 @@
-// Shared types across all packages
-// Enums matching backend Prisma schema
+/**
+ * Shared Types
+ *
+ * Database models, API contracts, and type definitions
+ * used across kiosk, admin, and backend applications.
+ */
+// ===== Transaction & Receipt Status Enums =====
 export var TransactionStatus;
 (function (TransactionStatus) {
     TransactionStatus["INITIATED"] = "INITIATED";

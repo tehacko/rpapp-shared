@@ -1,4 +1,10 @@
-// Shared API utilities
+/**
+ * Shared API Utilities
+ *
+ * API endpoints and HTTP client for communicating with backend
+ * Supports multi-tenant routing and authentication headers
+ */
+// ===== API Endpoints =====
 export const API_ENDPOINTS = {
     // Product endpoints
     PRODUCTS: '/api/products',
@@ -38,6 +44,15 @@ export const API_ENDPOINTS = {
     CHECK_TRANSACTIONS: '/api/check-new-transactions',
     EVENTS: '/events/:kioskId'
 };
+// ===== API Client =====
+/**
+ * Typed HTTP client for API communication
+ * Features:
+ * - Multi-tenant support (automatic path injection)
+ * - Kiosk secret authentication
+ * - Type-safe requests and responses
+ * - URL validation before requests
+ */
 export class APIClient {
     baseUrl;
     kioskSecret;
@@ -112,6 +127,12 @@ export class APIClient {
         return this.request(endpoint, { method: 'DELETE' });
     }
 }
+/**
+ * Factory function to create API client
+ * @param baseUrl - Optional API base URL (defaults to localhost:3015)
+ * @param kioskSecret - Optional kiosk authentication secret
+ * @param tenantCode - Optional tenant code for multi-tenant routing
+ */
 export const createAPIClient = (baseUrl, kioskSecret, tenantCode) => {
     // Fallback to default if not provided
     const url = baseUrl || 'http://localhost:3015';

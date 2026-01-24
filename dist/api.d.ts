@@ -1,3 +1,9 @@
+/**
+ * Shared API Utilities
+ *
+ * API endpoints and HTTP client for communicating with backend
+ * Supports multi-tenant routing and authentication headers
+ */
 export declare const API_ENDPOINTS: {
     readonly PRODUCTS: "/api/products";
     readonly PRODUCT_CLICK: "/api/products/:id/click";
@@ -31,6 +37,14 @@ export declare const API_ENDPOINTS: {
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
     readonly EVENTS: "/events/:kioskId";
 };
+/**
+ * Typed HTTP client for API communication
+ * Features:
+ * - Multi-tenant support (automatic path injection)
+ * - Kiosk secret authentication
+ * - Type-safe requests and responses
+ * - URL validation before requests
+ */
 export declare class APIClient {
     private baseUrl;
     private kioskSecret?;
@@ -39,9 +53,15 @@ export declare class APIClient {
     private injectTenantIntoEndpoint;
     private request;
     get<T>(endpoint: string): Promise<T>;
-    post<T>(endpoint: string, data?: any): Promise<T>;
-    put<T>(endpoint: string, data?: any): Promise<T>;
+    post<T>(endpoint: string, data?: unknown): Promise<T>;
+    put<T>(endpoint: string, data?: unknown): Promise<T>;
     delete<T>(endpoint: string): Promise<T>;
 }
+/**
+ * Factory function to create API client
+ * @param baseUrl - Optional API base URL (defaults to localhost:3015)
+ * @param kioskSecret - Optional kiosk authentication secret
+ * @param tenantCode - Optional tenant code for multi-tenant routing
+ */
 export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string) => APIClient;
 //# sourceMappingURL=api.d.ts.map

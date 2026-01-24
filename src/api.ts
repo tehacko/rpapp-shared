@@ -1,4 +1,11 @@
-// Shared API utilities
+/**
+ * Shared API Utilities
+ * 
+ * API endpoints and HTTP client for communicating with backend
+ * Supports multi-tenant routing and authentication headers
+ */
+
+// ===== API Endpoints =====
 
 export const API_ENDPOINTS = {
   // Product endpoints
@@ -45,6 +52,16 @@ export const API_ENDPOINTS = {
   EVENTS: '/events/:kioskId'
 } as const;
 
+// ===== API Client =====
+
+/**
+ * Typed HTTP client for API communication
+ * Features:
+ * - Multi-tenant support (automatic path injection)
+ * - Kiosk secret authentication
+ * - Type-safe requests and responses
+ * - URL validation before requests
+ */
 export class APIClient {
   private baseUrl: string;
   private kioskSecret?: string;
@@ -117,14 +134,14 @@ export class APIClient {
     return this.request<T>(endpoint, { method: 'GET' });
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<T> {
+  async post<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<T> {
+  async put<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
@@ -136,7 +153,13 @@ export class APIClient {
   }
 }
 
-export const createAPIClient = (baseUrl?: string, kioskSecret?: string, tenantCode?: string) => {
+/**
+ * Factory function to create API client
+ * @param baseUrl - Optional API base URL (defaults to localhost:3015)
+ * @param kioskSecret - Optional kiosk authentication secret
+ * @param tenantCode - Optional tenant code for multi-tenant routing
+ */
+export const createAPIClient = (baseUrl?: string, kioskSecret?: string, tenantCode?: string): APIClient => {
   // Fallback to default if not provided
   const url = baseUrl || 'http://localhost:3015';
 

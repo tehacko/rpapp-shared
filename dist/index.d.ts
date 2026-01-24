@@ -1,3 +1,9 @@
+/**
+ * Pi Kiosk Shared Package
+ *
+ * Exports shared types, API contracts, error classes, and utilities
+ * for use across kiosk, admin, and backend applications.
+ */
 export * from './types';
 export * from './api';
 export * from './errors';

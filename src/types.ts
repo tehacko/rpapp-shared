@@ -1,6 +1,12 @@
-// Shared types across all packages
+/**
+ * Shared Types
+ * 
+ * Database models, API contracts, and type definitions
+ * used across kiosk, admin, and backend applications.
+ */
 
-// Enums matching backend Prisma schema
+// ===== Transaction & Receipt Status Enums =====
+
 export enum TransactionStatus {
   INITIATED = 'INITIATED',
   PENDING = 'PENDING',

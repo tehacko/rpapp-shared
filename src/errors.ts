@@ -1,5 +1,15 @@
-// Shared error handling system
+/**
+ * Shared Error Handling System
+ * 
+ * Centralized error definitions and utilities for consistent
+ * error handling across all applications
+ */
 
+// ===== Base Error Classes =====
+
+/**
+ * Base application error with code and status code
+ */
 export class AppError extends Error {
   public readonly code: string;
   public readonly statusCode: number;
@@ -22,7 +32,8 @@ export class AppError extends Error {
   }
 }
 
-// Predefined error types
+// ===== Predefined Error Types =====
+
 export class ValidationError extends AppError {
   constructor(message: string, _field?: string) {
     super(message, 'VALIDATION_ERROR', 400);
@@ -79,32 +90,46 @@ export class DatabaseError extends AppError {
   }
 }
 
-// Error formatter for consistent error responses
+// ===== Error Response & Formatting =====
+
 export interface ErrorResponse {
   success: false;
   error: {
     code: string;
     message: string;
     timestamp: string;
-    details?: any;
+    details?: unknown;
   };
 }
 
-export const formatError = (error: Error | AppError, details?: any): ErrorResponse => {
+/**
+ * Format error for consistent API responses
+ */
+export const formatError = (error: Error | AppError, details?: unknown): ErrorResponse => {
   const isAppError = error instanceof AppError;
   
+  const errorObj: ErrorResponse['error'] = {
+    code: isAppError ? error.code : 'UNKNOWN_ERROR',
+    message: error.message || 'Došlo k neočekávané chybě',
+    timestamp: new Date().toISOString(),
+  };
+
+  if (details) {
+    errorObj.details = details;
+  }
+
   return {
     success: false,
-    error: {
-      code: isAppError ? error.code : 'UNKNOWN_ERROR',
-      message: error.message || 'Došlo k neočekávané chybě',
-      timestamp: new Date().toISOString(),
-      ...(details && { details })
-    }
+    error: errorObj
   };
 };
 
-// Error handler hook for React components
+// ===== Error Messaging (Client-side) =====
+
+/**
+ * Get user-friendly error message from error object
+ * Used in React components to display to users
+ */
 export const getErrorMessage = (error: Error | AppError): string => {
   if (error instanceof NetworkError) {
     return 'Problém s připojením. Zkuste to znovu.';

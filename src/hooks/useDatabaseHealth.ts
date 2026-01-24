@@ -1,3 +1,14 @@
+/**
+ * Database Health Check Hook
+ * 
+ * Polls backend health endpoint to determine database availability
+ * Features:
+ * - Exponential backoff on failures
+ * - Configurable poll intervals (defaults to 60s = 1 request/min)
+ * - Automatic retry with configurable max retries
+ * - Runtime config support for API URL detection
+ */
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface HealthResponse {
@@ -25,7 +36,7 @@ export function useDatabaseHealth(
   options: UseDatabaseHealthOptions = {}
 ): UseDatabaseHealthReturn {
   const {
-    pollInterval = 5000,
+    pollInterval = 60000,
     maxRetries = 5,
     retryDelay = 1000,
     enabled = true,
@@ -45,7 +56,6 @@ export function useDatabaseHealth(
       const apiUrl = windowConfig?.apiUrl;
       if (apiUrl) {
         setHealthEndpoint(`${apiUrl}/health`);
-        console.log('[DatabaseHealth] Using API URL:', `${apiUrl}/health`);
       }
     }
   }, []);
@@ -62,8 +72,6 @@ export function useDatabaseHealth(
     setIsChecking(true);
     setError(null);
 
-    console.log('[DatabaseHealth] Checking health at:', healthEndpoint);
-
     try {
       const response = await fetch(healthEndpoint, {
         method: 'GET',
@@ -77,13 +85,10 @@ export function useDatabaseHealth(
 
       const contentType = response.headers.get('content-type');
       if (!contentType?.includes('application/json')) {
-        const text = await response.text();
-        console.error('[DatabaseHealth] Invalid response type:', { contentType, preview: text.substring(0, 100) });
         throw new Error(`Invalid response: expected JSON, got ${contentType}`);
       }
 
       const data = (await response.json()) as HealthResponse;
-      console.log('[DatabaseHealth] Health response:', { success: data.success, status: data.status });
 
       if (data.success === true) {
         setIsDatabaseAvailable(true);
@@ -97,7 +102,6 @@ export function useDatabaseHealth(
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Health check failed');
-      console.error('[DatabaseHealth] Health check error:', error);
       setError(error);
       setIsDatabaseAvailable(false);
 

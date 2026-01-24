@@ -1,3 +1,12 @@
+/**
+ * Shared Error Handling System
+ *
+ * Centralized error definitions and utilities for consistent
+ * error handling across all applications
+ */
+/**
+ * Base application error with code and status code
+ */
 export declare class AppError extends Error {
     readonly code: string;
     readonly statusCode: number;
@@ -34,9 +43,16 @@ export interface ErrorResponse {
         code: string;
         message: string;
         timestamp: string;
-        details?: any;
+        details?: unknown;
     };
 }
-export declare const formatError: (error: Error | AppError, details?: any) => ErrorResponse;
+/**
+ * Format error for consistent API responses
+ */
+export declare const formatError: (error: Error | AppError, details?: unknown) => ErrorResponse;
+/**
+ * Get user-friendly error message from error object
+ * Used in React components to display to users
+ */
 export declare const getErrorMessage: (error: Error | AppError) => string;
 //# sourceMappingURL=errors.d.ts.map

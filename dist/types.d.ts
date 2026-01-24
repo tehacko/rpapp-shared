@@ -1,3 +1,9 @@
+/**
+ * Shared Types
+ *
+ * Database models, API contracts, and type definitions
+ * used across kiosk, admin, and backend applications.
+ */
 export declare enum TransactionStatus {
     INITIATED = "INITIATED",
     PENDING = "PENDING",
