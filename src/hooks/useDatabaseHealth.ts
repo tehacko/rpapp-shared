@@ -47,18 +47,21 @@ export function useDatabaseHealth(
   const [retryCount, setRetryCount] = useState<number>(0);
   const [nextRetryDelay, setNextRetryDelay] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
-  const [healthEndpoint, setHealthEndpoint] = useState<string>('http://localhost:3015/health');
 
-  // Initialize health endpoint URL from runtime config
-  useEffect(() => {
+  // Read runtime config synchronously on first render (already loaded by main.tsx bootstrap)
+  // This avoids a race condition where the first health check fires with localhost before
+  // a useEffect can update the endpoint from __RUNTIME_CONFIG__
+  const [healthEndpoint] = useState<string>(() => {
     if (typeof window !== 'undefined') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const windowConfig = (window as any).__RUNTIME_CONFIG__;
       const apiUrl = windowConfig?.apiUrl;
       if (apiUrl) {
-        setHealthEndpoint(`${apiUrl}/health`);
+        return `${apiUrl}/health`;
       }
     }
-  }, []);
+    return 'http://localhost:3015/health';
+  });
 
   const retryCountRef = useRef<number>(0);
   const backoffMultiplierRef = useRef<number>(2);
