@@ -1,15 +1,17 @@
 /**
  * Database Health Check Hook
- * 
- * Polls backend health endpoint to determine database availability
+ *
+ * Polls backend health endpoint to determine database availability.
  * Features:
- * - Exponential backoff on failures
- * - Configurable poll intervals (defaults to 60s = 1 request/min)
- * - Automatic retry with configurable max retries
- * - Runtime config support for API URL detection
+ * - At most one request in flight at a time (prevents duplicate/burst requests)
+ * - Minimum 15s between automatic checks when unhealthy (prevents rapid retry storm)
+ * - Poll interval when healthy: 60s default (1 request/min)
+ * - User-triggered retry is not throttled (only automatic checks use the 15s minimum interval)
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+
+const MIN_AUTO_INTERVAL_MS = 15000; // Minimum 15s between automatic checks to avoid hammering /health
 
 interface HealthResponse {
   success: boolean;
@@ -48,9 +50,6 @@ export function useDatabaseHealth(
   const [nextRetryDelay, setNextRetryDelay] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
 
-  // Read runtime config synchronously on first render (already loaded by main.tsx bootstrap)
-  // This avoids a race condition where the first health check fires with localhost before
-  // a useEffect can update the endpoint from __RUNTIME_CONFIG__
   const [healthEndpoint] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,95 +63,133 @@ export function useDatabaseHealth(
   });
 
   const retryCountRef = useRef<number>(0);
-  const backoffMultiplierRef = useRef<number>(2);
   const currentDelayRef = useRef<number>(retryDelay);
   const pollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const checkHealthRef = useRef<(() => Promise<void>) | null>(null);
+  const isCheckingRef = useRef<boolean>(false);
+  const lastCheckTimeRef = useRef<number>(0);
 
   const checkHealth = useCallback(async (): Promise<void> => {
-    if (!enabled) return;
-
-    setIsChecking(true);
-    setError(null);
-
-    try {
-      const response = await fetch(healthEndpoint, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        cache: 'no-cache',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Health check failed: ${response.status} ${response.statusText}`);
+      if (!enabled) {
+        return;
       }
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType?.includes('application/json')) {
-        throw new Error(`Invalid response: expected JSON, got ${contentType}`);
+      // Prevent overlapping requests (e.g. Strict Mode double-mount or poll + retry at once)
+      if (isCheckingRef.current) {
+        return;
       }
+      isCheckingRef.current = true;
+      setIsChecking(true);
+      setError(null);
 
-      const data = (await response.json()) as HealthResponse;
+      try {
+        const response = await fetch(healthEndpoint, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-cache',
+        });
 
-      if (data.success === true) {
-        setIsDatabaseAvailable(true);
-        setRetryCount(0);
-        setNextRetryDelay(0);
-        retryCountRef.current = 0;
-        currentDelayRef.current = retryDelay;
-        backoffMultiplierRef.current = 2;
-      } else {
-        throw new Error('Database reported unhealthy status');
-      }
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Health check failed');
-      setError(error);
-      setIsDatabaseAvailable(false);
+        if (!response.ok) {
+          throw new Error(`Health check failed: ${response.status} ${response.statusText}`);
+        }
 
-      const newRetryCount = retryCountRef.current + 1;
-      retryCountRef.current = newRetryCount;
-      setRetryCount(newRetryCount);
+        const contentType = response.headers.get('content-type');
+        if (!contentType?.includes('application/json')) {
+          throw new Error(`Invalid response: expected JSON, got ${contentType}`);
+        }
 
-      if (newRetryCount < maxRetries) {
-        const nextDelay = Math.min(currentDelayRef.current * backoffMultiplierRef.current, retryDelay * 30);
+        const data = (await response.json()) as HealthResponse;
+
+        if (data.success === true) {
+          setIsDatabaseAvailable(true);
+          setRetryCount(0);
+          setNextRetryDelay(0);
+          retryCountRef.current = 0;
+          currentDelayRef.current = retryDelay;
+        } else {
+          throw new Error('Database reported unhealthy status');
+        }
+      } catch (err) {
+        const e = err instanceof Error ? err : new Error('Health check failed');
+        setError(e);
+        setIsDatabaseAvailable(false);
+
+        const newRetryCount = retryCountRef.current + 1;
+        retryCountRef.current = newRetryCount;
+        setRetryCount(newRetryCount);
+
+        const nextDelay = Math.min(
+          currentDelayRef.current * 2,
+          retryDelay * 30
+        );
         currentDelayRef.current = nextDelay;
-        setNextRetryDelay(nextDelay);
+        const delayMs = Math.max(nextDelay, MIN_AUTO_INTERVAL_MS);
+        setNextRetryDelay(delayMs);
 
-        retryTimeoutRef.current = setTimeout(() => {
-          void checkHealth();
-        }, nextDelay);
-      } else {
-        setNextRetryDelay(pollInterval);
-        retryTimeoutRef.current = setTimeout(() => {
-          void checkHealth();
-        }, pollInterval);
+        if (newRetryCount < maxRetries) {
+          retryTimeoutRef.current = setTimeout(() => {
+            void checkHealthRef.current?.();
+          }, delayMs);
+        } else {
+          retryTimeoutRef.current = setTimeout(() => {
+            void checkHealthRef.current?.();
+          }, Math.max(pollInterval, MIN_AUTO_INTERVAL_MS));
+        }
+      } finally {
+        lastCheckTimeRef.current = Date.now();
+        isCheckingRef.current = false;
+        setIsChecking(false);
       }
-    } finally {
-      setIsChecking(false);
-    }
-  }, [enabled, healthEndpoint, maxRetries, retryDelay, pollInterval]);
+    },
+    [enabled, healthEndpoint, maxRetries, retryDelay, pollInterval]
+  );
+
+  checkHealthRef.current = checkHealth;
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
 
-    // Initial check
-    void checkHealth();
+    const doCheck = (): void => {
+      const now = Date.now();
+      if (now - lastCheckTimeRef.current < MIN_AUTO_INTERVAL_MS) {
+        return;
+      }
+      if (checkHealthRef.current) {
+        void checkHealthRef.current();
+      }
+    };
 
-    // Polling
     const startPolling = (): void => {
-      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
+      if (pollTimeoutRef.current) {
+        clearTimeout(pollTimeoutRef.current);
+      }
       pollTimeoutRef.current = setTimeout(() => {
-        void checkHealth();
+        doCheck();
         startPolling();
       }, pollInterval);
     };
 
+    doCheck();
     startPolling();
 
     return () => {
-      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
-      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+      if (pollTimeoutRef.current) {
+        clearTimeout(pollTimeoutRef.current);
+        pollTimeoutRef.current = null;
+      }
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
     };
-  }, [enabled, checkHealth, pollInterval]);
+  }, [enabled, healthEndpoint, pollInterval]);
+
+  const checkHealthPublic = useCallback((): Promise<void> => {
+    return checkHealthRef.current?.() ?? Promise.resolve();
+  }, []);
 
   return {
     isDatabaseAvailable,
@@ -160,6 +197,6 @@ export function useDatabaseHealth(
     retryCount,
     nextRetryDelay,
     error,
-    checkHealth,
+    checkHealth: checkHealthPublic,
   };
 }

@@ -14,10 +14,12 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_CANCEL: "/api/payments/cancel";
     readonly PAYMENT_START_MONITORING: "/api/payments/start-monitoring";
     readonly PAYMENT_STOP_MONITORING: "/api/payments/stop-monitoring";
-    readonly PAYMENT_THEPAY_CREATE: "/api/payments/create-thepay";
-    readonly PAYMENT_THEPAY_STATUS: "/api/payments/thepay-status/:paymentId";
-    readonly PAYMENT_THEPAY_CANCEL: "/api/payments/thepay-cancel";
-    readonly PAYMENT_THEPAY_METHODS: "/api/payments/thepay-methods";
+    readonly PAYMENT_GATEWAY_CREATE: "/api/payments/create-gateway";
+    readonly PAYMENT_GATEWAY_STATUS: "/api/payments/gateway-status/:paymentId";
+    readonly PAYMENT_GATEWAY_CANCEL: "/api/payments/gateway-cancel";
+    readonly PAYMENT_GATEWAY_METHODS: "/api/payments/gateway-methods";
+    readonly PAYMENT_BANK_TRANSFER_WEBHOOK: "/api/payments/bank-transfer-webhook";
+    readonly PAYMENT_TEST_BANK_TRANSFER_CHECK: "/api/payments/test-bank-transfer-check";
     readonly CONSENT_ANALYTICS: "/api/consents/analytics";
     readonly CONSENT_MARKETING: "/api/consents/marketing";
     readonly ANALYTICS_EVENTS: "/api/analytics/events";
@@ -33,7 +35,7 @@ export declare const API_ENDPOINTS: {
     readonly ADMIN_CATEGORIES: "/api/v1/admin/categories";
     readonly HEALTH: "/health";
     readonly HEALTH_PAYMENT_PROVIDERS: "/health/payment-providers";
-    readonly HEALTH_PAYMENT_PROVIDERS_CHECK_FIO: "/health/payment-providers/check-fio";
+    readonly HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: "/health/payment-providers/check-bank-transfer";
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
     readonly EVENTS: "/events/:kioskId";
 };

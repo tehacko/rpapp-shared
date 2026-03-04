@@ -96,9 +96,9 @@ export interface Transaction {
   qrCodeData?: string;
   variableSymbol?: string;
   receiptType: ReceiptType;
-  fioTransactionId?: string;
-  lastFioCheckAt?: string;
-  fioCheckCount: number;
+  externalBankReferenceId?: string;
+  lastBankCheckAt?: string;
+  bankCheckCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -210,7 +210,7 @@ export interface StartMonitoringResponse {
   monitoringStartTime?: number; // Optional: Timestamp (milliseconds) when monitoring started (for backward compatibility)
 }
 
-export interface ThePayCreateRequest {
+export interface GatewayCreateRequest {
   items: Array<{
     productId: number;
     quantity: number;
@@ -221,23 +221,25 @@ export interface ThePayCreateRequest {
   kioskId: number;
 }
 
-export interface ThePayCreateResponse {
+export interface GatewayCreateResponse {
   paymentId: string;
-  thepayPaymentId: string;
+  gatewayPaymentId: string;
   paymentUrl: string;
   amount: number;
   customerEmail: string;
   kioskId: number;
 }
 
-export interface ThePayStatusResponse {
+export interface GatewayStatusResponse {
   paymentId: string;
+  externalPaymentUid: string;
   status: string;
-  amount: number;
-  customerEmail: string;
+  gatewayState: string;
+  amount?: number;
+  customerEmail?: string;
 }
 
-export interface ThePayMethodsResponse {
+export interface GatewayMethodsResponse {
   methods: Array<{
     name: string;
     enabled: boolean;

@@ -21,11 +21,13 @@ export const API_ENDPOINTS = {
   PAYMENT_START_MONITORING: '/api/payments/start-monitoring',
   PAYMENT_STOP_MONITORING: '/api/payments/stop-monitoring',
   
-  // ThePay.eu payment endpoints
-  PAYMENT_THEPAY_CREATE: '/api/payments/create-thepay',
-  PAYMENT_THEPAY_STATUS: '/api/payments/thepay-status/:paymentId',
-  PAYMENT_THEPAY_CANCEL: '/api/payments/thepay-cancel',
-  PAYMENT_THEPAY_METHODS: '/api/payments/thepay-methods',
+  // Redirect gateway payment endpoints (e.g. ThePay.eu)
+  PAYMENT_GATEWAY_CREATE: '/api/payments/create-gateway',
+  PAYMENT_GATEWAY_STATUS: '/api/payments/gateway-status/:paymentId',
+  PAYMENT_GATEWAY_CANCEL: '/api/payments/gateway-cancel',
+  PAYMENT_GATEWAY_METHODS: '/api/payments/gateway-methods',
+  PAYMENT_BANK_TRANSFER_WEBHOOK: '/api/payments/bank-transfer-webhook',
+  PAYMENT_TEST_BANK_TRANSFER_CHECK: '/api/payments/test-bank-transfer-check',
   
   // Consent endpoints
   CONSENT_ANALYTICS: '/api/consents/analytics',
@@ -47,7 +49,7 @@ export const API_ENDPOINTS = {
   // System endpoints
   HEALTH: '/health',
   HEALTH_PAYMENT_PROVIDERS: '/health/payment-providers',
-  HEALTH_PAYMENT_PROVIDERS_CHECK_FIO: '/health/payment-providers/check-fio',
+  HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: '/health/payment-providers/check-bank-transfer',
   CHECK_TRANSACTIONS: '/api/check-new-transactions',
   EVENTS: '/events/:kioskId'
 } as const;
