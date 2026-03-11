@@ -157,6 +157,7 @@ export interface CreateQRPaymentResponseData {
     itemsCount: number;
     customerEmail: string;
     receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none';
+    transactionStatus?: TransactionStatus;
 }
 export interface CreateQRPaymentResponse {
     success: boolean;

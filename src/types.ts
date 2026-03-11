@@ -183,6 +183,7 @@ export interface CreateQRPaymentResponseData {
   itemsCount: number;
   customerEmail: string;
   receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none'; // Status of receipt email (only in idempotent responses)
+  transactionStatus?: TransactionStatus; // Status of existing transaction (only in idempotent responses)
 }
 
 export interface CreateQRPaymentResponse {
