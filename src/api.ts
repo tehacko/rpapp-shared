@@ -21,7 +21,7 @@ export const API_ENDPOINTS = {
   PAYMENT_START_MONITORING: '/api/payments/start-monitoring',
   PAYMENT_STOP_MONITORING: '/api/payments/stop-monitoring',
   
-  // Redirect gateway payment endpoints (e.g. ThePay.eu)
+  // Redirect gateway payment endpoints
   PAYMENT_GATEWAY_CREATE: '/api/payments/create-gateway',
   PAYMENT_GATEWAY_STATUS: '/api/payments/gateway-status/:paymentId',
   PAYMENT_GATEWAY_CANCEL: '/api/payments/gateway-cancel',
