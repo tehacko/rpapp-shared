@@ -23,6 +23,48 @@ export enum ReceiptType {
   PROFORMA = 'PROFORMA'
 }
 
+export enum TenantStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  DEACTIVATED = 'DEACTIVATED',
+  DELETED = 'DELETED',
+}
+
+export enum KioskStatus {
+  ACTIVE = 'ACTIVE',
+  DEACTIVATED = 'DEACTIVATED',
+  DELETED = 'DELETED',
+}
+
+export enum ProductStatus {
+  ACTIVE = 'ACTIVE',
+  DEACTIVATED = 'DEACTIVATED',
+  DELETED = 'DELETED',
+}
+
+export enum LegalBasis {
+  LEGAL_OBLIGATION = 'LEGAL_OBLIGATION',
+  CONTRACT = 'CONTRACT',
+  LEGITIMATE_INTEREST = 'LEGITIMATE_INTEREST',
+  CONSENT = 'CONSENT',
+}
+
+export enum RetentionClass {
+  STATUTORY = 'STATUTORY',
+  GOVERNANCE = 'GOVERNANCE',
+  RUNTIME = 'RUNTIME',
+}
+
+export interface OffboardingDecisionDTO {
+  tenantId: number;
+  tenantCode: string;
+  legalBasis: LegalBasis;
+  retentionClass: RetentionClass;
+  exportAcknowledged: boolean;
+  legalHoldApplied: boolean;
+  decidedAt: string;
+}
+
 // Base Product interface (global product data)
 export interface Product {
   id: number;
@@ -145,7 +187,7 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-export interface KioskStatus {
+export interface KioskRuntimeStatus {
   id: number;
   name: string;
   location: string;
