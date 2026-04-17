@@ -21,4 +21,36 @@ export var ReceiptType;
     ReceiptType["INVOICE"] = "INVOICE";
     ReceiptType["PROFORMA"] = "PROFORMA";
 })(ReceiptType || (ReceiptType = {}));
+export var TenantStatus;
+(function (TenantStatus) {
+    TenantStatus["PENDING"] = "PENDING";
+    TenantStatus["ACTIVE"] = "ACTIVE";
+    TenantStatus["DEACTIVATED"] = "DEACTIVATED";
+    TenantStatus["DELETED"] = "DELETED";
+})(TenantStatus || (TenantStatus = {}));
+export var KioskStatus;
+(function (KioskStatus) {
+    KioskStatus["ACTIVE"] = "ACTIVE";
+    KioskStatus["DEACTIVATED"] = "DEACTIVATED";
+    KioskStatus["DELETED"] = "DELETED";
+})(KioskStatus || (KioskStatus = {}));
+export var ProductStatus;
+(function (ProductStatus) {
+    ProductStatus["ACTIVE"] = "ACTIVE";
+    ProductStatus["DEACTIVATED"] = "DEACTIVATED";
+    ProductStatus["DELETED"] = "DELETED";
+})(ProductStatus || (ProductStatus = {}));
+export var LegalBasis;
+(function (LegalBasis) {
+    LegalBasis["LEGAL_OBLIGATION"] = "LEGAL_OBLIGATION";
+    LegalBasis["CONTRACT"] = "CONTRACT";
+    LegalBasis["LEGITIMATE_INTEREST"] = "LEGITIMATE_INTEREST";
+    LegalBasis["CONSENT"] = "CONSENT";
+})(LegalBasis || (LegalBasis = {}));
+export var RetentionClass;
+(function (RetentionClass) {
+    RetentionClass["STATUTORY"] = "STATUTORY";
+    RetentionClass["GOVERNANCE"] = "GOVERNANCE";
+    RetentionClass["RUNTIME"] = "RUNTIME";
+})(RetentionClass || (RetentionClass = {}));
 //# sourceMappingURL=types.js.map
