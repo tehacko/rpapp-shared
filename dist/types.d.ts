@@ -225,6 +225,7 @@ export interface GatewayCreateRequest {
     totalAmount: number;
     customerEmail: string;
     kioskId: number;
+    idempotencyKey?: string;
 }
 export interface GatewayCreateResponse {
     paymentId: string;
