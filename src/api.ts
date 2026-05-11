@@ -28,6 +28,8 @@ export const API_ENDPOINTS = {
   PAYMENT_GATEWAY_METHODS: '/api/payments/gateway-methods',
   PAYMENT_BANK_TRANSFER_WEBHOOK: '/api/payments/bank-transfer-webhook',
   PAYMENT_TEST_BANK_TRANSFER_CHECK: '/api/payments/test-bank-transfer-check',
+  /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */
+  PAYMENT_POST_KIOSK_HANDOFF: '/api/payments/post-kiosk-handoff/:paymentId',
   
   // Consent endpoints
   CONSENT_ANALYTICS: '/api/consents/analytics',
@@ -68,14 +70,21 @@ export class APIClient {
   private baseUrl: string;
   private kioskSecret?: string;
   private tenantCode?: string;
+  private kioskId?: number;
 
-  constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string) {
+  constructor(
+    baseUrl: string,
+    kioskSecret?: string,
+    tenantCode?: string,
+    kioskId?: number
+  ) {
     if (!baseUrl || typeof baseUrl !== 'string') {
       throw new Error('APIClient: baseUrl is required and must be a string');
     }
     this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
     this.kioskSecret = kioskSecret;
     this.tenantCode = tenantCode;
+    this.kioskId = kioskId;
   }
 
   private injectTenantIntoEndpoint(endpoint: string): string {
@@ -119,6 +128,13 @@ export class APIClient {
     if (this.kioskSecret) {
       headers['X-Kiosk-Secret'] = this.kioskSecret;
     }
+    if (
+      typeof this.kioskId === 'number' &&
+      Number.isInteger(this.kioskId) &&
+      this.kioskId > 0
+    ) {
+      headers['X-Kiosk-Id'] = String(this.kioskId);
+    }
 
     const response = await fetch(url, {
       ...options,
@@ -160,10 +176,16 @@ export class APIClient {
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
+ * @param kioskId - Optional kiosk id (sent as `X-Kiosk-Id` when set; pair with secret for post-kiosk handoff fallback)
  */
-export const createAPIClient = (baseUrl?: string, kioskSecret?: string, tenantCode?: string): APIClient => {
+export const createAPIClient = (
+  baseUrl?: string,
+  kioskSecret?: string,
+  tenantCode?: string,
+  kioskId?: number
+): APIClient => {
   // Fallback to default if not provided
   const url = baseUrl || 'http://localhost:3015';
 
-  return new APIClient(url, kioskSecret, tenantCode);
+  return new APIClient(url, kioskSecret, tenantCode, kioskId);
 };

@@ -20,6 +20,8 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_GATEWAY_METHODS: "/api/payments/gateway-methods";
     readonly PAYMENT_BANK_TRANSFER_WEBHOOK: "/api/payments/bank-transfer-webhook";
     readonly PAYMENT_TEST_BANK_TRANSFER_CHECK: "/api/payments/test-bank-transfer-check";
+    /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */
+    readonly PAYMENT_POST_KIOSK_HANDOFF: "/api/payments/post-kiosk-handoff/:paymentId";
     readonly CONSENT_ANALYTICS: "/api/consents/analytics";
     readonly CONSENT_MARKETING: "/api/consents/marketing";
     readonly ANALYTICS_EVENTS: "/api/analytics/events";
@@ -51,7 +53,8 @@ export declare class APIClient {
     private baseUrl;
     private kioskSecret?;
     private tenantCode?;
-    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string);
+    private kioskId?;
+    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, kioskId?: number);
     private injectTenantIntoEndpoint;
     private request;
     get<T>(endpoint: string): Promise<T>;
@@ -64,6 +67,7 @@ export declare class APIClient {
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
+ * @param kioskId - Optional kiosk id (sent as `X-Kiosk-Id` when set; pair with secret for post-kiosk handoff fallback)
  */
-export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string) => APIClient;
+export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string, kioskId?: number) => APIClient;
 //# sourceMappingURL=api.d.ts.map
