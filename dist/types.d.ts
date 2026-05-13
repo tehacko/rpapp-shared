@@ -73,6 +73,7 @@ export interface KioskProduct extends Product {
     kioskNumberOfPurchases: number;
     categoryId?: number | null;
 }
+export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
 export interface Kiosk {
     id: number;
     name: string;
@@ -81,6 +82,7 @@ export interface Kiosk {
     isActive: boolean;
     defaultVatRate?: number | null;
     lastHeartbeat?: string | null;
+    kioskOperationalMode: KioskOperationalMode;
     createdAt: string;
     updatedAt: string;
 }
