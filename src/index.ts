@@ -6,6 +6,7 @@
  */
 
 export * from './types';
+export * from './types/kioskPublicConfig';
 export * from './api';
 export * from './errors';
 export * from './components/DatabaseUnavailable';
