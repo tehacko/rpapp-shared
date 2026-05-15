@@ -10,4 +10,5 @@ export * from './api';
 export * from './errors';
 export * from './components/DatabaseUnavailable';
 export * from './hooks/useDatabaseHealth';
+export * from './analyticsEvents';
 //# sourceMappingURL=index.d.ts.map

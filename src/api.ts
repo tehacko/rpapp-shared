@@ -34,6 +34,12 @@ export const API_ENDPOINTS = {
   // Consent endpoints
   CONSENT_ANALYTICS: '/api/consents/analytics',
   CONSENT_MARKETING: '/api/consents/marketing',
+  /**
+   * @deprecated Cutover R1 — use tenant-scoped
+   * `/api/{tenant}/v1/analytics/events` instead. Kept for backward
+   * compatibility with any stale imports; kiosk/customer PWAs must not
+   * call this global path.
+   */
   ANALYTICS_EVENTS: '/api/analytics/events',
 
   // Admin endpoints
