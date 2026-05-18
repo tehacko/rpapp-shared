@@ -10,7 +10,7 @@
  * for named imports across the `export * from` chain.
  */
 export * from './types.js';
-export * from './types/kioskPublicConfig.js';
+export * from './kiosk/kioskPublicConfig.js';
 export * from './api.js';
 export * from './errors.js';
 export * from './components/DatabaseUnavailable.js';
