@@ -12,3 +12,4 @@ export * from './errors';
 export * from './components/DatabaseUnavailable';
 export * from './hooks/useDatabaseHealth';
 export * from './analyticsEvents';
+export * from './analyticsExploreCaps';

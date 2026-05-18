@@ -24,13 +24,6 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_POST_KIOSK_HANDOFF: "/api/payments/post-kiosk-handoff/:paymentId";
     readonly CONSENT_ANALYTICS: "/api/consents/analytics";
     readonly CONSENT_MARKETING: "/api/consents/marketing";
-    /**
-     * @deprecated Cutover R1 — use tenant-scoped
-     * `/api/{tenant}/v1/analytics/events` instead. Kept for backward
-     * compatibility with any stale imports; kiosk/customer PWAs must not
-     * call this global path.
-     */
-    readonly ANALYTICS_EVENTS: "/api/analytics/events";
     readonly ADMIN_LOGIN: "/api/admin/login";
     readonly ADMIN_PRODUCTS: "/api/admin/products";
     readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:kioskId";

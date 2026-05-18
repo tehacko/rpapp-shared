@@ -23,6 +23,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./analyticsExploreCaps": {
+      "import": "./dist/analyticsExploreCaps.js",
+      "require": "./dist/analyticsExploreCaps.js",
+      "types": "./dist/analyticsExploreCaps.d.ts"
     }
   },
   "scripts": {
