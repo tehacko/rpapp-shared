@@ -9,7 +9,15 @@ export interface AuditMetadataDisplayField {
 export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   Record<AuditEventCode, readonly AuditMetadataDisplayField[]>
 > = {
-  'auth.admin.login.failed': [{ key: 'attemptedUsername', labelKey: 'compliance.audit.metadata.attemptedUsername' }],
+  'auth.admin.login.success': [
+    { key: 'authMethod', labelKey: 'compliance.audit.metadata.authMethod' },
+  ],
+  'auth.admin.login.failed': [
+    { key: 'attemptedUsername', labelKey: 'compliance.audit.metadata.attemptedUsername' },
+  ],
+  'auth.admin.logout': [
+    { key: 'authMethod', labelKey: 'compliance.audit.metadata.authMethod' },
+  ],
   'auth.admin.access.denied': [
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
     { key: 'route', labelKey: 'compliance.audit.metadata.route' },
@@ -17,6 +25,8 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'gdpr.erasure.completed': [
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
     { key: 'customersAnonymized', labelKey: 'compliance.audit.metadata.customersAnonymized' },
+    { key: 'marketingConsentsDeleted', labelKey: 'compliance.audit.metadata.marketingConsentsDeleted' },
+    { key: 'analyticsConsentsDeleted', labelKey: 'compliance.audit.metadata.analyticsConsentsDeleted' },
   ],
 };
 
