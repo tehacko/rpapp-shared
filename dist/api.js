@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
     CONSENT_MARKETING: '/api/consents/marketing',
     // Admin endpoints
     ADMIN_LOGIN: '/api/admin/login',
+    ADMIN_LOGOUT: '/api/admin/logout',
     ADMIN_PRODUCTS: '/api/admin/products',
     ADMIN_PRODUCTS_INVENTORY: '/api/admin/products/inventory/:kioskId',
     ADMIN_PRODUCT_INVENTORY: '/api/admin/products/:id/inventory',

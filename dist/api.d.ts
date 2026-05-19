@@ -25,6 +25,7 @@ export declare const API_ENDPOINTS: {
     readonly CONSENT_ANALYTICS: "/api/consents/analytics";
     readonly CONSENT_MARKETING: "/api/consents/marketing";
     readonly ADMIN_LOGIN: "/api/admin/login";
+    readonly ADMIN_LOGOUT: "/api/admin/logout";
     readonly ADMIN_PRODUCTS: "/api/admin/products";
     readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:kioskId";
     readonly ADMIN_PRODUCT_INVENTORY: "/api/admin/products/:id/inventory";
