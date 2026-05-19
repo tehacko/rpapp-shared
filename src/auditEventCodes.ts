@@ -1,0 +1,54 @@
+/**
+ * Cross-package mirror of backend `domain/audit/auditEventCatalog.ts` AUDIT_EVENT_CODES.
+ * Append-only — never reorder. CI drift test keeps this in sync with domain.
+ */
+export const AUDIT_EVENT_CODES = [
+  'auth.admin.login.success',
+  'auth.admin.login.failed',
+  'auth.admin.logout',
+  'auth.admin.access.denied',
+  'admin.invite.created',
+  'admin.invite.resent',
+  'admin.invite.activated',
+  'admin.account.username_changed',
+  'admin.account.password_changed',
+  'admin.credentials.provider_secret.set',
+  'admin.credentials.provider_secret.rotated',
+  'admin.credentials.provider_secret.deleted',
+  'admin.credentials.bank_secret.set',
+  'admin.credentials.bank_secret.rotated',
+  'admin.settings.updated',
+  'admin.user.created',
+  'admin.user.deactivated',
+  'admin.user.reactivated',
+  'admin.user.permanently_deleted',
+  'admin.product.deactivated',
+  'admin.product.reactivated',
+  'admin.product.permanently_deleted',
+  'admin.kiosk.deactivated',
+  'admin.kiosk.reactivated',
+  'admin.kiosk.permanently_deleted',
+  'admin.tenant.deactivated',
+  'admin.tenant.permanently_deleted',
+  'admin.tenant.reactivated',
+  'admin.donation_template.created',
+  'admin.donation_template.updated',
+  'admin.donation_template.default_set',
+  'admin.kiosk.donation_projects.updated',
+  'admin.kiosk.donation_amounts.updated',
+  'dev.tenant.created',
+  'dev.tenant.updated',
+  'payment.transaction.state_changed',
+  'reconciliation.transaction.refund_candidate.marked',
+  'reconciliation.transaction.refund_candidate.unmarked',
+  'export.analytics.explore.exported',
+  'gdpr.erasure.completed',
+] as const;
+
+export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];
+
+const AUDIT_EVENT_CODE_SET: ReadonlySet<string> = new Set(AUDIT_EVENT_CODES);
+
+export function isAuditEventCode(code: string): code is AuditEventCode {
+  return AUDIT_EVENT_CODE_SET.has(code);
+}
