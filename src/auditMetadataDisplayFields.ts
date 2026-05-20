@@ -10,13 +10,13 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   Record<AuditEventCode, readonly AuditMetadataDisplayField[]>
 > = {
   'auth.admin.login.success': [
-    { key: 'authMethod', labelKey: 'compliance.audit.metadata.authMethod' },
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
   ],
   'auth.admin.login.failed': [
     { key: 'attemptedUsername', labelKey: 'compliance.audit.metadata.attemptedUsername' },
   ],
   'auth.admin.logout': [
-    { key: 'authMethod', labelKey: 'compliance.audit.metadata.authMethod' },
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
   ],
   'auth.admin.access.denied': [
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
