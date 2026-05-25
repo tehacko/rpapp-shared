@@ -26,9 +26,6 @@ export const API_ENDPOINTS = {
     PAYMENT_TEST_BANK_TRANSFER_CHECK: '/api/payments/test-bank-transfer-check',
     /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */
     PAYMENT_POST_KIOSK_HANDOFF: '/api/payments/post-kiosk-handoff/:paymentId',
-    // Consent endpoints
-    CONSENT_ANALYTICS: '/api/consents/analytics',
-    CONSENT_MARKETING: '/api/consents/marketing',
     // Admin endpoints
     ADMIN_LOGIN: '/api/admin/login',
     ADMIN_LOGOUT: '/api/admin/logout',

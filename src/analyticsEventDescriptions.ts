@@ -8,78 +8,78 @@ import {
 } from './analyticsEvents.js';
 import type { LocalizedLabel } from './labels/localizedLabel.js';
 
-/** Operator-facing analytics event descriptions (cs + en), 1–3 sentences each. */
+/** Plain-language analytics descriptions for operators (cs + en), 1–3 short sentences. */
 const UNIVERSAL_DESCRIPTIONS: Record<
   (typeof ANALYTICS_UNIVERSAL_EVENTS)[keyof typeof ANALYTICS_UNIVERSAL_EVENTS],
   LocalizedLabel
 > = {
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_STARTED]: {
-    en: 'Recorded once when the backend accepts a new analytics session (POST …/analytics/sessions via StartAnalyticsSessionUseCase). This is the only server emitter of the “Session started” event. One ingest row per tenant + client sessionId; repeats are deduplicated. It is not the dashboard funnel metric “Sessions started” — that column comes from the sessions table, not a count of this event. Scoped to the tenant; timestamps stored in UTC; OPERATIONAL telemetry only.',
-    cs: 'Zaznamená se jednou, kdy backend přijme novou analytickou relaci (POST …/analytics/sessions přes StartAnalyticsSessionUseCase). Jediný serverový emitent události „Relace zahájena“. Jedna řádka ingestu na tenant + client sessionId; opakování se deduplikují. Není to metrika „Zahájené relace“ ve funnelu — ta vychází ze sloupce sessions, ne z počtu tohoto eventu. V rozsahu tenanta; čas UTC; pouze OPERATIONAL telemetrie.',
+    en: 'Counts when a new customer visit starts on the kiosk or phone app. One count per new visit — doing the same thing again in the same visit does not add another. This is not the same as the “sessions started” number on some charts, which is calculated differently.',
+    cs: 'Počítá se, když na kiosku nebo v aplikaci začne nová návštěva zákazníka. Jednou za každou novou návštěvu — opakování ve stejné návštěvě nepřidá další. Není totéž jako číslo „zahájených relací“ na některých grafech, které se počítá jinak.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_COMPLETED]: {
-    en: 'Recorded when a session is closed with outcome completed (CloseAnalyticsSessionUseCase), including after a successful payment completion path. One row per closed session under normal idempotency. Not the same as payment_confirmed or retail_order_paid/donation_completed — those are separate commerce events. Tenant-scoped; UTC occurredAt; does not by itself drive GMV rollups.',
-    cs: 'Zaznamená se při uzavření relace s výsledkem completed (CloseAnalyticsSessionUseCase), včetně po úspěšné platbě. Obvykle jedna řádka na uzavřenou relaci. Není totéž co payment_confirmed ani retail_order_paid/donation_completed. V rozsahu tenanta; čas UTC; samo o sobě neřídí GMV v rollupech.',
+    en: 'Counts when a visit ends in a normal, finished way — often after a successful payment. Usually one per finished visit. Not the same as “payment went through” or “order paid” — those are counted separately.',
+    cs: 'Počítá se, když návštěva skončí normálně — často po úspěšné platbě. Obvykle jednou za každou dokončenou návštěvu. Není totéž jako „platba prošla“ nebo „objednávka zaplacena“ — to se počítá zvlášť.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_ABANDONED]: {
-    en: 'Recorded when a session ends without completion: explicit abandon API, tab_close/route_leave beacons, payment cancel mapped to abandon (§2.6), or AnalyticsSessionTimeoutWorker. One occurrence per abandon close per session in typical flows. Not payment_failed (that is explicit cancel while payment is terminal/uninitiated). Not a “bounce” on kiosk_wakeup alone. Tenant + sessionId scoped; UTC dates in explore filters apply to occurredAt, not local kiosk clock.',
-    cs: 'Zaznamená se, když relace skončí bez dokončení: abandon API, beacon tab_close/route_leave, mapování cancel na abandon (§2.6) nebo timeout worker. Typicky jedna událost na abandon uzavření relace. Není payment_failed (explicitní zrušení u terminální platby). Není „bounce“ jen po kiosk_wakeup. Rozsah tenant + sessionId; filtry explore používají UTC occurredAt.',
+    en: 'Counts when someone leaves without finishing — closed tab, walked away, timed out, or cancelled in a way that ends the visit. One count per time that happens for a visit. Not the same as “payment failed” when they only cancel a payment step.',
+    cs: 'Počítá se, když někdo odejde bez dokončení — zavře stránku, odejde od kiosku, vyprší čas, nebo zruší tak, že návštěva skončí. Jednou za každý takový konec návštěvy. Není totéž jako „platba selhala“, když zruší jen krok platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SCREEN_VIEWED]: {
-    en: 'Recorded when the kiosk or customer PWA shows a screen (client emit on mount or route enter). Each navigation or re-entry to the same screen is a separate row — multiple per session are expected. Counts as one occurrence per ingest row in Explore (raw COUNT(*)). Not a session start/end, not a payment outcome, and not deduplicated across tenants. Optional metadata: screen_name / screen, previous_screen_name, payment_method. OPERATIONAL only; UTC storage.',
-    cs: 'Zaznamená se při zobrazení obrazovky na kiosku nebo v PWA zákazníka (klient při mountu nebo vstupu na route). Každá navigace nebo opětovný vstup = samostatná řádka — v relaci jich bývá více. V Explore jedna occurrence = jeden ingest řádek (COUNT(*)). Není začátek/konec relace ani výsledek platby. Volitelná metadata: screen_name / screen, previous_screen_name. Pouze OPERATIONAL; UTC.',
+    en: 'Counts each time a screen is shown on the kiosk or customer app — home, cart, payment, and so on. Every time they open or return to a screen adds one. Not a new visit, not a payment result.',
+    cs: 'Počítá se pokaždé, když se na kiosku nebo v aplikaci zobrazí obrazovka — úvod, košík, platba atd. Každé otevření nebo návrat na obrazovku přidá jednu. Není nová návštěva ani výsledek platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.CTA_CLICKED]: {
-    en: 'Recorded when the user taps a primary call-to-action (client emit). One row per click emit; rapid double-taps can produce two rows. Not a screen_viewed (navigation) or payment_started. Tenant-scoped; may include element_id / cta_label metadata. Explore counts rows, not unique users.',
-    cs: 'Zaznamená se po klepnutí na hlavní CTA (klient). Jedna řádka na emit; dvojité klepnutí může dát dvě řádky. Není screen_viewed ani payment_started. Rozsah tenant; metadata element_id / cta_label. Explore počítá řádky, ne unikátní uživatele.',
+    en: 'Counts when someone taps a main action button (for example “Continue” or “Pay”). One count per tap — tapping twice quickly can mean two. Not the same as just changing screen or starting payment.',
+    cs: 'Počítá se, když někdo klepne na hlavní tlačítko (např. „Pokračovat“ nebo „Zaplatit“). Jednou za každé klepnutí — rychlé dvojité klepnutí může být dvakrát. Není jen změna obrazovky ani začátek platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.BACK_CLICKED]: {
-    en: 'Recorded when the user uses an in-flow back control (client emit). One occurrence per back action emitted. Not session_abandoned unless the abandon/close API or beacon also fires. Tenant-scoped OPERATIONAL telemetry.',
-    cs: 'Zaznamená se při použití zpět v průběhu (klient). Jedna occurrence na emit zpět. Není session_abandoned, pokud se zároveň nevolá abandon/close API nebo beacon. OPERATIONAL telemetrie v rozsahu tenanta.',
+    en: 'Counts when someone uses the Back control in the flow. One count per back press. Leaving the whole visit is counted separately as “visit abandoned”, not here.',
+    cs: 'Počítá se, když někdo v průběhu použije Zpět. Jednou za každé stisknutí. Úplné opuštění návštěvy se počítá zvlášť jako „návštěva opuštěna“, ne tady.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.ERROR_SHOWN]: {
-    en: 'Recorded when the UI surfaces an error state to the user (client emit from kiosk orchestration and similar). One row per error presentation emit; the same underlying fault shown twice yields two rows. Not server exception logs or ingest rejections. May carry error_code / message metadata. Not counted in payment_failed unless cancel mapping applies separately.',
-    cs: 'Zaznamená se, kdy UI zobrazí chybu uživateli (klient, např. orchestrace kiosku). Jedna řádka na emit zobrazení; opakované zobrazení = více řádků. Nejsou to serverové logy ani ingest rejections. Metadata error_code / message. Není payment_failed, pokud cancel mapování neproběhne zvlášť.',
+    en: 'Counts when an error message is shown to the customer on screen. One count each time the message appears — showing it again adds another. Not the same as a failed payment unless they also cancel the payment.',
+    cs: 'Počítá se, když se zákazníkovi na obrazovce ukáže chybová hláška. Jednou za každé zobrazení — opětovné ukázání přidá další. Není totéž jako neúspěšná platba, pokud platbu zároveň nezruší.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.AUTH_FLOW_STARTED]: {
-    en: 'Recorded when the customer begins login or registration (client emit). One row per started auth attempt emit. Not login_success or account_created until those steps complete. Tenant-scoped; optional auth_method metadata.',
-    cs: 'Zaznamená se na začátku přihlášení nebo registrace (klient). Jedna řádka na emit zahájení auth. Není login_success ani account_created do dokončení kroku. Rozsah tenant; volitelné auth_method.',
+    en: 'Counts when someone starts logging in or signing up. One count per time they begin that process. Success or new account is counted with different events.',
+    cs: 'Počítá se, když někdo začne přihlašování nebo registraci. Jednou za každý začátek. Úspěch nebo nový účet se počítá jinými událostmi.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.IDENTITY_COMPLETED]: {
-    en: 'Recorded when the user finishes an identity capture step (e.g. phone/email verification) in the journey (client emit). One occurrence per completed identity step emit. Not login_success and not payment identity checks on the server alone.',
-    cs: 'Zaznamená se po dokončení kroku identity (např. ověření telefonu/e-mailu) v journey (klient). Jedna occurrence na emit dokončeného kroku. Není login_success ani samotná serverová kontrola u platby.',
+    en: 'Counts when someone finishes a step like confirming phone or email in the journey. One count per completed step. Not the same as “logged in” or “account created”.',
+    cs: 'Počítá se, když někdo dokončí krok jako potvrzení telefonu nebo e-mailu. Jednou za každý dokončený krok. Není totéž jako „přihlášen“ nebo „účet vytvořen“.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.LOGIN_SUCCESS]: {
-    en: 'Recorded when authentication succeeds (client and/or server with idempotency on tenantId + customerId). At most one stable row per customer per tenant under server idempotency keys. Not account_created for brand-new registrations. OPERATIONAL; not marketing consent profiling.',
-    cs: 'Zaznamená se po úspěšném přihlášení (klient a/nebo server s idempotencí tenantId + customerId). Při serverové idempotenci nejvýše jedna stabilní řádka na zákazníka a tenant. Není account_created u nové registrace. OPERATIONAL; ne marketingový profil.',
+    en: 'Counts when login succeeds. Usually one per customer per shop when the system remembers them — repeats may be ignored. Not the same as creating a brand-new account.',
+    cs: 'Počítá se po úspěšném přihlášení. Obvykle jednou na zákazníka a provozovnu, když si systém pamatuje — opakování mohou být ignorována. Není totéž jako založení úplně nového účtu.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.ACCOUNT_CREATED]: {
-    en: 'Recorded when a new customer account is created in the auth flow (client and/or server; idempotent per tenantId + customerId). One canonical row per new account under server keys. Not login_success for returning users. Tenant-scoped OPERATIONAL event.',
-    cs: 'Zaznamená se při vytvoření nového účtu v auth flow (klient a/nebo server; idempotentní per tenantId + customerId). Jedna kanonická řádka na nový účet. Není login_success pro vracející se uživatele. OPERATIONAL v rozsahu tenanta.',
+    en: 'Counts when a new customer account is created. One count per new account. Returning customers who only log in are not counted here.',
+    cs: 'Počítá se při vytvoření nového zákaznického účtu. Jednou za každý nový účet. Zákazníci, kteří se jen přihlásí, se sem nepočítají.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_STARTED]: {
-    en: 'Recorded when a payment attempt begins — client emit first (with clientEventId), then server merge/insert from CreateQRPayment / CreateGatewayPayment (Option A merge port may UPDATE the same row with paymentId). One logical attempt per paymentId after merge; duplicate client+server rows collapse when merge succeeds. Not payment_confirmed or QR generation alone. Included in funnel “payment started” session flags, not raw event sum for sessions started.',
-    cs: 'Zaznamená se na začátku pokusu o platbu — nejdřív klient (clientEventId), pak server merge/insert z CreateQRPayment / CreateGatewayPayment (Option A může UPDATE stejné řádky paymentId). Po merge jeden logický pokus na paymentId. Není payment_confirmed ani samotné vygenerování QR. Ve funnelu flag relací s payment started, ne součet pro sessions started.',
+    en: 'Counts when a payment attempt begins — customer chose to pay and the system started handling it. One count per payment try (retries may merge into one). Not the same as payment finished or QR code shown alone.',
+    cs: 'Počítá se, když začne pokus o platbu — zákazník zvolil zaplatit a systém to začal řešit. Jednou za pokus (opakování se mohou sloučit). Není totéž jako dokončená platba nebo jen zobrazení QR kódu.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_QR_GENERATED]: {
-    en: 'Recorded by the server when a QR payment payload is created (CreateQRPaymentUseCase). One idempotent row per tenant + paymentId. Not emitted by the kiosk UI alone. Precedes or accompanies payment_submitted on the QR path. OPERATIONAL server telemetry.',
-    cs: 'Zaznamená server při vytvoření QR platby (CreateQRPaymentUseCase). Jedna idempotentní řádka na tenant + paymentId. NEemituje samotné UI kiosku. Na QR cestě předchází nebo doprovází payment_submitted. Serverová OPERATIONAL telemetrie.',
+    en: 'Counts when the system creates a QR code for paying by phone banking. One count per payment that gets a QR. The customer tapping “pay” on screen is counted separately.',
+    cs: 'Počítá se, když systém vytvoří QR kód pro platbu přes bankovní aplikaci. Jednou za platbu s QR. Klepnutí zákazníka na „zaplatit“ na obrazovce se počítá zvlášť.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_SUBMITTED]: {
-    en: 'Recorded by the server when the QR (or gateway) payment is submitted for provider processing after generation. Idempotent per payment attempt on the server. Not “user pressed pay” on the client (that is closer to payment_started / checkout_started). Not payment_confirmed until the transaction completes.',
-    cs: 'Zaznamená server, když je QR (nebo gateway) platba odeslána poskytovateli po vygenerování. Idempotentní na serveru per pokus. Není klepnutí Zaplatit na klientovi (payment_started / checkout_started). Není payment_confirmed do dokončení transakce.',
+    en: 'Counts when the payment is sent to the bank or card provider to process. One count per payment sent. Not the same as money already received — that is “payment confirmed”.',
+    cs: 'Počítá se, když se platba odešle bance nebo platební bráně ke zpracování. Jednou za odeslanou platbu. Není totéž jako peníze už dorazily — to je „platba potvrzena“.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_CONFIRMED]: {
-    en: 'Recorded only on the server when CompletePaymentTransactionUseCase moves the transaction to COMPLETED (best-effort emit). One idempotent row per tenant + paymentId; metadata may include amount_cents. Not a client-side “thank you” screen view. Not the same row as retail_order_paid or donation_completed — those fire as companion events in the same completion handler. Explore “occurrences” are raw event rows; dashboard GMV uses commerce rollups / TenantCommerceFact, not a sum of this event alone. UTC occurredAt; tenant-scoped.',
-    cs: 'Zaznamená pouze server při přechodu transakce do COMPLETED v CompletePaymentTransactionUseCase (best-effort). Jedna idempotentní řádka na tenant + paymentId; metadata může mít amount_cents. Není zobrazení děkovné obrazovky na klientovi. Není totéž co retail_order_paid nebo donation_completed — ty jdou jako doprovodné eventy ve stejném handleru. Occurrences v Explore = řádky eventů; GMV na dashboardu z commerce rollupů, ne ze součtu tohoto eventu. UTC; rozsah tenant.',
+    en: 'Counts when the system marks a payment as successfully received. One count per successful payment. Revenue totals on dashboards use money reports, not just adding up this number.',
+    cs: 'Počítá se, když systém označí platbu jako úspěšně přijatou. Jednou za každou úspěšnou platbu. Součty tržeb na přehledech vycházejí z finančních reportů, ne jen ze sečtení tohoto čísla.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_FAILED]: {
-    en: 'Recorded on the server when CancelIntent maps to payment_failed (explicit_cancel while the payment is already terminal or was never successfully initiated — §2.6). Idempotent per tenant + paymentId + failureReason (e.g. cancelled). Not tab_close or route_leave (those map to session_abandoned). Not a provider timeout unless the cancel path emits it. Distinct from error_shown UI events. Tenant-scoped; counts as one Explore occurrence per matching ingest row.',
-    cs: 'Zaznamená server, když CancelIntent mapuje na payment_failed (explicit_cancel u terminální nebo nezahájené platby — §2.6). Idempotentní per tenant + paymentId + failureReason (např. cancelled). Není tab_close ani route_leave (session_abandoned). Není timeout poskytovatele, pokud cancel neemituje. Odlišné od error_shown v UI. Rozsah tenant; v Explore jedna occurrence = jeden ingest řádek.',
+    en: 'Counts when a payment is cancelled or fails in a way the system records as failed — for example customer cancels at the terminal. One count per failed payment attempt. Closing the browser without paying is usually “visit abandoned”, not this.',
+    cs: 'Počítá se, když je platba zrušena nebo selže tak, že ji systém eviduje jako neúspěšnou — např. zrušení u terminálu. Jednou za neúspěšný pokus. Zavření prohlížeče bez placení je obvykle „návštěva opuštěna“, ne toto.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.RECEIPT_OPENED]: {
-    en: 'Recorded when the user opens or requests a receipt view (client emit). One row per open action. Not payment_confirmed and not email delivery success on the server. Optional receipt_format metadata. OPERATIONAL client telemetry per session.',
-    cs: 'Zaznamená se při otevření nebo zobrazení účtenky (klient). Jedna řádka na akci otevření. Není payment_confirmed ani úspěšné odeslání e-mailu na serveru. Volitelné receipt_format. OPERATIONAL telemetrie relace.',
+    en: 'Counts when the customer opens or views a receipt on screen. One count per time they open it. Not the same as payment succeeding or an email receipt being sent.',
+    cs: 'Počítá se, když zákazník otevře nebo zobrazí účtenku na obrazovce. Jednou za každé otevření. Není totéž jako úspěšná platba nebo odeslání účtenky e-mailem.',
   },
 };
 
@@ -88,32 +88,32 @@ const RETAIL_DESCRIPTIONS: Record<
   LocalizedLabel
 > = {
   [ANALYTICS_RETAIL_EVENTS.CATALOG_INTERACTION]: {
-    en: 'Recorded when the shopper interacts with the product catalog (browse, category tap, product detail) on kiosk or mobile shop (client emit). One row per emitted interaction. Not product_added until the item enters the cart. Used in funnel “catalog” session flags. RETAIL flow; tenant-scoped.',
-    cs: 'Zaznamená se při interakci s katalogem (prohlížení, kategorie, detail) na kiosku nebo mobilním shopu (klient). Jedna řádka na emit. Není product_added dokud položka není v košíku. Ve funnelu flag relací s katalogem. Flow RETAIL; rozsah tenant.',
+    en: 'Counts when someone browses products — opens categories or product details in the shop. One count per browsing action recorded. Adding to cart is a different event.',
+    cs: 'Počítá se, když někdo prohlíží produkty — otevře kategorie nebo detail v obchodě. Jednou za zaznamenanou interakci. Přidání do košíku je jiná událost.',
   },
   [ANALYTICS_RETAIL_EVENTS.PRODUCT_ADDED]: {
-    en: 'Recorded when a product is added to the cart (client emit). One occurrence per add emit; quantity changes may emit again depending on UI. Not checkout_started or payment_started. Drives funnel “product added” session metrics. Optional product_id / quantity metadata.',
-    cs: 'Zaznamená se při přidání produktu do košíku (klient). Jedna occurrence na emit přidání. Změna množství může emitovat znovu dle UI. Není checkout_started ani payment_started. Řídí funnel „product added“. Volitelná metadata product_id / quantity.',
+    en: 'Counts when a product is put into the shopping cart. One count per add (changing quantity may count again). Not checkout or payment yet.',
+    cs: 'Počítá se, když se produkt vloží do košíku. Jednou za přidání (změna množství může počítat znovu). Ještě není pokladna ani platba.',
   },
   [ANALYTICS_RETAIL_EVENTS.PRODUCT_REMOVED]: {
-    en: 'Recorded when a line item is removed from the cart (client emit). One row per removal emit. Not retail_order_abandoned (that signals leaving the whole order). RETAIL flow only in catalog v1.',
-    cs: 'Zaznamená se při odebrání položky z košíku (klient). Jedna řádka na emit odebrání. Není retail_order_abandoned (opuštění celé objednávky). Ve v1 katalogu pouze flow RETAIL.',
+    en: 'Counts when a product is removed from the cart. One count per removal. Leaving the whole order without paying is counted elsewhere.',
+    cs: 'Počítá se, když se produkt odebere z košíku. Jednou za odebrání. Opuštění celé objednávky bez platby se počítá jinde.',
   },
   [ANALYTICS_RETAIL_EVENTS.CART_VIEWED]: {
-    en: 'Recorded when the cart screen is shown or refreshed for review (client emit). One emit per cart view action; revisiting the cart adds another row. Not cart_item_count truth for revenue — rollups use commerce facts. Funnel “cart viewed” session flag source.',
-    cs: 'Zaznamená se při zobrazení nebo obnovení obrazovky košíku (klient). Jedna řádka na emit zobrazení; návrat na košík přidá další. Počet položek zde není zdroj pravdy GMV — rollupy používají commerce fakta. Zdroj funnel flagu „cart viewed“.',
+    en: 'Counts when the cart screen is opened to review items. One count each time they open the cart — opening it again adds another. Sales money uses payment data, not this count alone.',
+    cs: 'Počítá se, když se otevře obrazovka košíku ke kontrole položek. Jednou za každé otevření — návrat na košík přidá další. Tržby vycházejí z plateb, ne jen z tohoto počtu.',
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_STARTED]: {
-    en: 'Recorded when the user enters checkout from the cart (client emit, e.g. Pay on kiosk). One row per checkout entry emit. Precedes payment_started on the payment path. Not payment_confirmed. May include cart totals in metadata for diagnostics only.',
-    cs: 'Zaznamená se při vstupu do checkoutu z košíku (klient, např. Zaplatit na kiosku). Jedna řádka na emit vstupu. Předchází payment_started na platební cestě. Není payment_confirmed. Metadata s celky košíku jen pro diagnostiku.',
+    en: 'Counts when the customer moves from the cart to the payment step (for example taps Pay). One count per time they enter checkout. Payment finishing is counted separately.',
+    cs: 'Počítá se, když zákazník přejde z košíku k platbě (např. klepne Zaplatit). Jednou za vstup do pokladny. Dokončení platby se počítá zvlášť.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_PAID]: {
-    en: 'Recorded on the server alongside payment_confirmed when the completed transaction purpose is retail (CompletePaymentTransactionUseCase). One idempotent row per tenant + transactionId. Companion to payment_confirmed, not a substitute. GMV dashboards use commerce rollups, not a raw count of this event.',
-    cs: 'Zaznamená server spolu s payment_confirmed u dokončené retail transakce (CompletePaymentTransactionUseCase). Jedna idempotentní řádka na tenant + transactionId. Doprovod k payment_confirmed. GMV dashboardy z commerce rollupů, ne z počtu tohoto eventu.',
+    en: 'Counts when a shop purchase payment is completed successfully. One count per paid order. Works together with “payment confirmed” — dashboards use money totals, not only this row count.',
+    cs: 'Počítá se, když je nákup v obchodě úspěšně zaplacen. Jednou za zaplacenou objednávku. Jde ruku v ruce s „platba potvrzena“ — přehledy používají součty peněz, ne jen tento počet řádků.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_ABANDONED]: {
-    en: 'Recorded when the shopper leaves a retail order without paying (client emit on abandon paths). Server idempotency per tenant + sessionId + eventName. Not session_abandoned unless the session close API also runs. Not product_removed for a single line.',
-    cs: 'Zaznamená se, když zákazník opustí retail objednávku bez platby (klient na abandon cestách). Serverová idempotence per tenant + sessionId + eventName. Není session_abandoned, pokud se nevolá close relace. Není product_removed jedné položky.',
+    en: 'Counts when someone leaves a shop order without paying. One count per abandoned order attempt. Not removing one item from the cart.',
+    cs: 'Počítá se, když někdo opustí objednávku v obchodě bez zaplacení. Jednou za opuštěný pokus. Není odebrání jedné položky z košíku.',
   },
 };
 
@@ -122,40 +122,40 @@ const DONATION_DESCRIPTIONS: Record<
   LocalizedLabel
 > = {
   [ANALYTICS_DONATION_EVENTS.DONATION_STARTED]: {
-    en: 'Recorded when a donation payment intent is formed (client emit, e.g. kiosk donation-intent). One row per intent emit for that step. Not donation_completed (server, after pay). DONATION flow; may include project/amount metadata.',
-    cs: 'Zaznamená se při vzniku intentu daru (klient, např. kiosk donation-intent). Jedna řádka na emit kroku. Není donation_completed (server po zaplacení). Flow DONATION; metadata projekt/částka.',
+    en: 'Counts when someone starts the donation flow and chooses to give. One count per start of that flow. A finished donation is counted separately after payment.',
+    cs: 'Počítá se, když někdo začne darovat a zvolí dát peníze. Jednou za začátek tohoto kroku. Dokončený dar se počítá zvlášť po zaplacení.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_AMOUNT_SELECTED]: {
-    en: 'Recorded when the donor picks a preset amount chip (client emit). One occurrence per selection emit; choosing another preset emits again. Not donation_custom_amount_entered. Often followed by screen_viewed on the next step.',
-    cs: 'Zaznamená se při výběru přednastavené částky (klient). Jedna occurrence na emit; jiná předvolba = další řádka. Není donation_custom_amount_entered. Často následuje screen_viewed dalšího kroku.',
+    en: 'Counts when someone picks a preset donation amount (a chip on screen). One count per pick — choosing another amount adds another. Typing a custom amount is a different event.',
+    cs: 'Počítá se, když někdo vybere přednastavenou částku daru (tlačítko na obrazovce). Jednou za výběr — jiná částka přidá další. Vlastní částka je jiná událost.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_CUSTOM_AMOUNT_ENTERED]: {
-    en: 'Recorded when the donor enters a custom amount instead of a preset (client emit). Mutually exclusive with donation_amount_selected for the same amount step. One row per custom entry submit.',
-    cs: 'Zaznamená se při zadání vlastní částky místo předvolby (klient). Vylučuje donation_amount_selected pro stejný krok. Jedna řádka na odeslání vlastní částky.',
+    en: 'Counts when someone types their own donation amount instead of a preset. One count when they confirm that amount. Preset chip clicks are not counted here.',
+    cs: 'Počítá se, když někdo napíše vlastní částku daru místo předvolby. Jednou při potvrzení částky. Klepnutí na předvolbu se sem nepočítá.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_PROJECT_SELECTED]: {
-    en: 'Recorded when the donor selects a beneficiary project (client emit). One row per project selection. Not donation_completed until payment succeeds on the server.',
-    cs: 'Zaznamená se při výběru projektu příjemce (klient). Jedna řádka na výběr. Není donation_completed do úspěšné platby na serveru.',
+    en: 'Counts when someone chooses which project or cause receives the donation. One count per project choice. Paying the donation is counted later.',
+    cs: 'Počítá se, když někdo vybere, který projekt nebo účel dar dostane. Jednou za výběr projektu. Samotná platba daru se počítá později.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_IMPACT_OPENED]: {
-    en: 'Recorded when the donor opens impact or story content for a project (client emit). One occurrence per open action. Informational only — not a payment or completion signal.',
-    cs: 'Zaznamená se při otevření informace o dopadu příběhu projektu (klient). Jedna occurrence na otevření. Pouze informativní — není platba ani dokončení.',
+    en: 'Counts when someone opens extra information about the project’s impact or story. One count per open. Just reading — not paying yet.',
+    cs: 'Počítá se, když někdo otevře doplňující informace o dopadu nebo příběhu projektu. Jednou za otevření. Jen čtení — ještě bez platby.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_TAX_RECEIPT_SELECTED]: {
-    en: 'Recorded when the donor toggles tax-receipt preference (client emit). One row per toggle emit; flipping the switch again adds another row. Not legal receipt issuance on the server.',
-    cs: 'Zaznamená se při přepnutí preference daňového dokladu (klient). Jedna řádka na emit přepnutí. Není vystavení dokladu na serveru.',
+    en: 'Counts when someone turns the tax receipt option on or off. One count per change. Does not mean a receipt was already issued.',
+    cs: 'Počítá se, když někdo zapne nebo vypne volbu daňového dokladu. Jednou za změnu. Neznamená, že doklad už byl vystaven.',
   },
   [ANALYTICS_DONATION_EVENTS.RECURRING_DONATION_SELECTED]: {
-    en: 'Recorded when the donor selects a recurring donation option (client emit). One occurrence per selection emit. Does not create a subscription by itself — operational telemetry only in v1.',
-    cs: 'Zaznamená se při výběru opakovaného daru (klient). Jedna occurrence na emit. Nesamostatně zakládá předplatné — ve v1 jen OPERATIONAL telemetrie.',
+    en: 'Counts when someone chooses a repeating (monthly) donation option on screen. One count per choice. It does not by itself start a subscription in this report.',
+    cs: 'Počítá se, když někdo na obrazovce zvolí opakovaný (měsíční) dar. Jednou za volbu. Samo o sobě tím v tomto reportu nevzniká předplatné.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_COMPLETED]: {
-    en: 'Recorded on the server with payment_confirmed when the completed transaction is a donation (CompletePaymentTransactionUseCase). One idempotent row per tenant + transactionId. Not the client thank-you screen alone. Pair with payment_confirmed for money truth in rollups.',
-    cs: 'Zaznamená server s payment_confirmed u dokončeného daru (CompletePaymentTransactionUseCase). Jedna idempotentní řádka na tenant + transactionId. Není jen děkovná obrazovka klienta. K payment_confirmed pro peněžní pravdu v rollupech.',
+    en: 'Counts when a donation payment is completed successfully. One count per paid donation. Shown together with payment success in the system.',
+    cs: 'Počítá se, když je dar úspěšně zaplacen. Jednou za zaplacený dar. V systému jde ruku v ruce s úspěšnou platbou.',
   },
   [ANALYTICS_DONATION_EVENTS.DONATION_ABANDONED]: {
-    en: 'Recorded when the donor exits the donation flow without completing payment (client emit). Idempotent server key per tenant + sessionId. Not donation_completed and not payment_failed unless cancel mapping applies to an in-flight payment.',
-    cs: 'Zaznamená se při opuštění darovacího flow bez platby (klient). Serverová idempotence per tenant + sessionId. Není donation_completed ani payment_failed, pokud cancel neemituje u rozjeté platby.',
+    en: 'Counts when someone leaves the donation flow without paying. One count per time they abandon. Not the same as a failed card payment unless they cancel an active payment.',
+    cs: 'Počítá se, když někdo opustí darování bez zaplacení. Jednou za každé opuštění. Není totéž jako neúspěšná platba kartou, pokud nezruší rozjetou platbu.',
   },
 };
 
@@ -164,12 +164,12 @@ const KIOSK_DESCRIPTIONS: Record<
   LocalizedLabel
 > = {
   [ANALYTICS_KIOSK_EVENTS.KIOSK_WAKEUP]: {
-    en: 'Recorded on physical kiosk idle wake (touch) or programmatic donation boot telemetry (client emit). One row per wake emit; first mount may include configVersion/projectCount. Not session_started — the session API may follow separately. KIOSK platform; included in kiosk performance rollups (wakeup counts). OPERATIONAL only.',
-    cs: 'Zaznamená se při probuzení kiosku z idle (dotyk) nebo při boot telemetrii darovacího kiosku (klient). Jedna řádka na probuzení; první mount může mít configVersion/projectCount. Není session_started — relace může následovat API zvlášť. Platforma KIOSK; počítá se v rollup výkonu kiosku. Pouze OPERATIONAL.',
+    en: 'Counts when the kiosk wakes up from the idle attract screen because someone touched it or it starts up. One count per wake-up. Starting a full customer visit may be counted separately.',
+    cs: 'Počítá se, když se kiosk probudí z úvodní obrazovky po dotyku nebo při startu. Jednou za probuzení. Zahájení celé návštěvy zákazníka se může počítat zvlášť.',
   },
   [ANALYTICS_KIOSK_EVENTS.KIOSK_TIMEOUT]: {
-    en: 'Recorded when the kiosk idle timer fires and resets the attract loop (client emit). One occurrence per timeout cycle with required idle_time_ms and last_screen_name. Not session_abandoned unless the abandon beacon also runs. May include cart snapshot metadata; tenant + kiosk scoped.',
-    cs: 'Zaznamená se při vypršení idle timeru kiosku a návratu do attract loop (klient). Jedna occurrence na cyklus s idle_time_ms a last_screen_name. Není session_abandoned, pokud neběží i abandon beacon. Může nést snapshot košíku; rozsah tenant + kiosk.',
+    en: 'Counts when the kiosk sits unused too long and returns to the attract screen by itself. One count per timeout. Someone walking away mid-order may also count as visit abandoned.',
+    cs: 'Počítá se, když kiosk dlouho nikdo nepoužívá a sám se vrátí na úvodní obrazovku. Jednou za vypršení času. Odejití uprostřed objednávky může být také „návštěva opuštěna“.',
   },
 };
 

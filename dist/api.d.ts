@@ -22,8 +22,6 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_TEST_BANK_TRANSFER_CHECK: "/api/payments/test-bank-transfer-check";
     /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */
     readonly PAYMENT_POST_KIOSK_HANDOFF: "/api/payments/post-kiosk-handoff/:paymentId";
-    readonly CONSENT_ANALYTICS: "/api/consents/analytics";
-    readonly CONSENT_MARKETING: "/api/consents/marketing";
     readonly ADMIN_LOGIN: "/api/admin/login";
     readonly ADMIN_LOGOUT: "/api/admin/logout";
     readonly ADMIN_PRODUCTS: "/api/admin/products";

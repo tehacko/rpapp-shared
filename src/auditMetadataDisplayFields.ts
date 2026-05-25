@@ -25,8 +25,6 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'gdpr.erasure.completed': [
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
     { key: 'customersAnonymized', labelKey: 'compliance.audit.metadata.customersAnonymized' },
-    { key: 'marketingConsentsDeleted', labelKey: 'compliance.audit.metadata.marketingConsentsDeleted' },
-    { key: 'analyticsConsentsDeleted', labelKey: 'compliance.audit.metadata.analyticsConsentsDeleted' },
   ],
 };
 

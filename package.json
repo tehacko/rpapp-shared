@@ -29,6 +29,36 @@
       "import": "./dist/analyticsExploreCaps.js",
       "require": "./dist/analyticsExploreCaps.js",
       "types": "./dist/analyticsExploreCaps.d.ts"
+    },
+    "./analyticsApiTypes": {
+      "import": "./dist/analyticsApiTypes.js",
+      "require": "./dist/analyticsApiTypes.js",
+      "types": "./dist/analyticsApiTypes.d.ts"
+    },
+    "./analyticsEvents": {
+      "import": "./dist/analyticsEvents.js",
+      "require": "./dist/analyticsEvents.js",
+      "types": "./dist/analyticsEvents.d.ts"
+    },
+    "./analyticsEmitterManifest": {
+      "import": "./dist/analyticsEmitterManifest.js",
+      "require": "./dist/analyticsEmitterManifest.js",
+      "types": "./dist/analyticsEmitterManifest.d.ts"
+    },
+    "./crossTab": {
+      "import": "./dist/crossTab/index.js",
+      "require": "./dist/crossTab/index.js",
+      "types": "./dist/crossTab/index.d.ts"
+    },
+    "./analyticsDevLog": {
+      "import": "./dist/analyticsDevLog.js",
+      "require": "./dist/analyticsDevLog.js",
+      "types": "./dist/analyticsDevLog.d.ts"
+    },
+    "./analyticsConsentAllowlist": {
+      "import": "./dist/analyticsConsentAllowlist.js",
+      "require": "./dist/analyticsConsentAllowlist.js",
+      "types": "./dist/analyticsConsentAllowlist.d.ts"
     }
   },
   "scripts": {
