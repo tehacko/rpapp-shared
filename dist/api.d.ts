@@ -18,6 +18,11 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_GATEWAY_STATUS: "/api/payments/gateway-status/:paymentId";
     readonly PAYMENT_GATEWAY_CANCEL: "/api/payments/gateway-cancel";
     readonly PAYMENT_GATEWAY_METHODS: "/api/payments/gateway-methods";
+    readonly PAYMENT_TERMINAL_CONNECTION_TOKEN: "/api/payments/terminal/connection-token";
+    readonly PAYMENT_CREATE_TERMINAL: "/api/payments/terminal/create-terminal";
+    readonly PAYMENT_TERMINAL_CANCEL: "/api/payments/terminal/cancel";
+    /** Public (tenant-scoped): POST /api/{tenantCode}/webhooks/payment/stripe */
+    readonly PAYMENT_STRIPE_WEBHOOK_PUBLIC: "/api/{tenantCode}/webhooks/payment/stripe";
     readonly PAYMENT_BANK_TRANSFER_WEBHOOK: "/api/payments/bank-transfer-webhook";
     readonly PAYMENT_TEST_BANK_TRANSFER_CHECK: "/api/payments/test-bank-transfer-check";
     /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */

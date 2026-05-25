@@ -26,6 +26,11 @@ export const API_ENDPOINTS = {
   PAYMENT_GATEWAY_STATUS: '/api/payments/gateway-status/:paymentId',
   PAYMENT_GATEWAY_CANCEL: '/api/payments/gateway-cancel',
   PAYMENT_GATEWAY_METHODS: '/api/payments/gateway-methods',
+  PAYMENT_TERMINAL_CONNECTION_TOKEN: '/api/payments/terminal/connection-token',
+  PAYMENT_CREATE_TERMINAL: '/api/payments/terminal/create-terminal',
+  PAYMENT_TERMINAL_CANCEL: '/api/payments/terminal/cancel',
+  /** Public (tenant-scoped): POST /api/{tenantCode}/webhooks/payment/stripe */
+  PAYMENT_STRIPE_WEBHOOK_PUBLIC: '/api/{tenantCode}/webhooks/payment/stripe',
   PAYMENT_BANK_TRANSFER_WEBHOOK: '/api/payments/bank-transfer-webhook',
   PAYMENT_TEST_BANK_TRANSFER_CHECK: '/api/payments/test-bank-transfer-check',
   /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */

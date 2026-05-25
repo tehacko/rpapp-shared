@@ -11,6 +11,7 @@ export function logAnalyticsDevError(
   details: Record<string, unknown>
 ): void {
   if (isProductionRuntime()) {
+    console.warn(`[analytics] ${context}`, details);
     return;
   }
   console.error(`[analytics] ${context}`, details);

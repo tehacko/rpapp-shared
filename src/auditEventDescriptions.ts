@@ -159,6 +159,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',
   },
+  'export.analytics.rollups.materialized': {
+    en: 'Recorded when scheduled analytics rollup snapshots are materialized for reporting. One line per materialization run.',
+    cs: 'Zapíše se při materializaci plánovaných analytických agregací pro reporty. Jeden řádek za běh materializace.',
+  },
   'gdpr.erasure.completed': {
     en: 'Recorded when a confirmed GDPR erasure request is finished and personal data is removed or anonymized as required. One line per completed request. The person’s email is not stored in this line.',
     cs: 'Zapíše se po dokončení potvrzené žádosti o výmaz podle GDPR a odstranění nebo anonymizaci údajů. Jeden řádek za dokončenou žádost. E-mail dotčené osoby se v řádku neukládá.',

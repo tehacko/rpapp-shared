@@ -66,16 +66,23 @@ export interface KioskPublicDonationPayload {
   readonly amountConfig: KioskPublicDonationAmountConfig;
 }
 
+export interface KioskPublicPaymentSurface {
+  readonly stripePublishableKey: string | null;
+  readonly cardPresentEnabled: boolean;
+}
+
 export type KioskPublicConfigV1 =
   | {
       readonly configVersion: number;
       readonly kioskOperationalMode: 'PRODUCTS';
+      readonly paymentSurface: KioskPublicPaymentSurface;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     }
   | {
       readonly configVersion: number;
       readonly kioskOperationalMode: 'DONATION';
       readonly donation: KioskPublicDonationPayload;
+      readonly paymentSurface: KioskPublicPaymentSurface;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     };
 

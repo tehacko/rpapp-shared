@@ -42,6 +42,7 @@ export const AUDIT_EVENT_CODES = [
   'reconciliation.transaction.refund_candidate.marked',
   'reconciliation.transaction.refund_candidate.unmarked',
   'export.analytics.explore.exported',
+  'export.analytics.rollups.materialized',
   'gdpr.erasure.completed',
 ] as const;
 
