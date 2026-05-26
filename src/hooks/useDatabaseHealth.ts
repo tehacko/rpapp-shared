@@ -51,15 +51,20 @@ export function useDatabaseHealth(
   const [error, setError] = useState<Error | null>(null);
 
   const [healthEndpoint] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const windowConfig = (window as any).__RUNTIME_CONFIG__;
-      const apiUrl = windowConfig?.apiUrl;
-      if (apiUrl) {
-        return `${apiUrl}/health`;
+    if (typeof window === 'undefined') {
+      return 'http://localhost:3015/health';
+    }
+    const pageOrigin = window.location.origin;
+    const windowConfig = (window as { __RUNTIME_CONFIG__?: { apiUrl?: string } }).__RUNTIME_CONFIG__;
+    const apiUrl = windowConfig?.apiUrl?.trim();
+    if (apiUrl) {
+      try {
+        return `${new URL(apiUrl).origin}/health`;
+      } catch {
+        return `${apiUrl.replace(/\/+$/, '')}/health`;
       }
     }
-    return 'http://localhost:3015/health';
+    return `${pageOrigin}/health`;
   });
 
   const retryCountRef = useRef<number>(0);

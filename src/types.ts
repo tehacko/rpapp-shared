@@ -103,6 +103,7 @@ export interface Kiosk {
   defaultVatRate?: number | null; // Default VAT rate for Products (applied to all products unless overridden)
   lastHeartbeat?: string | null; // ISO date string - Last time kiosk contacted the backend
   kioskOperationalMode: KioskOperationalMode;
+  cardPresentLocationId?: string | null;
   createdAt: string;
   updatedAt: string;
 }
