@@ -83,6 +83,7 @@ export interface Kiosk {
     defaultVatRate?: number | null;
     lastHeartbeat?: string | null;
     kioskOperationalMode: KioskOperationalMode;
+    cardPresentLocationId?: string | null;
     createdAt: string;
     updatedAt: string;
 }

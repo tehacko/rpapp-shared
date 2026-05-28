@@ -30,4 +30,5 @@ export * from './getAuditEventDescription.js';
 export * from './auditMetadataDisplayFields.js';
 export * from './complianceDevCaps.js';
 export * from './labels/localizedLabel.js';
+export * from './catalog/index.js';
 //# sourceMappingURL=index.js.map
