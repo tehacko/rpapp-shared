@@ -29,4 +29,5 @@ export * from './auditEventDescriptions.js';
 export * from './getAuditEventDescription.js';
 export * from './auditMetadataDisplayFields.js';
 export * from './complianceDevCaps.js';
+export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';

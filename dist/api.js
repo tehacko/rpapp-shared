@@ -31,6 +31,12 @@ export const API_ENDPOINTS = {
     PAYMENT_TEST_BANK_TRANSFER_CHECK: '/api/payments/test-bank-transfer-check',
     /** Authenticated kiosk fallback for post-kiosk handoff token (Phase 5). */
     PAYMENT_POST_KIOSK_HANDOFF: '/api/payments/post-kiosk-handoff/:paymentId',
+    /** Authenticated kiosk recovery handoff for failed/timeout payments. */
+    PAYMENT_POST_KIOSK_RECOVERY_HANDOFF: '/api/payments/post-kiosk-recovery-handoff/:paymentId',
+    /** Enterprise outbox release gate (bucket C — backend no-ops when obligations disabled). */
+    PAYMENT_RELEASE_GATE: '/api/payments/release-gate/:paymentId',
+    PAYMENT_RECEIPT_PRINT_COMPLETE: '/api/payments/:paymentId/obligations/receipt-print/complete',
+    PAYMENT_RECEIPT_PRINT_FAILED: '/api/payments/:paymentId/obligations/receipt-print/failed',
     // Admin endpoints
     ADMIN_LOGIN: '/api/admin/login',
     ADMIN_LOGOUT: '/api/admin/logout',

@@ -360,6 +360,14 @@ export interface PostKioskHandoffFallbackResponse {
   customerFrontendUrl: string;
 }
 
+/** Kiosk recovery handoff for failed/timeout payments. */
+export interface PostKioskRecoveryHandoffResponse {
+  paymentId: string;
+  token: string;
+  expiresAt: string;
+  customerFrontendUrl: string;
+}
+
 export interface GatewayCreateResponse {
   paymentId: string;
   gatewayPaymentId: string;

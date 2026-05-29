@@ -147,6 +147,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Payment status changed',
     cs: 'Změna stavu platby',
   },
+  'payment.customer.refund.requested': {
+    en: 'Customer refund requested',
+    cs: 'Zákazník požádal o vrácení',
+  },
   'reconciliation.transaction.refund_candidate.marked': {
     en: 'Refund check marked',
     cs: 'Označeno ke kontrole vrácení',

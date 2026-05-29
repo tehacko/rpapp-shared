@@ -76,6 +76,8 @@ export type KioskPublicConfigV1 =
       readonly configVersion: number;
       readonly kioskOperationalMode: 'PRODUCTS';
       readonly paymentSurface: KioskPublicPaymentSurface;
+      /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
+      readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     }
   | {
@@ -83,6 +85,7 @@ export type KioskPublicConfigV1 =
       readonly kioskOperationalMode: 'DONATION';
       readonly donation: KioskPublicDonationPayload;
       readonly paymentSurface: KioskPublicPaymentSurface;
+      readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     };
 

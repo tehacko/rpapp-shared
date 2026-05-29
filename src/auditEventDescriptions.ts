@@ -147,6 +147,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded automatically when a payment moves to a new status (paid, cancelled, etc.). One line per status change. If writing the line fails, the payment still changes.',
     cs: 'Zapíše se automaticky, když platba přejde do nového stavu (zaplaceno, zrušeno atd.). Jeden řádek za změnu stavu. Když se zápis nepovede, platba se stejně změní.',
   },
+  'payment.customer.refund.requested': {
+    en: 'Recorded when a customer submits a refund request from the PWA after a failed or timed-out payment. One line per request (duplicate submissions are idempotent).',
+    cs: 'Zapíše se, když zákazník odešle žádost o vrácení z PWA po neúspěšné nebo expirované platbě. Jeden řádek za žádost (opakované odeslání je idempotentní).',
+  },
   'reconciliation.transaction.refund_candidate.marked': {
     en: 'Recorded when staff mark a bank payment as needing a possible refund check. One line per mark. Does not send money back by itself.',
     cs: 'Zapíše se, když pracovník označí bankovní platbu k možné kontrole vrácení peněz. Jeden řádek za označení. Samo o sobě peníze nevrací.',
