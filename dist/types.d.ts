@@ -183,6 +183,7 @@ export interface MultiProductPaymentData {
 export interface AdminProduct extends Product {
     quantityInStock?: number;
     active?: boolean;
+    isActive?: boolean;
 }
 export interface ApiResponse<T> {
     success: boolean;

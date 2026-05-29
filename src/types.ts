@@ -218,6 +218,7 @@ export interface MultiProductPaymentData {
 export interface AdminProduct extends Product {
   quantityInStock?: number;
   active?: boolean; // Visibility status for specific kiosk (from KioskInventory)
+  isActive?: boolean; // Product lifecycle — false when deactivated in admin
 }
 
 export interface ApiResponse<T> {
