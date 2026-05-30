@@ -1,6 +1,6 @@
 {
   "name": "pi-kiosk-shared",
-  "version": "2.1.47",
+  "version": "2.1.48",
   "type": "module",
   "private": false,
   "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -59,6 +59,11 @@
       "import": "./dist/analyticsConsentAllowlist.js",
       "require": "./dist/analyticsConsentAllowlist.js",
       "types": "./dist/analyticsConsentAllowlist.d.ts"
+    },
+    "./clientLogRedaction": {
+      "import": "./dist/clientLogRedaction.js",
+      "require": "./dist/clientLogRedaction.js",
+      "types": "./dist/clientLogRedaction.d.ts"
     }
   },
   "scripts": {

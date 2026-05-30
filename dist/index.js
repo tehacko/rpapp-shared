@@ -31,4 +31,5 @@ export * from './auditMetadataDisplayFields.js';
 export * from './complianceDevCaps.js';
 export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
+export * from './clientLogRedaction.js';
 //# sourceMappingURL=index.js.map
