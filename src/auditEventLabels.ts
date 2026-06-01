@@ -143,6 +143,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Organization updated (platform)',
     cs: 'Organizace upravena (platforma)',
   },
+  'dev.tenant.provider.updated': {
+    en: 'Organization provider updated (platform)',
+    cs: 'Poskytovatel organizace upraven (platforma)',
+  },
   'payment.transaction.state_changed': {
     en: 'Payment status changed',
     cs: 'Změna stavu platby',

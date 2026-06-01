@@ -38,6 +38,7 @@ export const AUDIT_EVENT_CODES = [
   'admin.kiosk.donation_amounts.updated',
   'dev.tenant.created',
   'dev.tenant.updated',
+  'dev.tenant.provider.updated',
   'payment.transaction.state_changed',
   'payment.customer.refund.requested',
   'reconciliation.transaction.refund_candidate.marked',
