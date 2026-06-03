@@ -18,6 +18,7 @@ export * from './hooks/useDatabaseHealth.js';
 export * from './analyticsEvents.js';
 export * from './analyticsExploreCaps.js';
 export * from './analyticsApiTypes.js';
+export * from './analyticsAnonymousIdentity.js';
 export * from './auditEventCodes.js';
 export * from './auditEventLabels.js';
 export * from './analyticsEventLabels.js';
