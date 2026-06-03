@@ -45,35 +45,40 @@ export function grantImpliesTarget(granted: string, target: string): boolean {
   return false;
 }
 
+function impliedTargetsFromGrant(grant: string): readonly string[] {
+  const implied: string[] = [];
+  for (const target of ADMIN_USERS_MANAGE_BRIDGE_TARGETS) {
+    if (grantImpliesTarget(grant, target)) {
+      implied.push(target);
+    }
+  }
+  if (grant.endsWith(':manage')) {
+    implied.push(grant.replace(/:manage$/, ':read'));
+  } else if (grant.endsWith(':write')) {
+    implied.push(grant.replace(/:write$/, ':read'));
+  } else if (grant.endsWith('.manage')) {
+    implied.push(`${grant.slice(0, -'.manage'.length)}.view`);
+  }
+  return implied;
+}
+
 /**
  * Expands grants with bridge rules and manage→view / manage→read (no reverse implications).
  */
 export function expandCapabilitiesForClientCheck(grants: readonly string[]): Set<string> {
-  const result = new Set<string>(grants);
+  const result = new Set<string>();
+  const pending = [...grants];
 
-  const addGrantClosure = (grant: string): void => {
-    if (result.has(grant)) {
-      return;
+  while (pending.length > 0) {
+    const grant = pending.pop();
+    if (grant === undefined || result.has(grant)) {
+      continue;
     }
     result.add(grant);
-    for (const target of ADMIN_USERS_MANAGE_BRIDGE_TARGETS) {
-      if (grantImpliesTarget(grant, target)) {
-        result.add(target);
+    for (const target of impliedTargetsFromGrant(grant)) {
+      if (!result.has(target)) {
+        pending.push(target);
       }
-    }
-    if (grant.endsWith(':manage')) {
-      result.add(grant.replace(/:manage$/, ':read'));
-    } else if (grant.endsWith(':write')) {
-      result.add(grant.replace(/:write$/, ':read'));
-    } else if (grant.endsWith('.manage')) {
-      result.add(`${grant.slice(0, -'.manage'.length)}.view`);
-    }
-  };
-
-  for (const grant of grants) {
-    addGrantClosure(grant);
-    for (const expanded of [...result]) {
-      addGrantClosure(expanded);
     }
   }
 
