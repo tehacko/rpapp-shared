@@ -71,10 +71,13 @@ export interface KioskPublicPaymentSurface {
   readonly cardPresentEnabled: boolean;
 }
 
+export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+
 export type KioskPublicConfigV1 =
   | {
       readonly configVersion: number;
       readonly kioskOperationalMode: 'PRODUCTS';
+      readonly defaultProductCollectionMode: KioskPublicProductCollectionMode;
       readonly paymentSurface: KioskPublicPaymentSurface;
       /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
       readonly outboxObligationsEnabled: boolean;
@@ -83,6 +86,7 @@ export type KioskPublicConfigV1 =
   | {
       readonly configVersion: number;
       readonly kioskOperationalMode: 'DONATION';
+      readonly defaultProductCollectionMode?: KioskPublicProductCollectionMode;
       readonly donation: KioskPublicDonationPayload;
       readonly paymentSurface: KioskPublicPaymentSurface;
       readonly outboxObligationsEnabled: boolean;
@@ -90,4 +94,4 @@ export type KioskPublicConfigV1 =
     };
 
 /** Current contract version emitted by the backend. */
-export const KIOSK_PUBLIC_CONFIG_VERSION = 1;
+export const KIOSK_PUBLIC_CONFIG_VERSION = 2;

@@ -74,6 +74,7 @@ export interface KioskProduct extends Product {
     categoryId?: number | null;
 }
 export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
+export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 export interface Kiosk {
     id: number;
     name: string;
@@ -83,6 +84,7 @@ export interface Kiosk {
     defaultVatRate?: number | null;
     lastHeartbeat?: string | null;
     kioskOperationalMode: KioskOperationalMode;
+    defaultProductCollectionMode?: KioskProductCollectionMode;
     cardPresentLocationId?: string | null;
     createdAt: string;
     updatedAt: string;
@@ -209,6 +211,7 @@ export type ScreenType = 'products' | 'payment' | 'confirmation' | 'admin-login'
 export interface CreateQRPaymentRequest {
     items: Array<{
         productId: number;
+        variantId?: number | null;
         quantity: number;
     }>;
     totalAmount?: number;
@@ -227,10 +230,12 @@ export interface CreateQRPaymentRequest {
 }
 export interface CreateQRPaymentResponseData {
     paymentId: string;
-    qrCodeData: string;
+    qrCodeData?: string;
+    qrAccess?: 'allowed' | 'denied';
+    productCollectionMode?: 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
     amount: number;
     itemsCount: number;
-    customerEmail: string;
+    customerEmail?: string;
     receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none';
     transactionStatus?: TransactionStatus;
 }
@@ -246,6 +251,7 @@ export interface PaymentStatusResponse {
     customerEmail: string;
     requestedAt: string;
     completedAt?: string;
+    qrVisible?: boolean;
 }
 export interface StartMonitoringRequest {
     paymentId: string;

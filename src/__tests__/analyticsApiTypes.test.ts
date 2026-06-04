@@ -15,6 +15,21 @@ describe('parseAnalyticsStartSessionData', () => {
     });
   });
 
+  it('parses optional sessionAuthToken fields', () => {
+    const data: AnalyticsStartSessionData = {
+      session: { sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee' },
+      created: false,
+      sessionAuthToken: 'tok',
+      sessionAuthTokenExpiresAt: '2026-06-04T00:00:00.000Z',
+    };
+    expect(parseAnalyticsStartSessionData(data)).toEqual({
+      sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee',
+      created: false,
+      sessionAuthToken: 'tok',
+      sessionAuthTokenExpiresAt: '2026-06-04T00:00:00.000Z',
+    });
+  });
+
   it('rejects flat sessionId at top level', () => {
     expect(() =>
       parseAnalyticsStartSessionData({

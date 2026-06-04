@@ -93,6 +93,8 @@ export interface KioskProduct extends Product {
 // donation flow. Admin CRUD edits the same property.
 export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
 
+export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+
 // Database model interfaces matching Prisma schema
 export interface Kiosk {
   id: number;
@@ -103,6 +105,7 @@ export interface Kiosk {
   defaultVatRate?: number | null; // Default VAT rate for Products (applied to all products unless overridden)
   lastHeartbeat?: string | null; // ISO date string - Last time kiosk contacted the backend
   kioskOperationalMode: KioskOperationalMode;
+  defaultProductCollectionMode?: KioskProductCollectionMode;
   cardPresentLocationId?: string | null;
   createdAt: string;
   updatedAt: string;
@@ -262,6 +265,7 @@ export type ScreenType =
 export interface CreateQRPaymentRequest {
   items: Array<{
     productId: number;
+    variantId?: number | null;
     quantity: number;
   }>;
   totalAmount?: number; // Optional - validated but calculated from items for security
@@ -281,10 +285,12 @@ export interface CreateQRPaymentRequest {
 
 export interface CreateQRPaymentResponseData {
   paymentId: string;
-  qrCodeData: string;
+  qrCodeData?: string;
+  qrAccess?: 'allowed' | 'denied';
+  productCollectionMode?: 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
   amount: number;
   itemsCount: number;
-  customerEmail: string;
+  customerEmail?: string;
   receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none'; // Status of receipt email (only in idempotent responses)
   transactionStatus?: TransactionStatus; // Status of existing transaction (only in idempotent responses)
 }
@@ -302,6 +308,7 @@ export interface PaymentStatusResponse {
   customerEmail: string;
   requestedAt: string;
   completedAt?: string;
+  qrVisible?: boolean;
 }
 
 export interface StartMonitoringRequest {
