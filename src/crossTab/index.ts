@@ -1,9 +1,23 @@
 export { createCrossTabBus, type CrossTabBus } from './CrossTabBus.js';
 
+/** In-memory session hand-off for same-origin tabs when no refresh cookie exists. */
+export interface CustomerAuthCrossTabSessionSnapshot {
+  accessToken: string;
+  refreshToken: string;
+  customerId: number;
+  tenantId: number;
+  membershipStatus: 'ACTIVE';
+}
+
 export type CustomerAuthCrossTabMessage =
-  | { type: 'login' }
-  | { type: 'logout' }
-  | { type: 'session-refreshed' };
+  | {
+      type: 'login';
+      tenantCode: string;
+      /** Present when login did not persist an HttpOnly refresh cookie. */
+      session?: CustomerAuthCrossTabSessionSnapshot;
+    }
+  | { type: 'logout'; tenantCode: string }
+  | { type: 'session-refreshed'; tenantCode: string };
 
 export type CustomerConsentCrossTabMessage = { type: 'consent-updated' };
 
