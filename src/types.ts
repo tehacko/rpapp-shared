@@ -80,12 +80,27 @@ export interface Product {
   updatedAt: string;
 }
 
+/** Slim variant row for kiosk/customer catalog UIs and public variant list API. */
+export interface CatalogVariantSummary {
+  id: number;
+  name: string;
+  price: number;
+  quantityInStock: number;
+  active: boolean;
+  barcode?: string;
+  thumbnailUrl: string;
+  imageUrl?: string;
+}
+
 // Kiosk-specific product data (what customers see)
 export interface KioskProduct extends Product {
   quantityInStock: number;
   kioskClickedOn: number;
   kioskNumberOfPurchases: number;
   categoryId?: number | null;
+  thumbnailUrl?: string | null;
+  variants?: CatalogVariantSummary[];
+  variantCount?: number;
 }
 
 // Plan v1.5.1 §G / §L — operational mode of a kiosk. The kiosk PWA reads it

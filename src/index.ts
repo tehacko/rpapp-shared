@@ -33,6 +33,7 @@ export * from './complianceDevCaps.js';
 export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
+export * from './catalogImageUrl.js';
 export {
   PERMISSION_DOMAIN_LABELS,
   PERMISSION_LEVEL_LABELS,
