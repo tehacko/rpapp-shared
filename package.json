@@ -83,6 +83,8 @@
   "scripts": {
     "build": "npm run clean && tsc",
     "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "npm run type-check",
     "test": "jest --config jest.config.cjs --passWithNoTests",
     "test:watch": "jest --config jest.config.cjs --watch",
     "test:coverage": "jest --config jest.config.cjs --coverage",

@@ -26,4 +26,50 @@ describe('effectiveCapabilities client mirror', () => {
       ]),
     ).toBe(true);
   });
+
+  it('dev:workers:read implies platform.retentionWorkers.view', () => {
+    expect(hasEffectiveCapability(['dev:workers:read'], 'platform.retentionWorkers.view')).toBe(
+      true,
+    );
+  });
+
+  it('dev:workers:run implies platform.retentionWorkers.manage', () => {
+    expect(hasEffectiveCapability(['dev:workers:run'], 'platform.retentionWorkers.manage')).toBe(
+      true,
+    );
+  });
+
+  it('dev:aggregates:read implies platform.aggregates.view', () => {
+    expect(hasEffectiveCapability(['dev:aggregates:read'], 'platform.aggregates.view')).toBe(true);
+  });
+
+  it('dev:aggregates:run implies platform.aggregates.manage', () => {
+    expect(hasEffectiveCapability(['dev:aggregates:run'], 'platform.aggregates.manage')).toBe(
+      true,
+    );
+  });
+
+  it('platform.retentionWorkers.view does not imply manage (forward-only)', () => {
+    expect(
+      hasEffectiveCapability(['platform.retentionWorkers.view'], 'platform.retentionWorkers.manage'),
+    ).toBe(false);
+    expect(
+      hasEffectiveCapability(['platform.retentionWorkers.view'], 'dev:workers:run'),
+    ).toBe(false);
+  });
+
+  it('platform.aggregates.view does not imply manage (forward-only)', () => {
+    expect(
+      hasEffectiveCapability(['platform.aggregates.view'], 'platform.aggregates.manage'),
+    ).toBe(false);
+  });
+
+  it('dev:compliance bridges imply canonical view', () => {
+    expect(
+      hasEffectiveCapability(['dev:compliance:audit:read'], 'platform.complianceAudit.view'),
+    ).toBe(true);
+    expect(
+      hasEffectiveCapability(['dev:compliance:gdpr:read'], 'platform.complianceGdpr.view'),
+    ).toBe(true);
+  });
 });

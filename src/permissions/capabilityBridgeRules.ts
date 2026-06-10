@@ -1,6 +1,7 @@
 /**
  * Shared capability bridge rules — single source for client JWT fallback checks.
  * Server uses the same helpers from pi-kiosk-shared in PermissionInheritanceResolver.
+ * Forward-only: legacy → canonical; never canonical view → manage cluster.
  */
 
 export const ADMIN_USERS_MANAGE_BRIDGE_SOURCES: readonly string[] = [
@@ -16,7 +17,27 @@ export const ADMIN_USERS_MANAGE_BRIDGE_TARGETS: readonly string[] = [
   'tenant.adminUserCapabilities.manage',
 ];
 
-const BRIDGE_SOURCE_SET = new Set<string>(ADMIN_USERS_MANAGE_BRIDGE_SOURCES);
+export const DEV_COMPLIANCE_AUDIT_BRIDGE_SOURCES: readonly string[] = [
+  'dev:compliance:audit:read',
+];
+
+export const DEV_COMPLIANCE_GDPR_BRIDGE_SOURCES: readonly string[] = [
+  'dev:compliance:gdpr:read',
+];
+
+const ADMIN_BRIDGE_SOURCE_SET = new Set<string>(ADMIN_USERS_MANAGE_BRIDGE_SOURCES);
+
+/** Forward-only legacy → canonical (no canonical → full cluster). */
+const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
+  ['users:admins:create', ADMIN_USERS_MANAGE_BRIDGE_TARGETS],
+  ['tenant.adminUsers.manage', ADMIN_USERS_MANAGE_BRIDGE_TARGETS],
+  ['dev:workers:read', ['platform.retentionWorkers.view']],
+  ['dev:workers:run', ['platform.retentionWorkers.manage', 'platform.retentionWorkers.view']],
+  ['dev:aggregates:read', ['platform.aggregates.view']],
+  ['dev:aggregates:run', ['platform.aggregates.manage', 'platform.aggregates.view']],
+  ['dev:compliance:audit:read', ['platform.complianceAudit.view']],
+  ['dev:compliance:gdpr:read', ['platform.complianceGdpr.view']],
+]);
 
 /**
  * Forward-only implication used by client expansion and server bridge checks.
@@ -26,7 +47,12 @@ export function grantImpliesTarget(granted: string, target: string): boolean {
     return true;
   }
 
-  if (BRIDGE_SOURCE_SET.has(granted) && ADMIN_USERS_MANAGE_BRIDGE_TARGETS.includes(target)) {
+  const bridgeTargets = BRIDGE_TARGET_BY_SOURCE.get(granted);
+  if (bridgeTargets?.includes(target)) {
+    return true;
+  }
+
+  if (ADMIN_BRIDGE_SOURCE_SET.has(granted) && ADMIN_USERS_MANAGE_BRIDGE_TARGETS.includes(target)) {
     return true;
   }
 
@@ -47,10 +73,9 @@ export function grantImpliesTarget(granted: string, target: string): boolean {
 
 function impliedTargetsFromGrant(grant: string): readonly string[] {
   const implied: string[] = [];
-  for (const target of ADMIN_USERS_MANAGE_BRIDGE_TARGETS) {
-    if (grantImpliesTarget(grant, target)) {
-      implied.push(target);
-    }
+  const bridgeTargets = BRIDGE_TARGET_BY_SOURCE.get(grant);
+  if (bridgeTargets) {
+    implied.push(...bridgeTargets);
   }
   if (grant.endsWith(':manage')) {
     implied.push(grant.replace(/:manage$/, ':read'));
@@ -86,10 +111,24 @@ export function expandCapabilitiesForClientCheck(grants: readonly string[]): Set
 }
 
 /** Parity fixture — both backend and shared tests must satisfy. */
-export const BRIDGE_PARITY_FIXTURE_GRANTS = ['users:admins:create'] as const;
+export const BRIDGE_PARITY_FIXTURE_GRANTS = [
+  'users:admins:create',
+  'dev:workers:read',
+  'dev:workers:run',
+  'dev:aggregates:read',
+  'dev:aggregates:run',
+  'dev:compliance:audit:read',
+  'dev:compliance:gdpr:read',
+] as const;
 
 export const BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS = [
   'tenant.adminUserCapabilities.view',
   'tenant.adminUserCapabilities.manage',
   'tenant.adminUsers.manage',
+  'platform.retentionWorkers.view',
+  'platform.retentionWorkers.manage',
+  'platform.aggregates.view',
+  'platform.aggregates.manage',
+  'platform.complianceAudit.view',
+  'platform.complianceGdpr.view',
 ] as const;
