@@ -16,7 +16,7 @@ export type CustomerAuthCrossTabMessage =
       /** Present when login did not persist an HttpOnly refresh cookie. */
       session?: CustomerAuthCrossTabSessionSnapshot;
     }
-  | { type: 'logout'; tenantCode: string }
+  | { type: 'logout'; tenantCode: string; scope?: 'global' }
   | { type: 'session-refreshed'; tenantCode: string };
 
 export type CustomerConsentCrossTabMessage = { type: 'consent-updated' };
