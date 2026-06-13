@@ -71,6 +71,12 @@ export interface KioskPublicPaymentSurface {
   readonly cardPresentEnabled: boolean;
 }
 
+export interface KioskPublicCatalogMedia {
+  readonly cardAspectRatio: string;
+  readonly thumbnailAspectRatio: string;
+  readonly objectFit: 'cover';
+}
+
 export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 
 export type KioskPublicConfigV1 =
@@ -79,6 +85,7 @@ export type KioskPublicConfigV1 =
       readonly kioskOperationalMode: 'PRODUCTS';
       readonly defaultProductCollectionMode: KioskPublicProductCollectionMode;
       readonly paymentSurface: KioskPublicPaymentSurface;
+      readonly catalogMedia?: KioskPublicCatalogMedia;
       /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
       readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
@@ -89,9 +96,10 @@ export type KioskPublicConfigV1 =
       readonly defaultProductCollectionMode?: KioskPublicProductCollectionMode;
       readonly donation: KioskPublicDonationPayload;
       readonly paymentSurface: KioskPublicPaymentSurface;
+      readonly catalogMedia?: KioskPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     };
 
 /** Current contract version emitted by the backend. */
-export const KIOSK_PUBLIC_CONFIG_VERSION = 2;
+export const KIOSK_PUBLIC_CONFIG_VERSION = 3;

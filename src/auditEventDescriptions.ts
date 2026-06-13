@@ -135,6 +135,18 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when donation amount presets linked to a kiosk are updated. One line per save.',
     cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na kiosk. Jeden řádek za uložení.',
   },
+  'admin.product.media_saved': {
+    en: 'Recorded when an admin saves a product or variant image gallery. One line per successful gallery PUT.',
+    cs: 'Zapíše se, když administrátor uloží galerii obrázků produktu nebo varianty. Jeden řádek za úspěšné uložení galerie.',
+  },
+  'admin.product.media_deleted': {
+    en: 'Recorded when images are removed from a product gallery during save. One line per save that deletes images.',
+    cs: 'Zapíše se, když jsou při ukládání galerie odstraněny obrázky produktu. Jeden řádek za uložení s odstraněním.',
+  },
+  'admin.product.primary_image_changed': {
+    en: 'Recorded when the primary catalog image flag changes in a gallery save. One line when primary changes.',
+    cs: 'Zapíše se, když se při ukládání galerie změní hlavní obrázek v katalogu. Jeden řádek při změně primárního obrázku.',
+  },
   'dev.tenant.created': {
     en: 'Recorded when platform staff create a brand-new organization in the dev tools. One line per new organization. Invitation links and passwords are not stored here.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích založí novou organizaci. Jeden řádek za novou organizaci. Odkazy z pozvánek a hesla se sem neukládají.',

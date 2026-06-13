@@ -135,6 +135,18 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Kiosk donation amounts updated',
     cs: 'Částky daru na kiosku upraveny',
   },
+  'admin.product.media_saved': {
+    en: 'Product gallery saved',
+    cs: 'Galerie produktu uložena',
+  },
+  'admin.product.media_deleted': {
+    en: 'Product gallery images removed',
+    cs: 'Obrázky galerie produktu odstraněny',
+  },
+  'admin.product.primary_image_changed': {
+    en: 'Primary product image changed',
+    cs: 'Změněn hlavní obrázek produktu',
+  },
   'dev.tenant.created': {
     en: 'Organization created (platform)',
     cs: 'Organizace založena (platforma)',

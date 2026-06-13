@@ -34,6 +34,10 @@ export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
+export * from './buildKioskLineKey.js';
+export * from './catalogMediaPatch.js';
+export * from './catalogImagePresentation.js';
+export * from './CatalogImagePlaceholder.js';
 export { PERMISSION_DOMAIN_LABELS, PERMISSION_LEVEL_LABELS, getPermissionDomainLabel, getPermissionLevelLabel, } from './permissions/permissionLabels.js';
 export { expandCapabilitiesForClientCheck, grantImpliesTarget, hasEffectiveCapability, hasAnyEffectiveCapability, ADMIN_USERS_MANAGE_BRIDGE_SOURCES, ADMIN_USERS_MANAGE_BRIDGE_TARGETS, BRIDGE_PARITY_FIXTURE_GRANTS, BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS, } from './permissions/effectiveCapabilities.js';
 //# sourceMappingURL=index.js.map

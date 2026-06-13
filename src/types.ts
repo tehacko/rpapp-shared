@@ -73,6 +73,8 @@ export interface Product {
   description: string;
   image?: string;
   imageUrl?: string;
+  thumbnailUrl?: string | null;
+  galleryVersion?: number;
   clickedOn: number;
   qrCodesGenerated: number;
   numberOfPurchases: number;
@@ -80,8 +82,14 @@ export interface Product {
   updatedAt: string;
 }
 
+export interface CatalogImageFocal {
+  focalPointX?: number | null;
+  focalPointY?: number | null;
+  cropZoom?: number | null;
+}
+
 /** Slim variant row for kiosk/customer catalog UIs and public variant list API. */
-export interface CatalogVariantSummary {
+export interface CatalogVariantSummary extends CatalogImageFocal {
   id: number;
   name: string;
   price: number;
@@ -93,7 +101,7 @@ export interface CatalogVariantSummary {
 }
 
 // Kiosk-specific product data (what customers see)
-export interface KioskProduct extends Product {
+export interface KioskProduct extends Product, CatalogImageFocal {
   quantityInStock: number;
   kioskClickedOn: number;
   kioskNumberOfPurchases: number;
@@ -175,6 +183,8 @@ export interface Transaction {
 export interface CartItem {
   product: KioskProduct;
   quantity: number;
+  variantId?: number | null;
+  variant?: { id: number; name?: string };
 }
 
 export interface Cart {
@@ -341,6 +351,7 @@ export interface StartMonitoringResponse {
 export interface GatewayCreateRequest {
   items: Array<{
     productId: number;
+    variantId?: number | null;
     quantity: number;
     price: number;
   }>;

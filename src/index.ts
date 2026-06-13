@@ -34,6 +34,10 @@ export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
+export * from './buildKioskLineKey.js';
+export * from './catalogMediaPatch.js';
+export * from './catalogImagePresentation.js';
+export * from './CatalogImagePlaceholder.js';
 export {
   PERMISSION_DOMAIN_LABELS,
   PERMISSION_LEVEL_LABELS,
