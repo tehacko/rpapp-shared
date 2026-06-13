@@ -74,7 +74,7 @@ export interface KioskPublicPaymentSurface {
 export interface KioskPublicCatalogMedia {
   readonly cardAspectRatio: string;
   readonly thumbnailAspectRatio: string;
-  readonly objectFit: 'cover';
+  readonly objectFit: 'cover' | 'contain';
 }
 
 export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
