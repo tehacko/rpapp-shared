@@ -3,6 +3,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTICS_KIOSK_EVENTS,
   ANALYTICS_RETAIL_EVENTS,
+  ANALYTICS_SERVER_OPS_EVENTS,
   ANALYTICS_UNIVERSAL_EVENTS,
   type AnalyticsEventName,
 } from './analyticsEvents.js';
@@ -173,12 +174,23 @@ const KIOSK_DESCRIPTIONS: Record<
   },
 };
 
+const SERVER_OPS_DESCRIPTIONS: Record<
+  (typeof ANALYTICS_SERVER_OPS_EVENTS)[keyof typeof ANALYTICS_SERVER_OPS_EVENTS],
+  LocalizedLabel
+> = {
+  [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_MISSED]: {
+    en: 'Counts when an expected recurring donation payment did not arrive by the due date. One count per missed period on a standing-order setup. Emitted by the reconciliation worker, not by a customer session.',
+    cs: 'Počítá se, když očekávaná platba opakovaného daru nedorazí do termínu. Jednou za každé zmeškané období trvalého příkazu. Emituje workers reconciliace, ne klientská relace.',
+  },
+};
+
 function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, LocalizedLabel> {
   const descriptions = {
     ...UNIVERSAL_DESCRIPTIONS,
     ...RETAIL_DESCRIPTIONS,
     ...DONATION_DESCRIPTIONS,
     ...KIOSK_DESCRIPTIONS,
+    ...SERVER_OPS_DESCRIPTIONS,
   } as Record<AnalyticsEventName, LocalizedLabel>;
 
   for (const name of ANALYTICS_EVENT_NAMES) {

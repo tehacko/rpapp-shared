@@ -167,6 +167,34 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when staff remove the “needs refund check” flag from a payment. One line per removal.',
     cs: 'Zapíše se, když pracovník zruší příznak „kontrola vrácení“ u platby. Jeden řádek za zrušení.',
   },
+  'reconciliation.bank_inbound.matched': {
+    en: 'Recorded when an inbound bank movement is automatically matched to an open order or donation obligation.',
+    cs: 'Zapíše se, když je příchozí bankovní pohyb automaticky spárován s otevřenou objednávkou nebo závazkem daru.',
+  },
+  'reconciliation.bank_inbound.attribute': {
+    en: 'Recorded when staff manually attribute an inbound bank movement to a transaction.',
+    cs: 'Zapíše se, když pracovník ručně přiřadí příchozí bankovní pohyb k transakci.',
+  },
+  'reconciliation.payment_claim.submitted': {
+    en: 'Recorded when a customer submits a payment claim for an orphan inbound transfer.',
+    cs: 'Zapíše se, když zákazník nahlásí platbu za nespárovaný příchozí převod.',
+  },
+  'reconciliation.payment_claim.approved': {
+    en: 'Recorded when a payment claim is approved and linked to a transaction.',
+    cs: 'Zapíše se, když je nahlášení platby schváleno a propojeno s transakcí.',
+  },
+  'reconciliation.payment_claim.rejected': {
+    en: 'Recorded when a payment claim is rejected by staff review.',
+    cs: 'Zapíše se, když pracovník zamítne nahlášení platby.',
+  },
+  'reconciliation.recurring_payment.missed': {
+    en: 'Recorded when an expected recurring donation payment was not received by the due date.',
+    cs: 'Zapíše se, když očekávaná platba pravidelného daru nedorazila do termínu splatnosti.',
+  },
+  'reconciliation.bank_account.mode_changed': {
+    en: 'Recorded when bank account reconciliation or customer claim mode is changed.',
+    cs: 'Zapíše se při změně režimu párování nebo nahlášení plateb u bankovního účtu.',
+  },
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',

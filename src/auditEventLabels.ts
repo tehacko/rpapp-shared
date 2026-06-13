@@ -167,6 +167,34 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Refund check cleared',
     cs: 'Zrušeno označení vrácení',
   },
+  'reconciliation.bank_inbound.matched': {
+    en: 'Inbound bank payment matched',
+    cs: 'Příchozí bankovní platba spárována',
+  },
+  'reconciliation.bank_inbound.attribute': {
+    en: 'Inbound bank payment attributed',
+    cs: 'Příchozí bankovní platba přiřazena',
+  },
+  'reconciliation.payment_claim.submitted': {
+    en: 'Payment claim submitted',
+    cs: 'Nahlášení platby odesláno',
+  },
+  'reconciliation.payment_claim.approved': {
+    en: 'Payment claim approved',
+    cs: 'Nahlášení platby schváleno',
+  },
+  'reconciliation.payment_claim.rejected': {
+    en: 'Payment claim rejected',
+    cs: 'Nahlášení platby zamítnuto',
+  },
+  'reconciliation.recurring_payment.missed': {
+    en: 'Recurring donation payment missed',
+    cs: 'Chybějící platba pravidelného daru',
+  },
+  'reconciliation.bank_account.mode_changed': {
+    en: 'Bank account reconciliation mode changed',
+    cs: 'Změna režimu bankovního účtu',
+  },
   'export.analytics.explore.exported': {
     en: 'Customer behavior export',
     cs: 'Export chování zákazníků',

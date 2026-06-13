@@ -99,6 +99,8 @@ export interface Kiosk {
     lastHeartbeat?: string | null;
     kioskOperationalMode: KioskOperationalMode;
     defaultProductCollectionMode?: KioskProductCollectionMode;
+    productBankAccountId?: string | null;
+    donationBankAccountId?: string | null;
     cardPresentLocationId?: string | null;
     createdAt: string;
     updatedAt: string;
@@ -138,7 +140,7 @@ export interface Transaction {
     qrCodeData?: string;
     variableSymbol?: string;
     receiptType: ReceiptType;
-    externalBankReferenceId?: string;
+    bankTransferTransactionId?: string;
     lastBankCheckAt?: string;
     bankCheckCount: number;
     createdAt: string;

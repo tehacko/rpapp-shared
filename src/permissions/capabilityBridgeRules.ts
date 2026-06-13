@@ -37,6 +37,34 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
   ['dev:aggregates:run', ['platform.aggregates.manage', 'platform.aggregates.view']],
   ['dev:compliance:audit:read', ['platform.complianceAudit.view']],
   ['dev:compliance:gdpr:read', ['platform.complianceGdpr.view']],
+  [
+    'tenant.paymentPreferences.view',
+    ['tenant.bankAccounts.read', 'tenant.bankInbox.read'],
+  ],
+  [
+    'tenant.paymentPreferences.manage',
+    [
+      'tenant.bankAccounts.manage',
+      'tenant.bankAccounts.read',
+      'tenant.bankInbox.manage',
+      'tenant.bankInbox.read',
+      'tenant.paymentClaims.approve',
+    ],
+  ],
+  [
+    'ops:payment-preferences:read',
+    ['tenant.bankAccounts.read', 'tenant.bankInbox.read'],
+  ],
+  [
+    'ops:payment-preferences:manage',
+    [
+      'tenant.bankAccounts.manage',
+      'tenant.bankAccounts.read',
+      'tenant.bankInbox.manage',
+      'tenant.bankInbox.read',
+      'tenant.paymentClaims.approve',
+    ],
+  ],
 ]);
 
 /**

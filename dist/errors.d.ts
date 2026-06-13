@@ -55,4 +55,22 @@ export declare const formatError: (error: Error | AppError, details?: unknown) =
  * Used in React components to display to users
  */
 export declare const getErrorMessage: (error: Error | AppError) => string;
+export declare const BANK_ERROR_CODES: {
+    readonly BANK_ACCOUNT_PURPOSE_NOT_ALLOWED: "BANK_ACCOUNT_PURPOSE_NOT_ALLOWED";
+    readonly BANK_ACCOUNT_NOT_CONFIGURED: "BANK_ACCOUNT_NOT_CONFIGURED";
+    readonly BANK_ACCOUNT_NOT_FOUND: "BANK_ACCOUNT_NOT_FOUND";
+    readonly BANK_ACCOUNT_INACTIVE: "BANK_ACCOUNT_INACTIVE";
+    readonly DUPLICATE_BANK_REFERENCE: "DUPLICATE_BANK_REFERENCE";
+    readonly PAYMENT_CLAIM_CAP_REACHED: "PAYMENT_CLAIM_CAP_REACHED";
+    readonly PAYMENT_CLAIM_COOLDOWN: "PAYMENT_CLAIM_COOLDOWN";
+    readonly BANK_RECONCILIATION_FAILED: "BANK_RECONCILIATION_FAILED";
+    readonly BANK_RECONCILIATION_CONFLICT: "BANK_RECONCILIATION_CONFLICT";
+};
+export type BankErrorCode = (typeof BANK_ERROR_CODES)[keyof typeof BANK_ERROR_CODES];
+export declare const BANK_ACCOUNT_PURPOSE_NOT_ALLOWED: "BANK_ACCOUNT_PURPOSE_NOT_ALLOWED";
+export declare const BANK_ACCOUNT_NOT_CONFIGURED: "BANK_ACCOUNT_NOT_CONFIGURED";
+export declare const BANK_ACCOUNT_INACTIVE: "BANK_ACCOUNT_INACTIVE";
+export declare const DUPLICATE_BANK_REFERENCE: "DUPLICATE_BANK_REFERENCE";
+export declare const PAYMENT_CLAIM_CAP_REACHED: "PAYMENT_CLAIM_CAP_REACHED";
+export declare const PAYMENT_CLAIM_COOLDOWN: "PAYMENT_CLAIM_COOLDOWN";
 //# sourceMappingURL=errors.d.ts.map

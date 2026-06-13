@@ -38,6 +38,13 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: 'payment_confirmed', surface: 'server', layer: 'BE', required: true, reference: 'CompletePaymentTransactionUseCase' },
   { eventName: 'donation_started', surface: 'customer', layer: 'FE', required: true, reference: 'PhoneFirstDonationJourney' },
   { eventName: 'kiosk_wakeup', surface: 'kiosk', layer: 'FE', required: true, reference: 'useKioskOrchestration' },
+  {
+    eventName: 'recurring_payment_missed',
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'RecurringDonationMissedPeriodWorker',
+  },
 ] as const;
 
 const ALLOWED_FE_REFERENCES = new Set<string>([
@@ -64,6 +71,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'CreateQRPaymentUseCase',
   'CompletePaymentTransactionUseCase',
   'CreatePostKioskAnalyticsChildSessionUseCase',
+  'RecurringDonationMissedPeriodWorker',
 ]);
 
 export function validateAnalyticsEmitterManifest(): string[] {

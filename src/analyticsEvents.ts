@@ -2,7 +2,8 @@
  * Analytics event catalog v1 — single source of truth shared across
  * backend, kiosk, customer PWA, and admin (where applicable).
  *
- * Plan §2.1 — exact 35 events (17 universal + 7 retail + 9 donation + 2 kiosk).
+ * Plan §2.1 — core client events (17 universal + 7 retail + 9 donation + 2 kiosk)
+ * plus server-side operational extensions (reconciliation, workers).
  * - All names are snake_case.
  * - Catalog version is `1` — `analytics_events.catalogVersion` must equal this.
  * - Unknown event names → HTTP 400 on ingest.
@@ -71,11 +72,19 @@ export const ANALYTICS_KIOSK_EVENTS = {
   KIOSK_TIMEOUT: 'kiosk_timeout',
 } as const;
 
+/**
+ * Server-side operational events (workers, reconciliation) — no client emitter.
+ */
+export const ANALYTICS_SERVER_OPS_EVENTS = {
+  RECURRING_PAYMENT_MISSED: 'recurring_payment_missed',
+} as const;
+
 export const ANALYTICS_EVENT_NAMES = [
   ...Object.values(ANALYTICS_UNIVERSAL_EVENTS),
   ...Object.values(ANALYTICS_RETAIL_EVENTS),
   ...Object.values(ANALYTICS_DONATION_EVENTS),
   ...Object.values(ANALYTICS_KIOSK_EVENTS),
+  ...Object.values(ANALYTICS_SERVER_OPS_EVENTS),
 ] as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENT_NAMES)[number];
