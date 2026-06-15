@@ -279,6 +279,7 @@ export type ScreenType =
   | 'products'
   | 'payment'
   | 'confirmation'
+  | 'pickup-ticket'
   | 'admin-login'
   | 'admin-dashboard'
   | 'donation-amount'

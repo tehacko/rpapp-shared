@@ -49,6 +49,7 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
       'tenant.bankInbox.manage',
       'tenant.bankInbox.read',
       'tenant.paymentClaims.approve',
+      'tenant.orders.fulfill.read',
     ],
   ],
   [
@@ -64,6 +65,14 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
       'tenant.bankInbox.read',
       'tenant.paymentClaims.approve',
     ],
+  ],
+  [
+    'tenant.orders.fulfill.update',
+    ['tenant.orders.fulfill.read'],
+  ],
+  [
+    'tenant.orders.complete',
+    ['tenant.orders.fulfill.read', 'tenant.orders.fulfill.update'],
   ],
 ]);
 

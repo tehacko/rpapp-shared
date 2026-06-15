@@ -16,6 +16,8 @@ export * from './errors.js';
 export * from './components/DatabaseUnavailable.js';
 export * from './hooks/useDatabaseHealth.js';
 export * from './analyticsEvents.js';
+export * from './analyticsConsentAllowlist.js';
+export * from './analytics/retailOrderEvents.js';
 export * from './analyticsExploreCaps.js';
 export * from './analyticsApiTypes.js';
 export * from './analyticsAnonymousIdentity.js';

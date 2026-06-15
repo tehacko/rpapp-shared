@@ -1,9 +1,7 @@
 /**
- * Events ingestible on MOBILE without active ANALYTICS `CustomerTenantConsent`
- * when `consentIngestGateEnabled` is true (tier-2 gate — draft for legal review).
- *
- * Must stay byte-identical to the mirror in
- * `up-backend/src/domain/analytics/analyticsEventCatalog.ts`.
+ * MOBILE tier-2 consent allowlist — mirror of
+ * `up-backend/src/domain/analytics/analyticsEventCatalog.ts`
+ * (`ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT`).
  */
 import type { AnalyticsEventName } from './analyticsEvents.js';
 
@@ -23,14 +21,11 @@ export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'payment_failed',
   'receipt_opened',
   'retail_order_paid',
+  'retail_order_prepared',
+  'retail_order_ready',
+  'retail_order_collected',
+  'retail_ticket_created',
+  'retail_pickup_scheduled',
+  'retail_pickup_slot_missed',
   'donation_completed',
 ] as const satisfies readonly AnalyticsEventName[];
-
-export type AnalyticsEventAllowedWithoutConsent =
-  (typeof ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT)[number];
-
-const ALLOWED_SET = new Set<string>(ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT);
-
-export function isAnalyticsEventAllowedWithoutConsent(eventName: string): boolean {
-  return ALLOWED_SET.has(eventName);
-}

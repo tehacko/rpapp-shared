@@ -235,7 +235,7 @@ export type WebSocketMessage = {
     timestamp?: string;
     [key: string]: any;
 };
-export type ScreenType = 'products' | 'payment' | 'confirmation' | 'admin-login' | 'admin-dashboard' | 'donation-amount' | 'donation-project' | 'donation-method' | 'donation-pay-qr' | 'donation-pay-gateway' | 'donation-misconfig';
+export type ScreenType = 'products' | 'payment' | 'confirmation' | 'pickup-ticket' | 'admin-login' | 'admin-dashboard' | 'donation-amount' | 'donation-project' | 'donation-method' | 'donation-pay-qr' | 'donation-pay-gateway' | 'donation-misconfig';
 export interface CreateQRPaymentRequest {
     items: Array<{
         productId: number;

@@ -2,7 +2,7 @@
  * Analytics event catalog v1 — single source of truth shared across
  * backend, kiosk, customer PWA, and admin (where applicable).
  *
- * Plan §2.1 — core client events (17 universal + 7 retail + 9 donation + 2 kiosk)
+ * Plan §2.1 — core client events (17 universal + retail + donation + 2 kiosk)
  * plus server-side operational extensions (reconciliation, workers).
  * - All names are snake_case.
  * - Catalog version is `1` — `analytics_events.catalogVersion` must equal this.
@@ -10,6 +10,8 @@
  * - No `KIOSK_*` legacy uppercase names — those constants are removed from
  *   `rpapp-kiosk/.../kioskAnalyticsEvents.ts` per plan §2.1 / §10.2.3.
  */
+
+import { RETAIL_ORDER_EVENTS } from './analytics/retailOrderEvents.js';
 
 export const ANALYTICS_EVENT_CATALOG_VERSION = 1 as const;
 
@@ -37,7 +39,7 @@ export const ANALYTICS_UNIVERSAL_EVENTS = {
 } as const;
 
 /**
- * Retail events (7).
+ * Retail events (checkout funnel + order fulfillment §16).
  */
 export const ANALYTICS_RETAIL_EVENTS = {
   CATALOG_INTERACTION: 'catalog_interaction',
@@ -47,6 +49,7 @@ export const ANALYTICS_RETAIL_EVENTS = {
   CHECKOUT_STARTED: 'checkout_started',
   RETAIL_ORDER_PAID: 'retail_order_paid',
   RETAIL_ORDER_ABANDONED: 'retail_order_abandoned',
+  ...RETAIL_ORDER_EVENTS,
 } as const;
 
 /**

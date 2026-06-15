@@ -116,6 +116,30 @@ const RETAIL_DESCRIPTIONS: Record<
     en: 'Counts when someone leaves a shop order without paying. One count per abandoned order attempt. Not removing one item from the cart.',
     cs: 'Počítá se, když někdo opustí objednávku v obchodě bez zaplacení. Jednou za opuštěný pokus. Není odebrání jedné položky z košíku.',
   },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_PREPARED]: {
+    en: 'Counts when staff or the system moves a collect-later order into preparation. One count per transition to preparing.',
+    cs: 'Počítá se, když personál nebo systém přesune objednávku collect-later do přípravy. Jednou za přechod do přípravy.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_READY]: {
+    en: 'Counts when an order is marked ready for pickup. One count per ready transition. Customer notifications may follow separately.',
+    cs: 'Počítá se, když je objednávka označena jako připravená k vyzvednutí. Jednou za přechod do připraveno. Upozornění zákazníkovi může následovat zvlášť.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_COLLECTED]: {
+    en: 'Counts when the customer collects a ready order. One count per successful pickup confirmation.',
+    cs: 'Počítá se, když zákazník vyzvedne připravenou objednávku. Jednou za úspěšné potvrzení vyzvednutí.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_TICKET_CREATED]: {
+    en: 'Counts when a kiosk collect-later ticket is created before payment. One count per ticket row.',
+    cs: 'Počítá se při vytvoření kioskového lístku collect-later před zaplacením. Jednou za každý lístek.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_PICKUP_SCHEDULED]: {
+    en: 'Counts when a customer chooses a scheduled pickup slot. One count per scheduled slot selection.',
+    cs: 'Počítá se, když zákazník zvolí plánovaný slot vyzvednutí. Jednou za výběr slotu.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.RETAIL_PICKUP_SLOT_MISSED]: {
+    en: 'Counts when a scheduled pickup window passes without collection. One count per missed window detected by workers.',
+    cs: 'Počítá se, když plánované okno vyzvednutí uplyne bez vyzvednutí. Jednou za zmeškané okno zjištěné workers.',
+  },
 };
 
 const DONATION_DESCRIPTIONS: Record<
