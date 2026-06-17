@@ -8,6 +8,12 @@ export const RETAIL_ORDER_EVENTS = {
   RETAIL_TICKET_CREATED: 'retail_ticket_created',
   RETAIL_PICKUP_SCHEDULED: 'retail_pickup_scheduled',
   RETAIL_PICKUP_SLOT_MISSED: 'retail_pickup_slot_missed',
+  CHECKOUT_MODE_SELECTED: 'checkout_mode_selected',
+  PICKUP_QR_ISSUED: 'pickup_qr_issued',
+  PICKUP_QR_SCANNED: 'pickup_qr_scanned',
+  PICKUP_STAFF_MARK_PAID: 'pickup_staff_mark_paid',
+  SLUG_LEGACY_REDIRECT: 'slug_legacy_redirect',
+  TENANT_SWITCHED: 'tenant_switched',
 } as const;
 
 export type RetailOrderEventName = (typeof RETAIL_ORDER_EVENTS)[keyof typeof RETAIL_ORDER_EVENTS];

@@ -95,9 +95,10 @@ export interface KioskProduct extends Product, CatalogImageFocal {
     variantCount?: number;
 }
 export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
-export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER' | 'KIOSK_COLLECT_LATER';
 export interface Kiosk {
     id: number;
+    code?: string | null;
     name: string;
     location: string;
     description?: string;

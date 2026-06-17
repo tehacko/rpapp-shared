@@ -100,7 +100,8 @@ export class APIClient {
     }
     if (endpoint.startsWith('/api/')) {
       // Handle query strings - split endpoint and query, inject tenant into path only
-      const [path, query] = endpoint.split('?');
+      const [pathPart, query] = endpoint.split('?');
+      const path = pathPart ?? endpoint;
       const tenantPath = `/api/${this.tenantCode}${path.slice(4)}`;
       return query ? `${tenantPath}?${query}` : tenantPath;
     }

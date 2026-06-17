@@ -116,11 +116,12 @@ export interface KioskProduct extends Product, CatalogImageFocal {
 // donation flow. Admin CRUD edits the same property.
 export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
 
-export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER' | 'KIOSK_COLLECT_LATER';
 
 // Database model interfaces matching Prisma schema
 export interface Kiosk {
   id: number;
+  code?: string | null;
   name: string;
   location: string;
   description?: string;

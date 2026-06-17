@@ -140,6 +140,30 @@ const RETAIL_DESCRIPTIONS: Record<
     en: 'Counts when a scheduled pickup window passes without collection. One count per missed window detected by workers.',
     cs: 'Počítá se, když plánované okno vyzvednutí uplyne bez vyzvednutí. Jednou za zmeškané okno zjištěné workers.',
   },
+  [ANALYTICS_RETAIL_EVENTS.CHECKOUT_MODE_SELECTED]: {
+    en: 'Counts when a customer selects a checkout sub-mode (pay now, collect later, etc.). One count per selection.',
+    cs: 'Počítá se, když zákazník zvolí podrežim pokladny (zaplatit hned, vyzvednout později atd.). Jednou za výběr.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_ISSUED]: {
+    en: 'Counts when pickup QR or scan credentials are issued for an order. One count per issuance.',
+    cs: 'Počítá se při vydání QR nebo skenovacích údajů pro vyzvednutí objednávky. Jednou za vydání.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_SCANNED]: {
+    en: 'Counts when staff or kiosk scans a pickup QR or short code to resolve an order. One count per scan.',
+    cs: 'Počítá se, když personál nebo kiosk naskenuje QR nebo krátký kód pro dohledání objednávky. Jednou za sken.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_STAFF_MARK_PAID]: {
+    en: 'Counts when pickup staff marks an unpaid ticket as paid in cash at the stand. One count per mark-paid action.',
+    cs: 'Počítá se, když personál na výdeji označí nezaplacený lístek jako zaplacený hotově. Jednou za akci.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.SLUG_LEGACY_REDIRECT]: {
+    en: 'Counts when a legacy kioskId shop URL redirects to a slug-based prodejní místo URL. One count per redirect.',
+    cs: 'Počítá se při přesměrování staré URL s kioskId na URL s slugem prodejního místa. Jednou za přesměrování.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.TENANT_SWITCHED]: {
+    en: 'Counts when a logged-in customer switches tenant context in the account shop flow. One count per switch.',
+    cs: 'Počítá se, když přihlášený zákazník přepne tenant v účtu/obchodu. Jednou za přepnutí.',
+  },
 };
 
 const DONATION_DESCRIPTIONS: Record<

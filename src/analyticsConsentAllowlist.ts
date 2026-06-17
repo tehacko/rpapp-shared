@@ -27,5 +27,16 @@ export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'retail_ticket_created',
   'retail_pickup_scheduled',
   'retail_pickup_slot_missed',
+  'pickup_qr_issued',
+  'pickup_qr_scanned',
+  'pickup_staff_mark_paid',
+  'checkout_mode_selected',
+  'slug_legacy_redirect',
   'donation_completed',
 ] as const satisfies readonly AnalyticsEventName[];
+
+export function isAnalyticsEventAllowedWithoutConsent(
+  eventName: AnalyticsEventName
+): boolean {
+  return (ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT as readonly string[]).includes(eventName);
+}

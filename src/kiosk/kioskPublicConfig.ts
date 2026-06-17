@@ -71,6 +71,8 @@ export interface KioskPublicPaymentSurface {
   readonly cardPresentEnabled: boolean;
 }
 
+export type KioskPublicCommerceConfig = Record<string, unknown>;
+
 export interface KioskPublicCatalogMedia {
   readonly cardAspectRatio: string;
   readonly thumbnailAspectRatio: string;
@@ -79,27 +81,34 @@ export interface KioskPublicCatalogMedia {
 
 export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER' | 'KIOSK_COLLECT_LATER';
 
+export interface KioskPublicConfigLocationFields {
+  readonly prodejniMistoSlug: string | null;
+  readonly customerShopUrl: string | null;
+}
+
 export type KioskPublicConfigV1 =
-  | {
+  | ({
       readonly configVersion: number;
       readonly kioskOperationalMode: 'PRODUCTS';
       readonly defaultProductCollectionMode: KioskPublicProductCollectionMode;
+      readonly commerceConfigJson?: KioskPublicCommerceConfig | null;
       readonly paymentSurface: KioskPublicPaymentSurface;
       readonly catalogMedia?: KioskPublicCatalogMedia;
       /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
       readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    }
-  | {
+    } & KioskPublicConfigLocationFields)
+  | ({
       readonly configVersion: number;
       readonly kioskOperationalMode: 'DONATION';
       readonly defaultProductCollectionMode?: KioskPublicProductCollectionMode;
+      readonly commerceConfigJson?: KioskPublicCommerceConfig | null;
       readonly donation: KioskPublicDonationPayload;
       readonly paymentSurface: KioskPublicPaymentSurface;
       readonly catalogMedia?: KioskPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    };
+    } & KioskPublicConfigLocationFields);
 
 /** Current contract version emitted by the backend. */
-export const KIOSK_PUBLIC_CONFIG_VERSION = 3;
+export const KIOSK_PUBLIC_CONFIG_VERSION = 4;
