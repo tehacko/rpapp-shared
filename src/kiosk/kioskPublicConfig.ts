@@ -82,7 +82,7 @@ export interface KioskPublicCatalogMedia {
 export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER' | 'KIOSK_COLLECT_LATER';
 
 export interface KioskPublicConfigLocationFields {
-  readonly prodejniMistoSlug: string | null;
+  readonly kioskSlug: string | null;
   readonly customerShopUrl: string | null;
 }
 

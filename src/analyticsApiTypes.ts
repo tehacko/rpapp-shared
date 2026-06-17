@@ -23,6 +23,7 @@ export interface AnalyticsStartSessionData {
 export interface ParsedAnalyticsStartSession {
   readonly sessionId: string;
   readonly created: boolean;
+  readonly isClosed: boolean;
   readonly sessionAuthToken?: string;
   readonly sessionAuthTokenExpiresAt?: string;
 }
@@ -46,9 +47,12 @@ export function parseAnalyticsStartSessionData(data: unknown): ParsedAnalyticsSt
   }
   const sessionAuthToken = record['sessionAuthToken'];
   const sessionAuthTokenExpiresAt = record['sessionAuthTokenExpiresAt'];
+  const completed = sessionRecord['completed'] === true;
+  const abandoned = sessionRecord['abandoned'] === true;
   return {
     sessionId,
     created: record['created'] === true,
+    isClosed: completed || abandoned,
     sessionAuthToken:
       typeof sessionAuthToken === 'string' && sessionAuthToken.length > 0
         ? sessionAuthToken

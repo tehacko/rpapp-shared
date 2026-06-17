@@ -12,6 +12,7 @@ describe('parseAnalyticsStartSessionData', () => {
     expect(parseAnalyticsStartSessionData(data)).toEqual({
       sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee',
       created: true,
+      isClosed: false,
     });
   });
 
@@ -25,8 +26,25 @@ describe('parseAnalyticsStartSessionData', () => {
     expect(parseAnalyticsStartSessionData(data)).toEqual({
       sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee',
       created: false,
+      isClosed: false,
       sessionAuthToken: 'tok',
       sessionAuthTokenExpiresAt: '2026-06-04T00:00:00.000Z',
+    });
+  });
+
+  it('parses closed session flags from nested session', () => {
+    expect(
+      parseAnalyticsStartSessionData({
+        session: {
+          sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee',
+          completed: true,
+        },
+        created: false,
+      }),
+    ).toEqual({
+      sessionId: 'aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee',
+      created: false,
+      isClosed: true,
     });
   });
 

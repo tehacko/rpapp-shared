@@ -38,7 +38,7 @@ export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
 export * from './buildKioskLineKey.js';
 export * from './catalogMediaPatch.js';
-export * from './commerce/reservedPmSlugs.js';
+export * from './commerce/reservedKioskSlugs.js';
 export * from './catalogImagePresentation.js';
 export * from './CatalogImagePlaceholder.js';
 export {
