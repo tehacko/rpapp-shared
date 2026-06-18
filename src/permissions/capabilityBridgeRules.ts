@@ -39,7 +39,7 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
   ['dev:compliance:gdpr:read', ['platform.complianceGdpr.view']],
   [
     'tenant.paymentPreferences.view',
-    ['tenant.bankAccounts.read', 'tenant.bankInbox.read'],
+    ['tenant.bankAccounts.read', 'tenant.bankInbox.read', 'tenant.reconciliation.read'],
   ],
   [
     'tenant.paymentPreferences.manage',
@@ -49,12 +49,13 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
       'tenant.bankInbox.manage',
       'tenant.bankInbox.read',
       'tenant.paymentClaims.approve',
+      'tenant.reconciliation.read',
       'tenant.orders.fulfill.read',
     ],
   ],
   [
     'ops:payment-preferences:read',
-    ['tenant.bankAccounts.read', 'tenant.bankInbox.read'],
+    ['tenant.bankAccounts.read', 'tenant.bankInbox.read', 'tenant.reconciliation.read'],
   ],
   [
     'ops:payment-preferences:manage',
@@ -64,8 +65,12 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
       'tenant.bankInbox.manage',
       'tenant.bankInbox.read',
       'tenant.paymentClaims.approve',
+      'tenant.reconciliation.read',
     ],
   ],
+  ['tenant.bankInbox.read', ['tenant.reconciliation.read']],
+  ['tenant.bankInbox.manage', ['tenant.reconciliation.read']],
+  ['tenant.paymentClaims.approve', ['tenant.reconciliation.read']],
   [
     'tenant.orders.fulfill.update',
     ['tenant.orders.fulfill.read'],
@@ -156,6 +161,13 @@ export const BRIDGE_PARITY_FIXTURE_GRANTS = [
   'dev:aggregates:run',
   'dev:compliance:audit:read',
   'dev:compliance:gdpr:read',
+  'ops:payment-preferences:read',
+  'ops:payment-preferences:manage',
+  'tenant.bankInbox.read',
+  'tenant.bankInbox.manage',
+  'tenant.paymentClaims.approve',
+  'tenant.paymentPreferences.view',
+  'tenant.paymentPreferences.manage',
 ] as const;
 
 export const BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS = [
@@ -168,4 +180,5 @@ export const BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS = [
   'platform.aggregates.manage',
   'platform.complianceAudit.view',
   'platform.complianceGdpr.view',
+  'tenant.reconciliation.read',
 ] as const;

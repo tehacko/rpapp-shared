@@ -72,4 +72,46 @@ describe('effectiveCapabilities client mirror', () => {
       hasEffectiveCapability(['dev:compliance:gdpr:read'], 'platform.complianceGdpr.view'),
     ).toBe(true);
   });
+
+  it('tenant.bankInbox.read bridges to tenant.reconciliation.read (MB-P0-14)', () => {
+    expect(
+      hasEffectiveCapability(['tenant.bankInbox.read'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('tenant.bankInbox.manage bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['tenant.bankInbox.manage'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('tenant.paymentClaims.approve bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['tenant.paymentClaims.approve'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('ops:payment-preferences:read bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['ops:payment-preferences:read'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('ops:payment-preferences:manage bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['ops:payment-preferences:manage'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('tenant.paymentPreferences.view bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['tenant.paymentPreferences.view'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
+
+  it('tenant.paymentPreferences.manage bridges to tenant.reconciliation.read', () => {
+    expect(
+      hasEffectiveCapability(['tenant.paymentPreferences.manage'], 'tenant.reconciliation.read'),
+    ).toBe(true);
+  });
 });
