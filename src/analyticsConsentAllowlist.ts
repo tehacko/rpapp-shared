@@ -31,6 +31,8 @@ export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'pickup_qr_scanned',
   'pickup_staff_mark_paid',
   'checkout_mode_selected',
+  'self_service_sla_ack_shown',
+  'self_service_sla_ack_checked',
   'slug_legacy_redirect',
   'donation_completed',
 ] as const satisfies readonly AnalyticsEventName[];

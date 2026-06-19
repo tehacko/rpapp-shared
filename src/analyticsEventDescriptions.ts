@@ -116,6 +116,10 @@ const RETAIL_DESCRIPTIONS: Record<
     en: 'Counts when someone leaves a shop order without paying. One count per abandoned order attempt. Not removing one item from the cart.',
     cs: 'Počítá se, když někdo opustí objednávku v obchodě bez zaplacení. Jednou za opuštěný pokus. Není odebrání jedné položky z košíku.',
   },
+  [ANALYTICS_RETAIL_EVENTS.BUY_AGAIN_FAILED_STOCK]: {
+    en: 'Counts when buy-again validation finds no lines in stock. Emitted on server and client before showing the no-stock error.',
+    cs: 'Počítá se, když validace „koupit znovu“ nenajde žádné položky skladem. Odesílá server i klient před chybou bez zásoby.',
+  },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_PREPARED]: {
     en: 'Counts when staff or the system moves a collect-later order into preparation. One count per transition to preparing.',
     cs: 'Počítá se, když personál nebo systém přesune objednávku collect-later do přípravy. Jednou za přechod do přípravy.',
@@ -143,6 +147,14 @@ const RETAIL_DESCRIPTIONS: Record<
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_MODE_SELECTED]: {
     en: 'Counts when a customer selects a checkout sub-mode (pay now, collect later, etc.). One count per selection.',
     cs: 'Počítá se, když zákazník zvolí podrežim pokladny (zaplatit hned, vyzvednout později atd.). Jednou za výběr.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_ACK_SHOWN]: {
+    en: 'Counts when the self-service pickup SLA acknowledgement is shown before payment.',
+    cs: 'Počítá se při zobrazení potvrzení SLA pro samoobslužné vyzvednutí před platbou.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_ACK_CHECKED]: {
+    en: 'Counts when the customer checks the self-service SLA acknowledgement checkbox.',
+    cs: 'Počítá se, když zákazník zaškrtne potvrzení SLA pro samoobslužné vyzvednutí.',
   },
   [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_ISSUED]: {
     en: 'Counts when pickup QR or scan credentials are issued for an order. One count per issuance.',

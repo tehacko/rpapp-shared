@@ -73,7 +73,23 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
   ['tenant.paymentClaims.approve', ['tenant.reconciliation.read']],
   [
     'tenant.orders.fulfill.update',
-    ['tenant.orders.fulfill.read'],
+    ['tenant.orders.fulfill.read', 'tenant.orders.pickup.scan'],
+  ],
+  [
+    'tenant.orders.pickup.scan',
+    [
+      'tenant.orders.pickup.refuse',
+      'tenant.orders.pickup.hold',
+      'tenant.orders.pickup.reprint',
+    ],
+  ],
+  [
+    'tenant.kiosks.manage',
+    ['tenant.pickupPoints.manage', 'tenant.pickupPoints.read'],
+  ],
+  [
+    'tenant.kiosks.view',
+    ['tenant.pickupPoints.read'],
   ],
   [
     'tenant.orders.complete',

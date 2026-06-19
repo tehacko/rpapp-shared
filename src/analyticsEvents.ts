@@ -49,6 +49,7 @@ export const ANALYTICS_RETAIL_EVENTS = {
   CHECKOUT_STARTED: 'checkout_started',
   RETAIL_ORDER_PAID: 'retail_order_paid',
   RETAIL_ORDER_ABANDONED: 'retail_order_abandoned',
+  BUY_AGAIN_FAILED_STOCK: 'buy_again_failed_stock',
   ...RETAIL_ORDER_EVENTS,
 } as const;
 
