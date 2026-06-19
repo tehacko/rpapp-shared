@@ -1,5 +1,4 @@
-import { describe, expect, it } from 'vitest';
-import { isSessionMetadataV3 } from 'pi-kiosk-shared';
+import { isSessionMetadataV3 } from '../sessionMetadataV3.js';
 
 describe('sessionMetadataV3', () => {
   it('recognizes version 3 envelope', () => {
