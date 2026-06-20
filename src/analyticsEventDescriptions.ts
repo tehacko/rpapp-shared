@@ -148,6 +148,26 @@ const RETAIL_DESCRIPTIONS: Record<
     en: 'Counts when a customer selects a checkout sub-mode (pay now, collect later, etc.). One count per selection.',
     cs: 'Počítá se, když zákazník zvolí podrežim pokladny (zaplatit hned, vyzvednout později atd.). Jednou za výběr.',
   },
+  [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_CREATED]: {
+    en: 'Counts when a payment handoff session is created so the customer can finish checkout on another device. One count per handoff row.',
+    cs: 'Počítá se při vytvoření relace pro předání platby, aby zákazník dokončil pokladnu na jiném zařízení. Jednou za každý handoff.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_EXPIRED]: {
+    en: 'Counts when a payment handoff session expires before completion. One count per expired handoff.',
+    cs: 'Počítá se, když relace pro předání platby vyprší bez dokončení. Jednou za každé vypršení.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_COMPLETED]: {
+    en: 'Counts when a customer completes checkout through a payment handoff link. One count per successful handoff completion.',
+    cs: 'Počítá se, když zákazník dokončí pokladnu přes odkaz handoff platby. Jednou za úspěšné dokončení handoffu.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.BUY_AGAIN_STARTED]: {
+    en: 'Counts when a customer starts a buy-again flow from order history. One count per started buy-again attempt.',
+    cs: 'Počítá se, když zákazník zahájí nákup znovu z historie objednávek. Jednou za každý pokus.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.BUY_AGAIN_TRIMMED]: {
+    en: 'Counts when buy-again removes unavailable lines and continues with a reduced cart. One count per trim action.',
+    cs: 'Počítá se, když „koupit znovu“ odstraní nedostupné položky a pokračuje s menším košíkem. Jednou za ořezání.',
+  },
   [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_ACK_SHOWN]: {
     en: 'Counts when the self-service pickup SLA acknowledgement is shown before payment.',
     cs: 'Počítá se při zobrazení potvrzení SLA pro samoobslužné vyzvednutí před platbou.',
@@ -167,6 +187,30 @@ const RETAIL_DESCRIPTIONS: Record<
   [ANALYTICS_RETAIL_EVENTS.PICKUP_STAFF_MARK_PAID]: {
     en: 'Counts when pickup staff marks an unpaid ticket as paid in cash at the stand. One count per mark-paid action.',
     cs: 'Počítá se, když personál na výdeji označí nezaplacený lístek jako zaplacený hotově. Jednou za akci.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_PARTIAL_CONFIRM]: {
+    en: 'Counts when staff confirms a partial pickup (not all lines collected). One count per partial confirmation.',
+    cs: 'Počítá se, když personál potvrdí částečné vyzvednutí (ne všechny položky). Jednou za částečné potvrzení.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_FULFILLMENT_REFUSED]: {
+    en: 'Counts when pickup fulfillment is refused (for example policy or stock block). One count per refusal.',
+    cs: 'Počítá se, když je vyzvednutí odmítnuto (např. pravidlo nebo sklad). Jednou za odmítnutí.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_FULFILLMENT_HELD]: {
+    en: 'Counts when a pickup order is placed on hold pending review. One count per hold action.',
+    cs: 'Počítá se, když je objednávka k vyzvednutí pozastavena ke kontrole. Jednou za pozastavení.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.PICKUP_FULFILLMENT_HOLD_RELEASED]: {
+    en: 'Counts when a held pickup order is released back to normal flow. One count per release.',
+    cs: 'Počítá se, když je pozastavená objednávka uvolněna zpět do běžného toku. Jednou za uvolnění.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.KIOSK_CASH_COMPLETE]: {
+    en: 'Counts when a kiosk cash checkout completes successfully. One count per completed cash sale.',
+    cs: 'Počítá se při úspěšném dokončení hotovostní pokladny na kiosku. Jednou za hotovostní prodej.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
+    en: 'Counts when collect-later checkout options are configured for a session (slot, mode, etc.). One count per configuration.',
+    cs: 'Počítá se při nastavení možností collect-later pro relaci (slot, režim atd.). Jednou za konfiguraci.',
   },
   [ANALYTICS_RETAIL_EVENTS.SLUG_LEGACY_REDIRECT]: {
     en: 'Counts when a legacy kioskId shop URL redirects to a slug-based prodejní místo URL. One count per redirect.',

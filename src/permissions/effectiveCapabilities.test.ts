@@ -109,9 +109,15 @@ describe('effectiveCapabilities client mirror', () => {
     ).toBe(true);
   });
 
-  it('tenant.paymentPreferences.manage bridges to tenant.reconciliation.read', () => {
+  it('config:payments:manage implies tenant.bankAccounts.manage', () => {
     expect(
-      hasEffectiveCapability(['tenant.paymentPreferences.manage'], 'tenant.reconciliation.read'),
+      hasEffectiveCapability(['config:payments:manage'], 'tenant.bankAccounts.manage'),
     ).toBe(true);
+  });
+
+  it('config:payments:read implies tenant.bankAccounts.read', () => {
+    expect(hasEffectiveCapability(['config:payments:read'], 'tenant.bankAccounts.read')).toBe(
+      true,
+    );
   });
 });
