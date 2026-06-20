@@ -70,6 +70,11 @@
       "require": "./dist/clientLogRedaction.js",
       "types": "./dist/clientLogRedaction.d.ts"
     },
+    "./loyalty/loyaltySessionHandoff": {
+      "import": "./dist/loyalty/loyaltySessionHandoff.js",
+      "require": "./dist/loyalty/loyaltySessionHandoff.js",
+      "types": "./dist/loyalty/loyaltySessionHandoff.d.ts"
+    },
     "./sentry": {
       "import": "./dist/sentry/initSentry.js",
       "require": "./dist/sentry/initSentry.js",

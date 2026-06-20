@@ -86,6 +86,11 @@ export interface KioskPublicConfigLocationFields {
   readonly customerShopUrl: string | null;
 }
 
+export interface KioskPublicLoyaltyCapability {
+  readonly enabled: boolean;
+  readonly previewRequired: false;
+}
+
 export type KioskPublicConfigV1 =
   | ({
       readonly configVersion: number;
@@ -96,6 +101,7 @@ export type KioskPublicConfigV1 =
       readonly catalogMedia?: KioskPublicCatalogMedia;
       /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
       readonly outboxObligationsEnabled: boolean;
+      readonly loyalty?: KioskPublicLoyaltyCapability;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & KioskPublicConfigLocationFields)
   | ({
@@ -107,8 +113,9 @@ export type KioskPublicConfigV1 =
       readonly paymentSurface: KioskPublicPaymentSurface;
       readonly catalogMedia?: KioskPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
+      readonly loyalty?: KioskPublicLoyaltyCapability;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & KioskPublicConfigLocationFields);
 
 /** Current contract version emitted by the backend. */
-export const KIOSK_PUBLIC_CONFIG_VERSION = 4;
+export const KIOSK_PUBLIC_CONFIG_VERSION = 5;

@@ -11,6 +11,8 @@
  */
 export * from './types.js';
 export * from './kiosk/kioskPublicConfig.js';
+export * from './loyalty/types.js';
+export * from './loyalty/loyaltySessionHandoff.js';
 export * from './api.js';
 export * from './errors.js';
 export * from './components/DatabaseUnavailable.js';
