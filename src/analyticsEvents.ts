@@ -12,6 +12,7 @@
  */
 
 import { RETAIL_ORDER_EVENTS } from './analytics/retailOrderEvents.js';
+import { RETAIL_COMMERCE_EVENTS } from './analytics/retailCommerceEvents.js';
 
 export const ANALYTICS_EVENT_CATALOG_VERSION = 1 as const;
 
@@ -50,6 +51,7 @@ export const ANALYTICS_RETAIL_EVENTS = {
   RETAIL_ORDER_PAID: 'retail_order_paid',
   RETAIL_ORDER_ABANDONED: 'retail_order_abandoned',
   ...RETAIL_ORDER_EVENTS,
+  ...RETAIL_COMMERCE_EVENTS,
 } as const;
 
 /**

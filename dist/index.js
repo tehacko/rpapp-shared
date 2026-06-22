@@ -39,6 +39,7 @@ export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
 export * from './buildKioskLineKey.js';
+export * from './commerce/reservedKioskSlugs.js';
 export * from './catalogMediaPatch.js';
 export * from './commerce/reservedKioskSlugs.js';
 export * from './checkout/sessionMetadataV3.js';

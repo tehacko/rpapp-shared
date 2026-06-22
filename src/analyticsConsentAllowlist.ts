@@ -37,8 +37,10 @@ export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'donation_completed',
 ] as const satisfies readonly AnalyticsEventName[];
 
-export function isAnalyticsEventAllowedWithoutConsent(
-  eventName: AnalyticsEventName
-): boolean {
-  return (ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT as readonly string[]).includes(eventName);
+const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT_SET: ReadonlySet<string> = new Set(
+  ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT,
+);
+
+export function isAnalyticsEventAllowedWithoutConsent(eventName: string): boolean {
+  return ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT_SET.has(eventName);
 }

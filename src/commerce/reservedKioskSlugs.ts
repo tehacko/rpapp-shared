@@ -1,23 +1,25 @@
-/** First URL segment denylist for kiosk customer-shop slugs (customer PWA routes). */
+/**
+ * Customer PWA first-path segments under `/:tenantCode/...` that must not be used as kiosk codes.
+ */
 export const RESERVED_KIOSK_SLUGS = [
-  'shop',
-  'donate',
   'account',
+  'card',
   'checkout',
-  'sign-in',
+  'confirm-email',
+  'donate',
+  'forgot-password',
+  'onboarding',
+  'pickup',
   'post-kiosk',
   'post-kiosk-failure',
-  'orders',
-  'order',
-  'card',
-  'pickup',
-  'confirm-email',
+  'reset-password',
+  'shop',
+  'sign-in',
+  'sign-up',
 ] as const;
 
-export type ReservedKioskSlug = (typeof RESERVED_KIOSK_SLUGS)[number];
-
-const RESERVED_KIOSK_SLUG_SET = new Set<string>(RESERVED_KIOSK_SLUGS);
+const RESERVED_SET = new Set<string>(RESERVED_KIOSK_SLUGS);
 
 export function isReservedKioskSlug(slug: string): boolean {
-  return RESERVED_KIOSK_SLUG_SET.has(slug.trim().toLowerCase());
+  return RESERVED_SET.has(slug.trim().toLowerCase());
 }

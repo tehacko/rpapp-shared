@@ -7,6 +7,7 @@ import {
   ANALYTICS_UNIVERSAL_EVENTS,
   type AnalyticsEventName,
 } from './analyticsEvents.js';
+import { RETAIL_COMMERCE_EVENTS } from './analytics/retailCommerceEvents.js';
 import type { LocalizedLabel } from './labels/localizedLabel.js';
 
 /** Plain-language analytics descriptions for operators (cs + en), 1–3 short sentences. */
@@ -84,10 +85,7 @@ const UNIVERSAL_DESCRIPTIONS: Record<
   },
 };
 
-const RETAIL_DESCRIPTIONS: Record<
-  (typeof ANALYTICS_RETAIL_EVENTS)[keyof typeof ANALYTICS_RETAIL_EVENTS],
-  LocalizedLabel
-> = {
+const RETAIL_DESCRIPTIONS = {
   [ANALYTICS_RETAIL_EVENTS.CATALOG_INTERACTION]: {
     en: 'Counts when someone browses products — opens categories or product details in the shop. One count per browsing action recorded. Adding to cart is a different event.',
     cs: 'Počítá se, když někdo prohlíží produkty — otevře kategorie nebo detail v obchodě. Jednou za zaznamenanou interakci. Přidání do košíku je jiná událost.',
@@ -222,6 +220,92 @@ const RETAIL_DESCRIPTIONS: Record<
   },
 };
 
+const RETAIL_COMMERCE_DESCRIPTIONS: Record<
+  (typeof RETAIL_COMMERCE_EVENTS)[keyof typeof RETAIL_COMMERCE_EVENTS],
+  LocalizedLabel
+> = {
+  [RETAIL_COMMERCE_EVENTS.CHECKOUT_MODE_SELECTED]: {
+    en: 'Counts when a customer or kiosk user selects a checkout sub-mode (for example pay now vs collect later). One count per mode selection.',
+    cs: 'Počítá se, když zákazník nebo uživatel kiosku zvolí podrežim pokladny (např. zaplatit hned vs vyzvednout později). Jednou za výběr režimu.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_QR_ISSUED]: {
+    en: 'Counts when a pickup QR code is issued for an order. One count per issued code.',
+    cs: 'Počítá se při vydání QR kódu pro vyzvednutí objednávky. Jednou za vydaný kód.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_QR_SCANNED]: {
+    en: 'Counts when a pickup QR code is scanned at the stand or kiosk. One count per scan.',
+    cs: 'Počítá se při naskenování QR kódu pro vyzvednutí u stánku nebo kiosku. Jednou za sken.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_STAFF_MARK_PAID]: {
+    en: 'Counts when staff marks a collect-later order as paid at pickup. One count per mark-paid action.',
+    cs: 'Počítá se, když personál označí objednávku collect-later jako zaplacenou při vyzvednutí. Jednou za označení.',
+  },
+  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_CREATED]: {
+    en: 'Counts when a checkout handoff token is created for cross-device continuation. One count per handoff.',
+    cs: 'Počítá se při vytvoření handoff tokenu pro pokračování na jiném zařízení. Jednou za handoff.',
+  },
+  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_EXPIRED]: {
+    en: 'Counts when a checkout handoff expires before completion. One count per expired handoff.',
+    cs: 'Počítá se, když handoff pokladny vyprší bez dokončení. Jednou za vypršelý handoff.',
+  },
+  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_COMPLETED]: {
+    en: 'Counts when a checkout handoff is completed on the target device. One count per completed handoff.',
+    cs: 'Počítá se při dokončení handoff pokladny na cílovém zařízení. Jednou za dokončený handoff.',
+  },
+  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_STARTED]: {
+    en: 'Counts when a customer starts a buy-again flow from order history. One count per started flow.',
+    cs: 'Počítá se, když zákazník začne opakovaný nákup z historie objednávek. Jednou za zahájený tok.',
+  },
+  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_TRIMMED]: {
+    en: 'Counts when unavailable items are removed from a buy-again cart. One count per trim action.',
+    cs: 'Počítá se, když se z košíku opakovaného nákupu odstraní nedostupné položky. Jednou za úpravu.',
+  },
+  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_FAILED_STOCK]: {
+    en: 'Counts when buy-again cannot proceed because required items are out of stock. One count per failed attempt.',
+    cs: 'Počítá se, když opakovaný nákup nemůže pokračovat kvůli vyprodání položek. Jednou za neúspěšný pokus.',
+  },
+  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_ACK_SHOWN]: {
+    en: 'Counts when the self-service SLA acknowledgement is shown to the customer. One count per display.',
+    cs: 'Počítá se, když se zákazníkovi zobrazí potvrzení SLA samoobsluhy. Jednou za zobrazení.',
+  },
+  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_ACK_CHECKED]: {
+    en: 'Counts when the customer checks the self-service SLA acknowledgement box. One count per check.',
+    cs: 'Počítá se, když zákazník zaškrtne potvrzení SLA samoobsluhy. Jednou za zaškrtnutí.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_PARTIAL_CONFIRM]: {
+    en: 'Counts when staff or the system confirms a partial pickup fulfillment. One count per partial confirm.',
+    cs: 'Počítá se při potvrzení částečného vyzvednutí personálem nebo systémem. Jednou za částečné potvrzení.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_REFUSED]: {
+    en: 'Counts when a pickup fulfillment is refused (for example policy or stock hold). One count per refusal.',
+    cs: 'Počítá se, když je vyzvednutí odmítnuto (např. pravidlo nebo skladová blokace). Jednou za odmítnutí.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_HELD]: {
+    en: 'Counts when a pickup order is placed on fulfillment hold. One count per hold.',
+    cs: 'Počítá se, když je objednávka pro vyzvednutí pozastavena. Jednou za pozastavení.',
+  },
+  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_HOLD_RELEASED]: {
+    en: 'Counts when a pickup fulfillment hold is released. One count per release.',
+    cs: 'Počítá se, když je pozastavení vyzvednutí zrušeno. Jednou za zrušení pozastavení.',
+  },
+  [RETAIL_COMMERCE_EVENTS.KIOSK_CASH_COMPLETE]: {
+    en: 'Counts when a kiosk cash checkout is completed. One count per completed cash payment.',
+    cs: 'Počítá se při dokončení platby hotově na kiosku. Jednou za dokončenou hotovostní platbu.',
+  },
+  [RETAIL_COMMERCE_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
+    en: 'Counts when collect-later pickup options are configured during checkout. One count per configuration.',
+    cs: 'Počítá se při nastavení možností vyzvednutí collect-later v pokladně. Jednou za konfiguraci.',
+  },
+  [RETAIL_COMMERCE_EVENTS.SLUG_LEGACY_REDIRECT]: {
+    en: 'Counts when a legacy shop URL with kioskId query param is redirected to the tenant slug path. One count per redirect.',
+    cs: 'Počítá se při přesměrování staré URL obchodu s parametrem kioskId na cestu se slugem tenanta. Jednou za přesměrování.',
+  },
+  [RETAIL_COMMERCE_EVENTS.TENANT_SWITCHED]: {
+    en: 'Counts when the active tenant context is switched in the customer app. One count per switch.',
+    cs: 'Počítá se při přepnutí aktivního tenanta v zákaznické aplikaci. Jednou za přepnutí.',
+  },
+};
+
 const DONATION_DESCRIPTIONS: Record<
   (typeof ANALYTICS_DONATION_EVENTS)[keyof typeof ANALYTICS_DONATION_EVENTS],
   LocalizedLabel
@@ -292,6 +376,7 @@ function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, Localized
   const descriptions = {
     ...UNIVERSAL_DESCRIPTIONS,
     ...RETAIL_DESCRIPTIONS,
+    ...RETAIL_COMMERCE_DESCRIPTIONS,
     ...DONATION_DESCRIPTIONS,
     ...KIOSK_DESCRIPTIONS,
     ...SERVER_OPS_DESCRIPTIONS,
