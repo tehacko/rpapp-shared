@@ -26,6 +26,10 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
     { key: 'customersAnonymized', labelKey: 'compliance.audit.metadata.customersAnonymized' },
   ],
+  'gdpr.erasure.side_effects_pending': [
+    { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
+    { key: 'customerId', labelKey: 'compliance.audit.metadata.customerId' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

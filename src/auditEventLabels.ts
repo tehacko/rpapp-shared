@@ -219,6 +219,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'GDPR erasure completed',
     cs: 'GDPR výmaz dokončen',
   },
+  'gdpr.erasure.side_effects_pending': {
+    en: 'GDPR erasure side-effects pending',
+    cs: 'GDPR výmaz — čekají vedlejší účinky',
+  },
 };
 
 function buildAuditLabels(): Record<AuditEventCode, LocalizedLabel> {

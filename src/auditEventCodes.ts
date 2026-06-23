@@ -57,6 +57,7 @@ export const AUDIT_EVENT_CODES = [
   'export.analytics.explore.exported',
   'export.analytics.rollups.materialized',
   'gdpr.erasure.completed',
+  'gdpr.erasure.side_effects_pending',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];
