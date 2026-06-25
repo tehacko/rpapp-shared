@@ -1,7 +1,7 @@
 /**
- * Customer PWA first-path segments under `/:tenantCode/...` that must not be used as kiosk codes.
+ * Customer PWA first-path segments under `/:tenantCode/...` that must not be used as sales point codes.
  */
-export const RESERVED_KIOSK_SLUGS = [
+export const RESERVED_SALES_POINT_SLUGS = [
   'account',
   'card',
   'checkout',
@@ -18,8 +18,8 @@ export const RESERVED_KIOSK_SLUGS = [
   'sign-up',
 ] as const;
 
-const RESERVED_SET = new Set<string>(RESERVED_KIOSK_SLUGS);
+const RESERVED_SET = new Set<string>(RESERVED_SALES_POINT_SLUGS);
 
-export function isReservedKioskSlug(slug: string): boolean {
+export function isReservedSalesPointSlug(slug: string): boolean {
   return RESERVED_SET.has(slug.trim().toLowerCase());
 }

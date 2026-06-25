@@ -111,25 +111,21 @@ export interface KioskProduct extends Product, CatalogImageFocal {
   variantCount?: number;
 }
 
-// Plan v1.5.1 §G / §L — operational mode of a kiosk. The kiosk PWA reads it
-// via `public-config` and renders either the products catalog flow or the
-// donation flow. Admin CRUD edits the same property.
-export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
+export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
 
-export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+export type SalesPointProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 
-// Database model interfaces matching Prisma schema
-export interface Kiosk {
+export interface SalesPoint {
   id: number;
   code?: string | null;
   name: string;
   location: string;
   description?: string;
   isActive: boolean;
-  defaultVatRate?: number | null; // Default VAT rate for Products (applied to all products unless overridden)
-  lastHeartbeat?: string | null; // ISO date string - Last time kiosk contacted the backend
-  kioskOperationalMode: KioskOperationalMode;
-  defaultProductCollectionMode?: KioskProductCollectionMode;
+  defaultVatRate?: number | null;
+  lastHeartbeat?: string | null;
+  salesPointOperationalMode: SalesPointOperationalMode;
+  defaultProductCollectionMode?: SalesPointProductCollectionMode;
   productBankAccountId?: string | null;
   donationBankAccountId?: string | null;
   cardPresentLocationId?: string | null;

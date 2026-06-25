@@ -94,9 +94,9 @@ export interface KioskProduct extends Product, CatalogImageFocal {
     variants?: CatalogVariantSummary[];
     variantCount?: number;
 }
-export type KioskOperationalMode = 'PRODUCTS' | 'DONATION';
-export type KioskProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
-export interface Kiosk {
+export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
+export type SalesPointProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+export interface SalesPoint {
     id: number;
     code?: string | null;
     name: string;
@@ -105,8 +105,8 @@ export interface Kiosk {
     isActive: boolean;
     defaultVatRate?: number | null;
     lastHeartbeat?: string | null;
-    kioskOperationalMode: KioskOperationalMode;
-    defaultProductCollectionMode?: KioskProductCollectionMode;
+    salesPointOperationalMode: SalesPointOperationalMode;
+    defaultProductCollectionMode?: SalesPointProductCollectionMode;
     productBankAccountId?: string | null;
     donationBankAccountId?: string | null;
     cardPresentLocationId?: string | null;

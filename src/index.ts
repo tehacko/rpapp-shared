@@ -11,6 +11,7 @@
  */
 export * from './types.js';
 export * from './kiosk/kioskPublicConfig.js';
+export * from './sales-point/salesPointPublicConfig.js';
 export * from './loyalty/types.js';
 export * from './loyalty/loyaltySessionHandoff.js';
 export * from './api.js';
@@ -39,10 +40,10 @@ export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
 export * from './buildKioskLineKey.js';
-export * from './commerce/reservedKioskSlugs.js';
+export * from './commerce/reservedSalesPointSlugs.js';
 export * from './catalogMediaPatch.js';
-export * from './commerce/reservedKioskSlugs.js';
 export * from './checkout/sessionMetadataV3.js';
+export * from './checkout/sessionMetadataV4.js';
 export * from './catalogImagePresentation.js';
 export * from './CatalogImagePlaceholder.js';
 export {

@@ -91,17 +91,17 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Product permanently deleted',
     cs: 'Produkt trvale smazán',
   },
-  'admin.kiosk.deactivated': {
-    en: 'Kiosk deactivated',
-    cs: 'Kiosk deaktivován',
+  'admin.salesPoint.deactivated': {
+    en: 'Sales point deactivated',
+    cs: 'Prodejní místo deaktivováno',
   },
-  'admin.kiosk.reactivated': {
-    en: 'Kiosk reactivated',
-    cs: 'Kiosk znovu aktivován',
+  'admin.salesPoint.reactivated': {
+    en: 'Sales point reactivated',
+    cs: 'Prodejní místo znovu aktivováno',
   },
-  'admin.kiosk.permanently_deleted': {
-    en: 'Kiosk permanently deleted',
-    cs: 'Kiosk trvale smazán',
+  'admin.salesPoint.permanently_deleted': {
+    en: 'Sales point permanently deleted',
+    cs: 'Prodejní místo trvale smazáno',
   },
   'admin.tenant.deactivated': {
     en: 'Organization deactivated',
@@ -127,13 +127,13 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Default donation template set',
     cs: 'Výchozí šablona daru nastavena',
   },
-  'admin.kiosk.donation_projects.updated': {
-    en: 'Kiosk donation projects updated',
-    cs: 'Projekty daru na kiosku upraveny',
+  'admin.salesPoint.donation_projects.updated': {
+    en: 'Sales point donation projects updated',
+    cs: 'Projekty daru na prodejním místě upraveny',
   },
-  'admin.kiosk.donation_amounts.updated': {
-    en: 'Kiosk donation amounts updated',
-    cs: 'Částky daru na kiosku upraveny',
+  'admin.salesPoint.donation_amounts.updated': {
+    en: 'Sales point donation amounts updated',
+    cs: 'Částky daru na prodejním místě upraveny',
   },
   'admin.product.media_saved': {
     en: 'Product gallery saved',

@@ -1,121 +1,24 @@
 /**
- * Kiosk public-config contract (v1).
+ * Legacy kiosk public-config re-exports.
  *
- * Single shape from day one — no legacy fields, no dual-read window.
- * Backed by `GET /api/v1/kiosk/public-config/:kioskId`. Discriminated
- * union over `kioskOperationalMode`:
- *
- *   - `PRODUCTS`: standard kiosk cart UI; no `donation` payload.
- *   - `DONATION`: donation kiosk UI; `donation` payload is REQUIRED and
- *     must be structurally valid. When it is not, the kiosk shows
- *     `DonationMisconfigurationScreen` rather than the product grid.
- *
- * See plan "Donation Kiosk Mode End-to-End" §"Public-config contract" and
- * §"No backward compatibility policy".
+ * Canonical types live in `sales-point/salesPointPublicConfig.ts` (W-14).
+ * Retained for existing kiosk/admin imports during SalesPoint rename.
  */
 
-export type DonationAmountConfigSource =
-  | 'kioskOverride'
-  | 'template'
-  | 'tenantDefault'
-  | 'fallback';
+export type {
+  DonationAmountConfigSource,
+  PublicConfigWarningCode,
+  SalesPointPublicDonationProject as KioskPublicDonationProject,
+  SalesPointPublicDonationAmountCard as KioskPublicDonationAmountCard,
+  SalesPointPublicDonationAmountConfig as KioskPublicDonationAmountConfig,
+  SalesPointPublicDonationPayload as KioskPublicDonationPayload,
+  SalesPointPublicPaymentSurface as KioskPublicPaymentSurface,
+  SalesPointPublicCommerceConfig as KioskPublicCommerceConfig,
+  SalesPointPublicCatalogMedia as KioskPublicCatalogMedia,
+  SalesPointPublicProductCollectionMode as KioskPublicProductCollectionMode,
+  SalesPointPublicConfigV1 as KioskPublicConfigV1,
+} from '../sales-point/salesPointPublicConfig.js';
 
-/**
- * Warning codes a client may receive via `warnings[]`. Codes are
- * non-blocking signals that admins should fix; the kiosk renders best-effort.
- * Misconfiguration that actually blocks DONATION rendering is communicated by
- * the absence of a valid `donation` payload (handled by the kiosk shell).
- */
-export type PublicConfigWarningCode =
-  | 'TEMPLATE_ARCHIVED_FALLBACK_USED'
-  | 'NO_TENANT_DEFAULT_TEMPLATE'
-  | 'TENANT_DEFAULT_UNUSABLE'
-  | 'NO_PROJECTS_ASSIGNED'
-  | 'OVERRIDE_REFERENCES_MISSING_TEMPLATE'
-  | 'IMAGE_URL_UNREACHABLE';
-
-export interface KioskPublicDonationProject {
-  readonly id: number;
-  readonly code: string;
-  readonly name: string;
-  readonly description: string | null;
-  readonly imageUrl: string | null;
-  readonly goalAmountMinor: number | null;
-  readonly collectedAmountMinor: number;
-  readonly currency: string;
-  readonly displayOrder: number;
-}
-
-export interface KioskPublicDonationAmountCard {
-  readonly amountMinor: number;
-  readonly displayOrder: number;
-  readonly labelKey?: string | null;
-}
-
-export interface KioskPublicDonationAmountConfig {
-  readonly source: DonationAmountConfigSource;
-  readonly templateId: number | null;
-  readonly cards: ReadonlyArray<KioskPublicDonationAmountCard>;
-  readonly allowCustom: boolean;
-  readonly customMinMinor: number | null;
-  readonly customMaxMinor: number | null;
-}
-
-export interface KioskPublicDonationPayload {
-  readonly projects: ReadonlyArray<KioskPublicDonationProject>;
-  readonly amountConfig: KioskPublicDonationAmountConfig;
-}
-
-export interface KioskPublicPaymentSurface {
-  readonly stripePublishableKey: string | null;
-  readonly cardPresentEnabled: boolean;
-}
-
-export type KioskPublicCommerceConfig = Record<string, unknown>;
-
-export interface KioskPublicCatalogMedia {
-  readonly cardAspectRatio: string;
-  readonly thumbnailAspectRatio: string;
-  readonly objectFit: 'cover' | 'contain';
-}
-
-export type KioskPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
-
-export interface KioskPublicConfigLocationFields {
-  readonly kioskSlug: string | null;
-  readonly customerShopUrl: string | null;
-}
-
-export interface KioskPublicLoyaltyCapability {
-  readonly enabled: boolean;
-  readonly previewRequired: false;
-}
-
-export type KioskPublicConfigV1 =
-  | ({
-      readonly configVersion: number;
-      readonly kioskOperationalMode: 'PRODUCTS';
-      readonly defaultProductCollectionMode: KioskPublicProductCollectionMode;
-      readonly commerceConfigJson?: KioskPublicCommerceConfig | null;
-      readonly paymentSurface: KioskPublicPaymentSurface;
-      readonly catalogMedia?: KioskPublicCatalogMedia;
-      /** Server `outbox.obligationsEnabled` — kiosk uses for fail-closed release-gate polling. */
-      readonly outboxObligationsEnabled: boolean;
-      readonly loyalty?: KioskPublicLoyaltyCapability;
-      readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    } & KioskPublicConfigLocationFields)
-  | ({
-      readonly configVersion: number;
-      readonly kioskOperationalMode: 'DONATION';
-      readonly defaultProductCollectionMode?: KioskPublicProductCollectionMode;
-      readonly commerceConfigJson?: KioskPublicCommerceConfig | null;
-      readonly donation: KioskPublicDonationPayload;
-      readonly paymentSurface: KioskPublicPaymentSurface;
-      readonly catalogMedia?: KioskPublicCatalogMedia;
-      readonly outboxObligationsEnabled: boolean;
-      readonly loyalty?: KioskPublicLoyaltyCapability;
-      readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    } & KioskPublicConfigLocationFields);
-
-/** Current contract version emitted by the backend. */
-export const KIOSK_PUBLIC_CONFIG_VERSION = 5;
+export {
+  SALES_POINT_PUBLIC_CONFIG_VERSION as KIOSK_PUBLIC_CONFIG_VERSION,
+} from '../sales-point/salesPointPublicConfig.js';

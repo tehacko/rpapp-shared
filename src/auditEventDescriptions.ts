@@ -91,17 +91,17 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a product is deleted permanently and cannot be brought back. One line per product. Past sales records stay.',
     cs: 'Zapíše se, když je produkt trvale smazán a nelze ho obnovit. Jeden řádek za produkt. Minulé prodeje zůstávají.',
   },
-  'admin.kiosk.deactivated': {
-    en: 'Recorded when a kiosk is turned off for customers. One line per kiosk. Payments already in progress are handled separately.',
-    cs: 'Zapíše se, když je kiosk vypnutý pro zákazníky. Jeden řádek za kiosk. Platby už rozjeté se řeší zvlášť.',
+  'admin.salesPoint.deactivated': {
+    en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
+    cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',
   },
-  'admin.kiosk.reactivated': {
-    en: 'Recorded when a turned-off kiosk is enabled again. One line per kiosk.',
-    cs: 'Zapíše se, když je vypnutý kiosk znovu zapnutý. Jeden řádek za kiosk.',
+  'admin.salesPoint.reactivated': {
+    en: 'Recorded when a turned-off sales point is enabled again. One line per sales point.',
+    cs: 'Zapíše se, když je vypnuté prodejní místo znovu zapnuté. Jeden řádek za prodejní místo.',
   },
-  'admin.kiosk.permanently_deleted': {
-    en: 'Recorded when a kiosk is removed from the system for good. One line per kiosk. Old payment and audit records stay for compliance.',
-    cs: 'Zapíše se, když je kiosk trvale odstraněn ze systému. Jeden řádek za kiosk. Staré platby a audit zůstávají kvůli evidenci.',
+  'admin.salesPoint.permanently_deleted': {
+    en: 'Recorded when a sales point is removed from the system for good. One line per sales point. Old payment and audit records stay for compliance.',
+    cs: 'Zapíše se, když je prodejní místo trvale odstraněno ze systému. Jeden řádek za prodejní místo. Staré platby a audit zůstávají kvůli evidenci.',
   },
   'admin.tenant.deactivated': {
     en: 'Recorded when an entire customer organization (tenant) is closed or suspended. One line per closure. Customer personal data is not copied into this line.',
@@ -127,13 +127,13 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when one donation amount list is marked as the default for the organization. One line when the default changes.',
     cs: 'Zapíše se, když je jeden seznam částek daru označen jako výchozí pro organizaci. Jeden řádek při změně výchozího.',
   },
-  'admin.kiosk.donation_projects.updated': {
-    en: 'Recorded when which charity projects appear on a kiosk is saved. One line per save. Project names are not all listed in the audit line.',
-    cs: 'Zapíše se při uložení toho, které dárkové projekty se na kiosku zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
+  'admin.salesPoint.donation_projects.updated': {
+    en: 'Recorded when which charity projects appear on a sales point is saved. One line per save. Project names are not all listed in the audit line.',
+    cs: 'Zapíše se při uložení toho, které dárkové projekty se na prodejním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
   },
-  'admin.kiosk.donation_amounts.updated': {
-    en: 'Recorded when donation amount presets linked to a kiosk are updated. One line per save.',
-    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na kiosk. Jeden řádek za uložení.',
+  'admin.salesPoint.donation_amounts.updated': {
+    en: 'Recorded when donation amount presets linked to a sales point are updated. One line per save.',
+    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na prodejní místo. Jeden řádek za uložení.',
   },
   'admin.product.media_saved': {
     en: 'Recorded when an admin saves a product or variant image gallery. One line per successful gallery PUT.',

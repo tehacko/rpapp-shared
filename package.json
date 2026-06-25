@@ -75,6 +75,11 @@
       "require": "./dist/loyalty/loyaltySessionHandoff.js",
       "types": "./dist/loyalty/loyaltySessionHandoff.d.ts"
     },
+    "./checkout/sessionMetadataV4": {
+      "import": "./dist/checkout/sessionMetadataV4.js",
+      "require": "./dist/checkout/sessionMetadataV4.js",
+      "types": "./dist/checkout/sessionMetadataV4.d.ts"
+    },
     "./sentry": {
       "import": "./dist/sentry/initSentry.js",
       "require": "./dist/sentry/initSentry.js",

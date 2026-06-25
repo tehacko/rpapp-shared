@@ -36,19 +36,23 @@ export declare const API_ENDPOINTS: {
     readonly ADMIN_LOGIN: "/api/admin/login";
     readonly ADMIN_LOGOUT: "/api/admin/logout";
     readonly ADMIN_PRODUCTS: "/api/admin/products";
-    readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:kioskId";
+    readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:salesPointId";
     readonly ADMIN_PRODUCT_INVENTORY: "/api/admin/products/:id/inventory";
-    readonly ADMIN_PRODUCT_INVENTORY_UPDATE: "/api/admin/products/:productId/inventory/:kioskId";
-    readonly ADMIN_PRODUCT_KIOSK_VISIBILITY: "/api/admin/products/:productId/kiosk/:kioskId";
-    readonly ADMIN_KIOSKS: "/api/admin/kiosks";
-    readonly ADMIN_KIOSK_DETAILS: "/api/admin/kiosks/:id";
+    readonly ADMIN_PRODUCT_INVENTORY_UPDATE: "/api/admin/products/:productId/inventory/:salesPointId";
+    readonly ADMIN_PRODUCT_SALES_POINT_VISIBILITY: "/api/admin/products/:productId/sales-point/:salesPointId";
+    readonly ADMIN_SALES_POINTS: "/api/v1/admin/sales-points";
+    readonly ADMIN_SALES_POINT_DETAILS: "/api/v1/admin/sales-points/:id";
+    /** @deprecated Use ADMIN_SALES_POINTS */
+    readonly ADMIN_KIOSKS: "/api/v1/admin/sales-points";
+    /** @deprecated Use ADMIN_SALES_POINT_DETAILS */
+    readonly ADMIN_KIOSK_DETAILS: "/api/v1/admin/sales-points/:id";
     readonly ADMIN_LOGS: "/api/admin/logs";
     readonly ADMIN_CATEGORIES: "/api/v1/admin/categories";
     readonly HEALTH: "/health";
     readonly HEALTH_PAYMENT_PROVIDERS: "/health/payment-providers";
     readonly HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: "/health/payment-providers/check-bank-transfer";
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
-    readonly EVENTS: "/events/:kioskId";
+    readonly EVENTS: "/events/:salesPointId";
 };
 /**
  * Typed HTTP client for API communication
@@ -62,8 +66,8 @@ export declare class APIClient {
     private baseUrl;
     private kioskSecret?;
     private tenantCode?;
-    private kioskId?;
-    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, kioskId?: number);
+    private salesPointId?;
+    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number);
     private injectTenantIntoEndpoint;
     private request;
     get<T>(endpoint: string): Promise<T>;
@@ -76,7 +80,7 @@ export declare class APIClient {
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
- * @param kioskId - Optional kiosk id (sent as `X-Kiosk-Id` when set; pair with secret for post-kiosk handoff fallback)
+ * @param salesPointId - Optional sales point id (sent as `X-Sales-Point-Id` when set; pair with secret for device auth)
  */
-export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string, kioskId?: number) => APIClient;
+export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number) => APIClient;
 //# sourceMappingURL=api.d.ts.map

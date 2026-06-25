@@ -34,6 +34,10 @@ export declare class InventoryError extends AppError {
 export declare class KioskError extends AppError {
     constructor(message?: string);
 }
+/** Sales-point naming alias — retains `KIOSK_ERROR` code for v1 churn reduction. */
+export declare class SalesPointError extends KioskError {
+    constructor(message?: string);
+}
 export declare class DatabaseError extends AppError {
     constructor(message?: string);
 }

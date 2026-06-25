@@ -46,12 +46,16 @@ export const API_ENDPOINTS = {
   ADMIN_LOGIN: '/api/admin/login',
   ADMIN_LOGOUT: '/api/admin/logout',
   ADMIN_PRODUCTS: '/api/admin/products',
-  ADMIN_PRODUCTS_INVENTORY: '/api/admin/products/inventory/:kioskId',
+  ADMIN_PRODUCTS_INVENTORY: '/api/admin/products/inventory/:salesPointId',
   ADMIN_PRODUCT_INVENTORY: '/api/admin/products/:id/inventory',
-  ADMIN_PRODUCT_INVENTORY_UPDATE: '/api/admin/products/:productId/inventory/:kioskId',
-  ADMIN_PRODUCT_KIOSK_VISIBILITY: '/api/admin/products/:productId/kiosk/:kioskId',
-  ADMIN_KIOSKS: '/api/admin/kiosks',
-  ADMIN_KIOSK_DETAILS: '/api/admin/kiosks/:id',
+  ADMIN_PRODUCT_INVENTORY_UPDATE: '/api/admin/products/:productId/inventory/:salesPointId',
+  ADMIN_PRODUCT_SALES_POINT_VISIBILITY: '/api/admin/products/:productId/sales-point/:salesPointId',
+  ADMIN_SALES_POINTS: '/api/v1/admin/sales-points',
+  ADMIN_SALES_POINT_DETAILS: '/api/v1/admin/sales-points/:id',
+  /** @deprecated Use ADMIN_SALES_POINTS */
+  ADMIN_KIOSKS: '/api/v1/admin/sales-points',
+  /** @deprecated Use ADMIN_SALES_POINT_DETAILS */
+  ADMIN_KIOSK_DETAILS: '/api/v1/admin/sales-points/:id',
   ADMIN_LOGS: '/api/admin/logs',
   ADMIN_CATEGORIES: '/api/v1/admin/categories',
 
@@ -60,7 +64,7 @@ export const API_ENDPOINTS = {
   HEALTH_PAYMENT_PROVIDERS: '/health/payment-providers',
   HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: '/health/payment-providers/check-bank-transfer',
   CHECK_TRANSACTIONS: '/api/check-new-transactions',
-  EVENTS: '/events/:kioskId'
+  EVENTS: '/events/:salesPointId'
 } as const;
 
 // ===== API Client =====
@@ -77,13 +81,13 @@ export class APIClient {
   private baseUrl: string;
   private kioskSecret?: string;
   private tenantCode?: string;
-  private kioskId?: number;
+  private salesPointId?: number;
 
   constructor(
     baseUrl: string,
     kioskSecret?: string,
     tenantCode?: string,
-    kioskId?: number
+    salesPointId?: number
   ) {
     if (!baseUrl || typeof baseUrl !== 'string') {
       throw new Error('APIClient: baseUrl is required and must be a string');
@@ -91,7 +95,7 @@ export class APIClient {
     this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
     this.kioskSecret = kioskSecret;
     this.tenantCode = tenantCode;
-    this.kioskId = kioskId;
+    this.salesPointId = salesPointId;
   }
 
   private injectTenantIntoEndpoint(endpoint: string): string {
@@ -132,16 +136,16 @@ export class APIClient {
       ...(options.headers as Record<string, string> || {}),
     };
 
-    // Add kiosk secret if available
+    // Add sales point device headers when available
     if (this.kioskSecret) {
-      headers['X-Kiosk-Secret'] = this.kioskSecret;
+      headers['X-Sales-Point-Secret'] = this.kioskSecret;
     }
     if (
-      typeof this.kioskId === 'number' &&
-      Number.isInteger(this.kioskId) &&
-      this.kioskId > 0
+      typeof this.salesPointId === 'number' &&
+      Number.isInteger(this.salesPointId) &&
+      this.salesPointId > 0
     ) {
-      headers['X-Kiosk-Id'] = String(this.kioskId);
+      headers['X-Sales-Point-Id'] = String(this.salesPointId);
     }
 
     const response = await fetch(url, {
@@ -184,16 +188,16 @@ export class APIClient {
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
- * @param kioskId - Optional kiosk id (sent as `X-Kiosk-Id` when set; pair with secret for post-kiosk handoff fallback)
+ * @param salesPointId - Optional sales point id (sent as `X-Sales-Point-Id` when set; pair with secret for device auth)
  */
 export const createAPIClient = (
   baseUrl?: string,
   kioskSecret?: string,
   tenantCode?: string,
-  kioskId?: number
+  salesPointId?: number
 ): APIClient => {
   // Fallback to default if not provided
   const url = baseUrl || 'http://localhost:3015';
 
-  return new APIClient(url, kioskSecret, tenantCode, kioskId);
+  return new APIClient(url, kioskSecret, tenantCode, salesPointId);
 };
