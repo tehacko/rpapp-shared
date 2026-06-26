@@ -91,6 +91,62 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Product permanently deleted',
     cs: 'Produkt trvale smazán',
   },
+  'admin.category.deactivated': {
+    en: 'Category deactivated',
+    cs: 'Kategorie deaktivována',
+  },
+  'admin.category.reactivated': {
+    en: 'Category reactivated',
+    cs: 'Kategorie znovu aktivována',
+  },
+  'admin.category.permanently_deleted': {
+    en: 'Category permanently deleted',
+    cs: 'Kategorie trvale smazána',
+  },
+  'admin.variant.archived': {
+    en: 'Variant archived',
+    cs: 'Varianta archivována',
+  },
+  'admin.variant.restored': {
+    en: 'Variant restored',
+    cs: 'Varianta obnovena',
+  },
+  'admin.variant.permanently_deleted': {
+    en: 'Variant permanently deleted',
+    cs: 'Varianta trvale smazána',
+  },
+  'admin.pickupPoint.deactivated': {
+    en: 'Pickup point deactivated',
+    cs: 'Výdejní místo deaktivováno',
+  },
+  'admin.pickupPoint.reactivated': {
+    en: 'Pickup point reactivated',
+    cs: 'Výdejní místo znovu aktivováno',
+  },
+  'admin.pickupPoint.permanently_deleted': {
+    en: 'Pickup point permanently deleted',
+    cs: 'Výdejní místo trvale smazáno',
+  },
+  'admin.donationProject.deactivated': {
+    en: 'Donation project deactivated',
+    cs: 'Dárcovský projekt deaktivován',
+  },
+  'admin.donationProject.reactivated': {
+    en: 'Donation project reactivated',
+    cs: 'Dárcovský projekt znovu aktivován',
+  },
+  'admin.donationProject.archived': {
+    en: 'Donation project archived',
+    cs: 'Dárcovský projekt archivován',
+  },
+  'admin.customerMembership.suspended': {
+    en: 'Customer membership suspended',
+    cs: 'Členství zákazníka pozastaveno',
+  },
+  'admin.retention.policy_updated': {
+    en: 'Retention policy updated',
+    cs: 'Retenční politika upravena',
+  },
   'admin.salesPoint.deactivated': {
     en: 'Sales point deactivated',
     cs: 'Prodejní místo deaktivováno',

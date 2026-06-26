@@ -91,6 +91,62 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a product is deleted permanently and cannot be brought back. One line per product. Past sales records stay.',
     cs: 'Zapíše se, když je produkt trvale smazán a nelze ho obnovit. Jeden řádek za produkt. Minulé prodeje zůstávají.',
   },
+  'admin.category.deactivated': {
+    en: 'Recorded when a category is switched off so its grouping is no longer active in operational lists. One line per category.',
+    cs: 'Zapíše se, když je kategorie vypnuta, takže její seskupení už není aktivní v provozních seznamech. Jeden řádek za kategorii.',
+  },
+  'admin.category.reactivated': {
+    en: 'Recorded when a previously deactivated category is enabled again. One line per category.',
+    cs: 'Zapíše se, když je dříve deaktivovaná kategorie znovu zapnuta. Jeden řádek za kategorii.',
+  },
+  'admin.category.permanently_deleted': {
+    en: 'Recorded when a category is removed permanently from the catalog setup. One line per category. Historical records remain for compliance.',
+    cs: 'Zapíše se, když je kategorie trvale odstraněna z katalogu. Jeden řádek za kategorii. Historické záznamy zůstávají kvůli evidenci.',
+  },
+  'admin.variant.archived': {
+    en: 'Recorded when a product variant is archived and removed from active offer management. One line per variant.',
+    cs: 'Zapíše se, když je varianta produktu archivována a odstraněna z aktivní nabídky. Jeden řádek za variantu.',
+  },
+  'admin.variant.restored': {
+    en: 'Recorded when an archived product variant is restored back to active management. One line per variant.',
+    cs: 'Zapíše se, když je archivovaná varianta produktu obnovena do aktivní správy. Jeden řádek za variantu.',
+  },
+  'admin.variant.permanently_deleted': {
+    en: 'Recorded when a product variant is permanently deleted and cannot be restored. One line per variant.',
+    cs: 'Zapíše se, když je varianta produktu trvale smazána a nelze ji obnovit. Jeden řádek za variantu.',
+  },
+  'admin.pickupPoint.deactivated': {
+    en: 'Recorded when a pickup point is deactivated and no longer available for customer handoff. One line per pickup point.',
+    cs: 'Zapíše se, když je výdejní místo deaktivováno a už není dostupné pro předání zákazníkovi. Jeden řádek za výdejní místo.',
+  },
+  'admin.pickupPoint.reactivated': {
+    en: 'Recorded when a deactivated pickup point is reactivated and offered again. One line per pickup point.',
+    cs: 'Zapíše se, když je deaktivované výdejní místo znovu aktivováno a opět nabízeno. Jeden řádek za výdejní místo.',
+  },
+  'admin.pickupPoint.permanently_deleted': {
+    en: 'Recorded when a pickup point is permanently removed from configuration. One line per pickup point. Past audit and payment traces stay.',
+    cs: 'Zapíše se, když je výdejní místo trvale odstraněno z konfigurace. Jeden řádek za výdejní místo. Staré auditní a platební stopy zůstávají.',
+  },
+  'admin.donationProject.deactivated': {
+    en: 'Recorded when a donation project is deactivated and hidden from active assignment. One line per project.',
+    cs: 'Zapíše se, když je dárcovský projekt deaktivován a skryt z aktivního přiřazení. Jeden řádek za projekt.',
+  },
+  'admin.donationProject.reactivated': {
+    en: 'Recorded when a deactivated donation project becomes active again. One line per project.',
+    cs: 'Zapíše se, když se deaktivovaný dárcovský projekt znovu aktivuje. Jeden řádek za projekt.',
+  },
+  'admin.donationProject.archived': {
+    en: 'Recorded when a donation project is archived for retention and no longer used in current flows. One line per project.',
+    cs: 'Zapíše se, když je dárcovský projekt archivován pro evidenci a už se nepoužívá v aktuálních tocích. Jeden řádek za projekt.',
+  },
+  'admin.customerMembership.suspended': {
+    en: 'Recorded when a customer membership is suspended by an administrator. One line per suspension.',
+    cs: 'Zapíše se, když administrátor pozastaví členství zákazníka. Jeden řádek za pozastavení.',
+  },
+  'admin.retention.policy_updated': {
+    en: 'Recorded when retention policy settings are updated by an administrator. One line per successful policy save.',
+    cs: 'Zapíše se při úpravě nastavení retenční politiky administrátorem. Jeden řádek za úspěšné uložení politiky.',
+  },
   'admin.salesPoint.deactivated': {
     en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
     cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',
