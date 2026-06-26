@@ -63,6 +63,62 @@ export interface SalesPointPublicPaymentSurface {
 
 export type SalesPointPublicCommerceConfig = Record<string, unknown>;
 
+/** Kiosk payment rails filtered by tenant readiness in public config. */
+export interface SalesPointPaymentRailsKiosk {
+  readonly cash: boolean;
+  readonly bankTransfer: boolean;
+  readonly cardPresent: boolean;
+  readonly gatewayInKioskPsp: boolean;
+  readonly gatewayHandoff: boolean;
+}
+
+/** Mobile (PWA) payment rails filtered by tenant readiness in public config. */
+export interface SalesPointPaymentRailsMobile {
+  readonly bankTransfer: boolean;
+  readonly gateway: boolean;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+/** Parse `paymentRailsKiosk` from `commerceConfigJson` on device public config. */
+export function parsePaymentRailsKioskFromCommerceConfig(
+  commerceConfigJson: SalesPointPublicCommerceConfig | null | undefined
+): SalesPointPaymentRailsKiosk | null {
+  if (!isRecord(commerceConfigJson)) {
+    return null;
+  }
+  const rails = commerceConfigJson.paymentRailsKiosk;
+  if (!isRecord(rails)) {
+    return null;
+  }
+  return {
+    cash: rails.cash === true,
+    bankTransfer: rails.bankTransfer === true,
+    cardPresent: rails.cardPresent === true,
+    gatewayInKioskPsp: rails.gatewayInKioskPsp === true,
+    gatewayHandoff: rails.gatewayHandoff === true,
+  };
+}
+
+/** Parse `paymentRailsMobile` from `commerceConfigJson` on customer sales-point config. */
+export function parsePaymentRailsMobileFromCommerceConfig(
+  commerceConfigJson: SalesPointPublicCommerceConfig | null | undefined
+): SalesPointPaymentRailsMobile | null {
+  if (!isRecord(commerceConfigJson)) {
+    return null;
+  }
+  const rails = commerceConfigJson.paymentRailsMobile;
+  if (!isRecord(rails)) {
+    return null;
+  }
+  return {
+    bankTransfer: rails.bankTransfer === true,
+    gateway: rails.gateway === true,
+  };
+}
+
 export interface SalesPointPublicCatalogMedia {
   readonly cardAspectRatio: string;
   readonly thumbnailAspectRatio: string;

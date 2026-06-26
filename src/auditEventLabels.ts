@@ -263,6 +263,26 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Bank account reconciliation mode changed',
     cs: 'Změna režimu bankovního účtu',
   },
+  'payment.provider_wiring.verified': {
+    en: 'Payment provider wiring verified',
+    cs: 'Ověření napojení platebního poskytovatele',
+  },
+  'payment.provider_wiring.verify_failed': {
+    en: 'Payment provider wiring verification failed',
+    cs: 'Ověření napojení platebního poskytovatele selhalo',
+  },
+  'payment.provider_wiring.invalidated': {
+    en: 'Payment provider wiring invalidated',
+    cs: 'Napojení platebního poskytovatele zneplatněno',
+  },
+  'payment.cash_provider.risk_ack': {
+    en: 'Cash provider risk acknowledged',
+    cs: 'Potvrzení rizika hotovostní platby',
+  },
+  'payment.cash_checkout.self_confirm': {
+    en: 'Kiosk cash checkout self-confirmed',
+    cs: 'Hotovostní platba na kiosku potvrzena zákazníkem',
+  },
   'export.analytics.explore.exported': {
     en: 'Customer behavior export',
     cs: 'Export chování zákazníků',

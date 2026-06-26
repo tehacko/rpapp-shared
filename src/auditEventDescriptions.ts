@@ -263,6 +263,26 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when bank account reconciliation or customer claim mode is changed.',
     cs: 'Zapíše se při změně režimu párování nebo nahlášení plateb u bankovního účtu.',
   },
+  'payment.provider_wiring.verified': {
+    en: 'Recorded when a tenant payment provider wiring probe succeeds.',
+    cs: 'Zapíše se po úspěšném ověření napojení platebního poskytovatele tenanta.',
+  },
+  'payment.provider_wiring.verify_failed': {
+    en: 'Recorded when a tenant payment provider wiring probe fails.',
+    cs: 'Zapíše se po neúspěšném ověření napojení platebního poskytovatele tenanta.',
+  },
+  'payment.provider_wiring.invalidated': {
+    en: 'Recorded when provider wiring is invalidated (e.g. Connect onboarding regression).',
+    cs: 'Zapíše se při zneplatnění napojení poskytovatele (např. regrese Stripe Connect).',
+  },
+  'payment.cash_provider.risk_ack': {
+    en: 'Recorded when an operator acknowledges cash payment risk on the cash provider policy.',
+    cs: 'Zapíše se po potvrzení rizika hotovostní platby u politiky cash poskytovatele.',
+  },
+  'payment.cash_checkout.self_confirm': {
+    en: 'Recorded when a customer self-confirms kiosk cash checkout (ADR-PICKUP-CASH).',
+    cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem na kiosku (ADR-PICKUP-CASH).',
+  },
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',

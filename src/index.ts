@@ -12,6 +12,10 @@
 export * from './types.js';
 export * from './kiosk/kioskPublicConfig.js';
 export * from './sales-point/salesPointPublicConfig.js';
+export {
+  parsePaymentRailsKioskFromCommerceConfig,
+  parsePaymentRailsMobileFromCommerceConfig,
+} from './sales-point/salesPointPublicConfig.js';
 export * from './loyalty/types.js';
 export * from './loyalty/loyaltySessionHandoff.js';
 export * from './api.js';

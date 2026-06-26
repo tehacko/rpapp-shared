@@ -55,6 +55,18 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'changedPlanIds', labelKey: 'compliance.audit.metadata.changedPlanIds' },
     { key: 'dryRun', labelKey: 'compliance.audit.metadata.dryRun' },
   ],
+  'payment.provider_wiring.verified': [
+    { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
+    { key: 'bankAccountId', labelKey: 'compliance.audit.metadata.bankAccountId' },
+  ],
+  'payment.provider_wiring.verify_failed': [
+    { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
+    { key: 'summary', labelKey: 'compliance.audit.metadata.summary' },
+  ],
+  'payment.provider_wiring.invalidated': [
+    { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

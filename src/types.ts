@@ -420,11 +420,17 @@ export interface GatewayStatusResponse {
   customerEmail?: string;
 }
 
+export interface GatewayMethodDescriptor {
+  name: string;
+  enabled: boolean;
+  readinessBlocked?: boolean;
+  readinessCode?: string;
+}
+
 export interface GatewayMethodsResponse {
-  methods: Array<{
-    name: string;
-    enabled: boolean;
-  }>;
+  methods: GatewayMethodDescriptor[];
+  readinessBlocked?: boolean;
+  readinessCode?: string;
 }
 
 export interface InventoryUpdateRequest {
