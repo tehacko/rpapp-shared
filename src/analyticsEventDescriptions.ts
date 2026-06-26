@@ -166,13 +166,13 @@ const RETAIL_DESCRIPTIONS = {
     en: 'Counts when buy-again removes unavailable lines and continues with a reduced cart. One count per trim action.',
     cs: 'Počítá se, když „koupit znovu“ odstraní nedostupné položky a pokračuje s menším košíkem. Jednou za ořezání.',
   },
-  [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_ACK_SHOWN]: {
-    en: 'Counts when the self-service pickup SLA acknowledgement is shown before payment.',
-    cs: 'Počítá se při zobrazení potvrzení SLA pro samoobslužné vyzvednutí před platbou.',
+  [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_NOTICE_SHOWN]: {
+    en: 'Counts when the pay-on-spot proximity SLA notice is shown (informational only).',
+    cs: 'Počítá se při zobrazení informativního SLA upozornění u platby na místě.',
   },
-  [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_ACK_CHECKED]: {
-    en: 'Counts when the customer checks the self-service SLA acknowledgement checkbox.',
-    cs: 'Počítá se, když zákazník zaškrtne potvrzení SLA pro samoobslužné vyzvednutí.',
+  [ANALYTICS_RETAIL_EVENTS.CUSTOMER_PICKUP_ACK_INFORMATIONAL]: {
+    en: 'Counts when a customer acknowledges prepay pickup on order detail (audit only).',
+    cs: 'Počítá se při potvrzení vyzvednutí u prepaid objednávky (pouze audit).',
   },
   [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_ISSUED]: {
     en: 'Counts when pickup QR or scan credentials are issued for an order. One count per issuance.',
@@ -264,13 +264,13 @@ const RETAIL_COMMERCE_DESCRIPTIONS: Record<
     en: 'Counts when buy-again cannot proceed because required items are out of stock. One count per failed attempt.',
     cs: 'Počítá se, když opakovaný nákup nemůže pokračovat kvůli vyprodání položek. Jednou za neúspěšný pokus.',
   },
-  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_ACK_SHOWN]: {
-    en: 'Counts when the self-service SLA acknowledgement is shown to the customer. One count per display.',
-    cs: 'Počítá se, když se zákazníkovi zobrazí potvrzení SLA samoobsluhy. Jednou za zobrazení.',
+  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_NOTICE_SHOWN]: {
+    en: 'Counts when the pay-on-spot proximity SLA notice is shown (informational only). One count per display.',
+    cs: 'Počítá se při zobrazení informativního SLA upozornění u platby na místě. Jednou za zobrazení.',
   },
-  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_ACK_CHECKED]: {
-    en: 'Counts when the customer checks the self-service SLA acknowledgement box. One count per check.',
-    cs: 'Počítá se, když zákazník zaškrtne potvrzení SLA samoobsluhy. Jednou za zaškrtnutí.',
+  [RETAIL_COMMERCE_EVENTS.CUSTOMER_PICKUP_ACK_INFORMATIONAL]: {
+    en: 'Counts when a customer taps the prepay informational pickup acknowledgement on order detail. Excluded from commerce funnel rollups.',
+    cs: 'Počítá se, když zákazník potvrdí informativní vyzvednutí u prepaid objednávky. Mimo rollup obchodního funnelu.',
   },
   [RETAIL_COMMERCE_EVENTS.PICKUP_PARTIAL_CONFIRM]: {
     en: 'Counts when staff or the system confirms a partial pickup fulfillment. One count per partial confirm.',

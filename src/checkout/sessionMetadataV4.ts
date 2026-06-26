@@ -29,23 +29,36 @@ export function isSessionMetadataV4(value: unknown): value is SessionMetadataEnv
   );
 }
 
-/** §16.4 channel/mode matrix — throws on invalid combinations. */
+/** Channel/mode matrix — throws on invalid combinations. */
 export function assertSessionMetadataV4ChannelRules(envelope: SessionMetadataEnvelopeV4): void {
   const mode = envelope.checkoutMode;
   if (mode === undefined) {
     return;
   }
-  if (mode.channel === 'MOBILE_FIRST' && mode.selectedMode !== 'PREPAY_COLLECT_LATER') {
+  if (
+    mode.channel === 'MOBILE_FIRST' &&
+    mode.selectedMode !== 'PREPAY_COLLECT_LATER' &&
+    mode.selectedMode !== 'PAY_NOW_SELF_SERVICE'
+  ) {
     throw new Error('SESSION_METADATA_V4_MOBILE_MODE_INVALID');
   }
   if (mode.channel === 'KIOSK_FIRST' && mode.selectedMode === 'PREPAY_COLLECT_LATER') {
     throw new Error('SESSION_METADATA_V4_KIOSK_MODE_INVALID');
   }
-  if (
-    mode.channel === 'MOBILE_FIRST' &&
-    envelope.collect !== undefined &&
-    envelope.collect.timing !== 'LATER'
-  ) {
-    throw new Error('SESSION_METADATA_V4_MOBILE_COLLECT_TIMING_INVALID');
+  if (envelope.collect !== undefined) {
+    if (
+      mode.channel === 'MOBILE_FIRST' &&
+      mode.selectedMode === 'PREPAY_COLLECT_LATER' &&
+      envelope.collect.timing !== 'LATER'
+    ) {
+      throw new Error('SESSION_METADATA_V4_MOBILE_COLLECT_TIMING_INVALID');
+    }
+    if (
+      mode.channel === 'MOBILE_FIRST' &&
+      mode.selectedMode === 'PAY_NOW_SELF_SERVICE' &&
+      envelope.collect.timing !== 'NOW'
+    ) {
+      throw new Error('SESSION_METADATA_V4_MOBILE_COLLECT_TIMING_INVALID');
+    }
   }
 }

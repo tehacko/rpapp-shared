@@ -215,6 +215,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when scheduled analytics rollup snapshots are materialized for reporting. One line per materialization run.',
     cs: 'Zapíše se při materializaci plánovaných analytických agregací pro reporty. Jeden řádek za běh materializace.',
   },
+  'customer_pickup_ack_informational': {
+    en: 'Recorded when a customer taps “I picked up my order” on a prepay order detail (informational self-report only). One line per transaction. Does not change fulfillment state.',
+    cs: 'Zapíše se, když zákazník na detailu prepaid objednávky potvrdí „Vyzvedl jsem objednávku“ (pouze informativní). Jeden řádek za transakci. Nemění stav vyzvednutí.',
+  },
   'gdpr.erasure.completed': {
     en: 'Recorded when a confirmed GDPR erasure request is finished and personal data is removed or anonymized as required. One line per completed request. The person’s email is not stored in this line.',
     cs: 'Zapíše se po dokončení potvrzené žádosti o výmaz podle GDPR a odstranění nebo anonymizaci údajů. Jeden řádek za dokončenou žádost. E-mail dotčené osoby se v řádku neukládá.',

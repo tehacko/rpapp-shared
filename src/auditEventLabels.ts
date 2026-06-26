@@ -215,6 +215,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Analytics rollups materialized',
     cs: 'Analytické agregace materializovány',
   },
+  'customer_pickup_ack_informational': {
+    en: 'Customer informational pickup ack',
+    cs: 'Informativní potvrzení vyzvednutí zákazníkem',
+  },
   'gdpr.erasure.completed': {
     en: 'GDPR erasure completed',
     cs: 'GDPR výmaz dokončen',

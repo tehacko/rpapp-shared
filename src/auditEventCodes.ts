@@ -45,6 +45,7 @@ export const AUDIT_EVENT_CODES = [
   'payment.transaction.state_changed',
   'payment.admin_manual_complete',
   'payment.customer.refund.requested',
+  'customer_pickup_ack_informational',
   'reconciliation.transaction.refund_candidate.marked',
   'reconciliation.transaction.refund_candidate.unmarked',
   'reconciliation.bank_inbound.matched',
