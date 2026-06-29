@@ -102,7 +102,8 @@
     "publish:local": "npm run build && npm pack --pack-destination ../",
     "prepublishOnly": "npm run build",
     "preversion": "npm run test -- --passWithNoTests",
-    "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'"
+    "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'",
+    "audit:deps": "npm audit --audit-level=high"
   },
   "files": [
     "dist",
