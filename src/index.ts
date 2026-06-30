@@ -68,3 +68,17 @@ export {
   BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS,
 } from './permissions/effectiveCapabilities.js';
 export type { PermissionLevel } from './permissions/permissionLabels.js';
+export {
+  TURNSTILE_PUBLIC_CONFIG_PATH,
+  fetchTurnstileConfig,
+  appendTurnstileToken,
+} from './auth/turnstileTypes.js';
+export type {
+  TurnstileConfigData,
+  TurnstileAuthBodyFields,
+  AdminLoginRequest,
+  ExchangeSuperAdminInviteSessionRequest,
+  CompleteSuperAdminInviteRequest,
+  PickupStaffLoginRequest,
+  CustomerAuthTurnstileBody,
+} from './auth/turnstileTypes.js';

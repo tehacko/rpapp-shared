@@ -5,6 +5,18 @@
  * Supports multi-tenant routing and authentication headers
  */
 
+/**
+ * Bank transfer webhook contract (H7 — manual / Postman testing):
+ * - Header `x-bank-transfer-webhook-secret` — shared secret (required when webhooks enabled)
+ * - Header `x-webhook-timestamp` — Unix epoch seconds (required; default max skew 900s)
+ * - Body `providerEventId` — required provider event id (dedupe key; duplicate → HTTP 409)
+ * - Body `paymentId`, `amount` — required; `bankTransactionId` optional (defaults to providerEventId)
+ */
+export const BANK_TRANSFER_WEBHOOK_HEADERS = {
+  SECRET: 'x-bank-transfer-webhook-secret',
+  TIMESTAMP: 'x-webhook-timestamp',
+} as const;
+
 // ===== API Endpoints =====
 
 export const API_ENDPOINTS = {

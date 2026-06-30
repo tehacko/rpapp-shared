@@ -50,4 +50,5 @@ export * from './CatalogImagePlaceholder.js';
 export * from './tenant/tenantPathResolution.js';
 export { PERMISSION_DOMAIN_LABELS, PERMISSION_LEVEL_LABELS, getPermissionDomainLabel, getPermissionLevelLabel, } from './permissions/permissionLabels.js';
 export { expandCapabilitiesForClientCheck, grantImpliesTarget, hasEffectiveCapability, hasAnyEffectiveCapability, ADMIN_USERS_MANAGE_BRIDGE_SOURCES, ADMIN_USERS_MANAGE_BRIDGE_TARGETS, BRIDGE_PARITY_FIXTURE_GRANTS, BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS, } from './permissions/effectiveCapabilities.js';
+export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, } from './auth/turnstileTypes.js';
 //# sourceMappingURL=index.js.map
