@@ -19,6 +19,8 @@ export {
   simpleEntitlementStateToAxes,
 } from './types.js';
 
+export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
+
 export type {
   EntitlementBlockAxes,
   EntitlementBlockCatalogEntry,
