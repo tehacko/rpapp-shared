@@ -21,6 +21,33 @@ export {
 
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
+export {
+  TENANT_ALLOWED_PURPOSES,
+  TENANT_SURFACE_SCOPE_IDS,
+  isTenantAllowedPurposes,
+  isTenantSurfaceScope,
+} from './tenantScopeTypes.js';
+
+export type { TenantAllowedPurposes, TenantSurfaceScope } from './tenantScopeTypes.js';
+
+export {
+  TENANT_AXIS_CONTROLLED_BLOCK_KEYS,
+  applyTenantScopeToSimpleStates,
+  buildDefaultTenantScopeBaseline,
+  inferAllowedPurposesFromSimpleStates,
+  inferSurfaceScopeFromSimpleStates,
+  isAxisControlledEntitlementBlock,
+  stripAxisControlledSimpleStates,
+} from './applyTenantScopeToSimpleStates.js';
+
+export type { TenantAxisControlledBlockKey } from './applyTenantScopeToSimpleStates.js';
+
+export {
+  axesToSimpleState,
+  resolveSimpleStateForBlock,
+  simpleStatesFromPolicyAxes,
+} from './entitlementSimpleStateMapping.js';
+
 export type {
   EntitlementBlockAxes,
   EntitlementBlockCatalogEntry,
