@@ -84,7 +84,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
 /** Repo-relative paths for CI grep wiring tests (G3). */
 export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, string>> = {
   shopAnalyticsMetadata: 'rpapp-customer/src/features/shop/shopAnalyticsMetadata.ts',
-  ShopScreen: 'rpapp-customer/src/features/shop/ShopScreen.tsx',
+  ShopScreen: 'rpapp-customer/src/features/shop/hooks/useShopScreen.ts',
   useKioskOrchestration: 'rpapp-kiosk/src/features/kiosk/hooks/useKioskOrchestration.ts',
   QrPaymentView: 'rpapp-customer/src/features/checkout/QrPaymentView.tsx',
   PhoneFirstProductJourney: 'rpapp-customer/src/features/journeys/PhoneFirstProductJourney.tsx',

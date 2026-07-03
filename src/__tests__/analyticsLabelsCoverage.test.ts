@@ -7,6 +7,9 @@ describe('analytics event labels coverage', () => {
       expect(ANALYTICS_EVENT_LABELS[name]).toBeDefined();
       expect(ANALYTICS_EVENT_LABELS[name].en.length).toBeGreaterThan(0);
       expect(ANALYTICS_EVENT_LABELS[name].cs.length).toBeGreaterThan(0);
+      expect(ANALYTICS_EVENT_LABELS[name].cs).not.toBe(ANALYTICS_EVENT_LABELS[name].en);
+      expect(ANALYTICS_EVENT_LABELS[name].en).not.toMatch(/_/);
+      expect(ANALYTICS_EVENT_LABELS[name].cs).not.toMatch(/_/);
     }
     expect(Object.keys(ANALYTICS_EVENT_LABELS).length).toBe(ANALYTICS_EVENT_NAMES.length);
   });

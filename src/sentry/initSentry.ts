@@ -6,7 +6,7 @@ import type { ErrorInfo } from 'react';
 
 import { redactClientLogMeta, redactStringSecrets } from '../clientLogRedaction.js';
 
-export type SentryAppName = 'admin' | 'kiosk' | 'customer';
+export type SentryAppName = 'admin' | 'kiosk' | 'customer' | 'pickup';
 
 export interface InitSentryOptions {
   readonly dsn?: string;

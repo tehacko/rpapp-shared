@@ -1,0 +1,37 @@
+/**
+ * Admin analytics / shell design tokens — import from pi-kiosk-shared/admin-theme.css
+ * Apps: @import "pi-kiosk-shared/admin-theme.css" in admin tailwind entry.
+ */
+@theme {
+  --color-an-bg: var(--color-gray-50);
+  --color-an-bg-elevated: #ffffff;
+  --color-an-surface: #ffffff;
+  --color-an-text: var(--color-gray-900);
+  --color-an-text-muted: var(--color-gray-500);
+  --color-an-border: var(--color-gray-200);
+  --color-an-primary: var(--color-primary);
+  --color-an-primary-soft: var(--color-primary-light);
+  --color-an-success: var(--color-success);
+  --color-an-warn: var(--color-warning);
+  --color-an-danger: var(--color-error);
+  --color-an-info: var(--color-info);
+  --color-an-chart-1: #6366f1;
+  --color-an-chart-2: #14b8a6;
+  --color-an-chart-3: #f59e0b;
+  --color-an-chart-4: #ef4444;
+  --color-an-chart-5: #8b5cf6;
+  --color-an-chart-6: #06b6d4;
+  --color-shell-bg: var(--color-an-bg);
+  --color-shell-surface: var(--color-an-surface);
+  --color-shell-border: var(--color-an-border);
+  --color-shell-text: var(--color-an-text);
+  --color-rail-sidebar-bg: #1e1b4b;
+  --color-rail-sidebar-text: #e0e7ff;
+  --color-rail-sidebar-muted: #a5b4fc;
+  --color-rail-sidebar-active: #7c3aed;
+  --color-rail-sidebar-hover: rgba(124, 58, 237, 0.2);
+  --color-rail-page-bg: #f1f5f9;
+  --color-rail-card-border: #e2e8f0;
+  --color-rail-kpi-up: #059669;
+  --color-rail-kpi-down: #dc2626;
+}

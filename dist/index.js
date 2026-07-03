@@ -19,6 +19,7 @@ export * from './api.js';
 export * from './errors.js';
 export * from './components/DatabaseUnavailable.js';
 export * from './hooks/useDatabaseHealth.js';
+export { useSubmitCooldown } from './hooks/useSubmitCooldown.js';
 export * from './analyticsEvents.js';
 export * from './analyticsEmitterManifest.js';
 export * from './analyticsCatalogV2.js';
@@ -56,4 +57,8 @@ export * from './tenant/tenantPathResolution.js';
 export { PERMISSION_DOMAIN_LABELS, PERMISSION_LEVEL_LABELS, getPermissionDomainLabel, getPermissionLevelLabel, } from './permissions/permissionLabels.js';
 export { expandCapabilitiesForClientCheck, grantImpliesTarget, hasEffectiveCapability, hasAnyEffectiveCapability, ADMIN_USERS_MANAGE_BRIDGE_SOURCES, ADMIN_USERS_MANAGE_BRIDGE_TARGETS, BRIDGE_PARITY_FIXTURE_GRANTS, BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS, } from './permissions/effectiveCapabilities.js';
 export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, } from './auth/turnstileTypes.js';
+export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
+export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
+export { createCoalescedRefetchScheduler, } from './catalog/createCoalescedRefetchScheduler.js';
+export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
 //# sourceMappingURL=index.js.map
