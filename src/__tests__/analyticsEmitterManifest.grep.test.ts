@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import {
+  ANALYTICS_EMITTER_BE_REFERENCE_PATHS,
   ANALYTICS_EMITTER_MANIFEST,
   ANALYTICS_EMITTER_FE_REFERENCE_PATHS,
 } from '../analyticsEmitterManifest.js';
@@ -28,12 +29,24 @@ function eventPatterns(
   const snake = eventName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return [
     new RegExp(`eventName:\\s*['"]${snake}['"]`),
-    new RegExp(`ANALYTICS_[A-Z_]+\\.${snake.toUpperCase().replace(/-/g, '_')}`, 'i'),
+    new RegExp(`ANALYTICS_V2_EXTENSION_EVENTS\\.${snake.toUpperCase().replace(/-/g, '_')}`),
+    new RegExp(`ANALYTICS_[A-Z0-9_]+\\.${snake.toUpperCase().replace(/-/g, '_')}`, 'i'),
     new RegExp(`['"]${snake}['"]`),
   ];
 }
 
 describe('analyticsEmitterManifest grep wiring', () => {
+  describe('BE path map (emit grep in up-backend)', () => {
+    for (const cell of ANALYTICS_EMITTER_MANIFEST) {
+      if (!cell.required || cell.layer !== 'BE') {
+        continue;
+      }
+      it(`maps ${cell.reference} for ${cell.eventName}`, () => {
+        expect(ANALYTICS_EMITTER_BE_REFERENCE_PATHS[cell.reference]).toBeDefined();
+      });
+    }
+  });
+
   for (const cell of ANALYTICS_EMITTER_MANIFEST) {
     if (!cell.required || cell.layer !== 'FE') {
       continue;

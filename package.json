@@ -60,10 +60,20 @@
       "require": "./dist/analyticsConsentAllowlist.js",
       "types": "./dist/analyticsConsentAllowlist.d.ts"
     },
+    "./analyticsCatalogVersion": {
+      "import": "./dist/analyticsCatalogVersion.js",
+      "require": "./dist/analyticsCatalogVersion.js",
+      "types": "./dist/analyticsCatalogVersion.d.ts"
+    },
     "./analyticsAnonymousIdentity": {
       "import": "./dist/analyticsAnonymousIdentity.js",
       "require": "./dist/analyticsAnonymousIdentity.js",
       "types": "./dist/analyticsAnonymousIdentity.d.ts"
+    },
+    "./analyticsEmitDedup": {
+      "import": "./dist/analyticsEmitDedup.js",
+      "require": "./dist/analyticsEmitDedup.js",
+      "types": "./dist/analyticsEmitDedup.d.ts"
     },
     "./clientLogRedaction": {
       "import": "./dist/clientLogRedaction.js",
@@ -103,7 +113,8 @@
     "prepublishOnly": "npm run build",
     "preversion": "npm run test -- --passWithNoTests",
     "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'",
-    "audit:deps": "npm audit --audit-level=high"
+    "audit:deps": "npm audit --audit-level=high",
+    "export:catalog": "npm run build && node scripts/exportAnalyticsCatalog.mjs"
   },
   "files": [
     "dist",

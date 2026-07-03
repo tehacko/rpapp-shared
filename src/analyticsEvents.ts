@@ -16,6 +16,18 @@ import { RETAIL_COMMERCE_EVENTS } from './analytics/retailCommerceEvents.js';
 
 export const ANALYTICS_EVENT_CATALOG_VERSION = 1 as const;
 
+/** Per-event metadata schema versions accepted on ingest (plan G-S02 / AN-055). */
+export const ANALYTICS_METADATA_SCHEMA_VERSIONS = [1, 2] as const;
+export type AnalyticsMetadataSchemaVersion =
+  (typeof ANALYTICS_METADATA_SCHEMA_VERSIONS)[number];
+export const DEFAULT_ANALYTICS_METADATA_SCHEMA_VERSION = 1 as const;
+
+export function isSupportedAnalyticsMetadataSchemaVersion(
+  value: number,
+): value is AnalyticsMetadataSchemaVersion {
+  return (ANALYTICS_METADATA_SCHEMA_VERSIONS as readonly number[]).includes(value);
+}
+
 /**
  * Universal events (17).
  */

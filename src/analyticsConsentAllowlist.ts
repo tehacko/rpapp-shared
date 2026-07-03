@@ -3,8 +3,6 @@
  * `up-backend/src/domain/analytics/analyticsEventCatalog.ts`
  * (`ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT`).
  */
-import type { AnalyticsEventName } from './analyticsEvents.js';
-
 export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'session_started',
   'session_completed',
@@ -35,7 +33,10 @@ export const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT = [
   'customer_pickup_ack_informational',
   'slug_legacy_redirect',
   'donation_completed',
-] as const satisfies readonly AnalyticsEventName[];
+  'qr_displayed',
+  'menu_opened',
+  'product_selected',
+] as const satisfies readonly string[];
 
 const ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT_SET: ReadonlySet<string> = new Set(
   ANALYTICS_EVENTS_ALLOWED_WITHOUT_CONSENT,

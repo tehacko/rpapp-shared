@@ -1,0 +1,190 @@
+# Analytics event catalog — generated from pi-kiosk-shared TypeScript sources.
+# Regenerate: npm run export:catalog
+
+events:
+  - event: account_created
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: auth_flow_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: back_clicked
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: buy_again_failed_stock
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: buy_again_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: buy_again_trimmed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: cart_viewed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: catalog_interaction
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: cta_clicked
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: customer_pickup_ack_informational
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_abandoned
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_amount_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_custom_amount_entered
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_impact_opened
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_project_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: donation_tax_receipt_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: error_shown
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_collect_configured
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_created
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_expired
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_mode_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: identity_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: kiosk_cash_complete
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: kiosk_timeout
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: kiosk_wakeup
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: login_success
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: payment_confirmed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: payment_failed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: payment_qr_generated
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: payment_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: payment_submitted
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_fulfillment_held
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_fulfillment_hold_released
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_fulfillment_refused
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_partial_confirm
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_qr_issued
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_qr_scanned
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pickup_staff_mark_paid
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_added
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_removed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: receipt_opened
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: recurring_donation_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: recurring_payment_missed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_order_abandoned
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_order_collected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_order_paid
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_order_prepared
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_order_ready
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_pickup_scheduled
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_pickup_slot_missed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: retail_ticket_created
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: screen_viewed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: self_service_sla_notice_shown
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: session_abandoned
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: session_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: session_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: slug_legacy_redirect
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: tenant_switched
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
