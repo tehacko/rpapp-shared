@@ -11,6 +11,8 @@ import {
   type AnalyticsV2ExtensionEventName,
 } from './analyticsCatalogV2.js';
 
+export { isAnalyticsV2ExtensionEventName };
+
 export type AnalyticsTrackEventName = AnalyticsEventName | AnalyticsV2ExtensionEventName;
 
 export interface ResolveClientAnalyticsCatalogVersionOptions {

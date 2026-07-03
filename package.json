@@ -75,6 +75,11 @@
       "require": "./dist/analyticsEmitDedup.js",
       "types": "./dist/analyticsEmitDedup.d.ts"
     },
+    "./analyticsIngestOutboxPolicy": {
+      "import": "./dist/analyticsIngestOutboxPolicy.js",
+      "require": "./dist/analyticsIngestOutboxPolicy.js",
+      "types": "./dist/analyticsIngestOutboxPolicy.d.ts"
+    },
     "./clientLogRedaction": {
       "import": "./dist/clientLogRedaction.js",
       "require": "./dist/clientLogRedaction.js",
@@ -106,6 +111,11 @@
       "import": "./dist/ui/index.js",
       "require": "./dist/ui/index.js",
       "types": "./dist/ui/index.d.ts"
+    },
+    "./tenant-entitlements": {
+      "import": "./dist/tenant-entitlements/index.js",
+      "require": "./dist/tenant-entitlements/index.js",
+      "types": "./dist/tenant-entitlements/index.d.ts"
     }
   },
   "peerDependencies": {

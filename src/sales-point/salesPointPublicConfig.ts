@@ -137,6 +137,45 @@ export interface SalesPointPublicLoyaltyCapability {
   readonly previewRequired: false;
 }
 
+/** Per-block posture on device public-config (ENT-PR-17 ceiling). */
+export interface SalesPointPublicEntitlementBlockPosture {
+  readonly entitled: boolean;
+  readonly allowReads: boolean;
+  readonly allowWrites: boolean;
+}
+
+/** Tenant entitlement ceiling emitted on sales-point public-config (§4, §16.1). */
+export interface SalesPointPublicEntitlementCeiling {
+  readonly revision: number;
+  readonly surfaceKiosk: SalesPointPublicEntitlementBlockPosture;
+  readonly realtimeDeviceTransport: SalesPointPublicEntitlementBlockPosture;
+  /** Sales point acts as implicit pickup point (ENT-PR-12 mirror mode). */
+  readonly pickupMirrorMode: boolean;
+}
+
+/** WS/SSE disconnect reason when surface or transport block is off (§12.3). */
+export const ENTITLEMENT_SURFACE_DISABLED_CODE = 'ENTITLEMENT_SURFACE_DISABLED' as const;
+
+export const DEFAULT_ENTITLED_PUBLIC_POSTURE: SalesPointPublicEntitlementBlockPosture = {
+  entitled: true,
+  allowReads: true,
+  allowWrites: true,
+};
+
+export function resolveSalesPointEntitlementCeiling(
+  config: Pick<SalesPointPublicConfigV1, 'entitlementCeiling'>
+): SalesPointPublicEntitlementCeiling {
+  if (config.entitlementCeiling !== undefined) {
+    return config.entitlementCeiling;
+  }
+  return {
+    revision: 0,
+    surfaceKiosk: DEFAULT_ENTITLED_PUBLIC_POSTURE,
+    realtimeDeviceTransport: DEFAULT_ENTITLED_PUBLIC_POSTURE,
+    pickupMirrorMode: false,
+  };
+}
+
 export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
@@ -147,6 +186,7 @@ export type SalesPointPublicConfigV1 =
       readonly catalogMedia?: SalesPointPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
+      readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields)
   | ({
@@ -159,6 +199,7 @@ export type SalesPointPublicConfigV1 =
       readonly catalogMedia?: SalesPointPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
+      readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields);
 

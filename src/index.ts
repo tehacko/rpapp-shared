@@ -95,3 +95,4 @@ export {
   type CoalescedRefetchScheduler,
 } from './catalog/createCoalescedRefetchScheduler.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
+export * from './tenant-entitlements/index.js';

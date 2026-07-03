@@ -63,4 +63,5 @@ export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
 export { createCoalescedRefetchScheduler, type CoalescedRefetchScheduler, } from './catalog/createCoalescedRefetchScheduler.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
+export * from './tenant-entitlements/index.js';
 //# sourceMappingURL=index.d.ts.map

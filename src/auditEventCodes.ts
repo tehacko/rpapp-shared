@@ -56,6 +56,7 @@ export const AUDIT_EVENT_CODES = [
   'dev.tenant.created',
   'dev.tenant.updated',
   'dev.tenant.provider.updated',
+  'dev.tenant.entitlement_policy.changed',
   'payment.transaction.state_changed',
   'payment.admin_manual_complete',
   'payment.customer.refund.requested',

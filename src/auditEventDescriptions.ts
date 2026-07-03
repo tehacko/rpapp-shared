@@ -215,6 +215,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when platform staff change payment provider settings for an organization in dev tools. One line per successful update.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích změní nastavení platebního poskytovatele organizace. Jeden řádek za úspěšnou změnu.',
   },
+  'dev.tenant.entitlement_policy.changed': {
+    en: 'Recorded when platform staff change tenant feature-policy entitlement rows in dev tools. One line per successful save with revision metadata.',
+    cs: 'Zapíše se, když pracovníci platformy v dev nástrojích změní řádky politiky funkcí (entitlement). Jeden řádek za úspěšné uložení s metadaty revize.',
+  },
   'payment.transaction.state_changed': {
     en: 'Recorded automatically when a payment moves to a new status (paid, cancelled, etc.). One line per status change. If writing the line fails, the payment still changes.',
     cs: 'Zapíše se automaticky, když platba přejde do nového stavu (zaplaceno, zrušeno atd.). Jeden řádek za změnu stavu. Když se zápis nepovede, platba se stejně změní.',
