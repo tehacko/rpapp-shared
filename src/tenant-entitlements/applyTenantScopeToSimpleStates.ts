@@ -6,7 +6,7 @@ const ON: SimpleEntitlementState = 'on';
 const OFF: SimpleEntitlementState = 'off';
 const HARD_OFF: SimpleEntitlementState = 'hardOff';
 
-/** Purpose axis — locked only when allowedPurposes is not BOTH. */
+/** Purpose axis — always locked; top „Povolené účely“ picker is the source of truth. */
 export const TENANT_PURPOSE_AXIS_BLOCK_KEYS = [
   'product_vending',
   'donation',
@@ -68,6 +68,18 @@ const DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS = [
   'customer_self_collect',
 ] as const satisfies readonly EntitlementBlockKey[];
 
+/** Product-commerce blocks locked ON whenever product vending is part of tenant allowed purposes. */
+export const TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS = [
+  'inventory_management',
+] as const satisfies readonly EntitlementBlockKey[];
+
+export type TenantProductPurposeLockedBlockKey =
+  (typeof TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS)[number];
+
+export function isProductCommerceAllowed(allowedPurposes: TenantAllowedPurposes): boolean {
+  return allowedPurposes === 'BOTH' || allowedPurposes === 'PRODUCT_ONLY';
+}
+
 /** SIMPLE-profile blocks forced by allowedPurposes (beyond axis product/donation). */
 const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
@@ -94,13 +106,18 @@ export function isTenantScopeLockedBlock(
   _surfaceScope: TenantSurfaceScope,
 ): boolean {
   if ((TENANT_PURPOSE_AXIS_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey)) {
-    return allowedPurposes !== 'BOTH';
+    return true;
   }
   if ((TENANT_SURFACE_AXIS_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey)) {
     return true;
   }
   if (allowedPurposes === 'DONATION_ONLY') {
     return (DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
+  }
+  if (isProductCommerceAllowed(allowedPurposes)) {
+    return (TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(
+      blockKey,
+    );
   }
   return (SURFACE_SCOPE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
 }
@@ -130,6 +147,7 @@ function applyAllowedPurposesToStates(
     case 'PRODUCT_ONLY':
       result.product_vending = ON;
       result.donation = OFF;
+      result.inventory_management = ON;
       break;
     case 'DONATION_ONLY':
       result.product_vending = OFF;
@@ -149,6 +167,7 @@ function applyAllowedPurposesToStates(
       result.donation = ON;
       result.analytics_summary = ON;
       result.pickup_points = ON;
+      result.inventory_management = ON;
       break;
   }
   return result;

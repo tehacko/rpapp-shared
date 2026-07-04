@@ -40,6 +40,7 @@ export type { TenantAllowedPurposes, TenantSurfaceScope } from './tenantScopeTyp
 
 export {
   TENANT_AXIS_CONTROLLED_BLOCK_KEYS,
+  TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS,
   TENANT_PURPOSE_AXIS_BLOCK_KEYS,
   TENANT_SURFACE_AXIS_BLOCK_KEYS,
   applyTenantScopeToSimpleStates,
@@ -47,12 +48,16 @@ export {
   inferAllowedPurposesFromSimpleStates,
   inferSurfaceScopeFromSimpleStates,
   isAxisControlledEntitlementBlock,
+  isProductCommerceAllowed,
   isRuntimeActiveSimpleEntitlementState,
   isTenantScopeLockedBlock,
   stripAxisControlledSimpleStates,
 } from './applyTenantScopeToSimpleStates.js';
 
-export type { TenantAxisControlledBlockKey } from './applyTenantScopeToSimpleStates.js';
+export type {
+  TenantAxisControlledBlockKey,
+  TenantProductPurposeLockedBlockKey,
+} from './applyTenantScopeToSimpleStates.js';
 
 export {
   axesToSimpleState,

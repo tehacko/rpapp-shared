@@ -7,10 +7,11 @@ import {
 } from '../applyTenantScopeToSimpleStates.js';
 
 describe('applyTenantScopeToSimpleStates', () => {
-  it('maps PRODUCT_ONLY + KIOSK_ONLY to vending on and customer surface off', () => {
+  it('maps PRODUCT_ONLY + KIOSK_ONLY to vending on, inventory on, and customer surface off', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY');
     expect(states.product_vending).toBe('on');
     expect(states.donation).toBe('off');
+    expect(states.inventory_management).toBe('on');
     expect(states.surface_kiosk).toBe('on');
     expect(states.surface_customer).toBe('off');
     expect(states.customer_auth_pwa).toBe('off');
@@ -61,9 +62,9 @@ describe('applyTenantScopeToSimpleStates', () => {
 });
 
 describe('isTenantScopeLockedBlock', () => {
-  it('locks purpose axis blocks only when allowedPurposes is not BOTH', () => {
-    expect(isTenantScopeLockedBlock('product_vending', 'BOTH', 'BOTH')).toBe(false);
-    expect(isTenantScopeLockedBlock('donation', 'BOTH', 'BOTH')).toBe(false);
+  it('locks purpose axis blocks always — allowed purposes dropdown is source of truth', () => {
+    expect(isTenantScopeLockedBlock('product_vending', 'BOTH', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('donation', 'BOTH', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('donation', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('product_vending', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('product_vending', 'PRODUCT_ONLY', 'KIOSK_ONLY')).toBe(true);
@@ -97,8 +98,15 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('staff_pickup_scan', 'PRODUCT_ONLY', 'KIOSK_ONLY')).toBe(false);
   });
 
-  it('keeps inventory editable for BOTH and PRODUCT_ONLY', () => {
-    expect(isTenantScopeLockedBlock('inventory_management', 'BOTH', 'BOTH')).toBe(false);
-    expect(isTenantScopeLockedBlock('inventory_management', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
+  it('locks inventory when product commerce is allowed (PRODUCT_ONLY or BOTH)', () => {
+    expect(isTenantScopeLockedBlock('inventory_management', 'BOTH', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('inventory_management', 'PRODUCT_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('inventory_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
+  });
+
+  it('forces inventory on for BOTH and PRODUCT_ONLY scopes', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').inventory_management).toBe('on');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').inventory_management).toBe('on');
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').inventory_management).toBe('off');
   });
 });

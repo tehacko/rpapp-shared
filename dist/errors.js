@@ -67,7 +67,7 @@ export class KioskError extends AppError {
 }
 /** Sales-point naming alias — retains `KIOSK_ERROR` code for v1 churn reduction. */
 export class SalesPointError extends KioskError {
-    constructor(message = 'Chyba konfigurace prodejního místa') {
+    constructor(message = 'Chyba konfigurace platebního místa') {
         super(message);
         this.name = 'SalesPointError';
     }
