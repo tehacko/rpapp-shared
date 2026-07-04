@@ -21,6 +21,10 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   payment_failed: { en: 'Payment failed', cs: 'Platba selhala' },
   receipt_opened: { en: 'Receipt opened', cs: 'Účtenka otevřena' },
   catalog_interaction: { en: 'Catalog browsed', cs: 'Prohlížení katalogu' },
+  catalog_image_load_failed: {
+    en: 'Catalog image failed to load',
+    cs: 'Obrázek v katalogu se nepodařilo načíst',
+  },
   product_added: { en: 'Product added to cart', cs: 'Produkt přidán do košíku' },
   product_removed: { en: 'Product removed from cart', cs: 'Produkt odebrán z košíku' },
   cart_viewed: { en: 'Cart viewed', cs: 'Košík zobrazen' },
@@ -85,6 +89,10 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   recurring_payment_missed: {
     en: 'Recurring payment missed',
     cs: 'Zmeškaná opakovaná platba',
+  },
+  recurring_payment_received: {
+    en: 'Recurring payment received',
+    cs: 'Přijata opakovaná platba',
   },
 };
 

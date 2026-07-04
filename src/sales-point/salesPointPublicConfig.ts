@@ -30,6 +30,7 @@ export interface SalesPointPublicDonationProject {
   readonly name: string;
   readonly description: string | null;
   readonly imageUrl: string | null;
+  readonly thumbnailUrl?: string | null;
   readonly goalAmountMinor: number | null;
   readonly collectedAmountMinor: number;
   readonly currency: string;

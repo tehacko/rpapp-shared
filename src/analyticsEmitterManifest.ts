@@ -29,6 +29,8 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: 'screen_viewed', surface: 'kiosk', layer: 'FE', required: true, reference: 'useKioskOrchestration' },
   { eventName: 'catalog_interaction', surface: 'customer', layer: 'FE', required: true, reference: 'ShopScreen' },
   { eventName: 'catalog_interaction', surface: 'kiosk', layer: 'FE', required: true, reference: 'useKioskOrchestration' },
+  { eventName: 'catalog_image_load_failed', surface: 'customer', layer: 'FE', required: true, reference: 'ProductCard' },
+  { eventName: 'catalog_image_load_failed', surface: 'kiosk', layer: 'FE', required: true, reference: 'ProductGrid' },
   { eventName: 'product_added', surface: 'customer', layer: 'FE', required: true, reference: 'ShopScreen' },
   { eventName: 'product_added', surface: 'kiosk', layer: 'FE', required: true, reference: 'useKioskOrchestration' },
   { eventName: 'cart_viewed', surface: 'customer', layer: 'FE', required: true, reference: 'ShopScreen' },
@@ -46,6 +48,13 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     layer: 'BE',
     required: true,
     reference: 'RecurringDonationMissedPeriodWorker',
+  },
+  {
+    eventName: 'recurring_payment_received',
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'AdvanceRecurringDonationScheduleOnInboundMatch',
   },
   { eventName: ANALYTICS_V2_EXTENSION_EVENTS.MENU_OPENED, surface: 'customer', layer: 'FE', required: true, reference: 'ShopScreen' },
   { eventName: ANALYTICS_V2_EXTENSION_EVENTS.MENU_OPENED, surface: 'kiosk', layer: 'FE', required: true, reference: 'useKioskOrchestration' },
@@ -79,6 +88,8 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'CustomerAnalyticsProvider',
   'AccountPaymentsPage',
   'AccountShell',
+  'ProductCard',
+  'ProductGrid',
 ]);
 
 /** Repo-relative paths for CI grep wiring tests (G3). */
@@ -95,6 +106,8 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   CustomerAnalyticsProvider: 'rpapp-customer/src/shared/analytics/CustomerAnalyticsProvider.tsx',
   AccountPaymentsPage: 'rpapp-customer/src/features/account/AccountPaymentsPage.tsx',
   AccountShell: 'rpapp-customer/src/features/account/AccountShell.tsx',
+  ProductCard: 'rpapp-customer/src/features/shop/components/ProductCard.tsx',
+  ProductGrid: 'rpapp-kiosk/src/features/products/components/ProductGrid/ProductGrid.tsx',
 };
 
 /** Repo-relative paths for server-layer CI grep wiring (G-P1-09 / AN-036). */
@@ -109,6 +122,8 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/application/use-cases/analytics/CreatePostKioskAnalyticsChildSessionUseCase.ts',
   RecurringDonationMissedPeriodWorker:
     'up-backend/src/infrastructure/workers/RecurringDonationMissedPeriodWorker.ts',
+  AdvanceRecurringDonationScheduleOnInboundMatch:
+    'up-backend/src/application/use-cases/reconciliation/AdvanceRecurringDonationScheduleOnInboundMatch.ts',
   LoginWithPasswordUseCase:
     'up-backend/src/application/use-cases/customer-auth/LoginWithPasswordUseCase.ts',
   RegisterCustomerUseCase:
@@ -129,6 +144,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'CompletePaymentTransactionUseCase',
   'CreatePostKioskAnalyticsChildSessionUseCase',
   'RecurringDonationMissedPeriodWorker',
+  'AdvanceRecurringDonationScheduleOnInboundMatch',
   'LoginWithPasswordUseCase',
   'RegisterCustomerUseCase',
   'LogoutCustomerSessionUseCase',

@@ -23,6 +23,9 @@ events:
   - event: cart_viewed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: catalog_image_load_failed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: catalog_interaction
     catalogVersion: 1
     telemetryClass: OPERATIONAL
@@ -141,6 +144,9 @@ events:
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: recurring_payment_missed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: recurring_payment_received
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: retail_order_abandoned

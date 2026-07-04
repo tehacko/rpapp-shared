@@ -90,6 +90,10 @@ const RETAIL_DESCRIPTIONS = {
     en: 'Counts when someone browses products — opens categories or product details in the shop. One count per browsing action recorded. Adding to cart is a different event.',
     cs: 'Počítá se, když někdo prohlíží produkty — otevře kategorie nebo detail v obchodě. Jednou za zaznamenanou interakci. Přidání do košíku je jiná událost.',
   },
+  [ANALYTICS_RETAIL_EVENTS.CATALOG_IMAGE_LOAD_FAILED]: {
+    en: 'Counts when a catalog product or donation project image fails to load in the browser. Includes URL class metadata only — no raw signed tokens.',
+    cs: 'Počítá se, když se v prohlížeči nepodaří načíst obrázek produktu nebo donačního projektu. Metadata obsahují jen typ URL — ne surové tokeny.',
+  },
   [ANALYTICS_RETAIL_EVENTS.PRODUCT_ADDED]: {
     en: 'Counts when a product is put into the shopping cart. One count per add (changing quantity may count again). Not checkout or payment yet.',
     cs: 'Počítá se, když se produkt vloží do košíku. Jednou za přidání (změna množství může počítat znovu). Ještě není pokladna ani platba.',
@@ -369,6 +373,10 @@ const SERVER_OPS_DESCRIPTIONS: Record<
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_MISSED]: {
     en: 'Counts when an expected recurring donation payment did not arrive by the due date. One count per missed period on a standing-order setup. Emitted by the reconciliation worker, not by a customer session.',
     cs: 'Počítá se, když očekávaná platba opakovaného daru nedorazí do termínu. Jednou za každé zmeškané období trvalého příkazu. Emituje workers reconciliace, ne klientská relace.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_RECEIVED]: {
+    en: 'Counts when an inbound bank movement matches a recurring donation standing-order setup. Emitted by reconciliation after SS match.',
+    cs: 'Počítá se, když příchozí bankovní pohyb sedí na trvalý příkaz k opakovanému daru. Emituje reconciliace po shodě SS.',
   },
 };
 

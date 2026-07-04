@@ -55,6 +55,7 @@ export const ANALYTICS_UNIVERSAL_EVENTS = {
  * Retail events (checkout funnel + order fulfillment §16).
  */
 export const ANALYTICS_RETAIL_EVENTS = {
+  CATALOG_IMAGE_LOAD_FAILED: 'catalog_image_load_failed',
   CATALOG_INTERACTION: 'catalog_interaction',
   PRODUCT_ADDED: 'product_added',
   PRODUCT_REMOVED: 'product_removed',
@@ -94,6 +95,7 @@ export const ANALYTICS_KIOSK_EVENTS = {
  */
 export const ANALYTICS_SERVER_OPS_EVENTS = {
   RECURRING_PAYMENT_MISSED: 'recurring_payment_missed',
+  RECURRING_PAYMENT_RECEIVED: 'recurring_payment_received',
 } as const;
 
 export const ANALYTICS_EVENT_NAMES = [

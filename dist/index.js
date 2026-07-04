@@ -46,6 +46,7 @@ export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
 export * from './catalogImageUrl.js';
+export * from './catalogImageTelemetry.js';
 export * from './buildKioskLineKey.js';
 export * from './commerce/reservedSalesPointSlugs.js';
 export * from './catalogMediaPatch.js';
