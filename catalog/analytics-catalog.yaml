@@ -110,6 +110,12 @@ events:
   - event: payment_submitted
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: physical_card_issued
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: physical_card_revoked
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: pickup_fulfillment_held
     catalogVersion: 1
     telemetryClass: OPERATIONAL
@@ -132,6 +138,24 @@ events:
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: product_added
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_alt_added
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_alt_promoted
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_alt_removed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_assign_conflict
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_assigned
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: product_barcode_cleared
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: product_removed
