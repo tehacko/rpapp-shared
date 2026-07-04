@@ -90,12 +90,24 @@ export const ANALYTICS_KIOSK_EVENTS = {
   KIOSK_TIMEOUT: 'kiosk_timeout',
 } as const;
 
+export const ANALYTICS_BARCODE_OPS_EVENTS = {
+  PRODUCT_BARCODE_ASSIGNED: 'product_barcode_assigned',
+  PRODUCT_BARCODE_CLEARED: 'product_barcode_cleared',
+  PRODUCT_BARCODE_ALT_ADDED: 'product_barcode_alt_added',
+  PRODUCT_BARCODE_ALT_REMOVED: 'product_barcode_alt_removed',
+  PRODUCT_BARCODE_ALT_PROMOTED: 'product_barcode_alt_promoted',
+  PRODUCT_BARCODE_ASSIGN_CONFLICT: 'product_barcode_assign_conflict',
+  PHYSICAL_CARD_ISSUED: 'physical_card_issued',
+  PHYSICAL_CARD_REVOKED: 'physical_card_revoked',
+} as const;
+
 /**
  * Server-side operational events (workers, reconciliation) — no client emitter.
  */
 export const ANALYTICS_SERVER_OPS_EVENTS = {
   RECURRING_PAYMENT_MISSED: 'recurring_payment_missed',
   RECURRING_PAYMENT_RECEIVED: 'recurring_payment_received',
+  ...ANALYTICS_BARCODE_OPS_EVENTS,
 } as const;
 
 export const ANALYTICS_EVENT_NAMES = [

@@ -17,13 +17,24 @@ export const BANK_TRANSFER_WEBHOOK_HEADERS = {
   TIMESTAMP: 'x-webhook-timestamp',
 } as const;
 
+/**
+ * BAR-PR-00b — salesPointId / kioskId alias on kiosk-facing POST bodies:
+ * `POST /api/products/lookup-barcode` and `POST /api/v1/kiosk-auth/card-lookup`
+ * accept either field as a positive integer JSON number or digit-only string.
+ * Validators normalize to canonical `salesPointId: number` before handlers run.
+ * See `up-backend/docs/BARCODE/api-contracts.md`.
+ */
+
 // ===== API Endpoints =====
 
 export const API_ENDPOINTS = {
   // Product endpoints
   PRODUCTS: '/api/products',
   PRODUCT_CLICK: '/api/products/:id/click',
+  /** Body: `{ barcode, salesPointId? | kioskId? }` — alias normalized to `salesPointId`. */
   PRODUCT_LOOKUP_BARCODE: '/api/products/lookup-barcode',
+  /** Body: `{ cardPayload, salesPointId? | kioskId? }` — alias normalized to `salesPointId`. */
+  KIOSK_AUTH_CARD_LOOKUP: '/api/v1/kiosk-auth/card-lookup',
 
   // Payment endpoints
   PAYMENT_CREATE_QR: '/api/payments/create-qr',

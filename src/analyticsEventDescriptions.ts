@@ -370,6 +370,38 @@ const SERVER_OPS_DESCRIPTIONS: Record<
   (typeof ANALYTICS_SERVER_OPS_EVENTS)[keyof typeof ANALYTICS_SERVER_OPS_EVENTS],
   LocalizedLabel
 > = {
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_ASSIGNED]: {
+    en: 'Counts when a primary product or variant barcode is saved, including confirmed overwrite moves. Emitted server-side after admin or pickup staff mutations.',
+    cs: 'Počítá se při uložení primárního čárového kódu produktu či varianty, včetně potvrzeného přesunu. Emituje server po změně administrátorem nebo personálem vyzvednutí.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_CLEARED]: {
+    en: 'Counts when the primary barcode is removed from a product or variant. Emitted server-side after admin or pickup staff mutations.',
+    cs: 'Počítá se při odstranění primárního čárového kódu z produktu nebo varianty. Emituje server po změně administrátorem nebo personálem vyzvednutí.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_ALT_ADDED]: {
+    en: 'Counts when an alternate barcode alias is added to a product or variant. Emitted server-side after admin or pickup staff mutations.',
+    cs: 'Počítá se při přidání alternativního aliasu čárového kódu. Emituje server po změně administrátorem nebo personálem vyzvednutí.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_ALT_REMOVED]: {
+    en: 'Counts when an alternate barcode alias is removed from a product or variant. Emitted server-side after admin or pickup staff mutations.',
+    cs: 'Počítá se při odebrání alternativního aliasu čárového kódu. Emituje server po změně administrátorem nebo personálem vyzvednutí.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_ALT_PROMOTED]: {
+    en: 'Counts when an alternate barcode is promoted to primary. Emitted server-side after admin or pickup staff mutations.',
+    cs: 'Počítá se, když je alternativní čárový kód povýšen na primární. Emituje server po změně administrátorem nebo personálem vyzvednutí.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_ASSIGN_CONFLICT]: {
+    en: 'Counts when a barcode assign is rejected because the code already belongs to another product, without overwrite confirmation. Emitted server-side on 409 responses.',
+    cs: 'Počítá se, když je přiřazení čárového kódu odmítnuto, protože kód už patří jinému produktu a nebylo potvrzeno přepsání. Emituje server při odpovědi 409.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PHYSICAL_CARD_ISSUED]: {
+    en: 'Counts when an administrator issues a new physical loyalty card. Emitted server-side; card secrets are never included in metadata.',
+    cs: 'Počítá se, když administrátor vydá novou fyzickou věrnostní kartu. Emituje server; tajné údaje karty nejsou v metadatech.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PHYSICAL_CARD_REVOKED]: {
+    en: 'Counts when a physical loyalty card is revoked and can no longer be scanned at a kiosk. Emitted server-side after admin revoke.',
+    cs: 'Počítá se, když je fyzická věrnostní karta zneplatněna a nelze ji již naskenovat na kiosku. Emituje server po zneplatnění administrátorem.',
+  },
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_MISSED]: {
     en: 'Counts when an expected recurring donation payment did not arrive by the due date. One count per missed period on a standing-order setup. Emitted by the reconciliation worker, not by a customer session.',
     cs: 'Počítá se, když očekávaná platba opakovaného daru nedorazí do termínu. Jednou za každé zmeškané období trvalého příkazu. Emituje workers reconciliace, ne klientská relace.',

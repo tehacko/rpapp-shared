@@ -203,6 +203,34 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when the primary catalog image flag changes in a gallery save. One line when primary changes.',
     cs: 'Zapíše se, když se při ukládání galerie změní hlavní obrázek v katalogu. Jeden řádek při změně primárního obrázku.',
   },
+  'admin.loyalty.physical_card_issued': {
+    en: 'Recorded when an administrator issues a new physical loyalty card for kiosk scanning. The full card payload is never stored in this log.',
+    cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na kiosku. Plná hodnota karty se v záznamu neukládá.',
+  },
+  'admin.loyalty.physical_card_revoked': {
+    en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a kiosk. One line per revoked card.',
+    cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na kiosku. Jeden řádek za zneplatněnou kartu.',
+  },
+  'admin.product.barcode_assigned': {
+    en: 'Recorded when a primary product or variant barcode is created or updated, including confirmed overwrite moves.',
+    cs: 'Zapíše se při vytvoření nebo změně primárního čárového kódu produktu či varianty, včetně potvrzeného přesunu z jiného držitele.',
+  },
+  'admin.product.barcode_cleared': {
+    en: 'Recorded when the primary barcode is removed from a product or variant.',
+    cs: 'Zapíše se při odstranění primárního čárového kódu z produktu nebo varianty.',
+  },
+  'admin.product.barcode_alt_added': {
+    en: 'Recorded when an alternate lookup barcode alias is added to a product or variant.',
+    cs: 'Zapíše se při přidání alternativního aliasu čárového kódu k produktu nebo variantě.',
+  },
+  'admin.product.barcode_alt_removed': {
+    en: 'Recorded when an alternate barcode alias is removed from a product or variant.',
+    cs: 'Zapíše se při odebrání alternativního aliasu čárového kódu z produktu nebo varianty.',
+  },
+  'admin.product.barcode_alt_promoted': {
+    en: 'Recorded when an alternate barcode is promoted to become the primary barcode.',
+    cs: 'Zapíše se, když je alternativní čárový kód povýšen na primární.',
+  },
   'dev.tenant.created': {
     en: 'Recorded when platform staff create a brand-new organization in the dev tools. One line per new organization. Invitation links and passwords are not stored here.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích založí novou organizaci. Jeden řádek za novou organizaci. Odkazy z pozvánek a hesla se sem neukládají.',

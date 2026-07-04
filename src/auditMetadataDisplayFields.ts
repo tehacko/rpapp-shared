@@ -67,6 +67,39 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
     { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
   ],
+  'admin.product.barcode_assigned': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+  ],
+  'admin.product.barcode_cleared': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+  ],
+  'admin.product.barcode_alt_added': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+  ],
+  'admin.product.barcode_alt_removed': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+  ],
+  'admin.product.barcode_alt_promoted': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+  ],
+  'admin.loyalty.physical_card_issued': [
+    { key: 'cardId', labelKey: 'compliance.audit.metadata.cardId' },
+    { key: 'displayHint', labelKey: 'compliance.audit.metadata.displayHint' },
+  ],
+  'admin.loyalty.physical_card_revoked': [
+    { key: 'cardId', labelKey: 'compliance.audit.metadata.cardId' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

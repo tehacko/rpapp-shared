@@ -203,6 +203,34 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Primary product image changed',
     cs: 'Změněn hlavní obrázek produktu',
   },
+  'admin.loyalty.physical_card_issued': {
+    en: 'Physical loyalty card issued',
+    cs: 'Vydána fyzická věrnostní karta',
+  },
+  'admin.loyalty.physical_card_revoked': {
+    en: 'Physical loyalty card revoked',
+    cs: 'Zneplatněna fyzická věrnostní karta',
+  },
+  'admin.product.barcode_assigned': {
+    en: 'Product barcode assigned',
+    cs: 'Přiřazen čárový kód produktu',
+  },
+  'admin.product.barcode_cleared': {
+    en: 'Product barcode cleared',
+    cs: 'Odstraněn čárový kód produktu',
+  },
+  'admin.product.barcode_alt_added': {
+    en: 'Alternate product barcode added',
+    cs: 'Přidán alternativní čárový kód',
+  },
+  'admin.product.barcode_alt_removed': {
+    en: 'Alternate product barcode removed',
+    cs: 'Odebrán alternativní čárový kód',
+  },
+  'admin.product.barcode_alt_promoted': {
+    en: 'Alternate barcode promoted to primary',
+    cs: 'Alternativní kód povýšen na primární',
+  },
   'dev.tenant.created': {
     en: 'Organization created (platform)',
     cs: 'Organizace založena (platforma)',

@@ -20,6 +20,9 @@ export * from './errors.js';
 export * from './components/DatabaseUnavailable.js';
 export * from './hooks/useDatabaseHealth.js';
 export { useSubmitCooldown, type UseSubmitCooldownResult } from './hooks/useSubmitCooldown.js';
+export { useBarcodeScanner, type UseBarcodeScannerMessages, type UseBarcodeScannerOptions, type UseBarcodeScannerReturn, type ScannerStatus, } from './hooks/useBarcodeScanner.js';
+export { selectBarcodeScannerEngine, type ScannerEngine } from './hooks/selectEngine.js';
+export { resolveScannerFormatConfig, type BarcodeScannerFormatProfile, type ScannerFormatConfig, } from './hooks/scannerFormats.js';
 export * from './analyticsEvents.js';
 export * from './analyticsEmitterManifest.js';
 export * from './analyticsCatalogV2.js';
@@ -64,5 +67,6 @@ export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
 export { createCoalescedRefetchScheduler, type CoalescedRefetchScheduler, } from './catalog/createCoalescedRefetchScheduler.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
+export * from './barcode/index.js';
 export * from './tenant-entitlements/index.js';
 //# sourceMappingURL=index.d.ts.map
