@@ -28,6 +28,9 @@ describe('tenant entitlement catalog', () => {
     const loyalty = getEntitlementBlockCatalogEntry('loyalty_program');
     expect(loyalty.parentKeys).toEqual(['product_vending']);
 
+    const tenantOps = getEntitlementBlockCatalogEntry('tenant_ops_settings');
+    expect(tenantOps.blockClass).toBe('CORE_REQUIRED');
+
     const reconciliation = getEntitlementBlockCatalogEntry('payment_reconciliation');
     expect(reconciliation.blockClass).toBe('STRATEGY');
     expect(reconciliation.defaultStrategy).toEqual({

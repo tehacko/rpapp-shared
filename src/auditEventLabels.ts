@@ -117,15 +117,15 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.pickupPoint.deactivated': {
     en: 'Pickup point deactivated',
-    cs: 'Výdejní místo deaktivováno',
+    cs: 'Odběrné místo deaktivováno',
   },
   'admin.pickupPoint.reactivated': {
     en: 'Pickup point reactivated',
-    cs: 'Výdejní místo znovu aktivováno',
+    cs: 'Odběrné místo znovu aktivováno',
   },
   'admin.pickupPoint.permanently_deleted': {
     en: 'Pickup point permanently deleted',
-    cs: 'Výdejní místo trvale smazáno',
+    cs: 'Odběrné místo trvale smazáno',
   },
   'admin.donationProject.deactivated': {
     en: 'Donation project deactivated',
@@ -149,15 +149,15 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.salesPoint.deactivated': {
     en: 'Sales point deactivated',
-    cs: 'Prodejní místo deaktivováno',
+    cs: 'Platební místo deaktivováno',
   },
   'admin.salesPoint.reactivated': {
     en: 'Sales point reactivated',
-    cs: 'Prodejní místo znovu aktivováno',
+    cs: 'Platební místo znovu aktivováno',
   },
   'admin.salesPoint.permanently_deleted': {
     en: 'Sales point permanently deleted',
-    cs: 'Prodejní místo trvale smazáno',
+    cs: 'Platební místo trvale smazáno',
   },
   'admin.tenant.deactivated': {
     en: 'Organization deactivated',
@@ -185,11 +185,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.salesPoint.donation_projects.updated': {
     en: 'Sales point donation projects updated',
-    cs: 'Projekty daru na prodejním místě upraveny',
+    cs: 'Projekty daru na platebním místě upraveny',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Sales point donation amounts updated',
-    cs: 'Částky daru na prodejním místě upraveny',
+    cs: 'Částky daru na platebním místě upraveny',
   },
   'admin.product.media_saved': {
     en: 'Product gallery saved',
@@ -285,7 +285,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'payment.cash_checkout.self_confirm': {
     en: 'Kiosk cash checkout self-confirmed',
-    cs: 'Hotovostní platba na kiosku potvrzena zákazníkem',
+    cs: 'Hotovostní platba u platebního místa potvrzena zákazníkem',
   },
   'export.analytics.explore.exported': {
     en: 'Customer behavior export',

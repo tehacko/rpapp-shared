@@ -54,7 +54,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: [],
     adminNavSectionId: 'kiosks',
-    notes: 'DEV may HIDDEN+READ_ONLY (D-ENT-26)',
+    notes: 'Sales points in admin; DEV may HIDDEN+READ_ONLY (D-ENT-26)',
   },
   {
     blockKey: 'catalog_administration',
@@ -153,9 +153,9 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   },
   {
     blockKey: 'payment_rails_strategy',
-    blockClass: 'STRATEGY',
+    blockClass: 'CORE_REQUIRED',
     parentKeys: ['sales_point_management'],
-    notes: 'Bank/rails; which channels exist',
+    notes: 'Bank/rails; always on — channel config via payment-entitlements tab',
   },
   {
     blockKey: 'payment_reconciliation',
@@ -318,10 +318,10 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   },
   {
     blockKey: 'tenant_ops_settings',
-    blockClass: 'CONDITIONAL',
+    blockClass: 'CORE_REQUIRED',
     parentKeys: [],
     adminNavSectionId: 'account-settings',
-    notes: 'account-settings + ops-settings tab',
+    notes: 'account-settings + ops-settings tab; always on (DEV policy UI locked)',
   },
   {
     blockKey: 'bank_account_administration',

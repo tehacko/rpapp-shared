@@ -1,3 +1,4 @@
+import { applyPickupOperationsClusterSync } from './pickupOperationsCluster.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
 function isRuntimeActiveSimpleState(state: SimpleEntitlementState | undefined): boolean {
@@ -43,5 +44,5 @@ export function applySimpleStateDependencyImplications(
     }
   }
 
-  return result;
+  return applyPickupOperationsClusterSync(result);
 }

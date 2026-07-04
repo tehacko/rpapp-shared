@@ -17,7 +17,7 @@ const UNIVERSAL_DESCRIPTIONS: Record<
 > = {
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_STARTED]: {
     en: 'Counts when a new customer visit starts on the kiosk or phone app. One count per new visit — doing the same thing again in the same visit does not add another. This is not the same as the “sessions started” number on some charts, which is calculated differently.',
-    cs: 'Počítá se, když na kiosku nebo v aplikaci začne nová návštěva zákazníka. Jednou za každou novou návštěvu — opakování ve stejné návštěvě nepřidá další. Není totéž jako číslo „zahájených relací“ na některých grafech, které se počítá jinak.',
+    cs: 'Počítá se, když u platebního místa nebo v aplikaci začne nová návštěva zákazníka. Jednou za každou novou návštěvu — opakování ve stejné návštěvě nepřidá další. Není totéž jako číslo „zahájených relací“ na některých grafech, které se počítá jinak.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_COMPLETED]: {
     en: 'Counts when a visit ends in a normal, finished way — often after a successful payment. Usually one per finished visit. Not the same as “payment went through” or “order paid” — those are counted separately.',
@@ -29,7 +29,7 @@ const UNIVERSAL_DESCRIPTIONS: Record<
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SCREEN_VIEWED]: {
     en: 'Counts each time a screen is shown on the kiosk or customer app — home, cart, payment, and so on. Every time they open or return to a screen adds one. Not a new visit, not a payment result.',
-    cs: 'Počítá se pokaždé, když se na kiosku nebo v aplikaci zobrazí obrazovka — úvod, košík, platba atd. Každé otevření nebo návrat na obrazovku přidá jednu. Není nová návštěva ani výsledek platby.',
+    cs: 'Počítá se pokaždé, když se u platebního místa nebo v aplikaci zobrazí obrazovka — úvod, košík, platba atd. Každé otevření nebo návrat na obrazovku přidá jednu. Není nová návštěva ani výsledek platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.CTA_CLICKED]: {
     en: 'Counts when someone taps a main action button (for example “Continue” or “Pay”). One count per tap — tapping twice quickly can mean two. Not the same as just changing screen or starting payment.',
@@ -204,15 +204,15 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.KIOSK_CASH_COMPLETE]: {
     en: 'Counts when a kiosk cash checkout completes successfully. One count per completed cash sale.',
-    cs: 'Počítá se při úspěšném dokončení hotovostní pokladny na kiosku. Jednou za hotovostní prodej.',
+    cs: 'Počítá se při úspěšném dokončení hotovostní pokladny u platebního místa. Jednou za hotovostní prodej.',
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
     en: 'Counts when collect-later checkout options are configured for a session (slot, mode, etc.). One count per configuration.',
     cs: 'Počítá se při nastavení možností collect-later pro relaci (slot, režim atd.). Jednou za konfiguraci.',
   },
   [ANALYTICS_RETAIL_EVENTS.SLUG_LEGACY_REDIRECT]: {
-    en: 'Counts when a legacy kioskId shop URL redirects to a slug-based prodejní místo URL. One count per redirect.',
-    cs: 'Počítá se při přesměrování staré URL s kioskId na URL s slugem prodejního místa. Jednou za přesměrování.',
+    en: 'Counts when a legacy kioskId shop URL redirects to a slug-based platební místo URL. One count per redirect.',
+    cs: 'Počítá se při přesměrování staré URL s kioskId na URL s slugem platebního místa. Jednou za přesměrování.',
   },
   [ANALYTICS_RETAIL_EVENTS.TENANT_SWITCHED]: {
     en: 'Counts when a logged-in customer switches tenant context in the account shop flow. One count per switch.',
@@ -290,7 +290,7 @@ const RETAIL_COMMERCE_DESCRIPTIONS: Record<
   },
   [RETAIL_COMMERCE_EVENTS.KIOSK_CASH_COMPLETE]: {
     en: 'Counts when a kiosk cash checkout is completed. One count per completed cash payment.',
-    cs: 'Počítá se při dokončení platby hotově na kiosku. Jednou za dokončenou hotovostní platbu.',
+    cs: 'Počítá se při dokončení platby hotově u platebního místa. Jednou za dokončenou hotovostní platbu.',
   },
   [RETAIL_COMMERCE_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
     en: 'Counts when collect-later pickup options are configured during checkout. One count per configuration.',

@@ -6,12 +6,22 @@ const ON: SimpleEntitlementState = 'on';
 const OFF: SimpleEntitlementState = 'off';
 const HARD_OFF: SimpleEntitlementState = 'hardOff';
 
-/** Blocks controlled exclusively by tenant scope pickers (not editable in SIMPLE profile). */
-export const TENANT_AXIS_CONTROLLED_BLOCK_KEYS = [
+/** Purpose axis — locked only when allowedPurposes is not BOTH. */
+export const TENANT_PURPOSE_AXIS_BLOCK_KEYS = [
   'product_vending',
   'donation',
+] as const satisfies readonly EntitlementBlockKey[];
+
+/** Surface axis — always locked; top „Aplikace zákazník a kiosk“ picker is the source of truth. */
+export const TENANT_SURFACE_AXIS_BLOCK_KEYS = [
   'surface_kiosk',
   'surface_customer',
+] as const satisfies readonly EntitlementBlockKey[];
+
+/** Blocks whose SIMPLE values are overwritten by tenant scope pickers (never stored in user draft when locked). */
+export const TENANT_AXIS_CONTROLLED_BLOCK_KEYS = [
+  ...TENANT_PURPOSE_AXIS_BLOCK_KEYS,
+  ...TENANT_SURFACE_AXIS_BLOCK_KEYS,
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export type TenantAxisControlledBlockKey = (typeof TENANT_AXIS_CONTROLLED_BLOCK_KEYS)[number];
@@ -20,11 +30,17 @@ function isRuntimeActiveSimpleState(state: SimpleEntitlementState | undefined): 
   return state === 'on' || state === 'softOffVisible' || state === 'softOffHidden';
 }
 
+/** Whether SIMPLE state counts as runtime-active (Zapnuto bucket in DEV policy UI). */
+export function isRuntimeActiveSimpleEntitlementState(state: SimpleEntitlementState | undefined): boolean {
+  return isRuntimeActiveSimpleState(state);
+}
+
 /** Default non-axis SIMPLE blocks for new tenants (both commerce + both surfaces). */
 export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
   return {
     sales_point_management: ON,
     order_pickup_infrastructure: ON,
+    fulfillment_queue: ON,
     pickup_points: ON,
     immediate_self_pickup: ON,
     scheduled_pickup: OFF,
@@ -41,12 +57,66 @@ export function isAxisControlledEntitlementBlock(blockKey: EntitlementBlockKey):
   return (TENANT_AXIS_CONTROLLED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
 }
 
+/** Product-commerce blocks forced off and locked when allowedPurposes is DONATION_ONLY. */
+const DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS = [
+  'order_pickup_infrastructure',
+  'fulfillment_queue',
+  'pickup_points',
+  'immediate_self_pickup',
+  'scheduled_pickup',
+  'staff_pickup_scan',
+  'customer_self_collect',
+] as const satisfies readonly EntitlementBlockKey[];
+
+/** SIMPLE-profile blocks forced by allowedPurposes (beyond axis product/donation). */
+const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
+  'catalog_administration',
+  'inventory_management',
+  'loyalty_program',
+  'analytics_summary',
+  'tax_management',
+  'compliance_fiscal_modules',
+  ...DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS,
+] as const satisfies readonly EntitlementBlockKey[];
+
+/** SIMPLE-profile blocks forced by surfaceScope (beyond axis kiosk/customer). */
+const SURFACE_SCOPE_LOCKED_BLOCK_KEYS = [
+  'customer_auth_pwa',
+  'realtime_device_transport',
+] as const satisfies readonly EntitlementBlockKey[];
+
+/**
+ * True when SIMPLE state is fully determined by tenant scope pickers (not editable in DEV policy UI).
+ */
+export function isTenantScopeLockedBlock(
+  blockKey: EntitlementBlockKey,
+  allowedPurposes: TenantAllowedPurposes,
+  _surfaceScope: TenantSurfaceScope,
+): boolean {
+  if ((TENANT_PURPOSE_AXIS_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey)) {
+    return allowedPurposes !== 'BOTH';
+  }
+  if ((TENANT_SURFACE_AXIS_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey)) {
+    return true;
+  }
+  if (allowedPurposes === 'DONATION_ONLY') {
+    return (DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
+  }
+  return (SURFACE_SCOPE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
+}
+
 export function stripAxisControlledSimpleStates(
   states: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+  scope?: {
+    readonly allowedPurposes: TenantAllowedPurposes;
+    readonly surfaceScope: TenantSurfaceScope;
+  },
 ): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
   const result: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> = { ...states };
   for (const key of TENANT_AXIS_CONTROLLED_BLOCK_KEYS) {
-    delete result[key];
+    if (scope === undefined || isTenantScopeLockedBlock(key, scope.allowedPurposes, scope.surfaceScope)) {
+      delete result[key];
+    }
   }
   return result;
 }
@@ -68,7 +138,11 @@ function applyAllowedPurposesToStates(
       result.loyalty_program = OFF;
       result.catalog_administration = HARD_OFF;
       result.analytics_summary = OFF;
-      result.pickup_points = OFF;
+      result.tax_management = OFF;
+      result.compliance_fiscal_modules = OFF;
+      for (const blockKey of DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS) {
+        result[blockKey] = OFF;
+      }
       break;
     case 'BOTH':
       result.product_vending = ON;

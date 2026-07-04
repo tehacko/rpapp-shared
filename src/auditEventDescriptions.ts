@@ -117,15 +117,15 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.pickupPoint.deactivated': {
     en: 'Recorded when a pickup point is deactivated and no longer available for customer handoff. One line per pickup point.',
-    cs: 'Zapíše se, když je výdejní místo deaktivováno a už není dostupné pro předání zákazníkovi. Jeden řádek za výdejní místo.',
+    cs: 'Zapíše se, když je odběrné místo deaktivováno a už není dostupné pro předání zákazníkovi. Jeden řádek za odběrné místo.',
   },
   'admin.pickupPoint.reactivated': {
     en: 'Recorded when a deactivated pickup point is reactivated and offered again. One line per pickup point.',
-    cs: 'Zapíše se, když je deaktivované výdejní místo znovu aktivováno a opět nabízeno. Jeden řádek za výdejní místo.',
+    cs: 'Zapíše se, když je deaktivované odběrné místo znovu aktivováno a opět nabízeno. Jeden řádek za odběrné místo.',
   },
   'admin.pickupPoint.permanently_deleted': {
     en: 'Recorded when a pickup point is permanently removed from configuration. One line per pickup point. Past audit and payment traces stay.',
-    cs: 'Zapíše se, když je výdejní místo trvale odstraněno z konfigurace. Jeden řádek za výdejní místo. Staré auditní a platební stopy zůstávají.',
+    cs: 'Zapíše se, když je odběrné místo trvale odstraněno z konfigurace. Jeden řádek za odběrné místo. Staré auditní a platební stopy zůstávají.',
   },
   'admin.donationProject.deactivated': {
     en: 'Recorded when a donation project is deactivated and hidden from active assignment. One line per project.',
@@ -149,15 +149,15 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.salesPoint.deactivated': {
     en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
-    cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',
+    cs: 'Zapíše se, když je platební místo vypnuté pro zákazníky. Jeden řádek za platební místo. Platby už rozjeté se řeší zvlášť.',
   },
   'admin.salesPoint.reactivated': {
     en: 'Recorded when a turned-off sales point is enabled again. One line per sales point.',
-    cs: 'Zapíše se, když je vypnuté prodejní místo znovu zapnuté. Jeden řádek za prodejní místo.',
+    cs: 'Zapíše se, když je vypnuté platební místo znovu zapnuté. Jeden řádek za platební místo.',
   },
   'admin.salesPoint.permanently_deleted': {
     en: 'Recorded when a sales point is removed from the system for good. One line per sales point. Old payment and audit records stay for compliance.',
-    cs: 'Zapíše se, když je prodejní místo trvale odstraněno ze systému. Jeden řádek za prodejní místo. Staré platby a audit zůstávají kvůli evidenci.',
+    cs: 'Zapíše se, když je platební místo trvale odstraněno ze systému. Jeden řádek za platební místo. Staré platby a audit zůstávají kvůli evidenci.',
   },
   'admin.tenant.deactivated': {
     en: 'Recorded when an entire customer organization (tenant) is closed or suspended. One line per closure. Customer personal data is not copied into this line.',
@@ -185,11 +185,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.salesPoint.donation_projects.updated': {
     en: 'Recorded when which charity projects appear on a sales point is saved. One line per save. Project names are not all listed in the audit line.',
-    cs: 'Zapíše se při uložení toho, které dárkové projekty se na prodejním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
+    cs: 'Zapíše se při uložení toho, které dárkové projekty se na platebním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Recorded when donation amount presets linked to a sales point are updated. One line per save.',
-    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na prodejní místo. Jeden řádek za uložení.',
+    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na platební místo. Jeden řádek za uložení.',
   },
   'admin.product.media_saved': {
     en: 'Recorded when an admin saves a product or variant image gallery. One line per successful gallery PUT.',
@@ -285,7 +285,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'payment.cash_checkout.self_confirm': {
     en: 'Recorded when a customer self-confirms kiosk cash checkout (ADR-PICKUP-CASH).',
-    cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem na kiosku (ADR-PICKUP-CASH).',
+    cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u platebního místa (ADR-PICKUP-CASH).',
   },
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',

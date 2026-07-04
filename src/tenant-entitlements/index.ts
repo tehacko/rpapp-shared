@@ -22,6 +22,14 @@ export {
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
 export {
+  PICKUP_OPERATIONS_CLUSTER_BLOCK_KEYS,
+  PICKUP_OPERATIONS_CLUSTER_LEADER,
+  applyPickupOperationsClusterSync,
+  isPickupOperationsClusterBlock,
+  isPickupOperationsClusterFollower,
+} from './pickupOperationsCluster.js';
+
+export {
   TENANT_ALLOWED_PURPOSES,
   TENANT_SURFACE_SCOPE_IDS,
   isTenantAllowedPurposes,
@@ -32,11 +40,15 @@ export type { TenantAllowedPurposes, TenantSurfaceScope } from './tenantScopeTyp
 
 export {
   TENANT_AXIS_CONTROLLED_BLOCK_KEYS,
+  TENANT_PURPOSE_AXIS_BLOCK_KEYS,
+  TENANT_SURFACE_AXIS_BLOCK_KEYS,
   applyTenantScopeToSimpleStates,
   buildDefaultTenantScopeBaseline,
   inferAllowedPurposesFromSimpleStates,
   inferSurfaceScopeFromSimpleStates,
   isAxisControlledEntitlementBlock,
+  isRuntimeActiveSimpleEntitlementState,
+  isTenantScopeLockedBlock,
   stripAxisControlledSimpleStates,
 } from './applyTenantScopeToSimpleStates.js';
 
