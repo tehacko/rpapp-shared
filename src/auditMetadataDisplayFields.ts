@@ -93,6 +93,25 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },
     { key: 'source', labelKey: 'compliance.audit.metadata.source' },
   ],
+  'pickup.device.paired': [
+    { key: 'deviceLabel', labelKey: 'compliance.audit.metadata.deviceLabel' },
+    { key: 'deviceCode', labelKey: 'compliance.audit.metadata.deviceCode' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+  ],
+  'pickup.device.pairing.failed': [
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'pickup.fulfillment.claim.acquired': [
+    { key: 'fulfillmentId', labelKey: 'compliance.audit.metadata.fulfillmentId' },
+    { key: 'deviceLabel', labelKey: 'compliance.audit.metadata.deviceLabel' },
+    { key: 'claimExpiresAt', labelKey: 'compliance.audit.metadata.claimExpiresAt' },
+  ],
+  'pickup.fulfillment.claim.released': [
+    { key: 'fulfillmentId', labelKey: 'compliance.audit.metadata.fulfillmentId' },
+    { key: 'deviceLabel', labelKey: 'compliance.audit.metadata.deviceLabel' },
+    { key: 'version', labelKey: 'compliance.audit.metadata.version' },
+  ],
   'admin.loyalty.physical_card_issued': [
     { key: 'cardId', labelKey: 'compliance.audit.metadata.cardId' },
     { key: 'displayHint', labelKey: 'compliance.audit.metadata.displayHint' },

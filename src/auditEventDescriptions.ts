@@ -231,6 +231,22 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when an alternate barcode is promoted to become the primary barcode.',
     cs: 'Zapíše se, když je alternativní čárový kód povýšen na primární.',
   },
+  'pickup.device.paired': {
+    en: 'Recorded when pickup staff successfully pair a counter tablet using an admin-issued pairing code.',
+    cs: 'Zapíše se po úspěšném spárování pickup zařízení pomocí párovacího kódu z administrace.',
+  },
+  'pickup.device.pairing.failed': {
+    en: 'Recorded when pickup device pairing is rejected (invalid code, inactive device, etc.).',
+    cs: 'Zapíše se při zamítnutí spárování pickup zařízení (neplatný kód, neaktivní zařízení atd.).',
+  },
+  'pickup.fulfillment.claim.acquired': {
+    en: 'Recorded when pickup staff acquire a soft claim on an order fulfillment (counter tablet lease).',
+    cs: 'Zapíše se, když pickup personál získá soft claim na vyzvednutí objednávky (lease tabletu).',
+  },
+  'pickup.fulfillment.claim.released': {
+    en: 'Recorded when pickup staff release their soft claim on an order fulfillment.',
+    cs: 'Zapíše se, když pickup personál uvolní soft claim na vyzvednutí objednávky.',
+  },
   'dev.tenant.created': {
     en: 'Recorded when platform staff create a brand-new organization in the dev tools. One line per new organization. Invitation links and passwords are not stored here.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích založí novou organizaci. Jeden řádek za novou organizaci. Odkazy z pozvánek a hesla se sem neukládají.',
@@ -291,6 +307,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when an expected recurring donation payment was not received by the due date.',
     cs: 'Zapíše se, když očekávaná platba pravidelného daru nedorazila do termínu splatnosti.',
   },
+  'reconciliation.recurring_payment.received': {
+    en: 'Recorded when an inbound bank match advances a recurring donation schedule.',
+    cs: 'Zapíše se, když příchozí bankovní párování posune plán pravidelného daru.',
+  },
   'reconciliation.bank_account.mode_changed': {
     en: 'Recorded when bank account reconciliation or customer claim mode is changed.',
     cs: 'Zapíše se při změně režimu párování nebo nahlášení plateb u bankovního účtu.',
@@ -315,6 +335,18 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a customer self-confirms kiosk cash checkout (ADR-PICKUP-CASH).',
     cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u platebního místa (ADR-PICKUP-CASH).',
   },
+  'payment.cash_shift.opened': {
+    en: 'Recorded when a cash drawer shift is opened at a sales point.',
+    cs: 'Zapíše se při otevření hotovostní směny u platebního místa.',
+  },
+  'payment.cash_shift.closed': {
+    en: 'Recorded when a cash drawer shift is closed with a counted closing balance.',
+    cs: 'Zapíše se při uzavření hotovostní směny se spočítanou závěrečnou hotovostí.',
+  },
+  'payment.cash_drawer.open_signal': {
+    en: 'Recorded when the kiosk signals a physical drawer open after cash payment completion.',
+    cs: 'Zapíše se, když platební místo po dokončení hotovostní platby signalizuje otevření zásuvky.',
+  },
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',
@@ -326,6 +358,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'customer_pickup_ack_informational': {
     en: 'Recorded when a customer taps “I picked up my order” on a prepay order detail (informational self-report only). One line per transaction. Does not change fulfillment state.',
     cs: 'Zapíše se, když zákazník na detailu prepaid objednávky potvrdí „Vyzvedl jsem objednávku“ (pouze informativní). Jeden řádek za transakci. Nemění stav vyzvednutí.',
+  },
+  'customer.receipt.downloaded': {
+    en: 'Recorded when a customer downloads a receipt PDF from their account. One line per download. PDF bytes are not stored in the audit row.',
+    cs: 'Zapíše se, když zákazník stáhne PDF účtenku ze svého účtu. Jeden řádek za stažení. Obsah PDF se v řádku auditu neukládá.',
   },
   'gdpr.erasure.completed': {
     en: 'Recorded when a confirmed GDPR erasure request is finished and personal data is removed or anonymized as required. One line per completed request. The person’s email is not stored in this line.',

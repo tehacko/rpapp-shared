@@ -19,16 +19,36 @@ export type CustomerAuthCrossTabMessage =
   | { type: 'logout'; tenantCode: string; scope?: 'global' }
   | { type: 'session-refreshed'; tenantCode: string };
 
-export type CustomerConsentCrossTabMessage = { type: 'consent-updated' };
+export type CustomerConsentCrossTabMessage = {
+  type: 'consent-updated';
+  /** Tenant scope when publisher knows it (admin GDPR or customer PWA). */
+  tenantCode?: string;
+  tenantId?: number;
+  source?: 'customer' | 'admin';
+};
 
 export type KioskTabCrossTabMessage =
   | { type: 'kiosk-reset' }
   | { type: 'session-rotate' }
-  | { type: 'kiosk-customer-session-changed' };
+  | { type: 'kiosk-customer-session-changed' }
+  | { type: 'staff-logout' };
 
 export type AdminAuthCrossTabMessage =
-  | { type: 'login' }
-  | { type: 'logout' };
+  | { type: 'login'; tenantCode: string }
+  | { type: 'logout'; tenantCode: string }
+  | { type: 'session-refreshed'; tenantCode: string }
+  | {
+      type: 'tenant-changed';
+      tenantCode: string;
+      previousTenantCode?: string;
+    };
+
+export type PickupStaffAuthCrossTabMessage =
+  | { type: 'login'; tenantCode: string }
+  | { type: 'logout'; tenantCode: string }
+  | { type: 'session-refreshed'; tenantCode: string }
+  | { type: 'session-expired'; tenantCode: string }
+  | { type: 'pickup-point-changed'; tenantCode: string; pickupPointId: number };
 
 export type AdminTenantCrossTabMessage = { type: 'tenant-changed'; tenantCode: string };
 
@@ -40,3 +60,4 @@ export const KIOSK_TAB_CHANNEL = 'rpapp-kiosk-tab';
 export const ADMIN_AUTH_CHANNEL = 'rpapp-admin-auth';
 export const ADMIN_TENANT_CHANNEL = 'rpapp-admin-tenant';
 export const ADMIN_CACHE_CHANNEL = 'rpapp-admin-cache';
+export const PICKUP_STAFF_AUTH_CHANNEL = 'rpapp-pickup-staff-auth';

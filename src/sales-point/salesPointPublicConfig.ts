@@ -128,6 +128,9 @@ export interface SalesPointPublicCatalogMedia {
 
 export type SalesPointPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 
+import type { SalesPointInteractionMode } from '../types.js';
+export type { SalesPointInteractionMode };
+
 export interface SalesPointPublicConfigLocationFields {
   readonly salesPointSlug: string | null;
   readonly customerShopUrl: string | null;
@@ -181,6 +184,8 @@ export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
       readonly salesPointOperationalMode: 'PRODUCTS';
+      /** Omitted on legacy configVersion ≤5 — treat as CUSTOMER_FACING (AC-FE-23). */
+      readonly salesPointInteractionMode?: SalesPointInteractionMode;
       readonly defaultProductCollectionMode: SalesPointPublicProductCollectionMode;
       readonly commerceConfigJson?: SalesPointPublicCommerceConfig | null;
       readonly paymentSurface: SalesPointPublicPaymentSurface;
@@ -193,6 +198,7 @@ export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
       readonly salesPointOperationalMode: 'DONATION';
+      readonly salesPointInteractionMode?: SalesPointInteractionMode;
       readonly defaultProductCollectionMode?: SalesPointPublicProductCollectionMode;
       readonly commerceConfigJson?: SalesPointPublicCommerceConfig | null;
       readonly donation: SalesPointPublicDonationPayload;
@@ -205,4 +211,11 @@ export type SalesPointPublicConfigV1 =
     } & SalesPointPublicConfigLocationFields);
 
 /** Current contract version emitted by the backend. */
-export const SALES_POINT_PUBLIC_CONFIG_VERSION = 5;
+export const SALES_POINT_PUBLIC_CONFIG_VERSION = 6;
+
+/** Resolve interaction mode from public config (backward compat for v≤5). */
+export function resolveSalesPointInteractionMode(
+  config: Pick<SalesPointPublicConfigV1, 'salesPointInteractionMode'>
+): SalesPointInteractionMode {
+  return config.salesPointInteractionMode ?? 'CUSTOMER_FACING';
+}

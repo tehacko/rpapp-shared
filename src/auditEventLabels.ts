@@ -231,6 +231,22 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Alternate barcode promoted to primary',
     cs: 'Alternativní kód povýšen na primární',
   },
+  'pickup.device.paired': {
+    en: 'Pickup device paired',
+    cs: 'Pickup zařízení spárováno',
+  },
+  'pickup.device.pairing.failed': {
+    en: 'Pickup device pairing failed',
+    cs: 'Spárování pickup zařízení selhalo',
+  },
+  'pickup.fulfillment.claim.acquired': {
+    en: 'Fulfillment claim acquired',
+    cs: 'Soft claim na vyzvednutí získán',
+  },
+  'pickup.fulfillment.claim.released': {
+    en: 'Fulfillment claim released',
+    cs: 'Soft claim na vyzvednutí uvolněn',
+  },
   'dev.tenant.created': {
     en: 'Organization created (platform)',
     cs: 'Organizace založena (platforma)',
@@ -291,6 +307,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Recurring donation payment missed',
     cs: 'Chybějící platba pravidelného daru',
   },
+  'reconciliation.recurring_payment.received': {
+    en: 'Recurring donation payment received',
+    cs: 'Přijata platba pravidelného daru',
+  },
   'reconciliation.bank_account.mode_changed': {
     en: 'Bank account reconciliation mode changed',
     cs: 'Změna režimu bankovního účtu',
@@ -315,6 +335,18 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Kiosk cash checkout self-confirmed',
     cs: 'Hotovostní platba u platebního místa potvrzena zákazníkem',
   },
+  'payment.cash_shift.opened': {
+    en: 'Cash shift opened',
+    cs: 'Hotovostní směna otevřena',
+  },
+  'payment.cash_shift.closed': {
+    en: 'Cash shift closed',
+    cs: 'Hotovostní směna uzavřena',
+  },
+  'payment.cash_drawer.open_signal': {
+    en: 'Cash drawer open signal',
+    cs: 'Signál otevření pokladní zásuvky',
+  },
   'export.analytics.explore.exported': {
     en: 'Customer behavior export',
     cs: 'Export chování zákazníků',
@@ -326,6 +358,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'customer_pickup_ack_informational': {
     en: 'Customer informational pickup ack',
     cs: 'Informativní potvrzení vyzvednutí zákazníkem',
+  },
+  'customer.receipt.downloaded': {
+    en: 'Customer receipt downloaded',
+    cs: 'Účtenka stažena zákazníkem',
   },
   'gdpr.erasure.completed': {
     en: 'GDPR erasure completed',

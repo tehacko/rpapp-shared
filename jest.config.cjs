@@ -7,7 +7,7 @@ module.exports = {
 
   testMatch: [
     '<rootDir>/src/**/*.test.{ts,tsx}',
-    '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
+    '<rootDir>/src/**/__tests__/**/*.test.{ts,tsx}',
   ],
 
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],

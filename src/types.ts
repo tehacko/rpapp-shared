@@ -115,6 +115,8 @@ export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
 
 export type SalesPointProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 
+export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
+
 export interface SalesPoint {
   id: number;
   code?: string | null;
@@ -125,6 +127,7 @@ export interface SalesPoint {
   defaultVatRate?: number | null;
   lastHeartbeat?: string | null;
   salesPointOperationalMode: SalesPointOperationalMode;
+  salesPointInteractionMode?: SalesPointInteractionMode;
   defaultProductCollectionMode?: SalesPointProductCollectionMode;
   productBankAccountId?: string | null;
   donationBankAccountId?: string | null;

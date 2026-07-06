@@ -23,7 +23,7 @@ function eventPatterns(
   if (eventName === 'session_completed') {
     return [/completeSession\s*\(/];
   }
-  if (eventName === 'session_abandoned' && reference === 'useKioskOrchestration') {
+  if (eventName === 'session_abandoned') {
     return [/abandonSession\s*\(/];
   }
   const snake = eventName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
