@@ -1,6 +1,6 @@
 {
   "name": "pi-kiosk-shared",
-  "version": "2.1.97",
+  "version": "2.1.98",
   "type": "module",
   "private": false,
   "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -85,6 +85,11 @@
       "require": "./dist/clientLogRedaction.js",
       "types": "./dist/clientLogRedaction.d.ts"
     },
+    "./barcode-scanner": {
+      "import": "./dist/barcode-scanner.js",
+      "require": "./dist/barcode-scanner.js",
+      "types": "./dist/barcode-scanner.d.ts"
+    },
     "./loyalty/loyaltySessionHandoff": {
       "import": "./dist/loyalty/loyaltySessionHandoff.js",
       "require": "./dist/loyalty/loyaltySessionHandoff.js",
@@ -137,7 +142,7 @@
     "type-check": "tsc --noEmit",
     "lint": "npm run type-check",
     "test": "jest --config jest.config.cjs --passWithNoTests && node --test src/tokens/__tests__/*.test.mjs",
-    "postinstall": "patch-package --patch-dir ../patches",
+    "postinstall": "node scripts/applyMonorepoPatches.mjs",
     "test:watch": "jest --config jest.config.cjs --watch",
     "test:coverage": "jest --config jest.config.cjs --coverage",
     "storybook": "storybook dev -p 6006",
@@ -152,7 +157,9 @@
   },
   "files": [
     "dist",
+    "patches",
     "src/tokens",
+    "scripts/applyMonorepoPatches.mjs",
     "README.md"
   ],
   "devDependencies": {
