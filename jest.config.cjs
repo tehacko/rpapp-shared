@@ -1,7 +1,7 @@
 // Jest config for shared package
 module.exports = {
   displayName: 'pi-kiosk-shared',
-  preset: 'ts-jest/presets/default-esm',
+  preset: 'ts-jest',
   testEnvironment: 'node',
   rootDir: '.',
 
@@ -32,21 +32,17 @@ module.exports = {
           jsx: 'react-jsx',
           esModuleInterop: true,
           allowSyntheticDefaultImports: true,
+          // Keep library build on NodeNext; tests transpile to CJS for Jest runtime.
+          module: 'CommonJS',
+          moduleResolution: 'Node10',
         },
-        useESM: true,
-      },
-    ],
-    '^.+\\.js$': [
-      'ts-jest',
-      {
-        useESM: true,
+        useESM: false,
       },
     ],
   },
 
   transformIgnorePatterns: ['node_modules/(?!(pi-kiosk-shared)/)'],
 
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 
   coverageDirectory: 'coverage',
