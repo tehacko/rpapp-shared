@@ -33,3 +33,10 @@ export const KioskCompact: Story = {
     children: 'Kiosk card without default padding.',
   },
 };
+
+export const PickupPanel: Story = {
+  args: {
+    surface: 'pickup',
+    children: 'Fulfillment details for counter staff.',
+  },
+};

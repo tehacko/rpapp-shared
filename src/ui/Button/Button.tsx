@@ -1,4 +1,4 @@
-import { tv, type VariantProps } from 'tailwind-variants';
+import { tv, type VariantProps } from '../tvShim.js';
 import { type ButtonHTMLAttributes, forwardRef } from 'react';
 
 const adminButton = tv({
@@ -95,6 +95,46 @@ const kioskButton = tv({
   },
 });
 
+const pickupButton = tv({
+  base: [
+    'inline-flex items-center justify-center gap-2',
+    'rounded-[var(--radius-lg)] font-medium transition-opacity duration-150',
+    'focus-visible:outline-2 focus-visible:outline-offset-2',
+    'focus-visible:outline-[var(--color-focus-ring)]',
+    'disabled:cursor-not-allowed disabled:opacity-55',
+    'select-none touch-manipulation',
+  ].join(' '),
+  variants: {
+    intent: {
+      primary:
+        'border-0 bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:opacity-90 active:opacity-80 shadow-sm',
+      secondary:
+        'bg-[var(--color-surface)] text-[var(--color-on-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]',
+      ghost:
+        'bg-transparent text-[var(--color-on-surface)] hover:bg-[var(--color-surface-muted)]',
+      danger:
+        'bg-[var(--color-danger)] text-[var(--color-danger-foreground)] hover:opacity-90 active:opacity-80 shadow-sm',
+      success:
+        'bg-[var(--color-success)] text-[var(--color-success-foreground)] hover:opacity-90 active:opacity-80 shadow-sm',
+    },
+    size: {
+      sm: 'h-10 px-3 text-sm',
+      md: 'h-11 px-4 text-base',
+      lg: 'h-12 px-5 text-lg',
+      xl: 'h-14 px-6 text-xl',
+    },
+    block: {
+      true: 'w-full',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    intent: 'primary',
+    size: 'md',
+    block: false,
+  },
+});
+
 const customerButton = tv({
   base: [
     'inline-flex items-center justify-center gap-2',
@@ -133,11 +173,12 @@ const customerButton = tv({
   },
 });
 
-type Surface = 'admin' | 'kiosk' | 'customer';
+type Surface = 'admin' | 'kiosk' | 'customer' | 'pickup';
 
 type AdminVariants = VariantProps<typeof adminButton>;
 type KioskVariants = VariantProps<typeof kioskButton>;
 type CustomerVariants = VariantProps<typeof customerButton>;
+type PickupVariants = VariantProps<typeof pickupButton>;
 
 type SharedIntent = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
 type SharedSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -163,6 +204,15 @@ function buttonClassName(
     return kioskButton({
       intent: resolvedIntent as KioskVariants['intent'],
       size: size as KioskVariants['size'],
+      block: resolvedBlock,
+      className,
+    });
+  }
+
+  if (surface === 'pickup') {
+    return pickupButton({
+      intent: resolvedIntent as PickupVariants['intent'],
+      size: size as PickupVariants['size'],
       block: resolvedBlock,
       className,
     });

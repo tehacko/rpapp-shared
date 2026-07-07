@@ -68,4 +68,17 @@ describe('Button', () => {
     await user.click(el);
     expect(onClick).not.toHaveBeenCalled();
   });
+
+  it('applies pickup surface theme token classes', () => {
+    render(
+      <Button surface="pickup" intent="primary">
+        Confirm
+      </Button>
+    );
+
+    const el = screen.getByRole('button', { name: 'Confirm' });
+    expect(el.className).toContain('bg-[var(--color-accent)]');
+    expect(el.className).toContain('rounded-[var(--radius-lg)]');
+    expect(el.className).toContain('h-11');
+  });
 });

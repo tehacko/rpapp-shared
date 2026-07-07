@@ -122,10 +122,20 @@
       "import": "./dist/ui/index.js",
       "require": "./dist/ui/index.js"
     },
+    "./ui/tvShim": {
+      "types": "./dist/ui/tvShim.d.ts",
+      "import": "./dist/ui/tvShim.js",
+      "require": "./dist/ui/tvShim.js"
+    },
     "./tenant-entitlements": {
       "types": "./dist/tenant-entitlements/index.d.ts",
       "import": "./dist/tenant-entitlements/index.js",
       "require": "./dist/tenant-entitlements/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/ThemeProvider.d.ts",
+      "import": "./dist/theme/ThemeProvider.js",
+      "require": "./dist/theme/ThemeProvider.js"
     }
   },
   "peerDependencies": {

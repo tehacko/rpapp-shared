@@ -1,21 +1,33 @@
 /**
  * Admin analytics / shell design tokens — import from pi-kiosk-shared/admin-theme.css
  * Apps: @import "pi-kiosk-shared/admin-theme.css" in admin tailwind entry.
+ *
+ * MFE-v3-S-01: brand-bridge.css + design-tokens.css supply legacy/admin semantics.
+ * MFE-v3-S-2: DECISION-2 C-Hybrid — focus/hover/disabled/elevated + dark via media + `.dark`.
  */
+@import './brand-bridge.css';
+
 @theme {
   --color-an-bg: var(--color-gray-50);
-  --color-an-bg-elevated: #ffffff;
-  --color-an-surface: #ffffff;
+  --color-an-bg-elevated: var(--color-bg-primary);
+  --color-an-surface: var(--color-bg-primary);
+  --color-an-surface-hover: var(--color-gray-100);
+  --color-an-surface-disabled: var(--color-gray-100);
   --color-an-text: var(--color-gray-900);
   --color-an-text-muted: var(--color-gray-500);
+  --color-an-text-disabled: var(--color-gray-400);
   --color-an-border: var(--color-gray-200);
+  --color-an-border-hover: var(--color-gray-300);
   --color-an-primary: var(--color-primary);
+  --color-an-primary-hover: #4f46e5;
   --color-an-primary-soft: var(--color-primary-light);
+  --color-an-focus-ring: var(--brand-admin-primary);
+  --color-an-danger: var(--color-error);
   --color-an-success: var(--color-success);
   --color-an-warn: var(--color-warning);
-  --color-an-danger: var(--color-error);
   --color-an-info: var(--color-info);
-  --color-an-chart-1: #6366f1;
+  --color-an-disabled-opacity: 0.55;
+  --color-an-chart-1: var(--brand-admin-primary);
   --color-an-chart-2: #14b8a6;
   --color-an-chart-3: #f59e0b;
   --color-an-chart-4: #ef4444;
@@ -25,13 +37,80 @@
   --color-shell-surface: var(--color-an-surface);
   --color-shell-border: var(--color-an-border);
   --color-shell-text: var(--color-an-text);
-  --color-rail-sidebar-bg: #1e1b4b;
-  --color-rail-sidebar-text: #e0e7ff;
-  --color-rail-sidebar-muted: #a5b4fc;
-  --color-rail-sidebar-active: #7c3aed;
-  --color-rail-sidebar-hover: rgba(124, 58, 237, 0.2);
-  --color-rail-page-bg: #f1f5f9;
-  --color-rail-card-border: #e2e8f0;
-  --color-rail-kpi-up: #059669;
-  --color-rail-kpi-down: #dc2626;
+  --color-rail-sidebar-bg: var(--brand-rail-sidebar-bg);
+  --color-rail-sidebar-text: var(--brand-rail-sidebar-text);
+  --color-rail-sidebar-muted: var(--brand-rail-sidebar-muted);
+  --color-rail-sidebar-active: var(--brand-rail-sidebar-active);
+  --color-rail-sidebar-hover: var(--brand-rail-sidebar-hover);
+  --color-rail-page-bg: var(--brand-rail-page-bg);
+  --color-rail-card-border: var(--brand-rail-card-border);
+  --color-rail-kpi-up: var(--brand-rail-kpi-up);
+  --color-rail-kpi-down: var(--brand-rail-kpi-down);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-an-bg: #0b1120;
+    --color-an-bg-elevated: #111827;
+    --color-an-surface: #111827;
+    --color-an-surface-hover: #1f2937;
+    --color-an-surface-disabled: #1f2937;
+    --color-an-text: #e5e7eb;
+    --color-an-text-muted: #9ca3af;
+    --color-an-text-disabled: #6b7280;
+    --color-an-border: #1f2937;
+    --color-an-border-hover: #374151;
+    --color-an-primary: #818cf8;
+    --color-an-primary-hover: #a5b4fc;
+    --color-an-primary-soft: rgba(99, 102, 241, 0.16);
+    --color-an-focus-ring: #818cf8;
+    --color-an-disabled-opacity: 0.5;
+    --color-an-chart-1: #818cf8;
+    --color-an-chart-2: #2dd4bf;
+    --color-an-chart-3: #fbbf24;
+    --color-an-chart-4: #f87171;
+    --color-an-chart-5: #a78bfa;
+    --color-an-chart-6: #22d3ee;
+    --color-shell-bg: #0b1120;
+    --color-shell-surface: #111827;
+    --color-shell-border: #1f2937;
+    --color-shell-text: #e5e7eb;
+    --color-rail-page-bg: #0b1120;
+    --color-rail-card-border: #1f2937;
+  }
+}
+
+/**
+ * C-Hybrid user override — mirrors prefers-color-scheme dark admin palette.
+ * Admin `applyInitialTheme()` toggles `.dark` on documentElement.
+ */
+.dark {
+  color-scheme: dark;
+  --color-an-bg: #0b1120;
+  --color-an-bg-elevated: #111827;
+  --color-an-surface: #111827;
+  --color-an-surface-hover: #1f2937;
+  --color-an-surface-disabled: #1f2937;
+  --color-an-text: #e5e7eb;
+  --color-an-text-muted: #9ca3af;
+  --color-an-text-disabled: #6b7280;
+  --color-an-border: #1f2937;
+  --color-an-border-hover: #374151;
+  --color-an-primary: #818cf8;
+  --color-an-primary-hover: #a5b4fc;
+  --color-an-primary-soft: rgba(99, 102, 241, 0.16);
+  --color-an-focus-ring: #818cf8;
+  --color-an-disabled-opacity: 0.5;
+  --color-an-chart-1: #818cf8;
+  --color-an-chart-2: #2dd4bf;
+  --color-an-chart-3: #fbbf24;
+  --color-an-chart-4: #f87171;
+  --color-an-chart-5: #a78bfa;
+  --color-an-chart-6: #22d3ee;
+  --color-shell-bg: #0b1120;
+  --color-shell-surface: #111827;
+  --color-shell-border: #1f2937;
+  --color-shell-text: #e5e7eb;
+  --color-rail-page-bg: #0b1120;
+  --color-rail-card-border: #1f2937;
 }

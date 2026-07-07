@@ -1,5 +1,5 @@
 import { forwardRef, type HTMLAttributes } from 'react';
-import { tv, type VariantProps } from 'tailwind-variants';
+import { tv, type VariantProps } from '../tvShim.js';
 
 const adminCard = tv({
   base: [
@@ -14,6 +14,27 @@ const adminCard = tv({
     },
     elevated: {
       true: 'bg-[var(--color-an-bg-elevated)]',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    padded: true,
+    elevated: false,
+  },
+});
+
+const pickupCard = tv({
+  base: [
+    'rounded-[var(--radius-xl)] bg-[var(--color-surface-elevated)]',
+    'shadow-[var(--shadow-card)]',
+  ].join(' '),
+  variants: {
+    padded: {
+      true: 'p-4 sm:p-5',
+      false: 'p-0',
+    },
+    elevated: {
+      true: 'shadow-[var(--shadow-popover)]',
       false: '',
     },
   },
@@ -44,9 +65,10 @@ const kioskCustomerCard = tv({
   },
 });
 
-type CardSurface = 'admin' | 'kiosk' | 'customer';
+type CardSurface = 'admin' | 'kiosk' | 'customer' | 'pickup';
 
 type AdminCardVariants = VariantProps<typeof adminCard>;
+type PickupCardVariants = VariantProps<typeof pickupCard>;
 type KioskCustomerCardVariants = VariantProps<typeof kioskCustomerCard>;
 
 export type CardProps = HTMLAttributes<HTMLDivElement> & {
@@ -62,6 +84,18 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         <div
           ref={ref}
           className={adminCard({ padded, elevated, className } as AdminCardVariants & {
+            className?: string;
+          })}
+          {...rest}
+        />
+      );
+    }
+
+    if (surface === 'pickup') {
+      return (
+        <div
+          ref={ref}
+          className={pickupCard({ padded, elevated, className } as PickupCardVariants & {
             className?: string;
           })}
           {...rest}

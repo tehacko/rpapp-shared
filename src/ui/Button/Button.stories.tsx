@@ -34,3 +34,11 @@ export const KioskBlock: Story = {
     children: 'Pay now',
   },
 };
+
+export const PickupPrimary: Story = {
+  args: {
+    surface: 'pickup',
+    intent: 'primary',
+    children: 'Confirm pickup',
+  },
+};

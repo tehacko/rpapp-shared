@@ -98,3 +98,12 @@ export {
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
 export * from './barcode/index.js';
 export * from './tenant-entitlements/index.js';
+export * from './screenState/types.js';
+export {
+  ProviderIcon,
+  PROVIDER_ICON_ASSET_IDS,
+  resolveProviderIconAssetId,
+  type ProviderIconAssetId,
+  type ProviderIconProps,
+  type ProviderIconSize,
+} from './ui/ProviderIcon/index.js';

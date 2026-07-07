@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { tv } from 'tailwind-variants';
+import { tv } from '../tvShim.js';
 
 export type LanguageToggleSurface = 'admin' | 'kiosk' | 'customer';
 export type LanguageToggleNamespace = 'admin' | 'kiosk' | 'customer';

@@ -17,3 +17,11 @@ export {
   TurnstileExecuteWidget,
   type TurnstileExecuteWidgetProps,
 } from './Turnstile/TurnstileExecuteWidget.js';
+export {
+  ProviderIcon,
+  PROVIDER_ICON_ASSET_IDS,
+  resolveProviderIconAssetId,
+  type ProviderIconAssetId,
+  type ProviderIconProps,
+  type ProviderIconSize,
+} from './ProviderIcon/index.js';

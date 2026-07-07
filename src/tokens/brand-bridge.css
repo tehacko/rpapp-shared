@@ -1,0 +1,49 @@
+/**
+ * Brand bridge — Canva Up Above SSOT → theme.css / admin-theme.css consumers
+ *
+ * DECISION-1 Option C: --brand-consumer-accent (Canva) + --brand-admin-accent (PO mockups)
+ * Import before theme.css or admin-theme.css once MFE-v3-S-01 wires consumers.
+ *
+ * @see rpappp/docs/FRONTEND/brand-palette.md
+ * @source https://www.canva.com/colors/color-palettes/up-above/
+ */
+:root {
+  /* ── Canva Up Above (provisional — pending PO hex confirmation) ── */
+  --brand-canva-sailor-blue: #00203f;
+  --brand-canva-mint: #adefd1;
+
+  /* ── Semantic brand accents (DECISION-1 Option C) ── */
+  --brand-consumer-accent: var(--brand-canva-sailor-blue);
+  --brand-consumer-accent-soft: var(--brand-canva-mint);
+  --brand-consumer-accent-foreground: #ffffff;
+  --brand-admin-accent: #7c3aed;
+  --brand-admin-primary: #6365f0;
+
+  /* ── Admin rail palette (MOCKUP_VISUAL_SPEC_CACHE harmonization) ── */
+  --brand-rail-sidebar-bg: #1e1b4b;
+  --brand-rail-sidebar-bg-deep: #0f172a;
+  --brand-rail-sidebar-text: #e0e7ff;
+  --brand-rail-sidebar-muted: #a5b4fc;
+  --brand-rail-sidebar-active: var(--brand-admin-accent);
+  --brand-rail-sidebar-hover: rgba(124, 58, 237, 0.2);
+  --brand-rail-page-bg: #f1f5f9;
+  --brand-rail-card-border: #e2e8f0;
+  --brand-rail-kpi-up: #05805a;
+  --brand-rail-kpi-down: #da2325;
+
+  /* ── Bridge → theme.css (consumer / kiosk / pickup) — wired in MFE-v3-S-01 ── */
+  --color-accent: var(--brand-consumer-accent);
+  --color-focus-ring: var(--brand-consumer-accent);
+
+  /* ── Bridge → admin-theme.css — wired in MFE-v3-S-01 ── */
+  --color-rail-sidebar-bg: var(--brand-rail-sidebar-bg);
+  --color-rail-sidebar-text: var(--brand-rail-sidebar-text);
+  --color-rail-sidebar-muted: var(--brand-rail-sidebar-muted);
+  --color-rail-sidebar-active: var(--brand-rail-sidebar-active);
+  --color-rail-sidebar-hover: var(--brand-rail-sidebar-hover);
+  --color-rail-page-bg: var(--brand-rail-page-bg);
+  --color-rail-card-border: var(--brand-rail-card-border);
+  --color-rail-kpi-up: var(--brand-rail-kpi-up);
+  --color-rail-kpi-down: var(--brand-rail-kpi-down);
+  --color-an-chart-1: var(--brand-admin-primary);
+}
