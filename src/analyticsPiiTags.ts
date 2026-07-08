@@ -1,95 +1,101 @@
 /**
  * PII classification tags for analytics metadata fields (plan G-CAT-04 / AN-008).
  */
+import { ANALYTICS_EVENT_NAMES, type AnalyticsEventName } from './analyticsEvents.js';
+
 export type AnalyticsPiiClass = 'none' | 'pseudonymous' | 'direct' | 'financial';
 
-export const ANALYTICS_PII_FIELD_TAGS: Readonly<
-  Record<string, Readonly<Record<string, AnalyticsPiiClass>>>
-> = {
+type AnalyticsPiiTagsByField = Readonly<Record<string, AnalyticsPiiClass>>;
+
+const DEFAULT_CLIENT_SCREEN_TAGS: AnalyticsPiiTagsByField = {
+  screen_name: 'none',
+  previous_screen_name: 'none',
+};
+
+const EVENT_TAG_OVERRIDES: Partial<Record<AnalyticsEventName, AnalyticsPiiTagsByField>> = {
   qr_displayed: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     payment_id: 'pseudonymous',
     surface: 'none',
   },
   menu_opened: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     product_count: 'none',
   },
   product_selected: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     product_id: 'pseudonymous',
     interaction_type: 'none',
   },
-  auth_flow_started: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  login_success: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  account_created: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  identity_completed: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
   account_logged_out: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     logout_scope: 'none',
   },
   profile_updated: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     fields_changed: 'none',
   },
   receipt_opened: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     receipt_format: 'none',
   },
   receipt_downloaded: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     receipt_format: 'none',
   },
   payment_started: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     paymentMethod: 'none',
     amountMinor: 'financial',
     itemCount: 'none',
     amount_cents: 'financial',
   },
+  payment_method_viewed: {
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
+    available_methods: 'none',
+    available_method_count: 'none',
+    has_qr: 'none',
+    has_card: 'none',
+  },
   payment_confirmed: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
+    ...DEFAULT_CLIENT_SCREEN_TAGS,
     amount_cents: 'financial',
     journey_code: 'none',
   },
-  identity_recognized: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  identity_linked: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  identity_deleted: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
-  customer_deleted: {
-    screen_name: 'none',
-    previous_screen_name: 'none',
-  },
 };
+
+const SERVER_SIDE_EVENTS = new Set<AnalyticsEventName>([
+  'product_barcode_assigned',
+  'product_barcode_cleared',
+  'product_barcode_alt_added',
+  'product_barcode_alt_removed',
+  'product_barcode_alt_promoted',
+  'product_barcode_assign_conflict',
+  'product_barcode_lookup_hit',
+  'product_barcode_lookup_miss',
+  'physical_card_issued',
+  'physical_card_revoked',
+  'recurring_payment_missed',
+  'recurring_payment_received',
+]);
+
+function buildAnalyticsPiiFieldTags(): Readonly<Record<AnalyticsEventName, AnalyticsPiiTagsByField>> {
+  const tags = {} as Record<AnalyticsEventName, AnalyticsPiiTagsByField>;
+  for (const eventName of ANALYTICS_EVENT_NAMES) {
+    if (EVENT_TAG_OVERRIDES[eventName] !== undefined) {
+      tags[eventName] = EVENT_TAG_OVERRIDES[eventName];
+      continue;
+    }
+    tags[eventName] = SERVER_SIDE_EVENTS.has(eventName)
+      ? {}
+      : DEFAULT_CLIENT_SCREEN_TAGS;
+  }
+  return tags;
+}
+
+export const ANALYTICS_PII_FIELD_TAGS: Readonly<
+  Record<string, AnalyticsPiiTagsByField>
+> = buildAnalyticsPiiFieldTags();
 
 export function getAnalyticsPiiTagsForEvent(
   eventName: string,

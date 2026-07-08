@@ -2,9 +2,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { ANALYTICS_EVENT_NAMES, ANALYTICS_TELEMETRY_CLASSES } from '../analyticsEvents.js';
-import { resolveAnalyticsCatalogVersion } from '../analyticsCatalogVersion.js';
 
-const CATALOG_YAML_PATH = join(process.cwd(), 'catalog', 'analytics-catalog.yaml');
+const CATALOG_YAML_PATH = join(__dirname, '..', '..', 'catalog', 'analytics-catalog.yaml');
 
 interface CatalogYamlRow {
   readonly event: string;
@@ -51,9 +50,9 @@ describe('exportAnalyticsCatalog', () => {
     expect(eventFieldCount).toBe(expectedNames.length);
   });
 
-  it('assigns catalogVersion via resolveAnalyticsCatalogVersion', () => {
+  it('assigns catalogVersion 1 for all events', () => {
     for (const row of rows) {
-      expect(row.catalogVersion).toBe(resolveAnalyticsCatalogVersion(row.event));
+      expect(row.catalogVersion).toBe(1);
     }
   });
 

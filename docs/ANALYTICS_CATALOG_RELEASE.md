@@ -14,8 +14,8 @@ Defines the release process for publishing shared analytics catalog/type updates
 
 ## Compatibility rules
 
-- Catalog changes must be backwards-compatible unless coordinated version gate is in place.
-- Ingest/backend dual-version support must be confirmed before frontend emitters rely on new schema-only fields.
+- Runtime ingest contract is `catalogVersion: 1` only.
+- Metadata schema evolution remains independent (`ANALYTICS_METADATA_SCHEMA_VERSIONS = [1, 2]`).
 
 ## Verification checklist
 
@@ -26,5 +26,4 @@ Defines the release process for publishing shared analytics catalog/type updates
 ## Related
 
 - `shared/src/analyticsEvents.ts`
-- `shared/src/analyticsCatalogVersion.ts`
 - `up-backend/src/domain/analytics/analyticsEventCatalog.ts`

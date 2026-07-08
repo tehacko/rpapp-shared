@@ -1,13 +1,15 @@
 import {
+  ANALYTICS_ACCOUNT_EVENTS,
   ANALYTICS_DONATION_EVENTS,
   ANALYTICS_EVENT_NAMES,
+  ANALYTICS_FUNNEL_EVENTS,
+  ANALYTICS_IDENTITY_EVENTS,
   ANALYTICS_KIOSK_EVENTS,
   ANALYTICS_RETAIL_EVENTS,
   ANALYTICS_SERVER_OPS_EVENTS,
   ANALYTICS_UNIVERSAL_EVENTS,
   type AnalyticsEventName,
 } from './analyticsEvents.js';
-import { RETAIL_COMMERCE_EVENTS } from './analytics/retailCommerceEvents.js';
 import type { LocalizedLabel } from './labels/localizedLabel.js';
 
 /** Plain-language analytics descriptions for operators (cs + en), 1–3 short sentences. */
@@ -27,6 +29,10 @@ const UNIVERSAL_DESCRIPTIONS: Record<
     en: 'Counts when someone leaves without finishing — closed tab, walked away, timed out, or cancelled in a way that ends the visit. One count per time that happens for a visit. Not the same as “payment failed” when they only cancel a payment step.',
     cs: 'Počítá se, když někdo odejde bez dokončení — zavře stránku, odejde od kiosku, vyprší čas, nebo zruší tak, že návštěva skončí. Jednou za každý takový konec návštěvy. Není totéž jako „platba selhala“, když zruší jen krok platby.',
   },
+  [ANALYTICS_UNIVERSAL_EVENTS.SESSION_RECOVERED]: {
+    en: 'Counts when analytics detects a previously closed session and resumes tracking in a fresh session context. One count per recovery action.',
+    cs: 'Počítá se, když analytika zjistí dříve uzavřenou relaci a pokračuje sledování v nové relaci. Jednou za obnovu.',
+  },
   [ANALYTICS_UNIVERSAL_EVENTS.SCREEN_VIEWED]: {
     en: 'Counts each time a screen is shown on the kiosk or customer app — home, cart, payment, and so on. Every time they open or return to a screen adds one. Not a new visit, not a payment result.',
     cs: 'Počítá se pokaždé, když se u platebního místa nebo v aplikaci zobrazí obrazovka — úvod, košík, platba atd. Každé otevření nebo návrat na obrazovku přidá jednu. Není nová návštěva ani výsledek platby.',
@@ -43,17 +49,21 @@ const UNIVERSAL_DESCRIPTIONS: Record<
     en: 'Counts when an error message is shown to the customer on screen. One count each time the message appears — showing it again adds another. Not the same as a failed payment unless they also cancel the payment.',
     cs: 'Počítá se, když se zákazníkovi na obrazovce ukáže chybová hláška. Jednou za každé zobrazení — opětovné ukázání přidá další. Není totéž jako neúspěšná platba, pokud platbu zároveň nezruší.',
   },
+  [ANALYTICS_UNIVERSAL_EVENTS.CONSENT_BANNER_DISMISSED]: {
+    en: 'Counts when the customer dismisses the analytics consent prompt without confirming new preferences. One count per dismiss action.',
+    cs: 'Počítá se, když zákazník zavře výzvu k analytickému souhlasu bez potvrzení nové volby. Jednou za zavření.',
+  },
   [ANALYTICS_UNIVERSAL_EVENTS.AUTH_FLOW_STARTED]: {
     en: 'Counts when someone starts logging in or signing up. One count per time they begin that process. Success or new account is counted with different events.',
     cs: 'Počítá se, když někdo začne přihlašování nebo registraci. Jednou za každý začátek. Úspěch nebo nový účet se počítá jinými událostmi.',
   },
-  [ANALYTICS_UNIVERSAL_EVENTS.IDENTITY_COMPLETED]: {
-    en: 'Counts when someone finishes a step like confirming phone or email in the journey. One count per completed step. Not the same as “logged in” or “account created”.',
-    cs: 'Počítá se, když někdo dokončí krok jako potvrzení telefonu nebo e-mailu. Jednou za každý dokončený krok. Není totéž jako „přihlášen“ nebo „účet vytvořen“.',
+  [ANALYTICS_UNIVERSAL_EVENTS.IDENTITY_CREATED]: {
+    en: 'Counts when someone finishes onboarding identity setup (credentials saved or OTP-only path). One count per completion. Not the same as “logged in” or “account created”.',
+    cs: 'Počítá se po dokončení nastavení identity při onboardingu (uložené přihlašovací údaje nebo cesta jen přes OTP). Jednou za dokončení. Není totéž jako „přihlášen“ nebo „účet vytvořen“.',
   },
-  [ANALYTICS_UNIVERSAL_EVENTS.LOGIN_SUCCESS]: {
-    en: 'Counts when login succeeds. Usually one per customer per shop when the system remembers them — repeats may be ignored. Not the same as creating a brand-new account.',
-    cs: 'Počítá se po úspěšném přihlášení. Obvykle jednou na zákazníka a provozovnu, když si systém pamatuje — opakování mohou být ignorována. Není totéž jako založení úplně nového účtu.',
+  [ANALYTICS_UNIVERSAL_EVENTS.ACCOUNT_LOGGED_IN]: {
+    en: 'Counts when an existing account is actively logged in to begin an authenticated session. One count per successful account login action.',
+    cs: 'Počítá se, když se existující účet aktivně přihlásí a zahájí autentizovanou relaci. Jednou za úspěšné přihlášení účtu.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.ACCOUNT_CREATED]: {
     en: 'Counts when a new customer account is created. One count per new account. Returning customers who only log in are not counted here.',
@@ -63,9 +73,17 @@ const UNIVERSAL_DESCRIPTIONS: Record<
     en: 'Counts when a payment attempt begins — customer chose to pay and the system started handling it. One count per payment try (retries may merge into one). Not the same as payment finished or QR code shown alone.',
     cs: 'Počítá se, když začne pokus o platbu — zákazník zvolil zaplatit a systém to začal řešit. Jednou za pokus (opakování se mohou sloučit). Není totéž jako dokončená platba nebo jen zobrazení QR kódu.',
   },
+  [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_METHOD_VIEWED]: {
+    en: 'Counts when the checkout payment method picker is shown with available options. One count per checkout method-selection view.',
+    cs: 'Počítá se při zobrazení výběru platební metody na pokladně včetně dostupných možností. Jednou za zobrazení výběru metody.',
+  },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_QR_GENERATED]: {
     en: 'Counts when the system creates a QR code for paying by phone banking. One count per payment that gets a QR. The customer tapping “pay” on screen is counted separately.',
     cs: 'Počítá se, když systém vytvoří QR kód pro platbu přes bankovní aplikaci. Jednou za platbu s QR. Klepnutí zákazníka na „zaplatit“ na obrazovce se počítá zvlášť.',
+  },
+  [ANALYTICS_UNIVERSAL_EVENTS.QR_REGENERATED]: {
+    en: 'Counts when the payment flow explicitly regenerates an already issued payment QR (for example retry/new cycle). One count per regenerate action.',
+    cs: 'Počítá se, když platební tok výslovně znovu vygeneruje již vydaný platební QR (např. opakování/nový cyklus). Jednou za regeneraci.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_SUBMITTED]: {
     en: 'Counts when the payment is sent to the bank or card provider to process. One count per payment sent. Not the same as money already received — that is “payment confirmed”.',
@@ -85,11 +103,54 @@ const UNIVERSAL_DESCRIPTIONS: Record<
   },
 };
 
-const RETAIL_DESCRIPTIONS = {
-  [ANALYTICS_RETAIL_EVENTS.CATALOG_INTERACTION]: {
-    en: 'Counts when someone browses products — opens categories or product details in the shop. One count per browsing action recorded. Adding to cart is a different event.',
-    cs: 'Počítá se, když někdo prohlíží produkty — otevře kategorie nebo detail v obchodě. Jednou za zaznamenanou interakci. Přidání do košíku je jiná událost.',
+const EXTENSION_DESCRIPTIONS = {
+  [ANALYTICS_FUNNEL_EVENTS.QR_DISPLAYED]: {
+    en: 'Counts when the payment QR is rendered on screen for the customer. One count per QR display attempt.',
+    cs: 'Počítá se, když se zákazníkovi vykreslí platební QR na obrazovce. Jednou za pokus o zobrazení QR.',
   },
+  [ANALYTICS_FUNNEL_EVENTS.MENU_OPENED]: {
+    en: 'Counts when a product menu or catalog listing is opened. One count per open action.',
+    cs: 'Počítá se při otevření produktového menu nebo katalogového výpisu. Jednou za otevření.',
+  },
+  [ANALYTICS_FUNNEL_EVENTS.PRODUCT_SELECTED]: {
+    en: 'Counts when a specific product is selected from the menu/catalog. One count per selection.',
+    cs: 'Počítá se, když je z menu/katalogu vybrán konkrétní produkt. Jednou za výběr.',
+  },
+  [ANALYTICS_IDENTITY_EVENTS.IDENTITY_RECOGNIZED]: {
+    en: 'Counts when the system recognizes an existing customer identity signal. One count per recognized identity action.',
+    cs: 'Počítá se, když systém rozpozná existující identitní signál zákazníka. Jednou za akci rozpoznání.',
+  },
+  [ANALYTICS_IDENTITY_EVENTS.IDENTITY_LINKED]: {
+    en: 'Counts when an identity is linked to a customer account record. One count per successful link.',
+    cs: 'Počítá se při propojení identity se zákaznickým účtem. Jednou za úspěšné propojení.',
+  },
+  [ANALYTICS_IDENTITY_EVENTS.IDENTITY_MATCHED]: {
+    en: 'Counts when identity matching logic returns a deterministic match result. Currently used as a controlled catalog event.',
+    cs: 'Počítá se, když párování identity vrátí deterministický výsledek shody. Aktuálně slouží jako řízená katalogová událost.',
+  },
+  [ANALYTICS_IDENTITY_EVENTS.IDENTITY_DELETED]: {
+    en: 'Counts when a customer identity link is removed. One count per delete action.',
+    cs: 'Počítá se při odstranění vazby identity zákazníka. Jednou za smazání.',
+  },
+  [ANALYTICS_IDENTITY_EVENTS.CUSTOMER_DELETED]: {
+    en: 'Counts when a customer account is deleted. One count per deleted account.',
+    cs: 'Počítá se při smazání zákaznického účtu. Jednou za smazaný účet.',
+  },
+  [ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT]: {
+    en: 'Counts when an authenticated customer explicitly logs out. One count per logout action.',
+    cs: 'Počítá se, když se přihlášený zákazník explicitně odhlásí. Jednou za odhlášení.',
+  },
+  [ANALYTICS_ACCOUNT_EVENTS.PROFILE_UPDATED]: {
+    en: 'Counts when a customer profile setting is updated and persisted. One count per update action.',
+    cs: 'Počítá se při změně a uložení nastavení zákaznického profilu. Jednou za aktualizaci.',
+  },
+  [ANALYTICS_ACCOUNT_EVENTS.RECEIPT_DOWNLOADED]: {
+    en: 'Counts when a receipt file is downloaded by the customer. One count per download action.',
+    cs: 'Počítá se při stažení souboru účtenky zákazníkem. Jednou za stažení.',
+  },
+} as const;
+
+const RETAIL_DESCRIPTIONS = {
   [ANALYTICS_RETAIL_EVENTS.CATALOG_IMAGE_LOAD_FAILED]: {
     en: 'Counts when a catalog product or donation project image fails to load in the browser. Includes URL class metadata only — no raw signed tokens.',
     cs: 'Počítá se, když se v prohlížeči nepodaří načíst obrázek produktu nebo donačního projektu. Metadata obsahují jen typ URL — ne surové tokeny.',
@@ -224,92 +285,6 @@ const RETAIL_DESCRIPTIONS = {
   },
 };
 
-const RETAIL_COMMERCE_DESCRIPTIONS: Record<
-  (typeof RETAIL_COMMERCE_EVENTS)[keyof typeof RETAIL_COMMERCE_EVENTS],
-  LocalizedLabel
-> = {
-  [RETAIL_COMMERCE_EVENTS.CHECKOUT_MODE_SELECTED]: {
-    en: 'Counts when a customer or kiosk user selects a checkout sub-mode (for example pay now vs collect later). One count per mode selection.',
-    cs: 'Počítá se, když zákazník nebo uživatel kiosku zvolí podrežim pokladny (např. zaplatit hned vs vyzvednout později). Jednou za výběr režimu.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_QR_ISSUED]: {
-    en: 'Counts when a pickup QR code is issued for an order. One count per issued code.',
-    cs: 'Počítá se při vydání QR kódu pro vyzvednutí objednávky. Jednou za vydaný kód.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_QR_SCANNED]: {
-    en: 'Counts when a pickup QR code is scanned at the stand or kiosk. One count per scan.',
-    cs: 'Počítá se při naskenování QR kódu pro vyzvednutí u stánku nebo kiosku. Jednou za sken.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_STAFF_MARK_PAID]: {
-    en: 'Counts when staff marks a collect-later order as paid at pickup. One count per mark-paid action.',
-    cs: 'Počítá se, když personál označí objednávku collect-later jako zaplacenou při vyzvednutí. Jednou za označení.',
-  },
-  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_CREATED]: {
-    en: 'Counts when a checkout handoff token is created for cross-device continuation. One count per handoff.',
-    cs: 'Počítá se při vytvoření handoff tokenu pro pokračování na jiném zařízení. Jednou za handoff.',
-  },
-  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_EXPIRED]: {
-    en: 'Counts when a checkout handoff expires before completion. One count per expired handoff.',
-    cs: 'Počítá se, když handoff pokladny vyprší bez dokončení. Jednou za vypršelý handoff.',
-  },
-  [RETAIL_COMMERCE_EVENTS.CHECKOUT_HANDOFF_COMPLETED]: {
-    en: 'Counts when a checkout handoff is completed on the target device. One count per completed handoff.',
-    cs: 'Počítá se při dokončení handoff pokladny na cílovém zařízení. Jednou za dokončený handoff.',
-  },
-  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_STARTED]: {
-    en: 'Counts when a customer starts a buy-again flow from order history. One count per started flow.',
-    cs: 'Počítá se, když zákazník začne opakovaný nákup z historie objednávek. Jednou za zahájený tok.',
-  },
-  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_TRIMMED]: {
-    en: 'Counts when unavailable items are removed from a buy-again cart. One count per trim action.',
-    cs: 'Počítá se, když se z košíku opakovaného nákupu odstraní nedostupné položky. Jednou za úpravu.',
-  },
-  [RETAIL_COMMERCE_EVENTS.BUY_AGAIN_FAILED_STOCK]: {
-    en: 'Counts when buy-again cannot proceed because required items are out of stock. One count per failed attempt.',
-    cs: 'Počítá se, když opakovaný nákup nemůže pokračovat kvůli vyprodání položek. Jednou za neúspěšný pokus.',
-  },
-  [RETAIL_COMMERCE_EVENTS.SELF_SERVICE_SLA_NOTICE_SHOWN]: {
-    en: 'Counts when the pay-on-spot proximity SLA notice is shown (informational only). One count per display.',
-    cs: 'Počítá se při zobrazení informativního SLA upozornění u platby na místě. Jednou za zobrazení.',
-  },
-  [RETAIL_COMMERCE_EVENTS.CUSTOMER_PICKUP_ACK_INFORMATIONAL]: {
-    en: 'Counts when a customer taps the prepay informational pickup acknowledgement on order detail. Excluded from commerce funnel rollups.',
-    cs: 'Počítá se, když zákazník potvrdí informativní vyzvednutí u prepaid objednávky. Mimo rollup obchodního funnelu.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_PARTIAL_CONFIRM]: {
-    en: 'Counts when staff or the system confirms a partial pickup fulfillment. One count per partial confirm.',
-    cs: 'Počítá se při potvrzení částečného vyzvednutí personálem nebo systémem. Jednou za částečné potvrzení.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_REFUSED]: {
-    en: 'Counts when a pickup fulfillment is refused (for example policy or stock hold). One count per refusal.',
-    cs: 'Počítá se, když je vyzvednutí odmítnuto (např. pravidlo nebo skladová blokace). Jednou za odmítnutí.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_HELD]: {
-    en: 'Counts when a pickup order is placed on fulfillment hold. One count per hold.',
-    cs: 'Počítá se, když je objednávka pro vyzvednutí pozastavena. Jednou za pozastavení.',
-  },
-  [RETAIL_COMMERCE_EVENTS.PICKUP_FULFILLMENT_HOLD_RELEASED]: {
-    en: 'Counts when a pickup fulfillment hold is released. One count per release.',
-    cs: 'Počítá se, když je pozastavení vyzvednutí zrušeno. Jednou za zrušení pozastavení.',
-  },
-  [RETAIL_COMMERCE_EVENTS.KIOSK_CASH_COMPLETE]: {
-    en: 'Counts when a kiosk cash checkout is completed. One count per completed cash payment.',
-    cs: 'Počítá se při dokončení platby hotově u platebního místa. Jednou za dokončenou hotovostní platbu.',
-  },
-  [RETAIL_COMMERCE_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
-    en: 'Counts when collect-later pickup options are configured during checkout. One count per configuration.',
-    cs: 'Počítá se při nastavení možností vyzvednutí collect-later v pokladně. Jednou za konfiguraci.',
-  },
-  [RETAIL_COMMERCE_EVENTS.SLUG_LEGACY_REDIRECT]: {
-    en: 'Counts when a legacy shop URL with kioskId query param is redirected to the tenant slug path. One count per redirect.',
-    cs: 'Počítá se při přesměrování staré URL obchodu s parametrem kioskId na cestu se slugem tenanta. Jednou za přesměrování.',
-  },
-  [RETAIL_COMMERCE_EVENTS.TENANT_SWITCHED]: {
-    en: 'Counts when the active tenant context is switched in the customer app. One count per switch.',
-    cs: 'Počítá se při přepnutí aktivního tenanta v zákaznické aplikaci. Jednou za přepnutí.',
-  },
-};
-
 const DONATION_DESCRIPTIONS: Record<
   (typeof ANALYTICS_DONATION_EVENTS)[keyof typeof ANALYTICS_DONATION_EVENTS],
   LocalizedLabel
@@ -394,6 +369,14 @@ const SERVER_OPS_DESCRIPTIONS: Record<
     en: 'Counts when a barcode assign is rejected because the code already belongs to another product, without overwrite confirmation. Emitted server-side on 409 responses.',
     cs: 'Počítá se, když je přiřazení čárového kódu odmítnuto, protože kód už patří jinému produktu a nebylo potvrzeno přepsání. Emituje server při odpovědi 409.',
   },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_LOOKUP_HIT]: {
+    en: 'Counts when a scanned barcode resolves to a known product or variant during lookup. Emitted server-side for successful lookup calls.',
+    cs: 'Počítá se, když naskenovaný čárový kód při lookupu odpovídá známému produktu nebo variantě. Emituje server pro úspěšné lookup volání.',
+  },
+  [ANALYTICS_SERVER_OPS_EVENTS.PRODUCT_BARCODE_LOOKUP_MISS]: {
+    en: 'Counts when a scanned barcode does not match any known product during lookup. Emitted server-side for lookup misses.',
+    cs: 'Počítá se, když naskenovaný čárový kód při lookupu neodpovídá žádnému známému produktu. Emituje server pro lookup miss.',
+  },
   [ANALYTICS_SERVER_OPS_EVENTS.PHYSICAL_CARD_ISSUED]: {
     en: 'Counts when an administrator issues a new physical loyalty card. Emitted server-side; card secrets are never included in metadata.',
     cs: 'Počítá se, když administrátor vydá novou fyzickou věrnostní kartu. Emituje server; tajné údaje karty nejsou v metadatech.',
@@ -415,8 +398,8 @@ const SERVER_OPS_DESCRIPTIONS: Record<
 function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, LocalizedLabel> {
   const descriptions = {
     ...UNIVERSAL_DESCRIPTIONS,
+    ...EXTENSION_DESCRIPTIONS,
     ...RETAIL_DESCRIPTIONS,
-    ...RETAIL_COMMERCE_DESCRIPTIONS,
     ...DONATION_DESCRIPTIONS,
     ...KIOSK_DESCRIPTIONS,
     ...SERVER_OPS_DESCRIPTIONS,

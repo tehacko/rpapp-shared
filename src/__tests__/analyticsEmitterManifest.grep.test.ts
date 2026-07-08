@@ -16,22 +16,113 @@ function readSource(relPath: string): string {
   return readFileSync(abs, 'utf8');
 }
 
+function stripComments(source: string): string {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/.*$/gm, '');
+}
+
 function eventPatterns(
   eventName: string,
   reference: string
 ): RegExp[] {
   if (eventName === 'session_completed') {
-    return [/completeSession\s*\(/];
+    if (reference === 'CloseAnalyticsSessionUseCase') {
+      return [
+        /this\.emitter\.emit\s*\(/,
+        /dto\.outcome\s*===\s*'completed'[\s\S]{0,200}'session_completed'/,
+      ];
+    }
+    if (reference === 'CustomerAnalyticsProvider') {
+      return [
+        /const\s+NOOP_MANAGER[\s\S]{0,1200}completeSession\s*:\s*async\s*\(/,
+        /const\s+manager\s*=\s*useCustomerAnalyticsManager\s*\(/,
+      ];
+    }
+    return [
+      /completeSession\s*\(/,
+      /(?:emit|track|capture|log)[A-Za-z0-9_]*\s*\([\s\S]{0,1000}?completeSession/,
+    ];
   }
   if (eventName === 'session_abandoned') {
-    return [/abandonSession\s*\(/];
+    if (reference === 'CloseAnalyticsSessionUseCase') {
+      return [
+        /this\.emitter\.emit\s*\(/,
+        /dto\.outcome\s*===\s*'completed'[\s\S]{0,250}'session_abandoned'/,
+      ];
+    }
+    return [
+      /abandonSession\s*\(/,
+      /(?:emit|track|capture|log)[A-Za-z0-9_]*\s*\([\s\S]{0,1000}?abandonSession/,
+    ];
+  }
+  if (eventName === 'payment_started' && reference === 'CreateQRPaymentUseCase') {
+    return [/mergePaymentStarted\s*\./, /mergePaymentStarted\s*\(/];
+  }
+  if (reference === 'PhoneFirstDonationJourney') {
+    if (eventName === 'screen_viewed') {
+      return [/emitDonationScreenViewed\s*\(/];
+    }
+    if (
+      eventName === 'donation_amount_selected' ||
+      eventName === 'donation_custom_amount_entered'
+    ) {
+      return [/emitDonationAmountSelected\s*\(/];
+    }
+    if (eventName === 'donation_project_selected') {
+      return [/emitDonationProjectSelected\s*\(/];
+    }
+  }
+  if (
+    reference === 'kioskDonationHandlers' &&
+    (eventName === 'donation_amount_selected' || eventName === 'donation_custom_amount_entered')
+  ) {
+    return [
+      /resolveDonationAmountAnalyticsEventName\s*\(/,
+      /track\s*\([\s\S]{0,800}eventName:\s*resolveDonationAmountAnalyticsEventName\s*\(/,
+    ];
+  }
+  if (eventName === 'identity_created' && reference === 'OnboardingSetCredentialsScreen') {
+    return [
+      /const\s+IDENTITY_CREATED_EVENT_NAME[\s\S]{0,120}'identity_created'/,
+      /track\s*\([\s\S]{0,800}eventName:\s*IDENTITY_CREATED_EVENT_NAME/,
+    ];
+  }
+  if (
+    reference === 'emitRetailFulfillmentAnalytics' ||
+    reference === 'emitRetailV7Analytics' ||
+    reference === 'emitV814CommerceAnalytics'
+  ) {
+    return [
+      new RegExp(`${reference}[\\s\\S]{0,5000}?['"]${eventName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`),
+      new RegExp(
+        `(?:const|type)\\s+[A-Za-z0-9_]*(?:EVENT|EVENTS|Event|Events)[\\s\\S]{0,2000}?['"]${eventName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`,
+        'i',
+      ),
+    ];
   }
   const snake = eventName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const upperSnake = snake.toUpperCase().replace(/-/g, '_');
   return [
-    new RegExp(`eventName:\\s*['"]${snake}['"]`),
-    new RegExp(`ANALYTICS_V2_EXTENSION_EVENTS\\.${snake.toUpperCase().replace(/-/g, '_')}`),
-    new RegExp(`ANALYTICS_[A-Z0-9_]+\\.${snake.toUpperCase().replace(/-/g, '_')}`, 'i'),
-    new RegExp(`['"]${snake}['"]`),
+    new RegExp(
+      `(?:emit|track|capture|log)[A-Za-z0-9_]*\\s*\\([\\s\\S]{0,1200}?\\{[\\s\\S]{0,1200}?eventName:\\s*['"]${snake}['"]`,
+    ),
+    new RegExp(
+      `(?:emit|track|capture|log)[A-Za-z0-9_]*\\s*\\([\\s\\S]{0,1000}?['"]${snake}['"][\\s\\S]{0,1000}?\\)`,
+      'i',
+    ),
+    new RegExp(
+      `(?:emit|track|capture|log)[A-Za-z0-9_]*\\s*\\([\\s\\S]{0,1000}?ANALYTICS_[A-Z0-9_]+\\.${upperSnake}[\\s\\S]{0,1000}?\\)`,
+      'i',
+    ),
+    new RegExp(
+      `\\b[A-Za-z_$][\\w$.]*\\s*\\([\\s\\S]{0,1000}?['"]${snake}['"][\\s\\S]{0,1000}?\\)`,
+      'i',
+    ),
+    new RegExp(
+      `(?:const|type)\\s+[A-Za-z0-9_]*(?:EVENT|EVENTS|Event|Events)[\\s\\S]{0,2000}?['"]${snake}['"]`,
+      'i',
+    ),
   ];
 }
 
@@ -41,8 +132,14 @@ describe('analyticsEmitterManifest grep wiring', () => {
       if (!cell.required || cell.layer !== 'BE') {
         continue;
       }
-      it(`maps ${cell.reference} for ${cell.eventName}`, () => {
-        expect(ANALYTICS_EMITTER_BE_REFERENCE_PATHS[cell.reference]).toBeDefined();
+      it(`${cell.reference} wires ${cell.eventName}`, () => {
+        const relPath = ANALYTICS_EMITTER_BE_REFERENCE_PATHS[cell.reference];
+        expect(relPath).toBeDefined();
+        const source = stripComments(readSource(relPath as string));
+        const matched = eventPatterns(cell.eventName, cell.reference).some((re) =>
+          re.test(source)
+        );
+        expect(matched).toBe(true);
       });
     }
   });
@@ -57,7 +154,7 @@ describe('analyticsEmitterManifest grep wiring', () => {
     }
 
     it(`${cell.reference} wires ${cell.eventName}`, () => {
-      const source = readSource(relPath);
+      const source = stripComments(readSource(relPath));
       const matched = eventPatterns(cell.eventName, cell.reference).some((re) =>
         re.test(source)
       );

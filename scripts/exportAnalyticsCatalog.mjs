@@ -2,8 +2,8 @@
 /**
  * G-CAT-02 / AN-006 — export analytics-catalog.yaml from pi-kiosk-shared TS catalogs.
  *
- * Reads event names from dist/analyticsEvents.js + dist/analyticsCatalogV2.js,
- * resolves catalogVersion via dist/analyticsCatalogVersion.js, and writes
+ * Reads event names from dist/analyticsEvents.js,
+ * uses canonical catalogVersion from dist/analyticsEvents.js, and writes
  * catalog/analytics-catalog.yaml (event, catalogVersion, telemetryClass).
  *
  * Usage: npm run export:catalog  (runs build first)
@@ -23,8 +23,6 @@ const TELEMETRY_CLASS_OPERATIONAL = 'OPERATIONAL';
 function ensureBuilt() {
   const required = [
     join(DIST_DIR, 'analyticsEvents.js'),
-    join(DIST_DIR, 'analyticsCatalogV2.js'),
-    join(DIST_DIR, 'analyticsCatalogVersion.js'),
   ];
   if (required.every((path) => existsSync(path))) {
     return;
@@ -63,7 +61,7 @@ export function serializeAnalyticsCatalogYaml(events) {
  * @param {{
  *   analyticsEventNames: readonly string[];
  *   v2ExtensionEventNames: readonly string[];
- *   resolveCatalogVersion: (eventName: string) => 1 | 2;
+ *   catalogVersion: number;
  * }} input
  */
 export function buildAnalyticsCatalogEntries(input) {
@@ -79,7 +77,7 @@ export function buildAnalyticsCatalogEntries(input) {
     seen.add(eventName);
     entries.push({
       event: eventName,
-      catalogVersion: input.resolveCatalogVersion(eventName),
+      catalogVersion: input.catalogVersion,
       telemetryClass: TELEMETRY_CLASS_OPERATIONAL,
     });
   }
@@ -89,13 +87,14 @@ export function buildAnalyticsCatalogEntries(input) {
 }
 
 export async function loadCatalogEntriesFromDist() {
-  const { ANALYTICS_EVENT_NAMES } = await import('../dist/analyticsEvents.js');
-  const { resolveAnalyticsCatalogVersion } = await import('../dist/analyticsCatalogVersion.js');
+  const { ANALYTICS_EVENT_NAMES, ANALYTICS_EVENT_CATALOG_VERSION } = await import(
+    '../dist/analyticsEvents.js'
+  );
 
   return buildAnalyticsCatalogEntries({
     analyticsEventNames: ANALYTICS_EVENT_NAMES,
     v2ExtensionEventNames: [],
-    resolveCatalogVersion: resolveAnalyticsCatalogVersion,
+    catalogVersion: ANALYTICS_EVENT_CATALOG_VERSION,
   });
 }
 

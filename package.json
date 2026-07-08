@@ -60,10 +60,15 @@
       "import": "./dist/analyticsConsentAllowlist.js",
       "require": "./dist/analyticsConsentAllowlist.js"
     },
-    "./analyticsCatalogVersion": {
-      "types": "./dist/analyticsCatalogVersion.d.ts",
-      "import": "./dist/analyticsCatalogVersion.js",
-      "require": "./dist/analyticsCatalogVersion.js"
+    "./analyticsConsentTier2": {
+      "types": "./dist/analyticsConsentTier2.d.ts",
+      "import": "./dist/analyticsConsentTier2.js",
+      "require": "./dist/analyticsConsentTier2.js"
+    },
+    "./analytics/metadataBuilders": {
+      "types": "./dist/analytics/metadataBuilders.d.ts",
+      "import": "./dist/analytics/metadataBuilders.js",
+      "require": "./dist/analytics/metadataBuilders.js"
     },
     "./analyticsAnonymousIdentity": {
       "types": "./dist/analyticsAnonymousIdentity.d.ts",

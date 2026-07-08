@@ -12,7 +12,6 @@
  */
 
 import { RETAIL_ORDER_EVENTS } from './analytics/retailOrderEvents.js';
-import { RETAIL_COMMERCE_EVENTS } from './analytics/retailCommerceEvents.js';
 
 export const ANALYTICS_EVENT_CATALOG_VERSION = 1 as const;
 
@@ -35,16 +34,20 @@ export const ANALYTICS_UNIVERSAL_EVENTS = {
   SESSION_STARTED: 'session_started',
   SESSION_COMPLETED: 'session_completed',
   SESSION_ABANDONED: 'session_abandoned',
+  SESSION_RECOVERED: 'session_recovered',
   SCREEN_VIEWED: 'screen_viewed',
   CTA_CLICKED: 'cta_clicked',
   BACK_CLICKED: 'back_clicked',
   ERROR_SHOWN: 'error_shown',
+  CONSENT_BANNER_DISMISSED: 'consent_banner_dismissed',
   AUTH_FLOW_STARTED: 'auth_flow_started',
-  IDENTITY_COMPLETED: 'identity_completed',
-  LOGIN_SUCCESS: 'login_success',
+  IDENTITY_CREATED: 'identity_created',
+  ACCOUNT_LOGGED_IN: 'account_logged_in',
   ACCOUNT_CREATED: 'account_created',
   PAYMENT_STARTED: 'payment_started',
+  PAYMENT_METHOD_VIEWED: 'payment_method_viewed',
   PAYMENT_QR_GENERATED: 'payment_qr_generated',
+  QR_REGENERATED: 'qr_regenerated',
   PAYMENT_SUBMITTED: 'payment_submitted',
   PAYMENT_CONFIRMED: 'payment_confirmed',
   PAYMENT_FAILED: 'payment_failed',
@@ -56,7 +59,6 @@ export const ANALYTICS_UNIVERSAL_EVENTS = {
  */
 export const ANALYTICS_RETAIL_EVENTS = {
   CATALOG_IMAGE_LOAD_FAILED: 'catalog_image_load_failed',
-  CATALOG_INTERACTION: 'catalog_interaction',
   PRODUCT_ADDED: 'product_added',
   PRODUCT_REMOVED: 'product_removed',
   CART_VIEWED: 'cart_viewed',
@@ -64,7 +66,26 @@ export const ANALYTICS_RETAIL_EVENTS = {
   RETAIL_ORDER_PAID: 'retail_order_paid',
   RETAIL_ORDER_ABANDONED: 'retail_order_abandoned',
   ...RETAIL_ORDER_EVENTS,
-  ...RETAIL_COMMERCE_EVENTS,
+} as const;
+
+export const ANALYTICS_FUNNEL_EVENTS = {
+  QR_DISPLAYED: 'qr_displayed',
+  MENU_OPENED: 'menu_opened',
+  PRODUCT_SELECTED: 'product_selected',
+} as const;
+
+export const ANALYTICS_IDENTITY_EVENTS = {
+  IDENTITY_RECOGNIZED: 'identity_recognized',
+  IDENTITY_LINKED: 'identity_linked',
+  IDENTITY_MATCHED: 'identity_matched',
+  IDENTITY_DELETED: 'identity_deleted',
+  CUSTOMER_DELETED: 'customer_deleted',
+} as const;
+
+export const ANALYTICS_ACCOUNT_EVENTS = {
+  ACCOUNT_LOGGED_OUT: 'account_logged_out',
+  PROFILE_UPDATED: 'profile_updated',
+  RECEIPT_DOWNLOADED: 'receipt_downloaded',
 } as const;
 
 /**
@@ -97,6 +118,8 @@ export const ANALYTICS_BARCODE_OPS_EVENTS = {
   PRODUCT_BARCODE_ALT_REMOVED: 'product_barcode_alt_removed',
   PRODUCT_BARCODE_ALT_PROMOTED: 'product_barcode_alt_promoted',
   PRODUCT_BARCODE_ASSIGN_CONFLICT: 'product_barcode_assign_conflict',
+  PRODUCT_BARCODE_LOOKUP_HIT: 'product_barcode_lookup_hit',
+  PRODUCT_BARCODE_LOOKUP_MISS: 'product_barcode_lookup_miss',
   PHYSICAL_CARD_ISSUED: 'physical_card_issued',
   PHYSICAL_CARD_REVOKED: 'physical_card_revoked',
 } as const;
@@ -113,6 +136,9 @@ export const ANALYTICS_SERVER_OPS_EVENTS = {
 export const ANALYTICS_EVENT_NAMES = [
   ...Object.values(ANALYTICS_UNIVERSAL_EVENTS),
   ...Object.values(ANALYTICS_RETAIL_EVENTS),
+  ...Object.values(ANALYTICS_FUNNEL_EVENTS),
+  ...Object.values(ANALYTICS_IDENTITY_EVENTS),
+  ...Object.values(ANALYTICS_ACCOUNT_EVENTS),
   ...Object.values(ANALYTICS_DONATION_EVENTS),
   ...Object.values(ANALYTICS_KIOSK_EVENTS),
   ...Object.values(ANALYTICS_SERVER_OPS_EVENTS),
