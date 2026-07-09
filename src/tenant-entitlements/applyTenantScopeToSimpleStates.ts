@@ -39,6 +39,10 @@ export function isRuntimeActiveSimpleEntitlementState(state: SimpleEntitlementSt
 export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
   return {
     sales_point_management: ON,
+    payment_rails_strategy: ON,
+    payment_reconciliation: ON,
+    payments_hub_ui: ON,
+    bank_inbox_claims_api: ON,
     order_pickup_infrastructure: ON,
     fulfillment_queue: ON,
     pickup_points: ON,
