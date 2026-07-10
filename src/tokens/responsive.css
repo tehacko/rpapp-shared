@@ -30,6 +30,9 @@
 .rp-card-container {
   container-type: inline-size;
   container-name: rp-card;
+}
+
+.rp-card-container-inner {
   --rp-card-content-gap: 0.5rem;
 }
 
@@ -49,19 +52,19 @@
 }
 
 /* Shared Card density — CQ layout (not cosmetic) with viewport fallback */
-.rp-card-container > * + * {
+.rp-card-container-inner > * + * {
   margin-block-start: var(--rp-card-content-gap);
 }
 
 @supports (container-type: inline-size) {
   @container rp-card (min-width: 20rem) {
-    .rp-card-container {
+    .rp-card-container-inner {
       --rp-card-content-gap: 0.75rem;
     }
   }
 
   @container rp-card (min-width: 28rem) {
-    .rp-card-container {
+    .rp-card-container-inner {
       --rp-card-content-gap: 1rem;
     }
   }
@@ -69,13 +72,13 @@
 
 @supports not (container-type: inline-size) {
   @media (min-width: 640px) {
-    .rp-card-container {
+    .rp-card-container-inner {
       --rp-card-content-gap: 0.75rem;
     }
   }
 
   @media (min-width: 1024px) {
-    .rp-card-container {
+    .rp-card-container-inner {
       --rp-card-content-gap: 1rem;
     }
   }

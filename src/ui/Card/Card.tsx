@@ -81,7 +81,7 @@ export type CardProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, surface = 'customer', padded, elevated, ...rest }, ref) => {
+  ({ className, surface = 'customer', padded, elevated, children, ...rest }, ref) => {
     if (surface === 'admin') {
       return (
         <div
@@ -90,7 +90,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             className?: string;
           })}
           {...rest}
-        />
+        >
+          <div className="rp-card-container-inner">{children}</div>
+        </div>
       );
     }
 
@@ -102,7 +104,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             className?: string;
           })}
           {...rest}
-        />
+        >
+          <div className="rp-card-container-inner">{children}</div>
+        </div>
       );
     }
 
@@ -115,7 +119,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
           className,
         } as KioskCustomerCardVariants & { className?: string })}
         {...rest}
-      />
+      >
+        <div className="rp-card-container-inner">{children}</div>
+      </div>
     );
   }
 );

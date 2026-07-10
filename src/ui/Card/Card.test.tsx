@@ -27,18 +27,21 @@ function ensureJsdomContainerQueryShim(): void {
 
   const probeWrap = document.createElement('div');
   probeWrap.style.width = '1200px';
-  const probeCard = document.createElement('div');
-  probeCard.className = 'rp-card-container';
-  probeWrap.appendChild(probeCard);
+  const probeOuter = document.createElement('div');
+  probeOuter.className = 'rp-card-container';
+  const probeInner = document.createElement('div');
+  probeInner.className = 'rp-card-container-inner';
+  probeOuter.appendChild(probeInner);
+  probeWrap.appendChild(probeOuter);
   document.body.appendChild(probeWrap);
-  const containerQueriesEvaluate = readCardContentGap(probeCard) === '1rem';
+  const containerQueriesEvaluate = readCardContentGap(probeInner) === '1rem';
   document.body.removeChild(probeWrap);
 
   if (!containerQueriesEvaluate) {
     const shim = document.createElement('style');
     shim.setAttribute('data-testid', 'card-cq-jsdom-shim');
     shim.textContent = `
-      [data-rp-card-gap-probe='wide'] .rp-card-container {
+      [data-rp-card-gap-probe='wide'] .rp-card-container-inner {
         --rp-card-content-gap: 1rem;
       }
     `;
@@ -110,17 +113,18 @@ describe('Card', () => {
     const el = container.querySelector('.rp-card-container') as HTMLElement;
     expect(el).toBeTruthy();
     expect(getComputedStyle(el).containerType).toBe('inline-size');
-    expect(readCardContentGap(el)).toBe('0.5rem');
+    const inner = container.querySelector('.rp-card-container-inner') as HTMLElement;
+    expect(readCardContentGap(inner)).toBe('0.5rem');
   });
 
-  it('uses compact --rp-card-content-gap at 320px constrained wrapper', () => {
+  it('uses compact --rp-card-content-gap below 20rem container width', () => {
     const { container } = render(
-      <div style={{ width: '320px' }}>
+      <div style={{ width: '300px' }}>
         <Card>Narrow density</Card>
       </div>,
     );
-    const card = container.querySelector('.rp-card-container') as HTMLElement;
-    expect(readCardContentGap(card)).toBe('0.5rem');
+    const inner = container.querySelector('.rp-card-container-inner') as HTMLElement;
+    expect(readCardContentGap(inner)).toBe('0.5rem');
   });
 
   it('uses wide --rp-card-content-gap at 1200px constrained wrapper', () => {
@@ -131,8 +135,8 @@ describe('Card', () => {
         <Card>Wide density</Card>
       </div>,
     );
-    const card = container.querySelector('.rp-card-container') as HTMLElement;
-    expect(readCardContentGap(card)).toBe('1rem');
+    const inner = container.querySelector('.rp-card-container-inner') as HTMLElement;
+    expect(readCardContentGap(inner)).toBe('1rem');
   });
 
   it('documents wide-density gap in responsive.css CQ + viewport fallback', () => {
