@@ -122,6 +122,12 @@
     },
     "./theme.css": "./src/tokens/theme.css",
     "./admin-theme.css": "./src/tokens/admin-theme.css",
+    "./responsive.css": "./src/tokens/responsive.css",
+    "./responsive": {
+      "types": "./dist/responsive/index.d.ts",
+      "import": "./dist/responsive/index.js",
+      "require": "./dist/responsive/index.js"
+    },
     "./ui": {
       "types": "./dist/ui/index.d.ts",
       "import": "./dist/ui/index.js",

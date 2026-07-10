@@ -3,6 +3,7 @@ import { tv, type VariantProps } from '../tvShim.js';
 
 const adminCard = tv({
   base: [
+    'rp-card-container',
     'rounded-lg border border-[var(--color-an-border)]',
     'bg-[var(--color-an-surface)] text-[var(--color-an-text)]',
     'shadow-sm',
@@ -25,6 +26,7 @@ const adminCard = tv({
 
 const pickupCard = tv({
   base: [
+    'rp-card-container',
     'rounded-[var(--radius-xl)] bg-[var(--color-surface-elevated)]',
     'shadow-[var(--shadow-card)]',
   ].join(' '),
@@ -46,6 +48,7 @@ const pickupCard = tv({
 
 const kioskCustomerCard = tv({
   base: [
+    'rp-card-container',
     'rounded-xl border bg-[var(--color-surface-elevated)]',
     'border-[var(--color-border)] shadow-[var(--shadow-card)]',
   ].join(' '),

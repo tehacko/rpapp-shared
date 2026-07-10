@@ -1,0 +1,82 @@
+/**
+ * pi-kiosk-shared responsive contract — custom media aliases (Tailwind v4 Option A).
+ * Import after theme.css. wide (1440) is NOT a token here — test viewport only.
+ *
+ * Breakpoint block generated from breakpoints.ts — run: npm run generate:responsive-css -- --write
+ * Drift: gate:responsive-css-generation + gate:responsive-breakpoint-drift
+ */
+:root {
+  --rp-breakpoint-sm: 640px;
+  --rp-breakpoint-md: 768px;
+  --rp-breakpoint-lg: 1024px;
+  --rp-breakpoint-xl: 1280px;
+  --rp-breakpoint-2xl: 1536px;
+}
+
+@custom-media --rp-sm-up (min-width: 640px);
+@custom-media --rp-md-up (min-width: 768px);
+@custom-media --rp-lg-up (min-width: 1024px);
+@custom-media --rp-xl-up (min-width: 1280px);
+@custom-media --rp-2xl-up (min-width: 1536px);
+@custom-media --rp-max-lg (max-width: 1023px);
+
+/* Container query naming tokens */
+:root {
+  --rp-container-card: rp-card;
+  --rp-container-kpi: rp-kpi;
+  --rp-container-table: rp-table;
+}
+
+.rp-card-container {
+  container-type: inline-size;
+  container-name: rp-card;
+  --rp-card-content-gap: 0.5rem;
+}
+
+.rp-kpi-container {
+  container-type: inline-size;
+  container-name: rp-kpi;
+}
+
+.rp-table-container {
+  container-type: inline-size;
+  container-name: rp-table;
+}
+
+.rp-drawer-body {
+  container-type: inline-size;
+  container-name: rp-drawer-body;
+}
+
+/* Shared Card density — CQ layout (not cosmetic) with viewport fallback */
+.rp-card-container > * + * {
+  margin-block-start: var(--rp-card-content-gap);
+}
+
+@supports (container-type: inline-size) {
+  @container rp-card (min-width: 20rem) {
+    .rp-card-container {
+      --rp-card-content-gap: 0.75rem;
+    }
+  }
+
+  @container rp-card (min-width: 28rem) {
+    .rp-card-container {
+      --rp-card-content-gap: 1rem;
+    }
+  }
+}
+
+@supports not (container-type: inline-size) {
+  @media (min-width: 640px) {
+    .rp-card-container {
+      --rp-card-content-gap: 0.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rp-card-container {
+      --rp-card-content-gap: 1rem;
+    }
+  }
+}

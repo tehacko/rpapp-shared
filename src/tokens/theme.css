@@ -29,6 +29,8 @@
   --color-border: #e2e8f0;
   --color-border-strong: #cbd5e1;
   --color-focus-ring: var(--brand-consumer-accent);
+  --color-qr-render-dark: #000000;
+  --color-qr-render-light: #ffffff;
   --color-disabled-opacity: 0.55;
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
