@@ -16,7 +16,7 @@ const shellLanguage = {
   },
 } as const;
 
-const storybookNamespaces = ['admin', 'kiosk', 'customer'] as const;
+const storybookNamespaces = ['admin', 'kiosk', 'customer', 'pickup'] as const;
 
 if (!i18n.isInitialized) {
   void i18n.use(initReactI18next).init({
@@ -80,6 +80,21 @@ export const KioskSurface: Story = {
   args: {
     surface: 'kiosk',
     i18nNamespace: 'kiosk',
+  },
+};
+
+export const PickupSurface: Story = {
+  args: {
+    surface: 'pickup',
+    i18nNamespace: 'pickup',
+  },
+};
+
+export const HeaderPlacement: Story = {
+  args: {
+    surface: 'admin',
+    i18nNamespace: 'admin',
+    placement: 'header',
   },
 };
 
