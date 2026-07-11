@@ -26,10 +26,22 @@ events:
   - event: buy_again_trimmed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: cart_sheet_opened
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: cart_sticky_pay_clicked
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: cart_viewed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: catalog_image_load_failed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: collect_step_confirmed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: collect_step_opened
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: consent_banner_dismissed

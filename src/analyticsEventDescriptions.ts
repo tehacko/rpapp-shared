@@ -167,6 +167,22 @@ const RETAIL_DESCRIPTIONS = {
     en: 'Counts when the cart screen is opened to review items. One count each time they open the cart — opening it again adds another. Sales money uses payment data, not this count alone.',
     cs: 'Počítá se, když se otevře obrazovka košíku ke kontrole položek. Jednou za každé otevření — návrat na košík přidá další. Tržby vycházejí z plateb, ne jen z tohoto počtu.',
   },
+  [ANALYTICS_RETAIL_EVENTS.CART_SHEET_OPENED]: {
+    en: 'Counts when the mobile sticky-cart sheet opens (summary or pay entry). One count per open with optional source metadata.',
+    cs: 'Počítá se, když se na mobilu otevře panel košíku (souhrn nebo vstup k platbě). Jednou za otevření s volitelným zdrojem.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.CART_STICKY_PAY_CLICKED]: {
+    en: 'Counts when the customer taps Pay on the sticky cart bar before checkout. One count per tap.',
+    cs: 'Počítá se, když zákazník klepne na Zaplatit v liště košíku před pokladnou. Jednou za klepnutí.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.COLLECT_STEP_OPENED]: {
+    en: 'Counts when the collect/pickup step sheet opens in the shop checkout funnel. One count per open.',
+    cs: 'Počítá se, když se v obchodě otevře krok vyzvednutí v pokladně. Jednou za otevření.',
+  },
+  [ANALYTICS_RETAIL_EVENTS.COLLECT_STEP_CONFIRMED]: {
+    en: 'Counts when the customer confirms collect timing and pickup point before session create. One count per confirmation.',
+    cs: 'Počítá se, když zákazník potvrdí načasování a místo vyzvednutí před vytvořením relace. Jednou za potvrzení.',
+  },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_STARTED]: {
     en: 'Counts when the customer moves from the cart to the payment step (for example taps Pay). One count per time they enter checkout. Payment finishing is counted separately.',
     cs: 'Počítá se, když zákazník přejde z košíku k platbě (např. klepne Zaplatit). Jednou za vstup do pokladny. Dokončení platby se počítá zvlášť.',
