@@ -91,7 +91,15 @@ export declare class APIClient {
     constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number);
     private injectTenantIntoEndpoint;
     private request;
-    get<T>(endpoint: string): Promise<T>;
+    get<T>(endpoint: string, headers?: Record<string, string>): Promise<T>;
+    /**
+     * GET with conditional caching — returns 304 without parsing a body (G-12 catalog poll).
+     */
+    getConditional<T>(endpoint: string, ifNoneMatch?: string): Promise<{
+        status: 200 | 304;
+        data?: T;
+        etag?: string | null;
+    }>;
     post<T>(endpoint: string, data?: unknown): Promise<T>;
     put<T>(endpoint: string, data?: unknown): Promise<T>;
     delete<T>(endpoint: string): Promise<T>;

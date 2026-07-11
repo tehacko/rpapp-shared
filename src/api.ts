@@ -183,8 +183,46 @@ export class APIClient {
     return response.json();
   }
 
-  async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'GET' });
+  async get<T>(endpoint: string, headers?: Record<string, string>): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET', headers });
+  }
+
+  /**
+   * GET with conditional caching — returns 304 without parsing a body (G-12 catalog poll).
+   */
+  async getConditional<T>(
+    endpoint: string,
+    ifNoneMatch?: string,
+  ): Promise<{ status: 200 | 304; data?: T; etag?: string | null }> {
+    if (!endpoint || typeof endpoint !== 'string') {
+      throw new Error(`APIClient: endpoint is required and must be a string, got: ${typeof endpoint}`);
+    }
+    const tenantEndpoint = this.injectTenantIntoEndpoint(endpoint);
+    const url = `${this.baseUrl}${tenantEndpoint}`;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (ifNoneMatch) {
+      headers['If-None-Match'] = ifNoneMatch;
+    }
+    if (this.kioskSecret) {
+      headers['X-Sales-Point-Secret'] = this.kioskSecret;
+    }
+    if (
+      typeof this.salesPointId === 'number' &&
+      Number.isInteger(this.salesPointId) &&
+      this.salesPointId > 0
+    ) {
+      headers['X-Sales-Point-Id'] = String(this.salesPointId);
+    }
+    const response = await fetch(url, { method: 'GET', headers });
+    const etag = response.headers.get('etag');
+    if (response.status === 304) {
+      return { status: 304, etag };
+    }
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    const data = (await response.json()) as T;
+    return { status: 200, data, etag };
   }
 
   async post<T>(endpoint: string, data?: unknown): Promise<T> {

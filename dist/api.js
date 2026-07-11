@@ -153,8 +153,40 @@ export class APIClient {
         }
         return response.json();
     }
-    async get(endpoint) {
-        return this.request(endpoint, { method: 'GET' });
+    async get(endpoint, headers) {
+        return this.request(endpoint, { method: 'GET', headers });
+    }
+    /**
+     * GET with conditional caching — returns 304 without parsing a body (G-12 catalog poll).
+     */
+    async getConditional(endpoint, ifNoneMatch) {
+        if (!endpoint || typeof endpoint !== 'string') {
+            throw new Error(`APIClient: endpoint is required and must be a string, got: ${typeof endpoint}`);
+        }
+        const tenantEndpoint = this.injectTenantIntoEndpoint(endpoint);
+        const url = `${this.baseUrl}${tenantEndpoint}`;
+        const headers = { 'Content-Type': 'application/json' };
+        if (ifNoneMatch) {
+            headers['If-None-Match'] = ifNoneMatch;
+        }
+        if (this.kioskSecret) {
+            headers['X-Sales-Point-Secret'] = this.kioskSecret;
+        }
+        if (typeof this.salesPointId === 'number' &&
+            Number.isInteger(this.salesPointId) &&
+            this.salesPointId > 0) {
+            headers['X-Sales-Point-Id'] = String(this.salesPointId);
+        }
+        const response = await fetch(url, { method: 'GET', headers });
+        const etag = response.headers.get('etag');
+        if (response.status === 304) {
+            return { status: 304, etag };
+        }
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        const data = (await response.json());
+        return { status: 200, data, etag };
     }
     async post(endpoint, data) {
         return this.request(endpoint, {

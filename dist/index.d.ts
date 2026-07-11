@@ -61,6 +61,7 @@ export type { PermissionLevel } from './permissions/permissionLabels.js';
 export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, } from './auth/turnstileTypes.js';
 export type { TurnstileConfigData, TurnstileAuthBodyFields, AdminLoginRequest, ExchangeSuperAdminInviteSessionRequest, CompleteSuperAdminInviteRequest, PickupStaffLoginRequest, CustomerAuthTurnstileBody, } from './auth/turnstileTypes.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
+export { computePollRetryDelayMs, isServerOverloadPollError, type PollRetryBackoffOptions, } from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
 export { createCoalescedRefetchScheduler, type CoalescedRefetchScheduler, } from './catalog/createCoalescedRefetchScheduler.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';

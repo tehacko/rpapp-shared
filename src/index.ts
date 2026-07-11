@@ -90,6 +90,11 @@ export type {
   CustomerAuthTurnstileBody,
 } from './auth/turnstileTypes.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
+export {
+  computePollRetryDelayMs,
+  isServerOverloadPollError,
+  type PollRetryBackoffOptions,
+} from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
 export {
   createCoalescedRefetchScheduler,
