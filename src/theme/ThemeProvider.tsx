@@ -11,10 +11,11 @@ import {
   createThemeApi,
   type EffectiveTheme,
   type ThemeApi,
+  type ThemeApplyOptions,
   type ThemePreference,
 } from './themeContract.js';
 
-export type { EffectiveTheme, ThemeApi, ThemePreference };
+export type { EffectiveTheme, ThemeApi, ThemeApplyOptions, ThemePreference };
 export {
   THEME_STORAGE_KEYS,
   applyInitialTheme,
@@ -34,6 +35,8 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export interface ThemeProviderProps {
   /** Per-app key from `THEME_STORAGE_KEYS` (e.g. `rpapp-customer-theme`). */
   storageKey: string;
+  /** When true, explicit `light` preference adds `.light` to override system dark media. */
+  lightOverrideEnabled?: boolean;
   children: ReactNode;
 }
 
@@ -41,8 +44,15 @@ export interface ThemeProviderProps {
  * React bridge for DECISION-2 C-Hybrid dark mode.
  * Wrap the app (or subtree) and read/update theme via `useTheme()`.
  */
-export function ThemeProvider({ storageKey, children }: ThemeProviderProps): JSX.Element {
-  const api = useMemo(() => createThemeApi(storageKey), [storageKey]);
+export function ThemeProvider({
+  storageKey,
+  lightOverrideEnabled = false,
+  children,
+}: ThemeProviderProps): JSX.Element {
+  const api = useMemo(
+    () => createThemeApi(storageKey, { lightOverrideEnabled }),
+    [storageKey, lightOverrideEnabled],
+  );
   const [preference, setPreference] = useState<ThemePreference>(() => api.getThemePreference());
   const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>(() => api.getEffectiveTheme());
 

@@ -20,6 +20,8 @@ export interface SessionMetadataCollect {
     promisedPickupAt?: string;
     pickupWindowEndAt?: string;
   };
+  /** Required when sales point is self-collect-only (Appendix D/F). */
+  selfCollectConfirmedAtKiosk?: boolean;
 }
 
 export interface SessionMetadataCheckoutMode {

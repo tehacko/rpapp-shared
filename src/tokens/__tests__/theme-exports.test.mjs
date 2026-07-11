@@ -11,6 +11,7 @@ test('theme.css and admin-theme.css exist and export @theme tokens', () => {
   const admin = readFileSync(join(tokensDir, 'admin-theme.css'), 'utf8');
   assert.match(theme, /@theme/);
   assert.match(theme, /--color-surface/);
+  assert.match(theme, /\.light/);
   assert.match(admin, /--color-an-bg/);
   assert.match(admin, /--color-rail-sidebar-bg/);
 });

@@ -52,15 +52,30 @@ function readStoredPreference(storageKey: string): ThemePreference {
   return 'system';
 }
 
-function applyClass(theme: EffectiveTheme): void {
+export interface ThemeApplyOptions {
+  /** When true, explicit `light` preference adds `.light` to override system dark media. */
+  readonly lightOverrideEnabled?: boolean;
+}
+
+function applyThemeClasses(
+  preference: ThemePreference,
+  effective: EffectiveTheme,
+  options?: ThemeApplyOptions,
+): void {
   if (typeof document === 'undefined') {
     return;
   }
   const root = document.documentElement;
-  if (theme === 'dark') {
+  const lightOverrideEnabled = options?.lightOverrideEnabled === true;
+  root.classList.remove('dark', 'light');
+
+  if (lightOverrideEnabled && preference === 'light') {
+    root.classList.add('light');
+    return;
+  }
+
+  if (preference === 'dark' || effective === 'dark') {
     root.classList.add('dark');
-  } else {
-    root.classList.remove('dark');
   }
 }
 
@@ -68,7 +83,10 @@ function applyClass(theme: EffectiveTheme): void {
  * Imperative theme controller for a single app surface.
  * Call `applyInitialTheme()` before the first React paint to avoid flash.
  */
-export function createThemeApi(storageKey: string): ThemeApi {
+export function createThemeApi(
+  storageKey: string,
+  options?: ThemeApplyOptions,
+): ThemeApi {
   const getThemePreference = (): ThemePreference => readStoredPreference(storageKey);
 
   const getEffectiveTheme = (): EffectiveTheme => {
@@ -79,8 +97,12 @@ export function createThemeApi(storageKey: string): ThemeApi {
     return pref;
   };
 
+  const syncDomClasses = (): void => {
+    applyThemeClasses(getThemePreference(), getEffectiveTheme(), options);
+  };
+
   const applyInitialTheme = (): void => {
-    applyClass(getEffectiveTheme());
+    syncDomClasses();
   };
 
   const setTheme = (pref: ThemePreference): void => {
@@ -91,7 +113,7 @@ export function createThemeApi(storageKey: string): ThemeApi {
     } catch {
       /* ignore */
     }
-    applyClass(getEffectiveTheme());
+    syncDomClasses();
   };
 
   const subscribeToSystemTheme = (onChange?: () => void): (() => void) => {
@@ -104,7 +126,7 @@ export function createThemeApi(storageKey: string): ThemeApi {
     }
     const listener = (): void => {
       if (getThemePreference() === 'system') {
-        applyClass(getEffectiveTheme());
+        syncDomClasses();
         onChange?.();
       }
     };
