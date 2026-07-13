@@ -351,9 +351,29 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Customer behavior export',
     cs: 'Export chování zákazníků',
   },
+  'export.analytics.mission_control.exported': {
+    en: 'Mission Control tenant export',
+    cs: 'Export tenantů Mission Control',
+  },
+  'analytics.mission_control.cross_tenant.read': {
+    en: 'Mission Control cross-tenant read',
+    cs: 'Cross-tenant čtení Mission Control',
+  },
   'export.analytics.rollups.materialized': {
     en: 'Analytics rollups materialized',
     cs: 'Analytické agregace materializovány',
+  },
+  'export.transactions.exported': {
+    en: 'Transactions export',
+    cs: 'Export transakcí',
+  },
+  'export.fulfillment.exported': {
+    en: 'Fulfillment export',
+    cs: 'Export vyzvednutí',
+  },
+  'export.compliance.audit_events.exported': {
+    en: 'Compliance audit events export',
+    cs: 'Export compliance audit událostí',
   },
   'customer_pickup_ack_informational': {
     en: 'Customer informational pickup ack',

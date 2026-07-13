@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 44 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 45 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -269,6 +269,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['analytics'],
     notes: 'Advanced explore',
+  },
+  {
+    blockKey: 'mission_control',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['analytics_detailed'],
+    adminNavSectionId: 'mission-control',
+    capabilityHint: 'analytics:mission-control:read',
+    notes: 'Mission Control dashboard (B-P0-01); parent analytics_detailed',
   },
   {
     blockKey: 'analytics_pii',

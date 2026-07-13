@@ -351,9 +351,29 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',
   },
+  'export.analytics.mission_control.exported': {
+    en: 'Recorded when someone downloads a Mission Control tenant breakdown CSV export. One line per successful export.',
+    cs: 'Zapíše se, když někdo stáhne CSV export tenantů z Mission Control. Jeden řádek za úspěšný export.',
+  },
+  'analytics.mission_control.cross_tenant.read': {
+    en: 'Recorded when an elevated operator reads Mission Control metrics across multiple tenants.',
+    cs: 'Zapíše se, když oprávněný operátor čte metriky Mission Control napříč tenanty.',
+  },
   'export.analytics.rollups.materialized': {
     en: 'Recorded when scheduled analytics rollup snapshots are materialized for reporting. One line per materialization run.',
     cs: 'Zapíše se při materializaci plánovaných analytických agregací pro reporty. Jeden řádek za běh materializace.',
+  },
+  'export.transactions.exported': {
+    en: 'Recorded when an operator exports transaction rows to CSV.',
+    cs: 'Zapíše se, když operátor exportuje transakce do CSV.',
+  },
+  'export.fulfillment.exported': {
+    en: 'Recorded when an operator exports fulfillment rows to CSV.',
+    cs: 'Zapíše se, když operátor exportuje vyzvednutí do CSV.',
+  },
+  'export.compliance.audit_events.exported': {
+    en: 'Recorded when an operator exports compliance audit events to CSV.',
+    cs: 'Zapíše se, když operátor exportuje compliance audit události do CSV.',
   },
   'customer_pickup_ack_informational': {
     en: 'Recorded when a customer taps “I picked up my order” on a prepay order detail (informational self-report only). One line per transaction. Does not change fulfillment state.',

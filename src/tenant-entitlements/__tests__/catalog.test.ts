@@ -8,10 +8,10 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 44 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(44);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(44);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(44);
+  it('contains exactly 45 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(45);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(45);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(45);
   });
 
   it('uses catalog version 1 for initial seed', () => {
@@ -21,7 +21,14 @@ describe('tenant entitlement catalog', () => {
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(44);
+    expect(new Set(keysFromCatalog).size).toBe(45);
+  });
+
+  it('includes mission_control under analytics_detailed with MC capability hint', () => {
+    const missionControl = getEntitlementBlockCatalogEntry('mission_control');
+    expect(missionControl.parentKeys).toEqual(['analytics_detailed']);
+    expect(missionControl.adminNavSectionId).toBe('mission-control');
+    expect(missionControl.capabilityHint).toBe('analytics:mission-control:read');
   });
 
   it('includes normative loyalty and reconciliation blocks', () => {

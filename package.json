@@ -70,6 +70,11 @@
       "import": "./dist/analytics/metadataBuilders.js",
       "require": "./dist/analytics/metadataBuilders.js"
     },
+    "./analytics/missionControl": {
+      "types": "./dist/analytics/missionControl.d.ts",
+      "import": "./dist/analytics/missionControl.js",
+      "require": "./dist/analytics/missionControl.js"
+    },
     "./analyticsAnonymousIdentity": {
       "types": "./dist/analyticsAnonymousIdentity.d.ts",
       "import": "./dist/analyticsAnonymousIdentity.js",

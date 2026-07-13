@@ -92,7 +92,12 @@ export const AUDIT_EVENT_CODES = [
   'payment.cash_shift.closed',
   'payment.cash_drawer.open_signal',
   'export.analytics.explore.exported',
+  'export.analytics.mission_control.exported',
+  'analytics.mission_control.cross_tenant.read',
   'export.analytics.rollups.materialized',
+  'export.transactions.exported',
+  'export.fulfillment.exported',
+  'export.compliance.audit_events.exported',
   'gdpr.erasure.completed',
   'gdpr.erasure.side_effects_pending',
 ] as const;

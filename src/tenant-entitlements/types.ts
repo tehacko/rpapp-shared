@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 44 blocks).
+ * Authoritative block list lives in catalog.ts (§6.3, 45 blocks).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -114,6 +114,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'analytics',
   'analytics_summary',
   'analytics_detailed',
+  'mission_control',
   'analytics_pii',
   'customer_behavior_funnels',
   'analytics_benchmark',

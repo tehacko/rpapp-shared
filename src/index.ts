@@ -29,6 +29,7 @@ export * from './analyticsPiiTags.js';
 export * from './analyticsConsentTier2.js';
 export * from './analyticsConsentAllowlist.js';
 export * from './analytics/metadataBuilders.js';
+export * from './analytics/missionControl.js';
 export * from './analytics/retailOrderEvents.js';
 export * from './analyticsExploreCaps.js';
 export * from './analyticsApiTypes.js';
