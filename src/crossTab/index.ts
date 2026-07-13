@@ -25,6 +25,8 @@ export type CustomerConsentCrossTabMessage = {
   tenantCode?: string;
   tenantId?: number;
   source?: 'customer' | 'admin';
+  /** When `global`, subscribers on all tenants re-read effective consent (R10). */
+  scope?: 'global' | 'tenant';
 };
 
 export type KioskTabCrossTabMessage =
