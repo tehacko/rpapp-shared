@@ -209,6 +209,30 @@ events:
   - event: profile_updated
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: promo_budget_exhausted
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_budget_soft_stop
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_preview_evaluated
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_progress_threshold_reached
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_reward_activated
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_reward_redeemed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_reward_rolled_back
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_stacking_rejected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: qr_displayed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
