@@ -54,6 +54,7 @@ export * from './catalogMediaPatch.js';
 export * from './checkout/sessionMetadataV3.js';
 export * from './checkout/sessionMetadataV4.js';
 export * from './checkout/sessionMetadataV5.js';
+export * from './checkout/CartLineFingerprint.js';
 export * from './promo/promoSessionHandoff.js';
 export * from './catalogImagePresentation.js';
 export * from './CatalogImagePlaceholder.js';

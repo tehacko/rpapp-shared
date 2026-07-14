@@ -95,6 +95,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     reference: 'shopScreenHandlers',
   },
   { eventName: 'checkout_started', surface: 'customer', layer: 'FE', required: true, reference: 'shopScreenHandlers' },
+  { eventName: 'gift_surface_impression', surface: 'customer', layer: 'FE', required: false, reference: 'CustomerHubNav' },
   { eventName: 'checkout_started', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskNavigationHandlers' },
   {
     eventName: 'checkout_mode_selected',

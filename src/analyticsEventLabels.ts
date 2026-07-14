@@ -47,6 +47,7 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   collect_step_opened: { en: 'Collect step opened', cs: 'Krok vyzvednutí otevřen' },
   collect_step_confirmed: { en: 'Collect step confirmed', cs: 'Krok vyzvednutí potvrzen' },
   checkout_started: { en: 'Checkout started', cs: 'Pokladna zahájena' },
+  gift_surface_impression: { en: 'Gift surface impression', cs: 'Zobrazení dárkových ploch' },
   retail_order_paid: { en: 'Order paid', cs: 'Objednávka zaplacena' },
   retail_order_abandoned: { en: 'Order abandoned', cs: 'Objednávka opuštěna' },
   retail_order_prepared: { en: 'Order in preparation', cs: 'Objednávka v přípravě' },

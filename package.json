@@ -115,6 +115,16 @@
       "import": "./dist/checkout/sessionMetadataV4.js",
       "require": "./dist/checkout/sessionMetadataV4.js"
     },
+    "./checkout/sessionMetadataV5": {
+      "types": "./dist/checkout/sessionMetadataV5.d.ts",
+      "import": "./dist/checkout/sessionMetadataV5.js",
+      "require": "./dist/checkout/sessionMetadataV5.js"
+    },
+    "./checkout/CartLineFingerprint": {
+      "types": "./dist/checkout/CartLineFingerprint.d.ts",
+      "import": "./dist/checkout/CartLineFingerprint.js",
+      "require": "./dist/checkout/CartLineFingerprint.js"
+    },
     "./sentry": {
       "types": "./dist/sentry/initSentry.d.ts",
       "import": "./dist/sentry/initSentry.js",

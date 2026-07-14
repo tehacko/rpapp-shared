@@ -67,6 +67,7 @@ export const ANALYTICS_RETAIL_EVENTS = {
   COLLECT_STEP_OPENED: 'collect_step_opened',
   COLLECT_STEP_CONFIRMED: 'collect_step_confirmed',
   CHECKOUT_STARTED: 'checkout_started',
+  GIFT_SURFACE_IMPRESSION: 'gift_surface_impression',
   RETAIL_ORDER_PAID: 'retail_order_paid',
   RETAIL_ORDER_ABANDONED: 'retail_order_abandoned',
   ...RETAIL_ORDER_EVENTS,

@@ -63,3 +63,19 @@ export const ADMIN_AUTH_CHANNEL = 'rpapp-admin-auth';
 export const ADMIN_TENANT_CHANNEL = 'rpapp-admin-tenant';
 export const ADMIN_CACHE_CHANNEL = 'rpapp-admin-cache';
 export const PICKUP_STAFF_AUTH_CHANNEL = 'rpapp-pickup-staff-auth';
+
+export const CUSTOMER_CART_CHANNEL = 'rpapp-customer-cart';
+
+export type CustomerCartCrossTabMessage = {
+  type: 'cart-reset';
+  tenantCode: string;
+  kioskId: number;
+  source: string;
+};
+
+export const CUSTOMER_FEATURE_FLAGS_CHANNEL = 'rpapp-customer-feature-flags';
+
+export type CustomerFeatureFlagsCrossTabMessage = {
+  type: 'flags-revision-changed';
+  revision: number;
+};

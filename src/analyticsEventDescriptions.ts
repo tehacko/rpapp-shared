@@ -188,6 +188,10 @@ const RETAIL_DESCRIPTIONS = {
     en: 'Counts when the customer moves from the cart to the payment step (for example taps Pay). One count per time they enter checkout. Payment finishing is counted separately.',
     cs: 'Počítá se, když zákazník přejde z košíku k platbě (např. klepne Zaplatit). Jednou za vstup do pokladny. Dokončení platby se počítá zvlášť.',
   },
+  [ANALYTICS_RETAIL_EVENTS.GIFT_SURFACE_IMPRESSION]: {
+    en: 'Counts when gift/donation nav surfaces become visible after flags and entitlements resolve. One count per poll revision per hub view.',
+    cs: 'Počítá se, když se po vyhodnocení oprávnění a příznaků zobrazí navigační plochy pro dary. Jednou za revizi poll na hubu.',
+  },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_PAID]: {
     en: 'Counts when a shop purchase payment is completed successfully. One count per paid order. Works together with “payment confirmed” — dashboards use money totals, not only this row count.',
     cs: 'Počítá se, když je nákup v obchodě úspěšně zaplacen. Jednou za zaplacenou objednávku. Jde ruku v ruce s „platba potvrzena“ — přehledy používají součty peněz, ne jen tento počet řádků.',

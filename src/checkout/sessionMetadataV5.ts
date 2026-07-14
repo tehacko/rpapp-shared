@@ -1,3 +1,11 @@
+/**
+ * Read-only v5 session-metadata contract for kiosk/customer/PWA consumers.
+ *
+ * SSOT for upgrade/merge/payment resolution: `up-backend/src/application/services/checkout/sessionMetadataCompat.ts`
+ * and `up-backend/src/domain/types/checkout/sessionMetadataV5.ts` (domain guard only).
+ * Shared package = type mirror for future consumers; kiosk/customer re-export via `pi-kiosk-shared`.
+ * Keep field names and optionality in sync with ADR-006 when backend evolves.
+ */
 import type {
   SessionMetadataCheckoutMode,
   SessionMetadataCollect,
