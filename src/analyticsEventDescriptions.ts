@@ -5,6 +5,7 @@ import {
   ANALYTICS_FUNNEL_EVENTS,
   ANALYTICS_IDENTITY_EVENTS,
   ANALYTICS_KIOSK_EVENTS,
+  ANALYTICS_PROMO_EVENTS,
   ANALYTICS_RETAIL_EVENTS,
   ANALYTICS_SERVER_OPS_EVENTS,
   ANALYTICS_UNIVERSAL_EVENTS,
@@ -408,6 +409,38 @@ const SERVER_OPS_DESCRIPTIONS: Record<
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_RECEIVED]: {
     en: 'Counts when an inbound bank movement matches a recurring donation standing-order setup. Emitted by reconciliation after SS match.',
     cs: 'Počítá se, když příchozí bankovní pohyb sedí na trvalý příkaz k opakovanému daru. Emituje reconciliace po shodě SS.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_PREVIEW_EVALUATED]: {
+    en: 'Counts when checkout promo pricing preview runs for a cart. Server-side only.',
+    cs: 'Počítá se při náhledu promo ceny košíku. Pouze server.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_REWARD_ACTIVATED]: {
+    en: 'Counts when a customer activates a promo reward for checkout.',
+    cs: 'Počítá se, když zákazník aktivuje promo odměnu pro checkout.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_REWARD_REDEEMED]: {
+    en: 'Counts when a promo reward is committed on payment completion.',
+    cs: 'Počítá se při uplatnění promo odměny po dokončení platby.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_REWARD_ROLLED_BACK]: {
+    en: 'Counts when a promo reward rollback runs after refund.',
+    cs: 'Počítá se při vrácení promo odměny po refundaci.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_PROGRESS_THRESHOLD_REACHED]: {
+    en: 'Counts when buy-X progress crosses an issue threshold.',
+    cs: 'Počítá se, když postup buy-X překročí práh pro vydání odměny.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_STACKING_REJECTED]: {
+    en: 'Counts when promo and loyalty stacking policy rejects a candidate.',
+    cs: 'Počítá se, když pravidla kombinace promo a věrnosti odmítnou kandidáta.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_BUDGET_SOFT_STOP]: {
+    en: 'Counts when promo spend crosses a soft-stop threshold.',
+    cs: 'Počítá se při překročení měkkého limitu promo rozpočtu.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_BUDGET_EXHAUSTED]: {
+    en: 'Counts when promo event budget is fully exhausted.',
+    cs: 'Počítá se, když je promo rozpočet akce vyčerpán.',
   },
 };
 

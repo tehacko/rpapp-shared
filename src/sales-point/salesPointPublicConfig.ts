@@ -143,6 +143,10 @@ export interface SalesPointPublicLoyaltyCapability {
   readonly previewRequired: false;
 }
 
+export interface SalesPointPublicPromotionsCapability {
+  readonly enabled: boolean;
+}
+
 /** Per-block posture on device public-config (ENT-PR-17 ceiling). */
 export interface SalesPointPublicEntitlementBlockPosture {
   readonly entitled: boolean;
@@ -200,6 +204,7 @@ export type SalesPointPublicConfigV1 =
       readonly catalogMedia?: SalesPointPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
+      readonly promotions?: SalesPointPublicPromotionsCapability;
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &
@@ -215,6 +220,7 @@ export type SalesPointPublicConfigV1 =
       readonly catalogMedia?: SalesPointPublicCatalogMedia;
       readonly outboxObligationsEnabled: boolean;
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
+      readonly promotions?: SalesPointPublicPromotionsCapability;
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &

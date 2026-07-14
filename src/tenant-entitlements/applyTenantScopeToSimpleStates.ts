@@ -55,6 +55,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     tenant_ops_settings: ON,
     inventory_management: OFF,
     loyalty_program: OFF,
+    promotions_program: OFF,
   };
 }
 
@@ -90,6 +91,7 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
   'inventory_management',
   'loyalty_program',
+  'promotions_program',
   'analytics_summary',
   'mission_control',
   'tax_management',
@@ -160,6 +162,7 @@ function applyAllowedPurposesToStates(
       result.donation = ON;
       result.inventory_management = OFF;
       result.loyalty_program = OFF;
+      result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;
       result.analytics_summary = OFF;
       result.mission_control = OFF;

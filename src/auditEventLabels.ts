@@ -211,6 +211,46 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Physical loyalty card revoked',
     cs: 'Zneplatněna fyzická věrnostní karta',
   },
+  'admin.promo.event.created': {
+    en: 'Promo event created',
+    cs: 'Promo akce vytvořena',
+  },
+  'admin.promo.event.paused': {
+    en: 'Promo event paused',
+    cs: 'Promo akce pozastavena',
+  },
+  'admin.promo.reward.issued': {
+    en: 'Promo reward issued',
+    cs: 'Promo odměna vydána',
+  },
+  'admin.promo.reward.revoked': {
+    en: 'Promo reward revoked',
+    cs: 'Promo odměna zrušena',
+  },
+  'admin.promo.enrollment.revoked': {
+    en: 'Promo enrollment revoked',
+    cs: 'Promo registrace zrušena',
+  },
+  'commerce.promo.reward.activated': {
+    en: 'Promo reward activated',
+    cs: 'Promo odměna aktivována',
+  },
+  'commerce.promo.reward.redeemed': {
+    en: 'Promo reward redeemed',
+    cs: 'Promo odměna uplatněna',
+  },
+  'commerce.promo.reward.rolled_back': {
+    en: 'Promo reward rolled back',
+    cs: 'Promo odměna vrácena zpět',
+  },
+  'commerce.promo.progress.updated': {
+    en: 'Promo progress updated',
+    cs: 'Promo průběh aktualizován',
+  },
+  'commerce.promo.enrollment.created': {
+    en: 'Promo enrollment created',
+    cs: 'Promo registrace vytvořena',
+  },
   'admin.product.barcode_assigned': {
     en: 'Product barcode assigned',
     cs: 'Přiřazen čárový kód produktu',
@@ -374,6 +414,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'export.compliance.audit_events.exported': {
     en: 'Compliance audit events export',
     cs: 'Export compliance audit událostí',
+  },
+  'export.consent.grantees': {
+    en: 'Consent grantees export',
+    cs: 'Export příjemců souhlasů',
   },
   'customer_pickup_ack_informational': {
     en: 'Customer informational pickup ack',

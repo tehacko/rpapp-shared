@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 45 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 46 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -150,6 +150,13 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['product_vending'],
     capabilityHint: 'loyalty:coupons:read',
     notes: 'Parent product_vending only; RETAIN ALL data on disable (§6.5)',
+  },
+  {
+    blockKey: 'promotions_program',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['product_vending'],
+    capabilityHint: 'promo:rewards:read',
+    notes: 'Commerce promos bounded context; parent product_vending only; RETAIN ALL data on disable (§6.5)',
   },
   {
     blockKey: 'payment_rails_strategy',

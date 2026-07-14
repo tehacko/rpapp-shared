@@ -128,6 +128,17 @@ export const ANALYTICS_BARCODE_OPS_EVENTS = {
   PHYSICAL_CARD_REVOKED: 'physical_card_revoked',
 } as const;
 
+export const ANALYTICS_PROMO_EVENTS = {
+  PROMO_PREVIEW_EVALUATED: 'promo_preview_evaluated',
+  PROMO_REWARD_ACTIVATED: 'promo_reward_activated',
+  PROMO_REWARD_REDEEMED: 'promo_reward_redeemed',
+  PROMO_REWARD_ROLLED_BACK: 'promo_reward_rolled_back',
+  PROMO_PROGRESS_THRESHOLD_REACHED: 'promo_progress_threshold_reached',
+  PROMO_STACKING_REJECTED: 'promo_stacking_rejected',
+  PROMO_BUDGET_SOFT_STOP: 'promo_budget_soft_stop',
+  PROMO_BUDGET_EXHAUSTED: 'promo_budget_exhausted',
+} as const;
+
 /**
  * Server-side operational events (workers, reconciliation) — no client emitter.
  */
@@ -135,6 +146,7 @@ export const ANALYTICS_SERVER_OPS_EVENTS = {
   RECURRING_PAYMENT_MISSED: 'recurring_payment_missed',
   RECURRING_PAYMENT_RECEIVED: 'recurring_payment_received',
   ...ANALYTICS_BARCODE_OPS_EVENTS,
+  ...ANALYTICS_PROMO_EVENTS,
 } as const;
 
 export const ANALYTICS_EVENT_NAMES = [

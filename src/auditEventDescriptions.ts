@@ -211,6 +211,46 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a kiosk. One line per revoked card.',
     cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na kiosku. Jeden řádek za zneplatněnou kartu.',
   },
+  'admin.promo.event.created': {
+    en: 'Recorded when an operator creates a new promo event in draft state. One line per created event.',
+    cs: 'Zapíše se, když operátor vytvoří novou promo akci ve stavu konceptu. Jeden řádek za vytvořenou akci.',
+  },
+  'admin.promo.event.paused': {
+    en: 'Recorded when an operator pauses an active promo event. One line per pause action.',
+    cs: 'Zapíše se, když operátor pozastaví aktivní promo akci. Jeden řádek za každé pozastavení.',
+  },
+  'admin.promo.reward.issued': {
+    en: 'Recorded when an operator manually issues a promo reward to a customer. One line per issued reward.',
+    cs: 'Zapíše se, když operátor ručně vydá promo odměnu zákazníkovi. Jeden řádek za vydanou odměnu.',
+  },
+  'admin.promo.reward.revoked': {
+    en: 'Recorded when an operator revokes an unused or active promo reward. One line per revoked reward.',
+    cs: 'Zapíše se, když operátor zruší nepoužitou nebo aktivní promo odměnu. Jeden řádek za zrušenou odměnu.',
+  },
+  'admin.promo.enrollment.revoked': {
+    en: 'Recorded when an operator revokes a customer enrollment from a promo event. One line per revoked enrollment.',
+    cs: 'Zapíše se, když operátor zruší registraci zákazníka k promo akci. Jeden řádek za zrušenou registraci.',
+  },
+  'commerce.promo.reward.activated': {
+    en: 'Recorded when a customer activates an earned promo reward during checkout or account flow. One line per activation.',
+    cs: 'Zapíše se, když zákazník aktivuje získanou promo odměnu při checkoutu nebo v účtu. Jeden řádek za aktivaci.',
+  },
+  'commerce.promo.reward.redeemed': {
+    en: 'Recorded when an activated promo reward is applied to a completed purchase. One line per redemption.',
+    cs: 'Zapíše se, když je aktivovaná promo odměna uplatněna u dokončeného nákupu. Jeden řádek za uplatnění.',
+  },
+  'commerce.promo.reward.rolled_back': {
+    en: 'Recorded when a promo reward redemption is reversed after payment failure or order cancellation. One line per rollback.',
+    cs: 'Zapíše se, když je uplatnění promo odměny vráceno po selhání platby nebo zrušení objednávky. Jeden řádek za vrácení.',
+  },
+  'commerce.promo.progress.updated': {
+    en: 'Recorded when a customer promo progress counter changes toward a threshold reward. One line per progress update.',
+    cs: 'Zapíše se, když se u zákazníka změní průběh promo akce směrem k prahové odměně. Jeden řádek za aktualizaci průběhu.',
+  },
+  'commerce.promo.enrollment.created': {
+    en: 'Recorded when a customer enrolls in a promo event that requires enrollment. One line per enrollment.',
+    cs: 'Zapíše se, když se zákazník zaregistruje k promo akci vyžadující registraci. Jeden řádek za registraci.',
+  },
   'admin.product.barcode_assigned': {
     en: 'Recorded when a primary product or variant barcode is created or updated, including confirmed overwrite moves.',
     cs: 'Zapíše se při vytvoření nebo změně primárního čárového kódu produktu či varianty, včetně potvrzeného přesunu z jiného držitele.',
@@ -374,6 +414,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'export.compliance.audit_events.exported': {
     en: 'Recorded when an operator exports compliance audit events to CSV.',
     cs: 'Zapíše se, když operátor exportuje compliance audit události do CSV.',
+  },
+  'export.consent.grantees': {
+    en: 'Recorded when an operator exports active consent grantees for GDPR processing. One line per successful export. Personal data from the export file is not copied into the audit row.',
+    cs: 'Zapíše se, když operátor exportuje aktivní příjemce souhlasů pro zpracování podle GDPR. Jeden řádek za úspěšný export. Osobní údaje ze souboru exportu se do řádku auditu nekopírují.',
   },
   'customer_pickup_ack_informational': {
     en: 'Recorded when a customer taps “I picked up my order” on a prepay order detail (informational self-report only). One line per transaction. Does not change fulfillment state.',

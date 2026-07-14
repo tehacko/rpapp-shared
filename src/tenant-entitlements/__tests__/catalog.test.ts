@@ -8,10 +8,10 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 45 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(45);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(45);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(45);
+  it('contains exactly 46 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(46);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(46);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(46);
   });
 
   it('uses catalog version 1 for initial seed', () => {
@@ -21,7 +21,7 @@ describe('tenant entitlement catalog', () => {
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(45);
+    expect(new Set(keysFromCatalog).size).toBe(46);
   });
 
   it('includes mission_control under analytics_detailed with MC capability hint', () => {
@@ -31,9 +31,13 @@ describe('tenant entitlement catalog', () => {
     expect(missionControl.capabilityHint).toBe('analytics:mission-control:read');
   });
 
-  it('includes normative loyalty and reconciliation blocks', () => {
+  it('includes normative loyalty, promotions, and reconciliation blocks', () => {
     const loyalty = getEntitlementBlockCatalogEntry('loyalty_program');
     expect(loyalty.parentKeys).toEqual(['product_vending']);
+
+    const promotions = getEntitlementBlockCatalogEntry('promotions_program');
+    expect(promotions.parentKeys).toEqual(['product_vending']);
+    expect(promotions.capabilityHint).toBe('promo:rewards:read');
 
     const tenantOps = getEntitlementBlockCatalogEntry('tenant_ops_settings');
     expect(tenantOps.blockClass).toBe('CORE_REQUIRED');

@@ -84,6 +84,7 @@ describe('isTenantScopeLockedBlock', () => {
   it('locks donation-only cluster blocks when purposes is DONATION_ONLY', () => {
     expect(isTenantScopeLockedBlock('inventory_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('loyalty_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('promotions_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('analytics_summary', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('pickup_points', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('order_pickup_infrastructure', 'DONATION_ONLY', 'BOTH')).toBe(true);

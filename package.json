@@ -105,6 +105,11 @@
       "import": "./dist/loyalty/loyaltySessionHandoff.js",
       "require": "./dist/loyalty/loyaltySessionHandoff.js"
     },
+    "./promo/promoSessionHandoff": {
+      "types": "./dist/promo/promoSessionHandoff.d.ts",
+      "import": "./dist/promo/promoSessionHandoff.js",
+      "require": "./dist/promo/promoSessionHandoff.js"
+    },
     "./checkout/sessionMetadataV4": {
       "types": "./dist/checkout/sessionMetadataV4.d.ts",
       "import": "./dist/checkout/sessionMetadataV4.js",

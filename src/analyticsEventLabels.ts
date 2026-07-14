@@ -114,6 +114,17 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   product_barcode_lookup_miss: { en: 'Barcode lookup miss', cs: 'Vyhledání kódu nenalezeno' },
   physical_card_issued: { en: 'Physical loyalty card issued', cs: 'Vydána fyzická věrnostní karta' },
   physical_card_revoked: { en: 'Physical loyalty card revoked', cs: 'Zneplatněna fyzická věrnostní karta' },
+  promo_preview_evaluated: { en: 'Promo preview evaluated', cs: 'Promo náhled vyhodnocen' },
+  promo_reward_activated: { en: 'Promo reward activated', cs: 'Promo odměna aktivována' },
+  promo_reward_redeemed: { en: 'Promo reward redeemed', cs: 'Promo odměna uplatněna' },
+  promo_reward_rolled_back: { en: 'Promo reward rolled back', cs: 'Promo odměna vrácena' },
+  promo_progress_threshold_reached: {
+    en: 'Promo progress threshold reached',
+    cs: 'Promo práh postupu dosažen',
+  },
+  promo_stacking_rejected: { en: 'Promo stacking rejected', cs: 'Promo kombinace odmítnuta' },
+  promo_budget_soft_stop: { en: 'Promo budget soft stop', cs: 'Promo měkký limit rozpočtu' },
+  promo_budget_exhausted: { en: 'Promo budget exhausted', cs: 'Promo rozpočet vyčerpán' },
   recurring_payment_missed: {
     en: 'Recurring payment missed',
     cs: 'Zmeškaná opakovaná platba',

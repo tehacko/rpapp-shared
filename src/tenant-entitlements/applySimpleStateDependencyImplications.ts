@@ -51,6 +51,7 @@ export function applySimpleStateDependencyImplications(
   const vendingActive = isRuntimeActiveSimpleState(result.product_vending);
   const inventoryActive = isRuntimeActiveSimpleState(result.inventory_management);
   const loyaltyActive = isRuntimeActiveSimpleState(result.loyalty_program);
+  const promotionsActive = isRuntimeActiveSimpleState(result.promotions_program);
 
   if (inventoryActive) {
     if (!vendingActive) {
@@ -60,6 +61,10 @@ export function applySimpleStateDependencyImplications(
   }
 
   if (loyaltyActive && !isRuntimeActiveSimpleState(result.product_vending)) {
+    result.product_vending = 'on';
+  }
+
+  if (promotionsActive && !isRuntimeActiveSimpleState(result.product_vending)) {
     result.product_vending = 'on';
   }
 
