@@ -1,3 +1,5 @@
+import type { PaymentSurfaceReadiness } from '../payment/PaymentSurfaceReadiness.js';
+
 /**
  * Sales-point public-config contract (v1).
  *
@@ -180,6 +182,12 @@ export function resolveSalesPointEntitlementCeiling(
   };
 }
 
+export interface SalesPointPublicPaymentSurfaceReadinessFields {
+  /** Phase E — verified payable method count for kiosk auto-start / picker skip. */
+  readonly payableVerifiedMethodCount: number;
+  readonly paymentSurfaceReadiness: PaymentSurfaceReadiness;
+}
+
 export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
@@ -194,7 +202,8 @@ export type SalesPointPublicConfigV1 =
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    } & SalesPointPublicConfigLocationFields)
+    } & SalesPointPublicConfigLocationFields &
+      SalesPointPublicPaymentSurfaceReadinessFields)
   | ({
       readonly configVersion: number;
       readonly salesPointOperationalMode: 'DONATION';
@@ -208,7 +217,8 @@ export type SalesPointPublicConfigV1 =
       readonly loyalty?: SalesPointPublicLoyaltyCapability;
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
-    } & SalesPointPublicConfigLocationFields);
+    } & SalesPointPublicConfigLocationFields &
+      SalesPointPublicPaymentSurfaceReadinessFields);
 
 /** Current contract version emitted by the backend. */
 export const SALES_POINT_PUBLIC_CONFIG_VERSION = 6;

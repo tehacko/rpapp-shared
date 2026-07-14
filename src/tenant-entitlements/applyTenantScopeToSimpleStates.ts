@@ -50,6 +50,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     scheduled_pickup: OFF,
     staff_pickup_scan: ON,
     analytics_summary: ON,
+    mission_control: ON,
     comms_governance: ON,
     tenant_ops_settings: ON,
     inventory_management: OFF,
@@ -90,6 +91,7 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'inventory_management',
   'loyalty_program',
   'analytics_summary',
+  'mission_control',
   'tax_management',
   'compliance_fiscal_modules',
   ...DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS,
@@ -160,6 +162,7 @@ function applyAllowedPurposesToStates(
       result.loyalty_program = OFF;
       result.catalog_administration = HARD_OFF;
       result.analytics_summary = OFF;
+      result.mission_control = OFF;
       result.tax_management = OFF;
       result.compliance_fiscal_modules = OFF;
       for (const blockKey of DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS) {
@@ -170,6 +173,7 @@ function applyAllowedPurposesToStates(
       result.product_vending = ON;
       result.donation = ON;
       result.analytics_summary = ON;
+      result.mission_control = ON;
       result.pickup_points = ON;
       result.inventory_management = ON;
       break;

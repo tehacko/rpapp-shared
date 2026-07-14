@@ -49,4 +49,31 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.product_vending).toBe('on');
     expect(implied.catalog_administration).toBe('on');
   });
+
+  it('MC-01 enables analytics umbrella when analytics_summary is on', () => {
+    const implied = applySimpleStateDependencyImplications({
+      analytics_summary: 'on',
+    });
+
+    expect(implied.analytics).toBe('on');
+  });
+
+  it('MC-02 enables analytics_detailed when mission_control is on', () => {
+    const implied = applySimpleStateDependencyImplications({
+      mission_control: 'on',
+    });
+
+    expect(implied.analytics).toBe('on');
+    expect(implied.analytics_detailed).toBe('on');
+  });
+
+  it('MC-03 does not auto-enable mission_control from analytics_summary alone', () => {
+    const implied = applySimpleStateDependencyImplications({
+      analytics_summary: 'on',
+    });
+
+    expect(implied.analytics).toBe('on');
+    expect(implied.mission_control).toBe('off');
+    expect(implied.analytics_detailed).toBeUndefined();
+  });
 });

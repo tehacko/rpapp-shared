@@ -177,7 +177,32 @@ export class APIClient {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const retryAfter = response.headers.get('Retry-After');
+      let code: string | undefined;
+      let message = response.statusText;
+      try {
+        const parsed = (await response.json()) as
+          | { error?: string; message?: string; code?: string }
+          | undefined;
+        message = parsed?.error ?? parsed?.message ?? message;
+        code = parsed?.code;
+      } catch {
+        // keep statusText
+      }
+      const err = new Error(`HTTP ${response.status}: ${message}`) as Error & {
+        statusCode?: number;
+        code?: string;
+        retryAfterSeconds?: number;
+      };
+      err.statusCode = response.status;
+      err.code = code;
+      if (retryAfter) {
+        const sec = Number(retryAfter);
+        if (Number.isFinite(sec) && sec > 0) {
+          err.retryAfterSeconds = sec;
+        }
+      }
+      throw err;
     }
 
     return response.json();
