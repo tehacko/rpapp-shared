@@ -83,6 +83,9 @@ events:
   - event: error_shown
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: gift_surface_impression
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: checkout_collect_configured
     catalogVersion: 1
     telemetryClass: OPERATIONAL

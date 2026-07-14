@@ -890,6 +890,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'CustomerDonationProjectCard',
   'PostKioskProductJourney',
   'PostKioskDonationJourney',
+  'CustomerHubNav',
 ]);
 
 /** Repo-relative paths for CI grep wiring tests (G3). */
@@ -934,6 +935,7 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
     'rpapp-customer/src/features/donation-projects/components/DonationProjectCard.tsx',
   PostKioskProductJourney: 'rpapp-customer/src/features/journeys/PostKioskProductJourney.tsx',
   PostKioskDonationJourney: 'rpapp-customer/src/features/journeys/PostKioskDonationJourney.tsx',
+  CustomerHubNav: 'rpapp-customer/src/features/hub/CustomerHubNav.tsx',
 };
 
 /** Repo-relative paths for server-layer CI grep wiring (G-P1-09 / AN-036). */
