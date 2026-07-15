@@ -919,7 +919,8 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   MarketingAnalyticsConsentModal:
     'rpapp-customer/src/features/consent/MarketingAnalyticsConsentModal.tsx',
   CustomerAnalyticsProvider: 'rpapp-customer/src/shared/analytics/CustomerAnalyticsProvider.tsx',
-  AccountPaymentsPage: 'rpapp-customer/src/features/account/AccountPaymentsPage.tsx',
+  // Retail V1 thin-page / shell refs → emit site in hooks (same pattern as PhoneFirst*).
+  AccountPaymentsPage: 'rpapp-customer/src/features/account/hooks/useAccountPaymentsScreen.ts',
   AccountShell: 'rpapp-customer/src/features/account/AccountShell.tsx',
   ProductCard: 'rpapp-customer/src/features/shop/components/ProductCard.tsx',
   ProductGrid: 'rpapp-kiosk/src/features/products/components/ProductGrid/ProductGrid.tsx',
@@ -933,8 +934,10 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
     'rpapp-kiosk/src/features/donation/components/DonationProjectCard/DonationProjectCard.tsx',
   CustomerDonationProjectCard:
     'rpapp-customer/src/features/donation-projects/components/DonationProjectCard.tsx',
-  PostKioskProductJourney: 'rpapp-customer/src/features/journeys/PostKioskProductJourney.tsx',
-  PostKioskDonationJourney: 'rpapp-customer/src/features/journeys/PostKioskDonationJourney.tsx',
+  PostKioskProductJourney:
+    'rpapp-customer/src/features/journeys/hooks/usePostKioskProductJourney.ts',
+  PostKioskDonationJourney:
+    'rpapp-customer/src/features/journeys/hooks/usePostKioskDonationJourney.ts',
   CustomerHubNav: 'rpapp-customer/src/features/hub/CustomerHubNav.tsx',
 };
 
