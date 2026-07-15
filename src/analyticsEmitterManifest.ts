@@ -907,8 +907,8 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   kioskNavigationHandlers: 'rpapp-kiosk/src/features/kiosk/handlers/kioskNavigationHandlers.ts',
   kioskPaymentFlowHandlers: 'rpapp-kiosk/src/features/kiosk/handlers/kioskPaymentFlowHandlers.ts',
   QrPaymentView: 'rpapp-customer/src/features/checkout/QrPaymentView.tsx',
-  PhoneFirstProductJourney: 'rpapp-customer/src/features/journeys/PhoneFirstProductJourney.tsx',
-  PhoneFirstDonationJourney: 'rpapp-customer/src/features/journeys/PhoneFirstDonationJourney.tsx',
+  PhoneFirstProductJourney: 'rpapp-customer/src/features/journeys/hooks/usePhoneFirstCheckoutScreen.ts',
+  PhoneFirstDonationJourney: 'rpapp-customer/src/features/journeys/hooks/usePhoneFirstDonationJourney.ts',
   AccountReceiptDownloadButton:
     'rpapp-customer/src/features/account/components/AccountReceiptDownloadButton.tsx',
   useSignInScreen: 'rpapp-customer/src/features/auth/hooks/useSignInScreen.ts',
