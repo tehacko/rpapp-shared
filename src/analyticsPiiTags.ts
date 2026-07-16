@@ -42,6 +42,7 @@ const EVENT_TAG_OVERRIDES: Partial<Record<AnalyticsEventName, AnalyticsPiiTagsBy
   receipt_downloaded: {
     ...DEFAULT_CLIENT_SCREEN_TAGS,
     receipt_format: 'none',
+    receipt_kind: 'none',
   },
   payment_started: {
     ...DEFAULT_CLIENT_SCREEN_TAGS,
