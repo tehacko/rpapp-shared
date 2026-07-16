@@ -53,11 +53,9 @@ try {
 
 ## What's NOT in this package
 
-- **Components**: Moved to `rpapp-kiosk/src/shared/components` and `admin-app/src/shared/components`
-- **Hooks**: Moved to `rpapp-kiosk/src/shared/hooks` and `admin-app/src/shared/hooks`
-- **Utilities**: Moved to `rpapp-kiosk/src/shared/utils` and `admin-app/src/shared/utils`
-- **Validation**: Moved to `admin-app/src/shared/validation`
-- **Config**: Moved to `rpapp-kiosk/src/config` and `admin-app/src/config`
+- **Components**: Live in each app under `src/shared/ui/` / `src/shared/components/` (e.g. `rpapp-kiosk`, `rpapp-admin`, `rpapp-customer`, `rpapp-pickup`)
+- **Hooks**: App-local under `src/shared/hooks` or feature folders
+- **Utilities / validation / config**: App-local — not published from this package
 
 ## Development
 

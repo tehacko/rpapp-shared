@@ -242,6 +242,9 @@ events:
   - event: qr_regenerated
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: receipt_created
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: receipt_downloaded
     catalogVersion: 1
     telemetryClass: OPERATIONAL

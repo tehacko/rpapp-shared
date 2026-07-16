@@ -322,7 +322,9 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: 'slug_legacy_redirect', surface: 'customer', layer: 'FE', required: true, reference: 'useShopScreenEffects' },
   { eventName: 'slug_legacy_redirect', surface: 'server', layer: 'BE', required: true, reference: 'emitRetailV7Analytics' },
   { eventName: ANALYTICS_IDENTITY_EVENTS.IDENTITY_RECOGNIZED, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerAnalyticsProvider' },
+  { eventName: ANALYTICS_IDENTITY_EVENTS.IDENTITY_MATCHED, surface: 'server', layer: 'BE', required: true, reference: 'StartAnalyticsSessionUseCase' },
   { eventName: 'receipt_opened', surface: 'customer', layer: 'FE', required: true, reference: 'AccountPaymentsPage' },
+  { eventName: ANALYTICS_ACCOUNT_EVENTS.RECEIPT_CREATED, surface: 'server', layer: 'BE', required: true, reference: 'GenerateReceiptUseCase' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerShellHeader' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'LoginWithPasswordUseCase' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'VerifyOtpUseCase' },
@@ -949,6 +951,8 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/application/use-cases/payment/qr/CreateQRPaymentUseCase.ts',
   CompletePaymentTransactionUseCase:
     'up-backend/src/application/use-cases/payment/shared/CompletePaymentTransactionUseCase.ts',
+  GenerateReceiptUseCase:
+    'up-backend/src/application/use-cases/payment/shared/GenerateReceiptUseCase.ts',
   CreatePostKioskAnalyticsChildSessionUseCase:
     'up-backend/src/application/use-cases/analytics/CreatePostKioskAnalyticsChildSessionUseCase.ts',
   RecurringDonationMissedPeriodWorker:

@@ -90,6 +90,7 @@ export const ANALYTICS_IDENTITY_EVENTS = {
 export const ANALYTICS_ACCOUNT_EVENTS = {
   ACCOUNT_LOGGED_OUT: 'account_logged_out',
   PROFILE_UPDATED: 'profile_updated',
+  RECEIPT_CREATED: 'receipt_created',
   RECEIPT_DOWNLOADED: 'receipt_downloaded',
 } as const;
 

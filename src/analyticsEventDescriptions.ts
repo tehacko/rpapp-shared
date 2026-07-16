@@ -145,6 +145,10 @@ const EXTENSION_DESCRIPTIONS = {
     en: 'Counts when a customer profile setting is updated and persisted. One count per update action.',
     cs: 'Počítá se při změně a uložení nastavení zákaznického profilu. Jednou za aktualizaci.',
   },
+  [ANALYTICS_ACCOUNT_EVENTS.RECEIPT_CREATED]: {
+    en: 'Counts when the server successfully generates a receipt for a paid transaction. One count per generated receipt. Server-only — not a customer screen open.',
+    cs: 'Počítá se, když server úspěšně vygeneruje účtenku pro zaplacenou transakci. Jednou za vygenerovanou účtenku. Pouze server — není otevření obrazovky zákazníkem.',
+  },
   [ANALYTICS_ACCOUNT_EVENTS.RECEIPT_DOWNLOADED]: {
     en: 'Counts when a receipt file is downloaded by the customer. One count per download action.',
     cs: 'Počítá se při stažení souboru účtenky zákazníkem. Jednou za stažení.',

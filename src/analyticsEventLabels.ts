@@ -34,6 +34,7 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   customer_deleted: { en: 'Customer deleted', cs: 'Zákazník smazán' },
   account_logged_out: { en: 'Account logged out', cs: 'Účet odhlášen' },
   profile_updated: { en: 'Profile updated', cs: 'Profil aktualizován' },
+  receipt_created: { en: 'Receipt created', cs: 'Účtenka vytvořena' },
   receipt_downloaded: { en: 'Receipt downloaded', cs: 'Účtenka stažena' },
   catalog_image_load_failed: {
     en: 'Catalog image failed to load',
