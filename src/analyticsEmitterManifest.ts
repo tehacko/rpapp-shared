@@ -323,7 +323,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: 'slug_legacy_redirect', surface: 'server', layer: 'BE', required: true, reference: 'emitRetailV7Analytics' },
   { eventName: ANALYTICS_IDENTITY_EVENTS.IDENTITY_RECOGNIZED, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerAnalyticsProvider' },
   { eventName: 'receipt_opened', surface: 'customer', layer: 'FE', required: true, reference: 'AccountPaymentsPage' },
-  { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'AccountShell' },
+  { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerShellHeader' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'LoginWithPasswordUseCase' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'VerifyOtpUseCase' },
   {
@@ -879,7 +879,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'MarketingAnalyticsConsentModal',
   'CustomerAnalyticsProvider',
   'AccountPaymentsPage',
-  'AccountShell',
+  'CustomerShellHeader',
   'ProductCard',
   'ProductGrid',
   'customerErrorAnalytics',
@@ -921,7 +921,7 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   CustomerAnalyticsProvider: 'rpapp-customer/src/shared/analytics/CustomerAnalyticsProvider.tsx',
   // Retail V1 thin-page / shell refs → emit site in hooks (same pattern as PhoneFirst*).
   AccountPaymentsPage: 'rpapp-customer/src/features/account/hooks/useAccountPaymentsScreen.ts',
-  AccountShell: 'rpapp-customer/src/features/account/AccountShell.tsx',
+  CustomerShellHeader: 'rpapp-customer/src/app/CustomerShellHeader.tsx',
   ProductCard: 'rpapp-customer/src/features/shop/components/ProductCard.tsx',
   ProductGrid: 'rpapp-kiosk/src/features/products/components/ProductGrid/ProductGrid.tsx',
   customerErrorAnalytics: 'rpapp-customer/src/shared/analytics/customerErrorAnalytics.ts',
