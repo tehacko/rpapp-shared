@@ -1037,6 +1037,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'StartAnalyticsSessionUseCase',
   'CreateQRPaymentUseCase',
   'CompletePaymentTransactionUseCase',
+  'GenerateReceiptUseCase',
   'CreatePostKioskAnalyticsChildSessionUseCase',
   'RecurringDonationMissedPeriodWorker',
   'AdvanceRecurringDonationScheduleOnInboundMatch',
