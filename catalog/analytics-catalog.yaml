@@ -236,6 +236,21 @@ events:
   - event: promo_stacking_rejected
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: pwa_install_accepted
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pwa_install_dismissed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pwa_update_applied
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pwa_update_deferred
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: pwa_update_shown
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: qr_displayed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
