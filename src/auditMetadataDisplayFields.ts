@@ -67,6 +67,16 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
     { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
   ],
+  'admin.product.price_updated': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'price', labelKey: 'compliance.audit.metadata.price' },
+    { key: 'previousPrice', labelKey: 'compliance.audit.metadata.previousPrice' },
+  ],
+  'admin.product.stock_adjusted': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'quantity', labelKey: 'compliance.audit.metadata.quantity' },
+  ],
   'admin.product.barcode_assigned': [
     { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
     { key: 'barcode', labelKey: 'compliance.audit.metadata.barcode' },

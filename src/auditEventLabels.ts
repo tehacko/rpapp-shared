@@ -91,6 +91,14 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Product permanently deleted',
     cs: 'Produkt trvale smazán',
   },
+  'admin.product.price_updated': {
+    en: 'Product price updated',
+    cs: 'Cena produktu změněna',
+  },
+  'admin.product.stock_adjusted': {
+    en: 'Product stock adjusted',
+    cs: 'Sklad produktu upraven',
+  },
   'admin.category.deactivated': {
     en: 'Category deactivated',
     cs: 'Kategorie deaktivována',

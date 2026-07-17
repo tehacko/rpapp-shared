@@ -25,6 +25,8 @@ export const AUDIT_EVENT_CODES = [
   'admin.product.deactivated',
   'admin.product.reactivated',
   'admin.product.permanently_deleted',
+  'admin.product.price_updated',
+  'admin.product.stock_adjusted',
   'admin.category.deactivated',
   'admin.category.reactivated',
   'admin.category.permanently_deleted',

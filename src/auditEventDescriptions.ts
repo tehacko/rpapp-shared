@@ -91,6 +91,14 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a product is deleted permanently and cannot be brought back. One line per product. Past sales records stay.',
     cs: 'Zapíše se, když je produkt trvale smazán a nelze ho obnovit. Jeden řádek za produkt. Minulé prodeje zůstávají.',
   },
+  'admin.product.price_updated': {
+    en: 'Recorded when a product base price, channel price, variant price, or VAT rate changes. One line per change for the product activity timeline.',
+    cs: 'Zapíše se při změně základní ceny, kanálové ceny, ceny varianty nebo sazby DPH. Jeden řádek za změnu v historii produktu.',
+  },
+  'admin.product.stock_adjusted': {
+    en: 'Recorded when inventory quantity for a product (or variant) is set at a sales point. One line per stock adjustment.',
+    cs: 'Zapíše se, když se na prodejním místě nastaví skladové množství produktu (nebo varianty). Jeden řádek za úpravu skladu.',
+  },
   'admin.category.deactivated': {
     en: 'Recorded when a category is switched off so its grouping is no longer active in operational lists. One line per category.',
     cs: 'Zapíše se, když je kategorie vypnuta, takže její seskupení už není aktivní v provozních seznamech. Jeden řádek za kategorii.',
