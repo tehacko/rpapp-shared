@@ -54,7 +54,11 @@ export type PickupStaffAuthCrossTabMessage =
 
 export type AdminTenantCrossTabMessage = { type: 'tenant-changed'; tenantCode: string };
 
-export type AdminCacheCrossTabMessage = { type: 'cache-invalidate'; scope: string };
+export type AdminCacheCrossTabMessage =
+  | { type: 'cache-invalidate'; scope: string }
+  | { type: 'api-deny'; denyKey: string }
+  | { type: 'api-deny-clear'; denyKey?: string }
+  | { type: 'request-failure'; cacheKey: string; status: number; ttlMs?: number };
 
 export const CUSTOMER_AUTH_CHANNEL = 'rpapp-customer-auth';
 export const CUSTOMER_CONSENT_CHANNEL = 'rpapp-customer-consent';
