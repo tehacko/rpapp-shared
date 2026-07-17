@@ -84,7 +84,8 @@ describe('useResponsiveTier', () => {
     expect(result.current).toBe('expanded');
   });
 
-  it('updates tier when resize fires', () => {
+  it('updates tier when resize fires (debounced 100ms)', () => {
+    jest.useFakeTimers();
     Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 320 });
     const { result } = renderHook(() => useResponsiveTier());
     expect(result.current).toBe('compact');
@@ -93,8 +94,13 @@ describe('useResponsiveTier', () => {
       Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: BREAKPOINTS.lg });
       window.dispatchEvent(new Event('resize'));
     });
+    expect(result.current).toBe('compact');
 
+    act(() => {
+      jest.advanceTimersByTime(100);
+    });
     expect(result.current).toBe('expanded');
+    jest.useRealTimers();
   });
 
   it('registers matchMedia listeners at md and lg breakpoints', () => {

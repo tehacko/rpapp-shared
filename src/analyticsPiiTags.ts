@@ -68,6 +68,12 @@ const EVENT_TAG_OVERRIDES: Partial<Record<AnalyticsEventName, AnalyticsPiiTagsBy
     amount_cents: 'financial',
     journey_code: 'none',
   },
+  // PWA lifecycle — no PII fields (outcome/version are non-PII ops metadata)
+  pwa_install_accepted: {},
+  pwa_install_dismissed: {},
+  pwa_update_shown: {},
+  pwa_update_deferred: {},
+  pwa_update_applied: {},
 };
 
 const SERVER_SIDE_EVENTS = new Set<AnalyticsEventName>([

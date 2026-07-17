@@ -6,6 +6,7 @@ import {
   ANALYTICS_IDENTITY_EVENTS,
   ANALYTICS_KIOSK_EVENTS,
   ANALYTICS_PROMO_EVENTS,
+  ANALYTICS_PWA_EVENTS,
   ANALYTICS_RETAIL_EVENTS,
   ANALYTICS_SERVER_OPS_EVENTS,
   ANALYTICS_UNIVERSAL_EVENTS,
@@ -366,6 +367,32 @@ const KIOSK_DESCRIPTIONS: Record<
   },
 };
 
+const PWA_DESCRIPTIONS: Record<
+  (typeof ANALYTICS_PWA_EVENTS)[keyof typeof ANALYTICS_PWA_EVENTS],
+  LocalizedLabel
+> = {
+  [ANALYTICS_PWA_EVENTS.PWA_INSTALL_ACCEPTED]: {
+    en: 'Counts when the user accepts the browser install prompt and adds the progressive web app to their device. One count per accepted prompt.',
+    cs: 'Počítá se, když uživatel přijme výzvu prohlížeče k instalaci a přidá progresivní webovou aplikaci na zařízení. Jednou za přijatou výzvu.',
+  },
+  [ANALYTICS_PWA_EVENTS.PWA_INSTALL_DISMISSED]: {
+    en: 'Counts when the user dismisses or declines the browser install prompt without installing the progressive web app. One count per dismissed prompt.',
+    cs: 'Počítá se, když uživatel zavře nebo odmítne výzvu prohlížeče k instalaci bez instalace progresivní webové aplikace. Jednou za odmítnutou výzvu.',
+  },
+  [ANALYTICS_PWA_EVENTS.PWA_UPDATE_SHOWN]: {
+    en: 'Counts when an in-app prompt tells the user a new service-worker version is ready to apply. One count each time the update UI is shown.',
+    cs: 'Počítá se, když výzva v aplikaci oznámí, že je připravena nová verze service workeru. Jednou za každé zobrazení výzvy k aktualizaci.',
+  },
+  [ANALYTICS_PWA_EVENTS.PWA_UPDATE_DEFERRED]: {
+    en: 'Counts when the user postpones applying a ready progressive web app update and keeps the current version. One count per deferral.',
+    cs: 'Počítá se, když uživatel odloží použití připravené aktualizace progresivní webové aplikace a ponechá stávající verzi. Jednou za odložení.',
+  },
+  [ANALYTICS_PWA_EVENTS.PWA_UPDATE_APPLIED]: {
+    en: 'Counts when the user applies a ready progressive web app update and the new service-worker version takes effect. One count per applied update.',
+    cs: 'Počítá se, když uživatel použije připravenou aktualizaci progresivní webové aplikace a nová verze service workeru se aktivuje. Jednou za použitou aktualizaci.',
+  },
+};
+
 const SERVER_OPS_DESCRIPTIONS: Record<
   (typeof ANALYTICS_SERVER_OPS_EVENTS)[keyof typeof ANALYTICS_SERVER_OPS_EVENTS],
   LocalizedLabel
@@ -459,6 +486,7 @@ function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, Localized
     ...RETAIL_DESCRIPTIONS,
     ...DONATION_DESCRIPTIONS,
     ...KIOSK_DESCRIPTIONS,
+    ...PWA_DESCRIPTIONS,
     ...SERVER_OPS_DESCRIPTIONS,
   } as Record<AnalyticsEventName, LocalizedLabel>;
 

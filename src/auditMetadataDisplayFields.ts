@@ -69,6 +69,7 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   ],
   'admin.product.price_updated': [
     { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'changeKind', labelKey: 'compliance.audit.metadata.changeKind' },
     { key: 'price', labelKey: 'compliance.audit.metadata.price' },
     { key: 'previousPrice', labelKey: 'compliance.audit.metadata.previousPrice' },
   ],

@@ -135,6 +135,11 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
     en: 'Recurring payment received',
     cs: 'Přijata opakovaná platba',
   },
+  pwa_install_accepted: { en: 'PWA install accepted', cs: 'PWA instalace přijata' },
+  pwa_install_dismissed: { en: 'PWA install dismissed', cs: 'PWA instalace odmítnuta' },
+  pwa_update_shown: { en: 'PWA update shown', cs: 'PWA aktualizace zobrazena' },
+  pwa_update_deferred: { en: 'PWA update deferred', cs: 'PWA aktualizace odložena' },
+  pwa_update_applied: { en: 'PWA update applied', cs: 'PWA aktualizace použita' },
 };
 
 function buildAnalyticsLabels(): Record<AnalyticsEventName, LocalizedLabel> {

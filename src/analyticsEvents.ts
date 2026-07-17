@@ -117,6 +117,17 @@ export const ANALYTICS_KIOSK_EVENTS = {
   KIOSK_TIMEOUT: 'kiosk_timeout',
 } as const;
 
+/**
+ * PWA lifecycle events (install prompt + update prompt) — admin / pickup / customer.
+ */
+export const ANALYTICS_PWA_EVENTS = {
+  PWA_INSTALL_ACCEPTED: 'pwa_install_accepted',
+  PWA_INSTALL_DISMISSED: 'pwa_install_dismissed',
+  PWA_UPDATE_SHOWN: 'pwa_update_shown',
+  PWA_UPDATE_DEFERRED: 'pwa_update_deferred',
+  PWA_UPDATE_APPLIED: 'pwa_update_applied',
+} as const;
+
 export const ANALYTICS_BARCODE_OPS_EVENTS = {
   PRODUCT_BARCODE_ASSIGNED: 'product_barcode_assigned',
   PRODUCT_BARCODE_CLEARED: 'product_barcode_cleared',
@@ -159,6 +170,7 @@ export const ANALYTICS_EVENT_NAMES = [
   ...Object.values(ANALYTICS_ACCOUNT_EVENTS),
   ...Object.values(ANALYTICS_DONATION_EVENTS),
   ...Object.values(ANALYTICS_KIOSK_EVENTS),
+  ...Object.values(ANALYTICS_PWA_EVENTS),
   ...Object.values(ANALYTICS_SERVER_OPS_EVENTS),
 ] as const;
 
