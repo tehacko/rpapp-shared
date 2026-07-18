@@ -168,8 +168,8 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když je platební místo trvale odstraněno ze systému. Jeden řádek za platební místo. Staré platby a audit zůstávají kvůli evidenci.',
   },
   'admin.tenant.deactivated': {
-    en: 'Recorded when an entire customer organization (tenant) is closed or suspended. One line per closure. Customer personal data is not copied into this line.',
-    cs: 'Zapíše se, když je celá zákaznická organizace (tenant) uzavřena nebo pozastavena. Jeden řádek za uzavření. Osobní údaje zákazníků se do řádku nekopírují.',
+    en: 'Recorded when an entire customer organization (tenant) is soft-deactivated without legal closure. One line per soft deactivate. Customer personal data is not copied into this line.',
+    cs: 'Zapíše se, když je zákaznická organizace (tenant) soft-deaktivována bez právního uzavření. Jeden řádek za soft deaktivaci. Osobní údaje zákazníků se do řádku nekopírují.',
   },
   'admin.tenant.permanently_deleted': {
     en: 'Recorded when an organization is fully deleted from the system. One line per delete run. Summary counts may appear, not full customer lists.',
@@ -178,6 +178,42 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.tenant.reactivated': {
     en: 'Recorded when a closed organization is opened again. One line per reactivation.',
     cs: 'Zapíše se, když je uzavřená organizace znovu otevřena. Jeden řádek za obnovení.',
+  },
+  'admin.tenant.legal_closure_completed': {
+    en: 'Recorded when Mode A legal closure finishes for an organization, including when it was already deactivated. One line per successful Mode A completion. Distinct from soft deactivate.',
+    cs: 'Zapíše se, když Mode A právní uzavření organizace doběhne, i když už byla deaktivovaná. Jeden řádek za úspěšné Mode A. Oddělené od soft deaktivace.',
+  },
+  'admin.tenant.physical_purge_started': {
+    en: 'Recorded when a physical purge (Mode B or grace worker) starts for an organization. One line per purge attempt start.',
+    cs: 'Zapíše se, když začne fyzické mazání (Mode B nebo grace worker) organizace. Jeden řádek za zahájení pokusu.',
+  },
+  'admin.tenant.physical_purge_completed': {
+    en: 'Recorded when a physical purge finishes successfully (Gone or runtime-only outcome). One line per successful completion.',
+    cs: 'Zapíše se, když fyzické mazání úspěšně skončí (Gone nebo jen runtime). Jeden řádek za úspěšné dokončení.',
+  },
+  'admin.tenant.physical_purge_failed': {
+    en: 'Recorded when a physical purge fails or cannot finish safely. One line per failure. Does not include full customer lists.',
+    cs: 'Zapíše se, když fyzické mazání selže nebo nelze bezpečně dokončit. Jeden řádek za selhání. Neobsahuje celé seznamy zákazníků.',
+  },
+  'admin.tenant.physical_purge_blocked': {
+    en: 'Recorded when a physical purge is refused because preflight blockers remain. One line per blocked attempt.',
+    cs: 'Zapíše se, když je fyzické mazání odmítnuto kvůli blokátorům v preflightu. Jeden řádek za zablokovaný pokus.',
+  },
+  'admin.tenant.physical_purge_scheduled': {
+    en: 'Recorded when a physical purge is scheduled after legal closure or by operator request. One line per schedule action.',
+    cs: 'Zapíše se, když je fyzické mazání naplánováno po právním uzavření nebo na žádost operátora. Jeden řádek za naplánování.',
+  },
+  'admin.tenant.physical_purge_cancelled': {
+    en: 'Recorded when a scheduled physical purge is cancelled before it runs. One line per cancel action.',
+    cs: 'Zapíše se, když je naplánované fyzické mazání zrušeno dříve, než proběhne. Jeden řádek za zrušení.',
+  },
+  'admin.tenant.contract_reopened': {
+    en: 'Recorded when a legally closed organization contract is reopened by SUPER_DEV. One line per reopen. Historical evidence stays immutable.',
+    cs: 'Zapíše se, když SUPER_DEV znovu otevře právně uzavřenou smlouvu organizace. Jeden řádek za reopen. Historická evidence zůstává neměnná.',
+  },
+  'admin.tenant.access_cut': {
+    en: 'Recorded when access cut revokes sessions, credentials, and related live access for an organization. One line per access-cut run.',
+    cs: 'Zapíše se, když access cut odvolá session, credentials a související živý přístup organizace. Jeden řádek za běh access cut.',
   },
   'admin.donation_template.created': {
     en: 'Recorded when a new preset list of donation amounts is created. One line per new template.',

@@ -179,7 +179,44 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Organization reactivated',
     cs: 'Organizace znovu aktivována',
   },
+  'admin.tenant.legal_closure_completed': {
+    en: 'Organization legal closure completed',
+    cs: 'Právní uzavření organizace dokončeno',
+  },
+  'admin.tenant.physical_purge_started': {
+    en: 'Organization physical purge started',
+    cs: 'Fyzické mazání organizace zahájeno',
+  },
+  'admin.tenant.physical_purge_completed': {
+    en: 'Organization physical purge completed',
+    cs: 'Fyzické mazání organizace dokončeno',
+  },
+  'admin.tenant.physical_purge_failed': {
+    en: 'Organization physical purge failed',
+    cs: 'Fyzické mazání organizace selhalo',
+  },
+  'admin.tenant.physical_purge_blocked': {
+    en: 'Organization physical purge blocked',
+    cs: 'Fyzické mazání organizace zablokováno',
+  },
+  'admin.tenant.physical_purge_scheduled': {
+    en: 'Organization physical purge scheduled',
+    cs: 'Fyzické mazání organizace naplánováno',
+  },
+  'admin.tenant.physical_purge_cancelled': {
+    en: 'Organization physical purge cancelled',
+    cs: 'Fyzické mazání organizace zrušeno',
+  },
+  'admin.tenant.contract_reopened': {
+    en: 'Organization contract reopened',
+    cs: 'Smlouva organizace znovu otevřena',
+  },
+  'admin.tenant.access_cut': {
+    en: 'Organization access cut',
+    cs: 'Přístup organizace odříznut',
+  },
   'admin.donation_template.created': {
+
     en: 'Donation amount template created',
     cs: 'Šablona částek daru vytvořena',
   },
