@@ -39,6 +39,12 @@ export const ANALYTICS_TIER2_NO_CONSENT_EVENTS = [
   'qr_displayed',
   'menu_opened',
   'product_selected',
+  // Admin/customer PWA lifecycle — operational, no guest consent latch
+  'pwa_install_accepted',
+  'pwa_install_dismissed',
+  'pwa_update_shown',
+  'pwa_update_deferred',
+  'pwa_update_applied',
 ] as const satisfies readonly string[];
 
 const ANALYTICS_TIER2_NO_CONSENT_EVENT_SET: ReadonlySet<string> = new Set(
