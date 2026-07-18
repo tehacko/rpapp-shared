@@ -1,3 +1,4 @@
+// @analytics-negative-migration
 import {
   ANALYTICS_EMITTER_BE_REFERENCE_PATHS,
   ANALYTICS_EMITTER_FE_REFERENCE_PATHS,
@@ -69,7 +70,9 @@ describe('analyticsEmitterManifest', () => {
       );
     });
 
-    it('does not list stale login_success server cell', () => {
+    // Negative migration test: login_success is a legacy denylist name — must stay absent
+    // from the emitter manifest (canonical replacement: account_logged_in).
+    it('negative migration: does not list stale login_success server cell', () => {
       expect(
         ANALYTICS_EMITTER_MANIFEST.some((cell) => cell.eventName === 'login_success'),
       ).toBe(false);

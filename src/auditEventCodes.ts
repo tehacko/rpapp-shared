@@ -92,6 +92,7 @@ export const AUDIT_EVENT_CODES = [
   'dev.tenant.entitlement_policy.changed',
   'payment.transaction.state_changed',
   'payment.admin_manual_complete',
+  'webhook_skipped_tenant_inactive',
   'payment.customer.refund.requested',
   'customer_pickup_ack_informational',
   'customer.receipt.downloaded',

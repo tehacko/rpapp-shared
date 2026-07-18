@@ -356,6 +356,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Order marked paid (admin)',
     cs: 'Objednávka označena jako zaplacená (admin)',
   },
+  'webhook_skipped_tenant_inactive': {
+    en: 'Webhook skipped (inactive tenant)',
+    cs: 'Webhook přeskočen (neaktivní tenant)',
+  },
   'payment.customer.refund.requested': {
     en: 'Customer refund requested',
     cs: 'Zákazník požádal o vrácení',

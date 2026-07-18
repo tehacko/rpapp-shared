@@ -80,7 +80,7 @@ export interface TenantCommandCenterIncident {
 
 export interface TenantCommandCenterTopKiosk {
   readonly rank: number;
-  readonly kioskId: number;
+  readonly salesPointId: number;
   readonly name: string;
   readonly revenue: MoneyMetric;
   readonly deltaPct: number;
