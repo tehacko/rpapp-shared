@@ -928,7 +928,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     surface: 'server',
     layer: 'BE',
     required: true,
-    reference: 'PrismaPromoBudgetCapPort',
+    reference: 'IssuePromoRewardUseCase',
   },
   {
     eventName: ANALYTICS_PROMO_EVENTS.PROMO_BUDGET_EXHAUSTED,
@@ -965,21 +965,6 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     layer: 'FE',
     required: true,
     reference: 'donationAnalyticsMetadata',
-  },
-  // G-P1-12 — retail/kiosk deferred-p2 (kiosk FE; W6 wires kioskPaymentFlowHandlers)
-  {
-    eventName: ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_SUBMITTED,
-    surface: 'kiosk',
-    layer: 'FE',
-    required: true,
-    reference: 'kioskPaymentFlowHandlers',
-  },
-  {
-    eventName: ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_ABANDONED,
-    surface: 'kiosk',
-    layer: 'FE',
-    required: true,
-    reference: 'kioskPaymentFlowHandlers',
   },
 ] as const;
 
