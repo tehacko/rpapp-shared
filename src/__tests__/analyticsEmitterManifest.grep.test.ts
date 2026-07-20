@@ -72,6 +72,29 @@ function eventPatterns(
     if (eventName === 'donation_project_selected') {
       return [/emitDonationProjectSelected\s*\(/];
     }
+    if (eventName === 'payment_submitted') {
+      return [/emitPaymentSubmitted\s*\(/];
+    }
+  }
+  if (reference === 'donationAnalyticsMetadata') {
+    if (eventName === 'donation_impact_opened') {
+      return [/emitDonationImpactOpened\s*\(/];
+    }
+    if (eventName === 'donation_tax_receipt_selected') {
+      return [/emitDonationTaxReceiptSelected\s*\(/];
+    }
+    if (eventName === 'recurring_donation_selected') {
+      return [/emitRecurringDonationSelected\s*\(/];
+    }
+    if (eventName === 'donation_abandoned') {
+      return [/emitDonationAbandoned\s*\(/];
+    }
+  }
+  if (reference === 'shopAnalyticsMetadata' && eventName === 'retail_order_abandoned') {
+    return [/emitRetailOrderAbandoned\s*\(/];
+  }
+  if (reference === 'PhoneFirstProductJourney' && eventName === 'payment_submitted') {
+    return [/emitPaymentSubmitted\s*\(/];
   }
   if (
     reference === 'kioskDonationHandlers' &&

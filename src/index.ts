@@ -30,6 +30,7 @@ export * from './analyticsConsentTier2.js';
 export * from './analyticsConsentAllowlist.js';
 export * from './analytics/metadataBuilders.js';
 export * from './analytics/missionControl.js';
+export * from './analytics/devAnalyticsViewsWire.js';
 export * from './analytics/tenantCommandCenter.js';
 export * from './analytics/platformCommandCenter.js';
 export * from './analytics/retailOrderEvents.js';

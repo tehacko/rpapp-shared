@@ -4,20 +4,23 @@
  *
  * MFE-v3-S-01: brand-bridge.css + design-tokens.css supply legacy/admin semantics.
  * MFE-v3-S-2: DECISION-2 C-Hybrid — focus/hover/disabled/elevated + dark via media + `.dark`.
+ * Light/dark neutrals: admin dark is violet/indigo kin to the rail sidebar
+ * (`#1e1b4b`); light stays slate neutrals. Primary / rail accents stay brand-scoped.
  */
 @import './brand-bridge.css';
 
 @theme {
-  --color-an-bg: var(--color-gray-50);
-  --color-an-bg-elevated: var(--color-bg-primary);
-  --color-an-surface: var(--color-bg-primary);
-  --color-an-surface-hover: var(--color-gray-100);
-  --color-an-surface-disabled: var(--color-gray-100);
-  --color-an-text: var(--color-gray-900);
-  --color-an-text-muted: var(--color-gray-500);
-  --color-an-text-disabled: var(--color-gray-400);
-  --color-an-border: var(--color-gray-200);
-  --color-an-border-hover: var(--color-gray-300);
+  --color-an-bg: #f8fafc;
+  --color-an-bg-elevated: #ffffff;
+  --color-an-surface: #ffffff;
+  --color-an-surface-muted: #f8fafc;
+  --color-an-surface-hover: #f1f5f9;
+  --color-an-surface-disabled: #f1f5f9;
+  --color-an-text: #0f172a;
+  --color-an-text-muted: #475569;
+  --color-an-text-disabled: #94a3b8;
+  --color-an-border: #e2e8f0;
+  --color-an-border-hover: #cbd5e1;
   --color-an-primary: var(--color-primary);
   --color-an-primary-hover: #4f46e5;
   --color-an-primary-soft: var(--color-primary-light);
@@ -42,75 +45,114 @@
   --color-rail-sidebar-muted: var(--brand-rail-sidebar-muted);
   --color-rail-sidebar-active: var(--brand-rail-sidebar-active);
   --color-rail-sidebar-hover: var(--brand-rail-sidebar-hover);
-  --color-rail-page-bg: var(--brand-rail-page-bg);
-  --color-rail-card-border: var(--brand-rail-card-border);
+  --color-rail-page-bg: #f1f5f9;
+  --color-rail-card-border: #e2e8f0;
   --color-rail-kpi-up: var(--brand-rail-kpi-up);
   --color-rail-kpi-down: var(--brand-rail-kpi-down);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-an-bg: #0b1120;
-    --color-an-bg-elevated: #111827;
-    --color-an-surface: #111827;
-    --color-an-surface-hover: #1f2937;
-    --color-an-surface-disabled: #1f2937;
-    --color-an-text: #e5e7eb;
-    --color-an-text-muted: #9ca3af;
-    --color-an-text-disabled: #6b7280;
-    --color-an-border: #1f2937;
-    --color-an-border-hover: #374151;
-    --color-an-primary: #818cf8;
-    --color-an-primary-hover: #a5b4fc;
-    --color-an-primary-soft: rgba(99, 102, 241, 0.16);
-    --color-an-focus-ring: #818cf8;
+    /* Violet dark — kin to rail sidebar #1e1b4b (not consumer sailor blue) */
+    --color-an-bg: #12102a;
+    --color-an-bg-elevated: #1e1b4b;
+    --color-an-surface: #1e1b4b;
+    --color-an-surface-muted: #17153a;
+    --color-an-surface-hover: #2a2660;
+    --color-an-surface-disabled: #2a2660;
+    --color-an-text: #e0e7ff;
+    --color-an-text-muted: #a5b4fc;
+    --color-an-text-disabled: #818cf8;
+    --color-an-border: #2f2b55;
+    --color-an-border-hover: #3d3870;
+    --color-an-primary: #a78bfa;
+    --color-an-primary-hover: #c4b5fd;
+    --color-an-primary-soft: rgba(124, 58, 237, 0.22);
+    --color-an-focus-ring: #a78bfa;
     --color-an-disabled-opacity: 0.5;
-    --color-an-chart-1: #818cf8;
+    --color-an-chart-1: #a78bfa;
     --color-an-chart-2: #2dd4bf;
     --color-an-chart-3: #fbbf24;
     --color-an-chart-4: #f87171;
-    --color-an-chart-5: #a78bfa;
+    --color-an-chart-5: #c4b5fd;
     --color-an-chart-6: #22d3ee;
-    --color-shell-bg: #0b1120;
-    --color-shell-surface: #111827;
-    --color-shell-border: #1f2937;
-    --color-shell-text: #e5e7eb;
-    --color-rail-page-bg: #0b1120;
-    --color-rail-card-border: #1f2937;
+    --color-shell-bg: #12102a;
+    --color-shell-surface: #1e1b4b;
+    --color-shell-border: #2f2b55;
+    --color-shell-text: #e0e7ff;
+    --color-rail-page-bg: #12102a;
+    --color-rail-card-border: #2f2b55;
   }
 }
 
 /**
- * C-Hybrid user override — mirrors prefers-color-scheme dark admin palette.
- * Admin `applyInitialTheme()` toggles `.dark` on documentElement.
+ * C-Hybrid user override — violet dark kin to `--brand-rail-sidebar-bg` (#1e1b4b).
+ * Admin `applyInitialTheme()` / ThemeProvider toggles `.dark` on documentElement.
  */
 .dark {
   color-scheme: dark;
-  --color-an-bg: #0b1120;
-  --color-an-bg-elevated: #111827;
-  --color-an-surface: #111827;
-  --color-an-surface-hover: #1f2937;
-  --color-an-surface-disabled: #1f2937;
-  --color-an-text: #e5e7eb;
-  --color-an-text-muted: #9ca3af;
-  --color-an-text-disabled: #6b7280;
-  --color-an-border: #1f2937;
-  --color-an-border-hover: #374151;
-  --color-an-primary: #818cf8;
-  --color-an-primary-hover: #a5b4fc;
-  --color-an-primary-soft: rgba(99, 102, 241, 0.16);
-  --color-an-focus-ring: #818cf8;
+  --color-an-bg: #12102a;
+  --color-an-bg-elevated: #1e1b4b;
+  --color-an-surface: #1e1b4b;
+  --color-an-surface-muted: #17153a;
+  --color-an-surface-hover: #2a2660;
+  --color-an-surface-disabled: #2a2660;
+  --color-an-text: #e0e7ff;
+  --color-an-text-muted: #a5b4fc;
+  --color-an-text-disabled: #818cf8;
+  --color-an-border: #2f2b55;
+  --color-an-border-hover: #3d3870;
+  --color-an-primary: #a78bfa;
+  --color-an-primary-hover: #c4b5fd;
+  --color-an-primary-soft: rgba(124, 58, 237, 0.22);
+  --color-an-focus-ring: #a78bfa;
   --color-an-disabled-opacity: 0.5;
-  --color-an-chart-1: #818cf8;
+  --color-an-chart-1: #a78bfa;
   --color-an-chart-2: #2dd4bf;
   --color-an-chart-3: #fbbf24;
   --color-an-chart-4: #f87171;
-  --color-an-chart-5: #a78bfa;
+  --color-an-chart-5: #c4b5fd;
   --color-an-chart-6: #22d3ee;
-  --color-shell-bg: #0b1120;
-  --color-shell-surface: #111827;
-  --color-shell-border: #1f2937;
-  --color-shell-text: #e5e7eb;
-  --color-rail-page-bg: #0b1120;
-  --color-rail-card-border: #1f2937;
+  --color-shell-bg: #12102a;
+  --color-shell-surface: #1e1b4b;
+  --color-shell-border: #2f2b55;
+  --color-shell-text: #e0e7ff;
+  --color-rail-page-bg: #12102a;
+  --color-rail-card-border: #2f2b55;
+}
+
+/**
+ * Explicit light override — wins over `@media (prefers-color-scheme: dark)` when
+ * user selects Light while OS is dark (same contract as consumer `theme.css`).
+ */
+.light {
+  color-scheme: light;
+  --color-an-bg: #f8fafc;
+  --color-an-bg-elevated: #ffffff;
+  --color-an-surface: #ffffff;
+  --color-an-surface-muted: #f8fafc;
+  --color-an-surface-hover: #f1f5f9;
+  --color-an-surface-disabled: #f1f5f9;
+  --color-an-text: #0f172a;
+  --color-an-text-muted: #475569;
+  --color-an-text-disabled: #94a3b8;
+  --color-an-border: #e2e8f0;
+  --color-an-border-hover: #cbd5e1;
+  --color-an-primary: var(--color-primary);
+  --color-an-primary-hover: #4f46e5;
+  --color-an-primary-soft: var(--color-primary-light);
+  --color-an-focus-ring: var(--brand-admin-primary);
+  --color-an-disabled-opacity: 0.55;
+  --color-an-chart-1: var(--brand-admin-primary);
+  --color-an-chart-2: #14b8a6;
+  --color-an-chart-3: #f59e0b;
+  --color-an-chart-4: #ef4444;
+  --color-an-chart-5: #8b5cf6;
+  --color-an-chart-6: #06b6d4;
+  --color-shell-bg: #f8fafc;
+  --color-shell-surface: #ffffff;
+  --color-shell-border: #e2e8f0;
+  --color-shell-text: #0f172a;
+  --color-rail-page-bg: #f1f5f9;
+  --color-rail-card-border: #e2e8f0;
 }

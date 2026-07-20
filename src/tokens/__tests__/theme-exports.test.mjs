@@ -14,6 +14,8 @@ test('theme.css and admin-theme.css exist and export @theme tokens', () => {
   assert.match(theme, /\.light/);
   assert.match(admin, /--color-an-bg/);
   assert.match(admin, /--color-rail-sidebar-bg/);
+  assert.match(admin, /\.light/);
+  assert.match(admin, /\.dark/);
 });
 
 test('package.json exports token CSS paths', () => {

@@ -5,9 +5,12 @@
  */
 import {
   ANALYTICS_ACCOUNT_EVENTS,
+  ANALYTICS_DONATION_EVENTS,
   ANALYTICS_EVENT_NAMES,
   ANALYTICS_FUNNEL_EVENTS,
   ANALYTICS_IDENTITY_EVENTS,
+  ANALYTICS_PROMO_EVENTS,
+  ANALYTICS_PWA_EVENTS,
   ANALYTICS_RETAIL_EVENTS,
   ANALYTICS_UNIVERSAL_EVENTS,
   type AnalyticsEventName,
@@ -113,6 +116,11 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   },
   { eventName: 'payment_started', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskPaymentFlowHandlers' },
   { eventName: 'payment_started', surface: 'customer', layer: 'FE', required: true, reference: 'PhoneFirstProductJourney' },
+  { eventName: 'payment_submitted', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskPaymentFlowHandlers' },
+  { eventName: 'payment_submitted', surface: 'customer', layer: 'FE', required: true, reference: 'PhoneFirstProductJourney' },
+  { eventName: 'payment_submitted', surface: 'customer', layer: 'FE', required: true, reference: 'PhoneFirstDonationJourney' },
+  { eventName: 'retail_order_abandoned', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskPaymentFlowHandlers' },
+  { eventName: 'retail_order_abandoned', surface: 'customer', layer: 'FE', required: true, reference: 'shopAnalyticsMetadata' },
   { eventName: 'payment_method_viewed', surface: 'customer', layer: 'FE', required: true, reference: 'PhoneFirstProductJourney' },
   {
     eventName: 'payment_failed',
@@ -836,6 +844,143 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     required: true,
     reference: 'PhoneFirstDonationJourney',
   },
+  // G-P1-12 — PWA lifecycle (customer FE; emitters in PwaLifecycle.tsx)
+  {
+    eventName: ANALYTICS_PWA_EVENTS.PWA_INSTALL_ACCEPTED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'PwaLifecycle',
+  },
+  {
+    eventName: ANALYTICS_PWA_EVENTS.PWA_INSTALL_DISMISSED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'PwaLifecycle',
+  },
+  {
+    eventName: ANALYTICS_PWA_EVENTS.PWA_UPDATE_SHOWN,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'PwaLifecycle',
+  },
+  {
+    eventName: ANALYTICS_PWA_EVENTS.PWA_UPDATE_DEFERRED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'PwaLifecycle',
+  },
+  {
+    eventName: ANALYTICS_PWA_EVENTS.PWA_UPDATE_APPLIED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'PwaLifecycle',
+  },
+  // G-P1-12 — promo commerce (server BE; W3 wires ingestAnalytics in promo use cases)
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_PREVIEW_EVALUATED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'PreviewPromoPricingUseCase',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_REWARD_ACTIVATED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'ActivatePromoRewardUseCase',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_REWARD_REDEEMED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'PromoPaymentIntegrationService',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_REWARD_ROLLED_BACK,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'PromoPaymentIntegrationService',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_PROGRESS_THRESHOLD_REACHED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'RecordPromoProgressUseCase',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_STACKING_REJECTED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'CheckoutPricingOrchestrationService',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_BUDGET_SOFT_STOP,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'PrismaPromoBudgetCapPort',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_BUDGET_EXHAUSTED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'IssuePromoRewardUseCase',
+  },
+  // G-P1-12 — donation deferred-p2 (customer FE; W5 wires donationAnalyticsMetadata helpers)
+  {
+    eventName: ANALYTICS_DONATION_EVENTS.DONATION_IMPACT_OPENED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'donationAnalyticsMetadata',
+  },
+  {
+    eventName: ANALYTICS_DONATION_EVENTS.DONATION_TAX_RECEIPT_SELECTED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'donationAnalyticsMetadata',
+  },
+  {
+    eventName: ANALYTICS_DONATION_EVENTS.RECURRING_DONATION_SELECTED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'donationAnalyticsMetadata',
+  },
+  {
+    eventName: ANALYTICS_DONATION_EVENTS.DONATION_ABANDONED,
+    surface: 'customer',
+    layer: 'FE',
+    required: true,
+    reference: 'donationAnalyticsMetadata',
+  },
+  // G-P1-12 — retail/kiosk deferred-p2 (kiosk FE; W6 wires kioskPaymentFlowHandlers)
+  {
+    eventName: ANALYTICS_UNIVERSAL_EVENTS.PAYMENT_SUBMITTED,
+    surface: 'kiosk',
+    layer: 'FE',
+    required: true,
+    reference: 'kioskPaymentFlowHandlers',
+  },
+  {
+    eventName: ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_ABANDONED,
+    surface: 'kiosk',
+    layer: 'FE',
+    required: true,
+    reference: 'kioskPaymentFlowHandlers',
+  },
 ] as const;
 
 /**
@@ -893,6 +1038,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'PostKioskProductJourney',
   'PostKioskDonationJourney',
   'CustomerHubNav',
+  'PwaLifecycle',
 ]);
 
 /** Repo-relative paths for CI grep wiring tests (G3). */
@@ -941,6 +1087,7 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   PostKioskDonationJourney:
     'rpapp-customer/src/features/journeys/hooks/usePostKioskDonationJourney.ts',
   CustomerHubNav: 'rpapp-customer/src/features/hub/CustomerHubNav.tsx',
+  PwaLifecycle: 'rpapp-customer/src/app/pwa/PwaLifecycle.tsx',
 };
 
 /** Repo-relative paths for server-layer CI grep wiring (G-P1-09 / AN-036). */
@@ -1031,6 +1178,20 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/application/use-cases/analytics/IngestAnalyticsEventUseCase.ts',
   ServerAnalyticsEmitter:
     'up-backend/src/application/use-cases/analytics/ServerAnalyticsEmitter.ts',
+  PreviewPromoPricingUseCase:
+    'up-backend/src/application/use-cases/promotions/PreviewPromoPricingUseCase.ts',
+  ActivatePromoRewardUseCase:
+    'up-backend/src/application/use-cases/promotions/ActivatePromoRewardUseCase.ts',
+  PromoPaymentIntegrationService:
+    'up-backend/src/application/services/payment/PromoPaymentIntegrationService.ts',
+  RecordPromoProgressUseCase:
+    'up-backend/src/application/use-cases/promotions/RecordPromoProgressUseCase.ts',
+  CheckoutPricingOrchestrationService:
+    'up-backend/src/application/services/checkout/CheckoutPricingOrchestrationService.ts',
+  PrismaPromoBudgetCapPort:
+    'up-backend/src/infrastructure/promotions/PrismaPromoRewardWritePort.ts',
+  IssuePromoRewardUseCase:
+    'up-backend/src/application/use-cases/promotions/IssuePromoRewardUseCase.ts',
 };
 
 const ALLOWED_BE_REFERENCES = new Set<string>([
@@ -1078,6 +1239,13 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'CloseAnalyticsSessionUseCase',
   'IngestAnalyticsEventUseCase',
   'ServerAnalyticsEmitter',
+  'PreviewPromoPricingUseCase',
+  'ActivatePromoRewardUseCase',
+  'PromoPaymentIntegrationService',
+  'RecordPromoProgressUseCase',
+  'CheckoutPricingOrchestrationService',
+  'PrismaPromoBudgetCapPort',
+  'IssuePromoRewardUseCase',
 ]);
 
 export function validateAnalyticsEmitterManifest(): string[] {

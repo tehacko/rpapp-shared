@@ -24,8 +24,31 @@ export interface MissionControlKpi {
   readonly value: string;
 }
 
+/** Cross-tenant funnel aggregate for DEV Mission Control / Platform CC charts. */
+export interface MissionControlFunnelSummary {
+  readonly sessionsStarted: number;
+  readonly sessionsWithMenuOpened: number;
+  readonly sessionsWithProductAdded: number;
+  readonly sessionsWithCartViewed: number;
+  readonly sessionsWithCheckoutStarted: number;
+  readonly sessionsWithPaymentStarted: number;
+  readonly sessionsWithPaymentConfirmed: number;
+  readonly sessionsAbandoned: number;
+  readonly sessionsWithQrDisplayed: number;
+  readonly sessionsWithProductSelected: number;
+  readonly catalogRate: number;
+  readonly productAddedRate: number;
+  readonly cartViewedRate: number;
+  readonly checkoutStartedRate: number;
+  readonly paymentStartedRate: number;
+  readonly paymentConfirmedRate: number;
+  readonly abandonRate: number;
+  readonly lastMetricDate: string | null;
+}
+
 export interface MissionControlSummaryResponse extends MissionControlResponseEnvelope {
   readonly kpis: readonly MissionControlKpi[];
+  readonly funnel?: MissionControlFunnelSummary;
 }
 
 export interface MissionControlSeriesPoint {

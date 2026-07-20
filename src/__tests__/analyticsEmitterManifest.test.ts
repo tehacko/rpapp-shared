@@ -111,4 +111,83 @@ describe('analyticsEmitterManifest', () => {
       expect(beCells.map((cell) => cell.reference)).toContain('CancelIntentUseCase');
     });
   });
+
+  describe('G-P1-12 extension events (manifest slice)', () => {
+    const pwaEvents = [
+      'pwa_install_accepted',
+      'pwa_install_dismissed',
+      'pwa_update_shown',
+      'pwa_update_deferred',
+      'pwa_update_applied',
+    ] as const;
+
+    it.each(pwaEvents)('%s has required customer FE PwaLifecycle cell', (eventName) => {
+      const cells = ANALYTICS_EMITTER_MANIFEST.filter(
+        (cell) =>
+          cell.eventName === eventName &&
+          cell.surface === 'customer' &&
+          cell.layer === 'FE' &&
+          cell.required &&
+          cell.reference === 'PwaLifecycle',
+      );
+      expect(cells).toHaveLength(1);
+    });
+
+    const promoBeEvents = [
+      'promo_preview_evaluated',
+      'promo_reward_activated',
+      'promo_reward_redeemed',
+      'promo_reward_rolled_back',
+      'promo_progress_threshold_reached',
+      'promo_stacking_rejected',
+      'promo_budget_soft_stop',
+      'promo_budget_exhausted',
+    ] as const;
+
+    it.each(promoBeEvents)('%s has required server BE manifest cell', (eventName) => {
+      const cells = ANALYTICS_EMITTER_MANIFEST.filter(
+        (cell) => cell.eventName === eventName && cell.layer === 'BE' && cell.required,
+      );
+      expect(cells.length).toBeGreaterThan(0);
+    });
+
+    const donationDeferredFeEvents = [
+      'donation_impact_opened',
+      'donation_tax_receipt_selected',
+      'recurring_donation_selected',
+      'donation_abandoned',
+    ] as const;
+
+    it.each(donationDeferredFeEvents)(
+      '%s has required customer FE donationAnalyticsMetadata cell',
+      (eventName) => {
+        const cells = ANALYTICS_EMITTER_MANIFEST.filter(
+          (cell) =>
+            cell.eventName === eventName &&
+            cell.surface === 'customer' &&
+            cell.layer === 'FE' &&
+            cell.required &&
+            cell.reference === 'donationAnalyticsMetadata',
+        );
+        expect(cells).toHaveLength(1);
+      },
+    );
+
+    const kioskDeferredFeEvents = ['payment_submitted', 'retail_order_abandoned'] as const;
+
+    it.each(kioskDeferredFeEvents)(
+      '%s has required kiosk FE kioskPaymentFlowHandlers cell',
+      (eventName) => {
+        const cells = ANALYTICS_EMITTER_MANIFEST.filter(
+          (cell) =>
+            cell.eventName === eventName &&
+            cell.surface === 'kiosk' &&
+            cell.layer === 'FE' &&
+            cell.required &&
+            cell.reference === 'kioskPaymentFlowHandlers',
+        );
+        expect(cells).toHaveLength(1);
+      },
+    );
+  });
 });
