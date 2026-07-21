@@ -22,10 +22,17 @@ export interface PlatformCommandCenterHealth {
 
 export interface PlatformCommandCenterAvailability {
   readonly pct: number;
+  /**
+   * Period-over-period change in percentage points.
+   * Omit or null when unknown — UI must not invent a trend.
+   */
+  readonly deltaPct?: number | null;
 }
 
 export interface PlatformCommandCenterKiosks {
   readonly activeCount: number;
+  /** Absolute count change vs prior window; omit/null when unknown. */
+  readonly delta?: number | null;
 }
 
 export interface PlatformServiceRow {
@@ -114,6 +121,8 @@ export interface PlatformCommandCenterOps {
   readonly availability: PlatformCommandCenterAvailability;
   readonly kiosks: PlatformCommandCenterKiosks;
   readonly errors24h: number;
+  /** Absolute error-count change vs prior 24h; omit/null when unknown. */
+  readonly errors24hDelta?: number | null;
   readonly services: readonly PlatformServiceRow[];
   readonly requestVolumeSeries: PlatformCommandCenterSeries | null;
   readonly errorRateSeries: PlatformCommandCenterSeries | null;
@@ -128,10 +137,15 @@ export interface PlatformCommandCenterOps {
 
 export interface PlatformCommandCenterTenants {
   readonly activeCount: number;
+  /** Absolute count change vs prior window; omit/null when unknown. */
+  readonly delta?: number | null;
 }
 
 export interface PlatformCommandCenterOverview {
+  /** Order count for the MC-aligned 7-day UTC window — UI label is operator-facing "Orders (last 7 days)". */
   readonly transactions24h: number;
+  /** Absolute transaction-count change vs prior 24h; omit/null when unknown. */
+  readonly transactions24hDelta?: number | null;
   readonly paymentMethodMix: readonly PlatformPaymentMethodSegment[];
 }
 

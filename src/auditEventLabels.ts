@@ -19,6 +19,18 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Access denied',
     cs: 'Přístup odepřen',
   },
+  'auth.admin.password_reset.requested': {
+    en: 'Admin password reset requested',
+    cs: 'Požadavek na reset hesla administrátora',
+  },
+  'auth.admin.password_reset.completed': {
+    en: 'Admin password reset completed',
+    cs: 'Reset hesla administrátora dokončen',
+  },
+  'auth.admin.password_reset.failed': {
+    en: 'Admin password reset failed',
+    cs: 'Reset hesla administrátora selhal',
+  },
   'admin.invite.created': {
     en: 'Admin invite created',
     cs: 'Pozvánka administrátora vytvořena',

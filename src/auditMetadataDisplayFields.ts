@@ -22,6 +22,15 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
     { key: 'route', labelKey: 'compliance.audit.metadata.route' },
   ],
+  'auth.admin.password_reset.requested': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
+  'auth.admin.password_reset.completed': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
+  'auth.admin.password_reset.failed': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
   'gdpr.erasure.completed': [
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
     { key: 'customersAnonymized', labelKey: 'compliance.audit.metadata.customersAnonymized' },

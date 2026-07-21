@@ -19,6 +19,18 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a signed-in administrator tries to open a page or action they are not allowed to use. One line per blocked attempt. Does not save what they typed in forms.',
     cs: 'Zapíše se, když přihlášený administrátor zkusí otevřít stránku nebo akci, na kterou nemá právo. Jeden řádek za zamítnutý pokus. Neukládá to, co psal do formulářů.',
   },
+  'auth.admin.password_reset.requested': {
+    en: 'Recorded when an administrator requests a password reset email. One line per request. The reset link itself is not stored here.',
+    cs: 'Zapíše se, když administrátor požádá o e-mail pro reset hesla. Jeden řádek za požadavek. Odkaz pro reset se sem neukládá.',
+  },
+  'auth.admin.password_reset.completed': {
+    en: 'Recorded when an administrator completes a password reset using a valid token. One line per successful reset. Passwords are never stored in this log.',
+    cs: 'Zapíše se, když administrátor dokončí reset hesla platným tokenem. Jeden řádek za úspěšný reset. Hesla se v tomto záznamu neukládají.',
+  },
+  'auth.admin.password_reset.failed': {
+    en: 'Recorded when a password reset attempt fails (invalid or expired token). One line per failed attempt. Passwords are never stored in this log.',
+    cs: 'Zapíše se, když reset hesla nevyjde (neplatný nebo expirovaný token). Jeden řádek za neúspěšný pokus. Hesla se v tomto záznamu neukládají.',
+  },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
     cs: 'Zapíše se, když se pozve nový administrátor e-mailem a musí si nastavit heslo. Jeden řádek za novou pozvánku. Odkaz z pozvánky se sem neukládá.',
