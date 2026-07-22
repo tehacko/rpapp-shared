@@ -60,6 +60,10 @@ export const API_ENDPOINTS = {
     PAYMENT_RECEIPT_PRINT_FAILED: '/api/payments/:paymentId/obligations/receipt-print/failed',
     // Admin endpoints
     ADMIN_LOGIN: '/api/admin/login',
+    ADMIN_FORGOT_PASSWORD: '/api/admin/forgot-password',
+    ADMIN_RESET_PASSWORD: '/api/admin/reset-password',
+    DEV_FORGOT_PASSWORD: '/api/dev/forgot-password',
+    DEV_RESET_PASSWORD: '/api/dev/reset-password',
     ADMIN_LOGOUT: '/api/admin/logout',
     ADMIN_PRODUCTS: '/api/admin/products',
     ADMIN_PRODUCTS_INVENTORY: '/api/admin/products/inventory/:salesPointId',

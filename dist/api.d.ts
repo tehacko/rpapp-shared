@@ -55,6 +55,10 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_RECEIPT_PRINT_COMPLETE: "/api/payments/:paymentId/obligations/receipt-print/complete";
     readonly PAYMENT_RECEIPT_PRINT_FAILED: "/api/payments/:paymentId/obligations/receipt-print/failed";
     readonly ADMIN_LOGIN: "/api/admin/login";
+    readonly ADMIN_FORGOT_PASSWORD: "/api/admin/forgot-password";
+    readonly ADMIN_RESET_PASSWORD: "/api/admin/reset-password";
+    readonly DEV_FORGOT_PASSWORD: "/api/dev/forgot-password";
+    readonly DEV_RESET_PASSWORD: "/api/dev/reset-password";
     readonly ADMIN_LOGOUT: "/api/admin/logout";
     readonly ADMIN_PRODUCTS: "/api/admin/products";
     readonly ADMIN_PRODUCTS_INVENTORY: "/api/admin/products/inventory/:salesPointId";
