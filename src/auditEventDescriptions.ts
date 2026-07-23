@@ -31,6 +31,38 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a password reset attempt fails (invalid or expired token). One line per failed attempt. Passwords are never stored in this log.',
     cs: 'Zapíše se, když reset hesla nevyjde (neplatný nebo expirovaný token). Jeden řádek za neúspěšný pokus. Hesla se v tomto záznamu neukládají.',
   },
+  'auth.admin.mfa.enroll.success': {
+    en: 'Recorded when an administrator finishes MFA enrollment. One line per successful enroll. Secrets and recovery codes are never stored here.',
+    cs: 'Zapíše se, když administrátor dokončí registraci MFA. Jeden řádek za úspěšnou registraci. Tajné klíče ani recovery kódy se sem neukládají.',
+  },
+  'auth.admin.mfa.enroll.failed': {
+    en: 'Recorded when MFA enrollment fails (invalid TOTP or validation error). One line per failed attempt.',
+    cs: 'Zapíše se, když registrace MFA selže (neplatný TOTP nebo chyba validace). Jeden řádek za neúspěšný pokus.',
+  },
+  'auth.admin.mfa.challenge.success': {
+    en: 'Recorded when an MFA login challenge succeeds. One line per successful challenge.',
+    cs: 'Zapíše se, když MFA výzva při přihlášení uspěje. Jeden řádek za úspěšnou výzvu.',
+  },
+  'auth.admin.mfa.challenge.failed': {
+    en: 'Recorded when an MFA login challenge fails. One line per failed attempt.',
+    cs: 'Zapíše se, když MFA výzva při přihlášení selže. Jeden řádek za neúspěšný pokus.',
+  },
+  'auth.admin.step_up.success': {
+    en: 'Recorded when admin step-up verification succeeds and a stepUpUntil claim is issued. One line per success.',
+    cs: 'Zapíše se, když admin step-up ověření uspěje a je vydán nárok stepUpUntil. Jeden řádek za úspěch.',
+  },
+  'auth.admin.step_up.failed': {
+    en: 'Recorded when admin step-up verification fails. One line per failed attempt.',
+    cs: 'Zapíše se, když admin step-up ověření selže. Jeden řádek za neúspěšný pokus.',
+  },
+  'auth.admin.break_glass.success': {
+    en: 'Recorded when a ticketed break-glass override is accepted (incident id + reason). The env token itself is never stored.',
+    cs: 'Zapíše se, když je přijato ticketované break-glass přepsání (incident + důvod). Samotný env token se neukládá.',
+  },
+  'auth.admin.break_glass.failed': {
+    en: 'Recorded when a break-glass override is rejected (invalid token, staging pattern in prod, or missing ticket fields).',
+    cs: 'Zapíše se, když je break-glass přepsání odmítnuto (neplatný token, staging vzor v prod, nebo chybějící ticket pole).',
+  },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
     cs: 'Zapíše se, když se pozve nový administrátor e-mailem a musí si nastavit heslo. Jeden řádek za novou pozvánku. Odkaz z pozvánky se sem neukládá.',
@@ -90,6 +122,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.user.permanently_deleted': {
     en: 'Recorded when an administrator account is deleted for good. One line per deletion. Other audit history stays.',
     cs: 'Zapíše se, když je účet administrátora trvale smazán. Jeden řádek za smazání. Ostatní auditní historie zůstává.',
+  },
+  'admin.product.created': {
+    en: 'Recorded when an administrator creates a new product in the catalog. One line per product.',
+    cs: 'Zapíše se, když administrátor vytvoří nový produkt v katalogu. Jeden řádek za produkt.',
   },
   'admin.product.deactivated': {
     en: 'Recorded when a product is hidden and cannot be sold on kiosks until turned back on. One line per product. The product file is not erased.',
@@ -450,6 +486,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
     cs: 'Zapíše se, když někdo stáhne export tabulky z analýzy chování zákazníků. Jeden řádek za úspěšný export. Obsah tabulky se do řádku auditu nekopíruje.',
+  },
+  'export.analytics.dev.views': {
+    en: 'Recorded when a developer exports analytics views from the Dev analytics surface. One line per export.',
+    cs: 'Zapíše se, když vývojář exportuje analytické pohledy z Dev analytics. Jeden řádek za export.',
   },
   'export.analytics.mission_control.exported': {
     en: 'Recorded when someone downloads a Mission Control tenant breakdown CSV export. One line per successful export.',

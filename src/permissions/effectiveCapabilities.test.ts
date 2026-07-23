@@ -18,6 +18,11 @@ describe('effectiveCapabilities client mirror', () => {
     );
   });
 
+  it('users:view:read implies tenant.adminUsers.view (alias; not users:admins:read)', () => {
+    expect(hasEffectiveCapability(['users:view:read'], 'tenant.adminUsers.view')).toBe(true);
+    expect(hasEffectiveCapability(['users:view:read'], 'tenant.adminUsers.manage')).toBe(false);
+  });
+
   it('hasAnyEffectiveCapability matches bridge', () => {
     expect(
       hasAnyEffectiveCapability(['users:admins:create'], [
@@ -107,6 +112,15 @@ describe('effectiveCapabilities client mirror', () => {
     expect(
       hasEffectiveCapability(['tenant.paymentPreferences.view'], 'tenant.reconciliation.read'),
     ).toBe(true);
+  });
+
+  it('LOCKED outbound-grant ban: recon.read alone does not imply approve/manage (ADM-TKT-0403)', () => {
+    expect(
+      hasEffectiveCapability(['tenant.reconciliation.read'], 'tenant.paymentClaims.approve'),
+    ).toBe(false);
+    expect(
+      hasEffectiveCapability(['tenant.reconciliation.read'], 'tenant.bankInbox.manage'),
+    ).toBe(false);
   });
 
   it('config:payments:manage implies tenant.bankAccounts.manage', () => {

@@ -31,6 +31,38 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Admin password reset failed',
     cs: 'Reset hesla administrátora selhal',
   },
+  'auth.admin.mfa.enroll.success': {
+    en: 'Admin MFA enroll succeeded',
+    cs: 'Registrace MFA administrátora úspěšná',
+  },
+  'auth.admin.mfa.enroll.failed': {
+    en: 'Admin MFA enroll failed',
+    cs: 'Registrace MFA administrátora selhala',
+  },
+  'auth.admin.mfa.challenge.success': {
+    en: 'Admin MFA challenge succeeded',
+    cs: 'MFA výzva administrátora úspěšná',
+  },
+  'auth.admin.mfa.challenge.failed': {
+    en: 'Admin MFA challenge failed',
+    cs: 'MFA výzva administrátora selhala',
+  },
+  'auth.admin.step_up.success': {
+    en: 'Admin step-up succeeded',
+    cs: 'Step-up ověření administrátora úspěšné',
+  },
+  'auth.admin.step_up.failed': {
+    en: 'Admin step-up failed',
+    cs: 'Step-up ověření administrátora selhalo',
+  },
+  'auth.admin.break_glass.success': {
+    en: 'Admin break-glass accepted',
+    cs: 'Break-glass administrátora přijat',
+  },
+  'auth.admin.break_glass.failed': {
+    en: 'Admin break-glass rejected',
+    cs: 'Break-glass administrátora odmítnut',
+  },
   'admin.invite.created': {
     en: 'Admin invite created',
     cs: 'Pozvánka administrátora vytvořena',
@@ -90,6 +122,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'admin.user.permanently_deleted': {
     en: 'Admin user permanently deleted',
     cs: 'Administrátor trvale smazán',
+  },
+  'admin.product.created': {
+    en: 'Product created',
+    cs: 'Produkt vytvořen',
   },
   'admin.product.deactivated': {
     en: 'Product deactivated',
@@ -451,6 +487,10 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'export.analytics.explore.exported': {
     en: 'Customer behavior export',
     cs: 'Export chování zákazníků',
+  },
+  'export.analytics.dev.views': {
+    en: 'Dev analytics views export',
+    cs: 'Export vývojářských analytických pohledů',
   },
   'export.analytics.mission_control.exported': {
     en: 'Mission Control tenant export',

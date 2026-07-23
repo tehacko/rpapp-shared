@@ -87,6 +87,14 @@ export {
   BRIDGE_PARITY_FIXTURE_GRANTS,
   BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS,
 } from './permissions/effectiveCapabilities.js';
+export {
+  TENANT_ADMIN_EVENTS_SUBSCRIBE,
+  TENANT_ADMIN_USERS_VIEW,
+  TENANT_ADMIN_USERS_MANAGE,
+  TENANT_RECONCILIATION_READ,
+  TENANT_BANK_INBOX_MANAGE,
+  TENANT_PAYMENT_CLAIMS_APPROVE,
+} from './permissions/canonicalCapabilityIds.js';
 export type { PermissionLevel } from './permissions/permissionLabels.js';
 export {
   TURNSTILE_PUBLIC_CONFIG_PATH,

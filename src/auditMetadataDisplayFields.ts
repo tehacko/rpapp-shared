@@ -31,6 +31,31 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'auth.admin.password_reset.failed': [
     { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
   ],
+  'auth.admin.mfa.enroll.success': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
+  'auth.admin.mfa.enroll.failed': [
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.mfa.challenge.success': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
+  'auth.admin.mfa.challenge.failed': [
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.step_up.success': [
+    { key: 'stepUpUntil', labelKey: 'compliance.audit.metadata.stepUpUntil' },
+  ],
+  'auth.admin.step_up.failed': [
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.break_glass.success': [
+    { key: 'incidentId', labelKey: 'compliance.audit.metadata.incidentId' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.break_glass.failed': [
+    { key: 'failureReason', labelKey: 'compliance.audit.metadata.failureReason' },
+  ],
   'gdpr.erasure.completed': [
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },
     { key: 'customersAnonymized', labelKey: 'compliance.audit.metadata.customersAnonymized' },
@@ -75,6 +100,9 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'payment.provider_wiring.invalidated': [
     { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
     { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'admin.product.created': [
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
   ],
   'admin.product.price_updated': [
     { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },

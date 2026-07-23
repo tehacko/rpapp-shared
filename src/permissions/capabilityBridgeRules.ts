@@ -29,7 +29,11 @@ const ADMIN_BRIDGE_SOURCE_SET = new Set<string>(ADMIN_USERS_MANAGE_BRIDGE_SOURCE
 
 /** Forward-only legacy → canonical (no canonical → full cluster). */
 const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
-  ['users:admins:create', ADMIN_USERS_MANAGE_BRIDGE_TARGETS],
+  [
+    'users:admins:create',
+    ADMIN_USERS_MANAGE_BRIDGE_TARGETS,
+  ],
+  ['users:view:read', ['tenant.adminUsers.view']],
   ['tenant.adminUsers.manage', ADMIN_USERS_MANAGE_BRIDGE_TARGETS],
   ['dev:workers:read', ['platform.retentionWorkers.view']],
   ['dev:workers:run', ['platform.retentionWorkers.manage', 'platform.retentionWorkers.view']],
