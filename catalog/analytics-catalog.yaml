@@ -38,6 +38,24 @@ events:
   - event: catalog_image_load_failed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: checkout_collect_configured
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_created
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_handoff_expired
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_mode_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: checkout_started
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: collect_step_confirmed
     catalogVersion: 1
     telemetryClass: OPERATIONAL
@@ -84,24 +102,6 @@ events:
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: gift_surface_impression
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_collect_configured
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_handoff_completed
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_handoff_created
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_handoff_expired
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_mode_selected
-    catalogVersion: 1
-    telemetryClass: OPERATIONAL
-  - event: checkout_started
     catalogVersion: 1
     telemetryClass: OPERATIONAL
   - event: identity_created
