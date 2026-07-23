@@ -184,6 +184,18 @@
       "require": "./dist/theme/ThemeProvider.js"
     }
   },
+  "typesVersions": {
+    "*": {
+      "sensitiveMetaKeys": ["./dist/sensitiveMetaKeys.d.ts"],
+      "clientLogRedaction": ["./dist/clientLogRedaction.d.ts"],
+      "analyticsEvents": ["./dist/analyticsEvents.d.ts"],
+      "analyticsApiTypes": ["./dist/analyticsApiTypes.d.ts"],
+      "analyticsExploreCaps": ["./dist/analyticsExploreCaps.d.ts"],
+      "crossTab": ["./dist/crossTab/index.d.ts"],
+      "logging": ["./dist/logging/index.d.ts"],
+      "logging/createClientLogger": ["./dist/logging/createClientLogger.d.ts"]
+    }
+  },
   "peerDependencies": {
     "@marsidev/react-turnstile": "^1.0.0",
     "@sentry/react": "^8.0.0",

@@ -49,6 +49,7 @@ export * from './complianceDevCaps.js';
 export * from './customerFailureRecovery.js';
 export * from './labels/localizedLabel.js';
 export * from './clientLogRedaction.js';
+export { SHARED_SENSITIVE_META_KEYS, } from './sensitiveMetaKeys.js';
 export * from './catalogImageUrl.js';
 export * from './catalogImageTelemetry.js';
 export * from './buildKioskLineKey.js';
