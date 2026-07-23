@@ -1,6 +1,6 @@
 {
   "name": "pi-kiosk-shared",
-  "version": "2.2.31",
+  "version": "2.2.32",
   "type": "module",
   "private": false,
   "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -186,14 +186,30 @@
   },
   "typesVersions": {
     "*": {
-      "sensitiveMetaKeys": ["./dist/sensitiveMetaKeys.d.ts"],
-      "clientLogRedaction": ["./dist/clientLogRedaction.d.ts"],
-      "analyticsEvents": ["./dist/analyticsEvents.d.ts"],
-      "analyticsApiTypes": ["./dist/analyticsApiTypes.d.ts"],
-      "analyticsExploreCaps": ["./dist/analyticsExploreCaps.d.ts"],
-      "crossTab": ["./dist/crossTab/index.d.ts"],
-      "logging": ["./dist/logging/index.d.ts"],
-      "logging/createClientLogger": ["./dist/logging/createClientLogger.d.ts"]
+      "sensitiveMetaKeys": [
+        "./dist/sensitiveMetaKeys.d.ts"
+      ],
+      "clientLogRedaction": [
+        "./dist/clientLogRedaction.d.ts"
+      ],
+      "analyticsEvents": [
+        "./dist/analyticsEvents.d.ts"
+      ],
+      "analyticsApiTypes": [
+        "./dist/analyticsApiTypes.d.ts"
+      ],
+      "analyticsExploreCaps": [
+        "./dist/analyticsExploreCaps.d.ts"
+      ],
+      "crossTab": [
+        "./dist/crossTab/index.d.ts"
+      ],
+      "logging": [
+        "./dist/logging/index.d.ts"
+      ],
+      "logging/createClientLogger": [
+        "./dist/logging/createClientLogger.d.ts"
+      ]
     }
   },
   "peerDependencies": {
