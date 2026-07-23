@@ -1,5 +1,6 @@
 import { readRequestId, setClientCorrelationId, } from './logging/index.js';
-import { setSentryCorrelationId } from './sentry/initSentry.js';
+// Bridge only — must NOT import ./sentry/initSentry.js (static @sentry/react breaks Node/backend).
+import { setSentryCorrelationId } from './sentry/correlationTagBridge.js';
 /**
  * Shared API Utilities
  *

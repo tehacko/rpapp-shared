@@ -1,6 +1,6 @@
 {
   "name": "pi-kiosk-shared",
-  "version": "2.2.32",
+  "version": "2.2.33",
   "type": "module",
   "private": false,
   "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -145,6 +145,11 @@
       "import": "./dist/sentry/initSentry.js",
       "require": "./dist/sentry/initSentry.js"
     },
+    "./sentry/correlationTagBridge": {
+      "types": "./dist/sentry/correlationTagBridge.d.ts",
+      "import": "./dist/sentry/correlationTagBridge.js",
+      "require": "./dist/sentry/correlationTagBridge.js"
+    },
     "./sentry/captureRateLimitBreadcrumb": {
       "types": "./dist/sentry/captureRateLimitBreadcrumb.d.ts",
       "import": "./dist/sentry/captureRateLimitBreadcrumb.js",
@@ -186,30 +191,14 @@
   },
   "typesVersions": {
     "*": {
-      "sensitiveMetaKeys": [
-        "./dist/sensitiveMetaKeys.d.ts"
-      ],
-      "clientLogRedaction": [
-        "./dist/clientLogRedaction.d.ts"
-      ],
-      "analyticsEvents": [
-        "./dist/analyticsEvents.d.ts"
-      ],
-      "analyticsApiTypes": [
-        "./dist/analyticsApiTypes.d.ts"
-      ],
-      "analyticsExploreCaps": [
-        "./dist/analyticsExploreCaps.d.ts"
-      ],
-      "crossTab": [
-        "./dist/crossTab/index.d.ts"
-      ],
-      "logging": [
-        "./dist/logging/index.d.ts"
-      ],
-      "logging/createClientLogger": [
-        "./dist/logging/createClientLogger.d.ts"
-      ]
+      "sensitiveMetaKeys": ["./dist/sensitiveMetaKeys.d.ts"],
+      "clientLogRedaction": ["./dist/clientLogRedaction.d.ts"],
+      "analyticsEvents": ["./dist/analyticsEvents.d.ts"],
+      "analyticsApiTypes": ["./dist/analyticsApiTypes.d.ts"],
+      "analyticsExploreCaps": ["./dist/analyticsExploreCaps.d.ts"],
+      "crossTab": ["./dist/crossTab/index.d.ts"],
+      "logging": ["./dist/logging/index.d.ts"],
+      "logging/createClientLogger": ["./dist/logging/createClientLogger.d.ts"]
     }
   },
   "peerDependencies": {
@@ -220,6 +209,23 @@
     "@zxing/library": "^0.21.3",
     "react": "^18.0.0",
     "react-i18next": "^14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@sentry/react": {
+      "optional": true
+    },
+    "@marsidev/react-turnstile": {
+      "optional": true
+    },
+    "@zxing/browser": {
+      "optional": true
+    },
+    "@zxing/library": {
+      "optional": true
+    },
+    "react-i18next": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",

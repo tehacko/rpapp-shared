@@ -5,6 +5,9 @@ import * as Sentry from '@sentry/react';
 import type { ErrorInfo } from 'react';
 
 import { redactClientLogMeta, redactStringSecrets } from '../clientLogRedaction.js';
+import { registerSentryCorrelationTagger } from './correlationTagBridge.js';
+
+export { setSentryCorrelationId } from './correlationTagBridge.js';
 
 export type SentryAppName = 'admin' | 'kiosk' | 'customer' | 'pickup';
 
@@ -21,17 +24,6 @@ let initialized = false;
 /** Whether {@link initSentry} completed successfully (prod + DSN). */
 export function isSentryInitialized(): boolean {
   return initialized;
-}
-
-/**
- * Tag the active Sentry scope with `correlationId` for Railway ↔ Sentry join.
- * No-op when Sentry has not been initialized.
- */
-export function setSentryCorrelationId(id: string): void {
-  if (!initialized) {
-    return;
-  }
-  Sentry.setTag('correlationId', id);
 }
 
 function scrubEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
@@ -80,6 +72,9 @@ export function initSentry(options: InitSentryOptions): void {
           app: options.app,
         },
       },
+    });
+    registerSentryCorrelationTagger((corrId) => {
+      Sentry.setTag('correlationId', corrId);
     });
     initialized = true;
   } catch {
