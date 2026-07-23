@@ -18,6 +18,22 @@ export interface InitSentryOptions {
 
 let initialized = false;
 
+/** Whether {@link initSentry} completed successfully (prod + DSN). */
+export function isSentryInitialized(): boolean {
+  return initialized;
+}
+
+/**
+ * Tag the active Sentry scope with `correlationId` for Railway ↔ Sentry join.
+ * No-op when Sentry has not been initialized.
+ */
+export function setSentryCorrelationId(id: string): void {
+  if (!initialized) {
+    return;
+  }
+  Sentry.setTag('correlationId', id);
+}
+
 function scrubEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
   if (event.message) {
     event.message = redactStringSecrets(event.message);
@@ -51,6 +67,13 @@ export function initSentry(options: InitSentryOptions): void {
       release: options.release,
       sendDefaultPii: false,
       sampleRate: 1.0,
+      maxBreadcrumbs: 50,
+      beforeBreadcrumb(breadcrumb) {
+        if (options.isProd && breadcrumb.category === 'console') {
+          return null;
+        }
+        return breadcrumb;
+      },
       beforeSend: scrubEvent,
       initialScope: {
         tags: {

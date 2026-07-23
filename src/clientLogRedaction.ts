@@ -3,42 +3,19 @@
  * Used by admin, kiosk, and customer structured loggers before console transport.
  */
 
-const SENSITIVE_KEYS = new Set([
-  'apitoken',
-  'apiToken',
-  'token',
-  'authorization',
-  'authtoken',
-  'authToken',
-  'sessiontoken',
-  'sessionToken',
-  'refreshtoken',
-  'refreshToken',
-  'accesstoken',
-  'accessToken',
-  'password',
-  'secret',
-  'credentialsecret',
-  'credentialsSecret',
-  'accountslug',
-  'accountSlug',
-  'errortext',
-  'errorText',
-  'responsebody',
-  'responseBody',
-  'rawbody',
-  'rawBody',
-  'customeremail',
-  'customerEmail',
-  'email',
-  'phone',
-  'phonenumber',
-  'phoneNumber',
-  'code',
-  'otp',
-  'cardnumber',
-  'cardNumber',
-  'pan',
+import {
+  CLIENT_ONLY_SENSITIVE_META_KEYS,
+  SHARED_SENSITIVE_META_KEYS,
+} from './sensitiveMetaKeys.js';
+
+export {
+  CLIENT_ONLY_SENSITIVE_META_KEYS,
+  SHARED_SENSITIVE_META_KEYS,
+} from './sensitiveMetaKeys.js';
+
+const SENSITIVE_KEYS = new Set<string>([
+  ...SHARED_SENSITIVE_META_KEYS,
+  ...CLIENT_ONLY_SENSITIVE_META_KEYS,
 ]);
 
 const MAX_DEPTH = 4;

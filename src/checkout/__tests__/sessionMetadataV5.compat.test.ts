@@ -34,4 +34,101 @@ describe('sessionMetadataV5 compat (G-F2 / ADR-006)', () => {
     expect(upgraded.promotions).toEqual({});
     expect(upgraded.loyalty?.activatedCouponId).toBe('coupon-1');
   });
+
+  it('upgradeSessionMetadataV4ToV5 preserves existing promotions', () => {
+    const upgraded = upgradeSessionMetadataV4ToV5({
+      version: 4,
+      promotions: { stackingMode: 'EXCLUSIVE' },
+    });
+    expect(upgraded.promotions?.stackingMode).toBe('EXCLUSIVE');
+  });
+
+  it('rejects invalid MOBILE_FIRST selectedMode', () => {
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'MOBILE_FIRST',
+          selectedMode: 'PAY_NOW_STAFF_HANDOFF',
+          pickupHandoffMode: 'STAFF_SCAN',
+        },
+      }),
+    ).toThrow('SESSION_METADATA_V5_MOBILE_MODE_INVALID');
+  });
+
+  it('rejects KIOSK_FIRST + PREPAY_COLLECT_LATER', () => {
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'KIOSK_FIRST',
+          selectedMode: 'PREPAY_COLLECT_LATER',
+          pickupHandoffMode: 'STAFF_SCAN',
+        },
+      }),
+    ).toThrow('SESSION_METADATA_V5_KIOSK_MODE_INVALID');
+  });
+
+  it('enforces MOBILE collect timing matrix', () => {
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'MOBILE_FIRST',
+          selectedMode: 'PREPAY_COLLECT_LATER',
+          pickupHandoffMode: 'STAFF_SCAN',
+        },
+        collect: { timing: 'NOW', pickupPointId: 1 },
+      }),
+    ).toThrow('SESSION_METADATA_V5_MOBILE_COLLECT_TIMING_INVALID');
+
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'MOBILE_FIRST',
+          selectedMode: 'PAY_NOW_SELF_SERVICE',
+          pickupHandoffMode: 'AUTO_ON_PAYMENT',
+        },
+        collect: { timing: 'LATER', pickupPointId: 1 },
+      }),
+    ).toThrow('SESSION_METADATA_V5_MOBILE_COLLECT_TIMING_INVALID');
+
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'MOBILE_FIRST',
+          selectedMode: 'PREPAY_COLLECT_LATER',
+          pickupHandoffMode: 'STAFF_SCAN',
+        },
+        collect: { timing: 'LATER', pickupPointId: 1 },
+      }),
+    ).not.toThrow();
+
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'MOBILE_FIRST',
+          selectedMode: 'PAY_NOW_SELF_SERVICE',
+          pickupHandoffMode: 'AUTO_ON_PAYMENT',
+        },
+        collect: { timing: 'NOW', pickupPointId: 1 },
+      }),
+    ).not.toThrow();
+  });
+
+  it('allows KIOSK_FIRST pay-now modes', () => {
+    expect(() =>
+      assertSessionMetadataV5ChannelRules({
+        version: 5,
+        checkoutMode: {
+          channel: 'KIOSK_FIRST',
+          selectedMode: 'PAY_NOW_STAFF_HANDOFF',
+          pickupHandoffMode: 'STAFF_SCAN',
+        },
+      }),
+    ).not.toThrow();
+  });
 });

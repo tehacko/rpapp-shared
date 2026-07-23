@@ -4,7 +4,7 @@
  * DECISION-1 Option C: --brand-consumer-accent (Canva) + --brand-admin-accent (PO mockups)
  * Import before theme.css or admin-theme.css once MFE-v3-S-01 wires consumers.
  *
- * @see rpappp/docs/FRONTEND/brand-palette.md
+ * @see rpappp/up-backend/docs/FRONTEND/brand-palette.md
  * @source https://www.canva.com/colors/color-palettes/up-above/
  */
 :root {

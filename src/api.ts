@@ -1,3 +1,9 @@
+import {
+  readRequestId,
+  setClientCorrelationId,
+} from './logging/index.js';
+import { setSentryCorrelationId } from './sentry/initSentry.js';
+
 /**
  * Shared API Utilities
  * 
@@ -184,22 +190,34 @@ export class APIClient {
       const retryAfter = response.headers.get('Retry-After');
       let code: string | undefined;
       let message = response.statusText;
+      let requestId: string | undefined = readRequestId(response);
       try {
         const parsed = (await response.json()) as
-          | { error?: string; message?: string; code?: string }
+          | { error?: string; message?: string; code?: string; requestId?: string }
           | undefined;
         message = parsed?.error ?? parsed?.message ?? message;
         code = parsed?.code;
+        if (requestId === undefined && typeof parsed?.requestId === 'string') {
+          requestId = parsed.requestId;
+        }
       } catch {
         // keep statusText
+      }
+      if (requestId !== undefined) {
+        setClientCorrelationId(requestId);
+        setSentryCorrelationId(requestId);
       }
       const err = new Error(`HTTP ${response.status}: ${message}`) as Error & {
         statusCode?: number;
         code?: string;
         retryAfterSeconds?: number;
+        requestId?: string;
       };
       err.statusCode = response.status;
       err.code = code;
+      if (requestId !== undefined) {
+        err.requestId = requestId;
+      }
       if (retryAfter) {
         const sec = Number(retryAfter);
         if (Number.isFinite(sec) && sec > 0) {
@@ -207,6 +225,12 @@ export class APIClient {
         }
       }
       throw err;
+    }
+
+    const okId = readRequestId(response);
+    if (okId !== undefined) {
+      setClientCorrelationId(okId);
+      setSentryCorrelationId(okId);
     }
 
     return response.json();
@@ -244,6 +268,11 @@ export class APIClient {
     }
     const response = await fetch(url, { method: 'GET', headers });
     const etag = response.headers.get('etag');
+    const conditionalId = readRequestId(response);
+    if (conditionalId !== undefined) {
+      setClientCorrelationId(conditionalId);
+      setSentryCorrelationId(conditionalId);
+    }
     if (response.status === 304) {
       return { status: 304, etag };
     }

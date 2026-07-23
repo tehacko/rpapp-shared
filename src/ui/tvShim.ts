@@ -5,6 +5,6 @@
  * Admin may import `pi-kiosk-shared/ui/tvShim` when code must match the 0.3 recipe
  * contract; admin-local components continue using tv ^3.2.
  *
- * @see docs/FRONTEND/ADR-FE-TV-001-DECISION.md
+ * @see up-backend/docs/FRONTEND/ADR-FE-TV-001-DECISION.md
  */
 export { tv, type VariantProps } from 'tailwind-variants';
