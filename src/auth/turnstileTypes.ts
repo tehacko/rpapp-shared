@@ -37,13 +37,26 @@ export interface CustomerAuthTurnstileBody extends TurnstileAuthBodyFields {
   [key: string]: unknown;
 }
 
+export class TurnstileConfigFetchError extends Error {
+  constructor(message: string, options?: { cause?: unknown }) {
+    super(message, options);
+    this.name = 'TurnstileConfigFetchError';
+  }
+}
+
+/**
+ * Fetches public Turnstile config. Throws {@link TurnstileConfigFetchError} on
+ * network/HTTP failure so clients can fail closed (do not assume disabled).
+ */
 export async function fetchTurnstileConfig(apiBaseUrl = ''): Promise<TurnstileConfigData> {
   const trimmedBase = apiBaseUrl.replace(/\/+$/, '');
   const url = `${trimmedBase}${TURNSTILE_PUBLIC_CONFIG_PATH}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      return { enabled: false, siteKey: null };
+      throw new TurnstileConfigFetchError(
+        `Turnstile config request failed (${String(response.status)}). Retry in a few seconds or refresh the page.`
+      );
     }
     const envelope = (await response.json()) as {
       success?: boolean;
@@ -54,8 +67,14 @@ export async function fetchTurnstileConfig(apiBaseUrl = ''): Promise<TurnstileCo
       enabled: data?.enabled === true,
       siteKey: typeof data?.siteKey === 'string' && data.siteKey.length > 0 ? data.siteKey : null,
     };
-  } catch {
-    return { enabled: false, siteKey: null };
+  } catch (err) {
+    if (err instanceof TurnstileConfigFetchError) {
+      throw err;
+    }
+    throw new TurnstileConfigFetchError(
+      'Turnstile config is unreachable. Check network connectivity, then retry or refresh the page.',
+      { cause: err }
+    );
   }
 }
 

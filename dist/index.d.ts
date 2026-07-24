@@ -68,7 +68,7 @@ export { PERMISSION_DOMAIN_LABELS, PERMISSION_LEVEL_LABELS, getPermissionDomainL
 export { expandCapabilitiesForClientCheck, grantImpliesTarget, hasEffectiveCapability, hasAnyEffectiveCapability, ADMIN_USERS_MANAGE_BRIDGE_SOURCES, ADMIN_USERS_MANAGE_BRIDGE_TARGETS, BRIDGE_PARITY_FIXTURE_GRANTS, BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS, } from './permissions/effectiveCapabilities.js';
 export { TENANT_ADMIN_EVENTS_SUBSCRIBE, TENANT_ADMIN_USERS_VIEW, TENANT_ADMIN_USERS_MANAGE, TENANT_RECONCILIATION_READ, TENANT_BANK_INBOX_MANAGE, TENANT_PAYMENT_CLAIMS_APPROVE, } from './permissions/canonicalCapabilityIds.js';
 export type { PermissionLevel } from './permissions/permissionLabels.js';
-export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, } from './auth/turnstileTypes.js';
+export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, TurnstileConfigFetchError, } from './auth/turnstileTypes.js';
 export type { TurnstileConfigData, TurnstileAuthBodyFields, AdminLoginRequest, ExchangeSuperAdminInviteSessionRequest, CompleteSuperAdminInviteRequest, PickupStaffLoginRequest, CustomerAuthTurnstileBody, } from './auth/turnstileTypes.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { computePollRetryDelayMs, isServerOverloadPollError, type PollRetryBackoffOptions, } from './http/pollRetryBackoff.js';

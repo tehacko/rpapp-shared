@@ -100,6 +100,7 @@ export {
   TURNSTILE_PUBLIC_CONFIG_PATH,
   fetchTurnstileConfig,
   appendTurnstileToken,
+  TurnstileConfigFetchError,
 } from './auth/turnstileTypes.js';
 export type {
   TurnstileConfigData,

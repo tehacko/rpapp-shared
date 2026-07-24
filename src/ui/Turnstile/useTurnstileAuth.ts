@@ -29,7 +29,9 @@ export function useTurnstileAuth(apiBaseUrl: string): UseTurnstileAuthResult {
   const siteKey = query.data?.siteKey ?? null;
   const required =
     query.data?.enabled === true && typeof siteKey === 'string' && siteKey.length > 0;
-  const ready = !required || token !== null;
+  // Fail closed: config must load successfully before submit is considered ready.
+  const ready =
+    query.isSuccess && !query.isError && (!required || token !== null);
 
   const setToken = useCallback((value: string): void => {
     setTokenState(value);
@@ -51,7 +53,7 @@ export function useTurnstileAuth(apiBaseUrl: string): UseTurnstileAuthResult {
     siteKey,
     token,
     widgetKey,
-    isLoading: query.isLoading,
+    isLoading: query.isPending,
     setToken,
     resetTurnstile,
     withTurnstile,

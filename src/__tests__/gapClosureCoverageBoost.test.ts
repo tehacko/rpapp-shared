@@ -194,13 +194,12 @@ describe('metadataBuilders + turnstile + logging helpers', () => {
       enabled: true,
       siteKey: 'site',
     });
-    fetchMock.mockResolvedValueOnce({ ok: false });
-    await expect(fetchTurnstileConfig('https://api.example')).resolves.toEqual({
-      enabled: false,
-      siteKey: null,
-    });
+    fetchMock.mockResolvedValueOnce({ ok: false, status: 503 });
+    await expect(fetchTurnstileConfig('https://api.example')).rejects.toThrow(
+      /Turnstile config request failed/
+    );
     fetchMock.mockRejectedValueOnce(new Error('network'));
-    await expect(fetchTurnstileConfig()).resolves.toEqual({ enabled: false, siteKey: null });
+    await expect(fetchTurnstileConfig()).rejects.toThrow(/Turnstile config is unreachable/);
 
     expect(appendTurnstileToken({ a: 1 }, 'tok')).toEqual({ a: 1, turnstileToken: 'tok' });
     expect(appendTurnstileToken({ a: 1 }, null)).toEqual({ a: 1 });

@@ -9,7 +9,9 @@ export interface TurnstileExecuteWidgetProps {
     | 'siteKey'
     | 'widgetKey'
     | 'isLoading'
+    | 'isError'
     | 'turnstileRef'
+    | 'onWidgetLoad'
     | 'onSuccess'
     | 'onExpire'
     | 'onError'
@@ -35,6 +37,15 @@ export function TurnstileExecuteWidget({
     });
   }
 
+  if (turnstile.isError) {
+    return createElement('div', {
+      className,
+      'data-testid': testId,
+      role: 'alert',
+      'data-turnstile-state': 'error',
+    });
+  }
+
   if (!turnstile.required || turnstile.siteKey === null) {
     return null;
   }
@@ -46,6 +57,7 @@ export function TurnstileExecuteWidget({
       ref: turnstile.turnstileRef,
       key: turnstile.widgetKey,
       siteKey: turnstile.siteKey,
+      onWidgetLoad: turnstile.onWidgetLoad,
       onSuccess: turnstile.onSuccess,
       onExpire: turnstile.onExpire,
       onError: turnstile.onError,
