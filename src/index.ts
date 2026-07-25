@@ -74,8 +74,10 @@ export * from './tenant/tenantLifecycle.js';
 export {
   PERMISSION_DOMAIN_LABELS,
   PERMISSION_LEVEL_LABELS,
+  PERMISSION_RESOURCE_LABELS,
   getPermissionDomainLabel,
   getPermissionLevelLabel,
+  getPermissionResourceTitle,
 } from './permissions/permissionLabels.js';
 export {
   expandCapabilitiesForClientCheck,

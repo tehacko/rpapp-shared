@@ -1,6 +1,7 @@
 import {
   getPermissionDomainLabel,
   getPermissionLevelLabel,
+  getPermissionResourceTitle,
   PERMISSION_LEVEL_LABELS,
 } from './permissionLabels.js';
 
@@ -17,8 +18,17 @@ describe('permissionLabels', () => {
     expect(getPermissionDomainLabel('tenant', 'cs')).toBe('Provoz tenantu');
   });
 
+  it('resolves known resource titles in EN and CS', () => {
+    expect(getPermissionResourceTitle('products', 'en')).toBe('Products');
+    expect(getPermissionResourceTitle('products', 'cs')).toBe('Produkty');
+    expect(getPermissionResourceTitle('adminEvents.subscribe', 'cs')).toBe(
+      'Admin události — odběr',
+    );
+  });
+
   it('falls back for unknown domains', () => {
     expect(getPermissionLevelLabel('view', 'en')).toBe('View');
     expect(getPermissionDomainLabel('customDomain', 'en')).toBe('CustomDomain');
+    expect(getPermissionResourceTitle('unknown.resource', 'cs')).toBeNull();
   });
 });
