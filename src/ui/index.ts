@@ -42,3 +42,8 @@ export {
   type ProviderIconProps,
   type ProviderIconSize,
 } from './ProviderIcon/index.js';
+export {
+  NavStepper,
+  type NavStepperProps,
+  type NavStepperStep,
+} from './NavStepper/NavStepper.js';
