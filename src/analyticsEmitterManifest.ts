@@ -98,7 +98,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     reference: 'shopScreenHandlers',
   },
   { eventName: 'checkout_started', surface: 'customer', layer: 'FE', required: true, reference: 'shopScreenHandlers' },
-  { eventName: 'gift_surface_impression', surface: 'customer', layer: 'FE', required: false, reference: 'CustomerHubNav' },
+  { eventName: 'gift_surface_impression', surface: 'customer', layer: 'FE', required: false, reference: 'MoreMenuPanel' },
   { eventName: 'checkout_started', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskNavigationHandlers' },
   {
     eventName: 'checkout_mode_selected',
@@ -1022,7 +1022,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'CustomerDonationProjectCard',
   'PostKioskProductJourney',
   'PostKioskDonationJourney',
-  'CustomerHubNav',
+  'MoreMenuPanel',
   'PwaLifecycle',
 ]);
 
@@ -1071,7 +1071,7 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
     'rpapp-customer/src/features/journeys/hooks/usePostKioskProductJourney.ts',
   PostKioskDonationJourney:
     'rpapp-customer/src/features/journeys/hooks/usePostKioskDonationJourney.ts',
-  CustomerHubNav: 'rpapp-customer/src/features/hub/CustomerHubNav.tsx',
+  MoreMenuPanel: 'rpapp-customer/src/features/more/MorePage.tsx',
   PwaLifecycle: 'rpapp-customer/src/app/pwa/PwaLifecycle.tsx',
 };
 

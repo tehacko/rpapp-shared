@@ -14,8 +14,8 @@ const flagGroup = tv({
         'bg-[var(--color-surface-elevated,#fff)] p-1 shadow-sm',
       ].join(' '),
       header: [
-        'gap-1.5 rounded-full border border-[var(--color-border,#e2e8f0)]',
-        'bg-[var(--color-surface-elevated,#fff)] p-1 shadow-none',
+        'gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,#e2e8f0))]',
+        'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))] p-1 shadow-none',
       ].join(' '),
     },
     surface: {
