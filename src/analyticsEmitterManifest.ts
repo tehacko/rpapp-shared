@@ -937,6 +937,41 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     required: true,
     reference: 'IssuePromoRewardUseCase',
   },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_CODE_REJECTED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'emitPromoSessionlessAnalytics',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_CODE_APPLIED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'emitPromoSessionlessAnalytics',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_CODE_REMOVED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'emitPromoSessionlessAnalytics',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_CODE_REDEEMED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'emitPromoSessionlessAnalytics',
+  },
+  {
+    eventName: ANALYTICS_PROMO_EVENTS.PROMO_CODE_RELEASED,
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'emitPromoSessionlessAnalytics',
+  },
   // G-P1-12 — donation deferred-p2 (customer FE; W5 wires donationAnalyticsMetadata helpers)
   {
     eventName: ANALYTICS_DONATION_EVENTS.DONATION_IMPACT_OPENED,
@@ -1177,6 +1212,8 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/infrastructure/promotions/PrismaPromoRewardWritePort.ts',
   IssuePromoRewardUseCase:
     'up-backend/src/application/use-cases/promotions/IssuePromoRewardUseCase.ts',
+  emitPromoSessionlessAnalytics:
+    'up-backend/src/application/services/analytics/emitPromoSessionlessAnalytics.ts',
 };
 
 const ALLOWED_BE_REFERENCES = new Set<string>([
@@ -1231,6 +1268,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'CheckoutPricingOrchestrationService',
   'PrismaPromoBudgetCapPort',
   'IssuePromoRewardUseCase',
+  'emitPromoSessionlessAnalytics',
 ]);
 
 export function validateAnalyticsEmitterManifest(): string[] {

@@ -127,6 +127,11 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   promo_stacking_rejected: { en: 'Promo stacking rejected', cs: 'Promo kombinace odmítnuta' },
   promo_budget_soft_stop: { en: 'Promo budget soft stop', cs: 'Promo měkký limit rozpočtu' },
   promo_budget_exhausted: { en: 'Promo budget exhausted', cs: 'Promo rozpočet vyčerpán' },
+  promo_code_rejected: { en: 'Promo code rejected', cs: 'Slevový kód odmítnut' },
+  promo_code_applied: { en: 'Promo code applied', cs: 'Slevový kód uplatněn' },
+  promo_code_removed: { en: 'Promo code removed', cs: 'Slevový kód odebrán' },
+  promo_code_redeemed: { en: 'Promo code redeemed', cs: 'Slevový kód uplatněn v platbě' },
+  promo_code_released: { en: 'Promo code released', cs: 'Slevový kód uvolněn' },
   recurring_payment_missed: {
     en: 'Recurring payment missed',
     cs: 'Zmeškaná opakovaná platba',

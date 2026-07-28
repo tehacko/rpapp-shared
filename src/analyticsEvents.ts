@@ -150,6 +150,12 @@ export const ANALYTICS_PROMO_EVENTS = {
   PROMO_STACKING_REJECTED: 'promo_stacking_rejected',
   PROMO_BUDGET_SOFT_STOP: 'promo_budget_soft_stop',
   PROMO_BUDGET_EXHAUSTED: 'promo_budget_exhausted',
+  /** Manual typed-code lifecycle (ADR-014). Never emit checkout `promo_code_validated`. */
+  PROMO_CODE_REJECTED: 'promo_code_rejected',
+  PROMO_CODE_APPLIED: 'promo_code_applied',
+  PROMO_CODE_REMOVED: 'promo_code_removed',
+  PROMO_CODE_REDEEMED: 'promo_code_redeemed',
+  PROMO_CODE_RELEASED: 'promo_code_released',
 } as const;
 
 /**

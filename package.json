@@ -125,6 +125,31 @@
       "import": "./dist/promo/promoSessionHandoff.js",
       "require": "./dist/promo/promoSessionHandoff.js"
     },
+    "./promo/resolvePromoLoyaltyStack": {
+      "types": "./dist/promo/resolvePromoLoyaltyStack.d.ts",
+      "import": "./dist/promo/resolvePromoLoyaltyStack.js",
+      "require": "./dist/promo/resolvePromoLoyaltyStack.js"
+    },
+    "./promo/PromoCodeErrorCode": {
+      "types": "./dist/promo/PromoCodeErrorCode.d.ts",
+      "import": "./dist/promo/PromoCodeErrorCode.js",
+      "require": "./dist/promo/PromoCodeErrorCode.js"
+    },
+    "./promo/ApplyPromoCodeRequest": {
+      "types": "./dist/promo/ApplyPromoCodeRequest.d.ts",
+      "import": "./dist/promo/ApplyPromoCodeRequest.js",
+      "require": "./dist/promo/ApplyPromoCodeRequest.js"
+    },
+    "./promo/ApplyPromoCodeResponse": {
+      "types": "./dist/promo/ApplyPromoCodeResponse.d.ts",
+      "import": "./dist/promo/ApplyPromoCodeResponse.js",
+      "require": "./dist/promo/ApplyPromoCodeResponse.js"
+    },
+    "./promo/RemovePromoCodeRequest": {
+      "types": "./dist/promo/RemovePromoCodeRequest.d.ts",
+      "import": "./dist/promo/RemovePromoCodeRequest.js",
+      "require": "./dist/promo/RemovePromoCodeRequest.js"
+    },
     "./checkout/sessionMetadataV4": {
       "types": "./dist/checkout/sessionMetadataV4.d.ts",
       "import": "./dist/checkout/sessionMetadataV4.js",
@@ -276,6 +301,7 @@
   ],
   "devDependencies": {
     "@marsidev/react-turnstile": "^1.1.0",
+    "@radix-ui/react-select": "^2.3.7",
     "@sentry/react": "^8.55.0",
     "@storybook/react-vite": "^9.1.20",
     "@tanstack/react-query": "^5.66.0",
@@ -291,6 +317,7 @@
     "handlebars": "^4.7.9",
     "jest": "^30.4.0",
     "jest-environment-jsdom": "^30.4.0",
+    "lucide-react": "^1.27.0",
     "patch-package": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -303,10 +330,12 @@
   },
   "overrides": {
     "babel-plugin-istanbul": "^8.0.2",
-    "brace-expansion": "^1.1.16",
+    "brace-expansion": "^5.0.8",
     "fast-uri": "^3.1.4",
     "glob": "^13.0.6",
     "jsdom": "^27.4.0",
+    "minimatch": "^10.2.5",
+    "postcss": "^8.5.23",
     "test-exclude": "^8.0.0",
     "uuid": "^11.1.1"
   }

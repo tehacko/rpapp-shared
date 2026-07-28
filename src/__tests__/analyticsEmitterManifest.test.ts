@@ -142,6 +142,11 @@ describe('analyticsEmitterManifest', () => {
       'promo_stacking_rejected',
       'promo_budget_soft_stop',
       'promo_budget_exhausted',
+      'promo_code_rejected',
+      'promo_code_applied',
+      'promo_code_removed',
+      'promo_code_redeemed',
+      'promo_code_released',
     ] as const;
 
     it.each(promoBeEvents)('%s has required server BE manifest cell', (eventName) => {

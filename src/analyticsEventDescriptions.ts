@@ -477,6 +477,26 @@ const SERVER_OPS_DESCRIPTIONS: Record<
     en: 'Counts when promo event budget is fully exhausted.',
     cs: 'Počítá se, když je promo rozpočet akce vyčerpán.',
   },
+  [ANALYTICS_PROMO_EVENTS.PROMO_CODE_REJECTED]: {
+    en: 'Counts when a typed promo code is rejected at apply/validate.',
+    cs: 'Počítá se, když je slevový kód odmítnut při uplatnění/validaci.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_CODE_APPLIED]: {
+    en: 'Counts when a typed promo code soft-reserve is applied to checkout.',
+    cs: 'Počítá se, když je slevový kód uplatněn (soft-reserve) na checkout.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_CODE_REMOVED]: {
+    en: 'Counts when a typed promo code is removed from checkout.',
+    cs: 'Počítá se, když je slevový kód odebrán z checkoutu.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_CODE_REDEEMED]: {
+    en: 'Counts when a typed promo code claim is redeemed at mark-paid.',
+    cs: 'Počítá se, když je slevový kód uplatněn při dokončení platby.',
+  },
+  [ANALYTICS_PROMO_EVENTS.PROMO_CODE_RELEASED]: {
+    en: 'Counts when a typed promo code soft/hard reserve is released.',
+    cs: 'Počítá se, když je soft/hard rezervace slevového kódu uvolněna.',
+  },
 };
 
 function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, LocalizedLabel> {

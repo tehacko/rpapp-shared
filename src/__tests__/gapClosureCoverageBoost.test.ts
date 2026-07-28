@@ -44,6 +44,8 @@ import { getAuditEventDescription } from '../getAuditEventDescription.js';
 import {
   clearPromoActivatedRewardHandoff,
   promoActivatedRewardStorageKey,
+  readPromoActivatedRewardHandoff,
+  setPromoActivatedRewardHandoff,
 } from '../promo/promoSessionHandoff.js';
 import { selectBarcodeScannerEngine } from '../hooks/selectEngine.js';
 import {
@@ -239,11 +241,17 @@ describe('promo handoff + selectEngine + sales-point parsers', () => {
     Object.defineProperty(globalThis, 'sessionStorage', {
       configurable: true,
       value: {
+        getItem: (key: string) => store[key] ?? null,
+        setItem: (key: string, value: string) => {
+          store[key] = value;
+        },
         removeItem: (key: string) => {
           delete store[key];
         },
       },
     });
+    setPromoActivatedRewardHandoff('t', 's', 'reward-9');
+    expect(readPromoActivatedRewardHandoff('t', 's')).toBe('reward-9');
     clearPromoActivatedRewardHandoff('t', 's');
     expect(store['promo:activatedReward:t:s']).toBeUndefined();
   });

@@ -218,6 +218,21 @@ events:
   - event: promo_budget_soft_stop
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: promo_code_applied
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_code_redeemed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_code_rejected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_code_released
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: promo_code_removed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: promo_preview_evaluated
     catalogVersion: 1
     telemetryClass: OPERATIONAL

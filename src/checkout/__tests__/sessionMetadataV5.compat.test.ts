@@ -14,6 +14,8 @@ describe('sessionMetadataV5 compat (G-F2 / ADR-006)', () => {
         stackingMode: 'STACK_PROMO_THEN_LOYALTY',
         activatedAt: '2026-01-01T00:00:00.000Z',
         ruleVersionId: 'rule-v1',
+        source: 'MANUAL_CODE',
+        eventId: 'event-1',
       },
     };
     expect(isSessionMetadataV5(envelope)).toBe(true);

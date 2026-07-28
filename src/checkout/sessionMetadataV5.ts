@@ -15,6 +15,13 @@ import type { SessionMetadataLoyaltyV4 } from './sessionMetadataV4.js';
 
 export type PromoStackingMode = 'EXCLUSIVE' | 'STACK_PROMO_THEN_LOYALTY';
 
+/**
+ * How the activated promo reward entered checkout.
+ * MANUAL_CODE = typed apply-code path (reward metadata.source mirror).
+ * WALLET_REWARD = customer/kiosk wallet activate path.
+ */
+export type PromoActivationSource = 'MANUAL_CODE' | 'WALLET_REWARD';
+
 export interface SessionMetadataShopV5 {
   salesPointId: number;
   lines: SessionMetadataShopLine[];
@@ -25,6 +32,10 @@ export interface SessionMetadataPromotionsV5 {
   readonly stackingMode?: PromoStackingMode;
   readonly activatedAt?: string | null;
   readonly ruleVersionId?: string | null;
+  /** Typed apply-code vs wallet activation (plan MANUAL_CODE instrument bridge). */
+  readonly source?: PromoActivationSource | null;
+  /** Bound promo event when known (display / AUTO_DEAL suppress). */
+  readonly eventId?: string | null;
 }
 
 export interface SessionMetadataEnvelopeV5 {

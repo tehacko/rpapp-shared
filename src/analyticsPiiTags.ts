@@ -95,6 +95,11 @@ const SERVER_SIDE_EVENTS = new Set<AnalyticsEventName>([
   'promo_stacking_rejected',
   'promo_budget_soft_stop',
   'promo_budget_exhausted',
+  'promo_code_rejected',
+  'promo_code_applied',
+  'promo_code_removed',
+  'promo_code_redeemed',
+  'promo_code_released',
   'recurring_payment_missed',
   'recurring_payment_received',
 ]);
