@@ -37,6 +37,12 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'auth.admin.mfa.enroll.failed': [
     { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
   ],
+  'auth.admin.mfa.disable.success': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
+  'auth.admin.mfa.disable.failed': [
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
   'auth.admin.mfa.challenge.success': [
     { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
   ],
@@ -55,6 +61,40 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   ],
   'auth.admin.break_glass.failed': [
     { key: 'failureReason', labelKey: 'compliance.audit.metadata.failureReason' },
+  ],
+  'admin.capability.granted': [
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'admin.capability.revoked': [
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
+  ],
+  'admin.capability.template_applied': [
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'templateId', labelKey: 'compliance.audit.metadata.templateId' },
+    { key: 'capabilityCount', labelKey: 'compliance.audit.metadata.capabilityCount' },
+  ],
+  'admin.exception_grant.requested': [
+    { key: 'approvalRequestId', labelKey: 'compliance.audit.metadata.approvalRequestId' },
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
+  ],
+  'admin.exception_grant.approved': [
+    { key: 'approvalRequestId', labelKey: 'compliance.audit.metadata.approvalRequestId' },
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
+  ],
+  'admin.exception_grant.rejected': [
+    { key: 'approvalRequestId', labelKey: 'compliance.audit.metadata.approvalRequestId' },
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
+  ],
+  'admin.exception_grant.executed': [
+    { key: 'approvalRequestId', labelKey: 'compliance.audit.metadata.approvalRequestId' },
+    { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
+    { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
   ],
   'gdpr.erasure.completed': [
     { key: 'dataSubjectRequestId', labelKey: 'compliance.audit.metadata.dataSubjectRequestId' },

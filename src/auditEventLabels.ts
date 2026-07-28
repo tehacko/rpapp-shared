@@ -39,6 +39,14 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Admin MFA enroll failed',
     cs: 'Registrace MFA administrátora selhala',
   },
+  'auth.admin.mfa.disable.success': {
+    en: 'Admin MFA disable succeeded',
+    cs: 'Vypnutí MFA administrátora úspěšné',
+  },
+  'auth.admin.mfa.disable.failed': {
+    en: 'Admin MFA disable failed',
+    cs: 'Vypnutí MFA administrátora selhalo',
+  },
   'auth.admin.mfa.challenge.success': {
     en: 'Admin MFA challenge succeeded',
     cs: 'MFA výzva administrátora úspěšná',
@@ -122,6 +130,34 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'admin.user.permanently_deleted': {
     en: 'Admin user permanently deleted',
     cs: 'Administrátor trvale smazán',
+  },
+  'admin.capability.granted': {
+    en: 'Admin capability granted',
+    cs: 'Oprávnění administrátora uděleno',
+  },
+  'admin.capability.revoked': {
+    en: 'Admin capability revoked',
+    cs: 'Oprávnění administrátora odebráno',
+  },
+  'admin.capability.template_applied': {
+    en: 'Admin capability template applied',
+    cs: 'Šablona oprávnění administrátora aplikována',
+  },
+  'admin.exception_grant.requested': {
+    en: 'Exception grant requested',
+    cs: 'Výjimka oprávnění požádána',
+  },
+  'admin.exception_grant.approved': {
+    en: 'Exception grant approved',
+    cs: 'Výjimka oprávnění schválena',
+  },
+  'admin.exception_grant.rejected': {
+    en: 'Exception grant rejected',
+    cs: 'Výjimka oprávnění zamítnuta',
+  },
+  'admin.exception_grant.executed': {
+    en: 'Exception grant executed',
+    cs: 'Výjimka oprávnění provedena',
   },
   'admin.product.created': {
     en: 'Product created',

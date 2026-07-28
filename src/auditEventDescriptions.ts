@@ -39,6 +39,14 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when MFA enrollment fails (invalid TOTP or validation error). One line per failed attempt.',
     cs: 'Zapíše se, když registrace MFA selže (neplatný TOTP nebo chyba validace). Jeden řádek za neúspěšný pokus.',
   },
+  'auth.admin.mfa.disable.success': {
+    en: 'Recorded when an administrator successfully disables MFA on their account. One line per successful disable. Secrets are never stored here.',
+    cs: 'Zapíše se, když administrátor úspěšně vypne MFA na svém účtu. Jeden řádek za úspěšné vypnutí. Tajné klíče se sem neukládají.',
+  },
+  'auth.admin.mfa.disable.failed': {
+    en: 'Recorded when an MFA disable attempt fails (invalid confirmation or validation error). One line per failed attempt.',
+    cs: 'Zapíše se, když vypnutí MFA selže (neplatné potvrzení nebo chyba validace). Jeden řádek za neúspěšný pokus.',
+  },
   'auth.admin.mfa.challenge.success': {
     en: 'Recorded when an MFA login challenge succeeds. One line per successful challenge.',
     cs: 'Zapíše se, když MFA výzva při přihlášení uspěje. Jeden řádek za úspěšnou výzvu.',
@@ -122,6 +130,34 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.user.permanently_deleted': {
     en: 'Recorded when an administrator account is deleted for good. One line per deletion. Other audit history stays.',
     cs: 'Zapíše se, když je účet administrátora trvale smazán. Jeden řádek za smazání. Ostatní auditní historie zůstává.',
+  },
+  'admin.capability.granted': {
+    en: 'Recorded when a capability is granted to an administrator (direct grant or exception path). One line per grant. Shows target user and capability; passwords are never stored.',
+    cs: 'Zapíše se, když je administrátorovi uděleno oprávnění (přímé udělení nebo výjimka). Jeden řádek za udělení. Ukazuje cílového uživatele a oprávnění; hesla se neukládají.',
+  },
+  'admin.capability.revoked': {
+    en: 'Recorded when a capability is revoked from an administrator. One line per revoke. Shows target user and capability.',
+    cs: 'Zapíše se, když je administrátorovi odebráno oprávnění. Jeden řádek za odebrání. Ukazuje cílového uživatele a oprávnění.',
+  },
+  'admin.capability.template_applied': {
+    en: 'Recorded when a capability template is applied to an administrator. One line per apply. Shows target user and template id.',
+    cs: 'Zapíše se, když je na administrátora aplikována šablona oprávnění. Jeden řádek za aplikaci. Ukazuje cílového uživatele a ID šablony.',
+  },
+  'admin.exception_grant.requested': {
+    en: 'Recorded when an exception (SoD dual-control) grant is requested for a capability. One line per request. Shows approval request id, target user, and capability.',
+    cs: 'Zapíše se, když je požádáno o výjimku oprávnění (SoD dual-control). Jeden řádek za požadavek. Ukazuje ID schválení, cílového uživatele a oprávnění.',
+  },
+  'admin.exception_grant.approved': {
+    en: 'Recorded when an exception grant request is approved. One line per approval. Shows approval request id, target user, and capability.',
+    cs: 'Zapíše se, když je požadavek na výjimku oprávnění schválen. Jeden řádek za schválení. Ukazuje ID schválení, cílového uživatele a oprávnění.',
+  },
+  'admin.exception_grant.rejected': {
+    en: 'Recorded when an exception grant request is rejected. One line per rejection. Shows approval request id, target user, and capability.',
+    cs: 'Zapíše se, když je požadavek na výjimku oprávnění zamítnut. Jeden řádek za zamítnutí. Ukazuje ID schválení, cílového uživatele a oprávnění.',
+  },
+  'admin.exception_grant.executed': {
+    en: 'Recorded when an approved exception grant is executed and the capability is applied. One line per execution. Shows approval request id, target user, and capability.',
+    cs: 'Zapíše se, když je schválená výjimka oprávnění provedena a oprávnění aplikováno. Jeden řádek za provedení. Ukazuje ID schválení, cílového uživatele a oprávnění.',
   },
   'admin.product.created': {
     en: 'Recorded when an administrator creates a new product in the catalog. One line per product.',
