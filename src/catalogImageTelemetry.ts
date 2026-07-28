@@ -3,6 +3,8 @@
  * No PII — path-only classification; callers supply entity ids separately.
  */
 
+import { isBrandingCatalogImagePath } from './catalogImageUrl.js';
+
 export type CatalogImageUrlClass = 'signed_api' | 'external' | 'legacy_path';
 
 export function classifyCatalogImageUrl(url: string | null | undefined): CatalogImageUrlClass {
@@ -10,6 +12,10 @@ export function classifyCatalogImageUrl(url: string | null | undefined): Catalog
     return 'external';
   }
   const trimmed = url.trim();
+  // Tenant logo / SP branding streams are HMAC-signed APIs (paths may use /logo, not /image).
+  if (isBrandingCatalogImagePath(hashCatalogImagePath(trimmed))) {
+    return 'signed_api';
+  }
   if (trimmed.includes('sig=') && trimmed.includes('/image')) {
     return 'signed_api';
   }

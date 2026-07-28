@@ -1,5 +1,12 @@
 import type { CSSProperties } from 'react';
 
+/**
+ * Catalog/product (and donation) media placeholder only.
+ *
+ * Do **not** use as a directory entity fallback (tenant / sales-point / org
+ * list thumbs). Missing or broken directory branding images must cascade to
+ * `resolveDirectoryMonogram` / `directoryMonogramLabel` instead.
+ */
 export interface CatalogImagePlaceholderProps {
   label: string;
   className?: string;

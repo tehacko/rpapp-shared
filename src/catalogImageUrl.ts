@@ -2,10 +2,17 @@
  * Catalog product images are often signed absolute API URLs (e.g. http://localhost:3015/api/...).
  * Customer/kiosk PWAs proxy `/api` on the same origin in dev — rewrite to pathname so `<img>`
  * and fetch stay same-origin (CSP + CORP safe).
+ *
+ * Branding streams (tenant logo / sales-point image) use the same `/api/...` rewrite path via
+ * `toSameOriginCatalogImageUrl` / `resolveBrandingDisplayImageUrl`.
  */
 
 const LEGACY_KIOSK_IMAGE_PATH = /^\/api\/products\/(\d+)\/image$/;
 const LEGACY_DONATION_IMAGE_PATH = /^\/api\/donation-projects\/(\d+)\/image$/;
+
+/** Tenant-prefixed or normalized public branding stream paths (logo / SP image ± thumbnail). */
+export const BRANDING_CATALOG_IMAGE_PATH =
+  /^\/api\/(?:[^/]+\/)?v1\/(?:tenants\/[^/]+\/logo|sales-points\/[^/]+\/image)(?:\/thumbnail)?$/;
 
 export interface CatalogImageUrlOptions {
   /** Required to upgrade legacy kiosk URLs `/api/products/{id}/image` → `/api/{tenant}/v1/products/{id}/image`. */
@@ -109,4 +116,20 @@ export function resolveDonationDisplayImageUrl(
   options?: CatalogImageUrlOptions,
 ): string | null {
   return toSameOriginCatalogImageUrlWithMode(thumbnailUrl ?? imageUrl, options, 'donation');
+}
+
+/**
+ * Same-origin rewrite for tenant logo / sales-point image URLs (absolute API → pathname).
+ * Branding paths have no legacy `/api/tenants/...` form; rewrite is pathname+query only.
+ */
+export function resolveBrandingDisplayImageUrl(
+  thumbnailUrl: string | null | undefined,
+  imageUrl: string | null | undefined,
+  options?: CatalogImageUrlOptions,
+): string | null {
+  return toSameOriginCatalogImageUrl(thumbnailUrl ?? imageUrl, options);
+}
+
+export function isBrandingCatalogImagePath(pathname: string): boolean {
+  return BRANDING_CATALOG_IMAGE_PATH.test(pathname);
 }

@@ -49,6 +49,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   transactions: { en: 'Transactions', cs: 'Transakce' },
   donationProjects: { en: 'Donation projects', cs: 'Dárkové projekty' },
   donationTemplates: { en: 'Donation templates', cs: 'Šablony darů' },
+  branding: { en: 'Branding', cs: 'Branding' },
   kioskDonationAssign: { en: 'Kiosk donation assign', cs: 'Přiřazení darů na kiosk' },
   kioskDonationAmounts: { en: 'Kiosk donation amounts', cs: 'Částky darů na kiosku' },
   'orders.complete': { en: 'Orders — complete', cs: 'Objednávky — dokončení' },

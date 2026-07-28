@@ -73,7 +73,9 @@ export * from './promo/ApplyPromoCodeResponse.js';
 export * from './promo/RemovePromoCodeRequest.js';
 export * from './catalogImagePresentation.js';
 export * from './CatalogImagePlaceholder.js';
+export * from './directoryMonogram.js';
 export * from './tenant/tenantPathResolution.js';
+
 export * from './tenant/tenantLifecycle.js';
 
 export {

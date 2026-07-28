@@ -112,6 +112,11 @@ export interface SalesPoint {
     productBankAccountId?: string | null;
     donationBankAccountId?: string | null;
     cardPresentLocationId?: string | null;
+    /** Side-table SalesPointImage present (admin list enrichment). */
+    hasImage?: boolean;
+    /** Optional signed/auth stream hint — not a Prisma column. */
+    imageUrl?: string | null;
+    thumbnailUrl?: string | null;
     createdAt: string;
     updatedAt: string;
 }
