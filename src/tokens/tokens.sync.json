@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-29T07:55:22.550Z",
+  "generatedAt": "2026-07-29T18:47:02.406Z",
   "source": "shared/scripts/gate-tokens-sync.mjs",
   "inputs": [
     "brand-bridge.css",
@@ -13,21 +13,29 @@
       "properties": {
         "--font-family-primary": "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
         "--font-family-mono": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-        "--brand-canva-sailor-blue": "#00203f",
-        "--brand-canva-mint": "#adefd1",
-        "--brand-consumer-accent": "var(--brand-canva-sailor-blue)",
-        "--brand-consumer-accent-soft": "var(--brand-canva-mint)",
-        "--brand-consumer-accent-foreground": "#ffffff",
+        "--color-brand-primary": "#1f6f78",
+        "--color-brand-deep": "#174b52",
+        "--color-brand-accent": "#58a9b5",
+        "--color-brand-soft": "#eef6f7",
+        "--color-brand-text": "#2a3136",
+        "--color-brand-limestone": "#d8d2c8",
+        "--color-surface-default": "#ffffff",
+        "--color-neutral-950": "#0f172a",
+        "--color-neutral-100": "#f1f5f9",
+        "--color-neutral-200": "#e2e8f0",
+        "--brand-consumer-accent": "var(--color-brand-primary)",
+        "--brand-consumer-accent-soft": "var(--color-brand-soft)",
+        "--brand-consumer-accent-foreground": "var(--color-surface-default)",
         "--brand-admin-accent": "#7c3aed",
-        "--brand-admin-primary": "#6365f0",
+        "--brand-admin-primary": "#6366f1",
         "--brand-rail-sidebar-bg": "#1e1b4b",
-        "--brand-rail-sidebar-bg-deep": "#0f172a",
+        "--brand-rail-sidebar-bg-deep": "var(--color-neutral-950)",
         "--brand-rail-sidebar-text": "#e0e7ff",
         "--brand-rail-sidebar-muted": "#a5b4fc",
         "--brand-rail-sidebar-active": "var(--brand-admin-accent)",
         "--brand-rail-sidebar-hover": "rgba(124, 58, 237, 0.2)",
-        "--brand-rail-page-bg": "#f1f5f9",
-        "--brand-rail-card-border": "#e2e8f0",
+        "--brand-rail-page-bg": "var(--color-neutral-100)",
+        "--brand-rail-card-border": "var(--color-neutral-200)",
         "--brand-rail-kpi-up": "#05805a",
         "--brand-rail-kpi-down": "#da2325",
         "--color-accent": "var(--brand-consumer-accent)",
@@ -43,19 +51,19 @@
         "--color-rail-kpi-down": "var(--brand-rail-kpi-down)",
         "--color-an-chart-1": "var(--brand-admin-primary)"
       },
-      "count": 31
+      "count": 39
     },
     {
       "file": "theme.css",
       "properties": {
-        "--color-surface": "#ffffff",
+        "--color-surface": "var(--color-surface-default)",
         "--color-surface-muted": "#f8fafc",
-        "--color-surface-elevated": "#ffffff",
-        "--color-surface-hover": "#f1f5f9",
-        "--color-on-surface": "#0f172a",
+        "--color-surface-elevated": "var(--color-surface-default)",
+        "--color-surface-hover": "var(--color-neutral-100)",
+        "--color-on-surface": "var(--color-neutral-950)",
         "--color-on-surface-muted": "#475569",
         "--color-on-surface-disabled": "#94a3b8",
-        "--color-primary": "#0f172a",
+        "--color-primary": "var(--color-neutral-950)",
         "--color-primary-foreground": "#f8fafc",
         "--color-accent": "var(--brand-consumer-accent)",
         "--color-accent-foreground": "var(--brand-consumer-accent-foreground)",
@@ -66,11 +74,11 @@
         "--color-danger-foreground": "#fef2f2",
         "--color-warning": "#d97706",
         "--color-warning-foreground": "#fffbeb",
-        "--color-border": "#e2e8f0",
+        "--color-border": "var(--color-neutral-200)",
         "--color-border-strong": "#cbd5e1",
         "--color-focus-ring": "var(--brand-consumer-accent)",
         "--color-qr-render-dark": "#000000",
-        "--color-qr-render-light": "#ffffff",
+        "--color-qr-render-light": "var(--color-surface-default)",
         "--color-disabled-opacity": "0.55",
         "--radius-sm": "0.375rem",
         "--radius-md": "0.5rem",
@@ -87,16 +95,16 @@
     {
       "file": "admin-theme.css",
       "properties": {
-        "--color-an-bg": "#f8fafc",
-        "--color-an-bg-elevated": "#ffffff",
-        "--color-an-surface": "#ffffff",
-        "--color-an-surface-muted": "#f8fafc",
-        "--color-an-surface-hover": "#f1f5f9",
-        "--color-an-surface-disabled": "#f1f5f9",
-        "--color-an-text": "#0f172a",
+        "--color-an-bg": "var(--color-neutral-100)",
+        "--color-an-bg-elevated": "var(--color-surface-default)",
+        "--color-an-surface": "var(--color-surface-default)",
+        "--color-an-surface-muted": "var(--color-neutral-100)",
+        "--color-an-surface-hover": "var(--color-neutral-100)",
+        "--color-an-surface-disabled": "var(--color-neutral-100)",
+        "--color-an-text": "var(--color-neutral-950)",
         "--color-an-text-muted": "#475569",
         "--color-an-text-disabled": "#94a3b8",
-        "--color-an-border": "#e2e8f0",
+        "--color-an-border": "var(--color-neutral-200)",
         "--color-an-border-hover": "#cbd5e1",
         "--color-an-primary": "var(--color-primary)",
         "--color-an-primary-hover": "#4f46e5",
@@ -113,24 +121,24 @@
         "--color-an-chart-4": "#ef4444",
         "--color-an-chart-5": "#8b5cf6",
         "--color-an-chart-6": "#06b6d4",
-        "--color-shell-bg": "#f8fafc",
-        "--color-shell-surface": "#ffffff",
-        "--color-shell-border": "#e2e8f0",
-        "--color-shell-text": "#0f172a",
+        "--color-shell-bg": "var(--color-neutral-100)",
+        "--color-shell-surface": "var(--color-surface-default)",
+        "--color-shell-border": "var(--color-neutral-200)",
+        "--color-shell-text": "var(--color-neutral-950)",
         "--color-rail-sidebar-bg": "var(--brand-rail-sidebar-bg)",
         "--color-rail-sidebar-text": "var(--brand-rail-sidebar-text)",
         "--color-rail-sidebar-muted": "var(--brand-rail-sidebar-muted)",
         "--color-rail-sidebar-active": "var(--brand-rail-sidebar-active)",
         "--color-rail-sidebar-hover": "var(--brand-rail-sidebar-hover)",
-        "--color-rail-page-bg": "#f1f5f9",
-        "--color-rail-card-border": "#e2e8f0",
+        "--color-rail-page-bg": "var(--color-neutral-100)",
+        "--color-rail-card-border": "var(--color-neutral-200)",
         "--color-rail-kpi-up": "var(--brand-rail-kpi-up)",
         "--color-rail-kpi-down": "var(--brand-rail-kpi-down)"
       },
       "count": 39
     }
   ],
-  "mergedPropertyCount": 91,
+  "mergedPropertyCount": 99,
   "properties": {
     "--font-family-primary": {
       "file": "brand-bridge.css",
@@ -140,25 +148,57 @@
       "file": "brand-bridge.css",
       "value": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
     },
-    "--brand-canva-sailor-blue": {
+    "--color-brand-primary": {
       "file": "brand-bridge.css",
-      "value": "#00203f"
+      "value": "#1f6f78"
     },
-    "--brand-canva-mint": {
+    "--color-brand-deep": {
       "file": "brand-bridge.css",
-      "value": "#adefd1"
+      "value": "#174b52"
+    },
+    "--color-brand-accent": {
+      "file": "brand-bridge.css",
+      "value": "#58a9b5"
+    },
+    "--color-brand-soft": {
+      "file": "brand-bridge.css",
+      "value": "#eef6f7"
+    },
+    "--color-brand-text": {
+      "file": "brand-bridge.css",
+      "value": "#2a3136"
+    },
+    "--color-brand-limestone": {
+      "file": "brand-bridge.css",
+      "value": "#d8d2c8"
+    },
+    "--color-surface-default": {
+      "file": "brand-bridge.css",
+      "value": "#ffffff"
+    },
+    "--color-neutral-950": {
+      "file": "brand-bridge.css",
+      "value": "#0f172a"
+    },
+    "--color-neutral-100": {
+      "file": "brand-bridge.css",
+      "value": "#f1f5f9"
+    },
+    "--color-neutral-200": {
+      "file": "brand-bridge.css",
+      "value": "#e2e8f0"
     },
     "--brand-consumer-accent": {
       "file": "brand-bridge.css",
-      "value": "var(--brand-canva-sailor-blue)"
+      "value": "var(--color-brand-primary)"
     },
     "--brand-consumer-accent-soft": {
       "file": "brand-bridge.css",
-      "value": "var(--brand-canva-mint)"
+      "value": "var(--color-brand-soft)"
     },
     "--brand-consumer-accent-foreground": {
       "file": "brand-bridge.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--brand-admin-accent": {
       "file": "brand-bridge.css",
@@ -166,7 +206,7 @@
     },
     "--brand-admin-primary": {
       "file": "brand-bridge.css",
-      "value": "#6365f0"
+      "value": "#6366f1"
     },
     "--brand-rail-sidebar-bg": {
       "file": "brand-bridge.css",
@@ -174,7 +214,7 @@
     },
     "--brand-rail-sidebar-bg-deep": {
       "file": "brand-bridge.css",
-      "value": "#0f172a"
+      "value": "var(--color-neutral-950)"
     },
     "--brand-rail-sidebar-text": {
       "file": "brand-bridge.css",
@@ -194,11 +234,11 @@
     },
     "--brand-rail-page-bg": {
       "file": "brand-bridge.css",
-      "value": "#f1f5f9"
+      "value": "var(--color-neutral-100)"
     },
     "--brand-rail-card-border": {
       "file": "brand-bridge.css",
-      "value": "#e2e8f0"
+      "value": "var(--color-neutral-200)"
     },
     "--brand-rail-kpi-up": {
       "file": "brand-bridge.css",
@@ -238,11 +278,11 @@
     },
     "--color-rail-page-bg": {
       "file": "admin-theme.css",
-      "value": "#f1f5f9"
+      "value": "var(--color-neutral-100)"
     },
     "--color-rail-card-border": {
       "file": "admin-theme.css",
-      "value": "#e2e8f0"
+      "value": "var(--color-neutral-200)"
     },
     "--color-rail-kpi-up": {
       "file": "admin-theme.css",
@@ -258,7 +298,7 @@
     },
     "--color-surface": {
       "file": "theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-surface-muted": {
       "file": "theme.css",
@@ -266,15 +306,15 @@
     },
     "--color-surface-elevated": {
       "file": "theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-surface-hover": {
       "file": "theme.css",
-      "value": "#f1f5f9"
+      "value": "var(--color-neutral-100)"
     },
     "--color-on-surface": {
       "file": "theme.css",
-      "value": "#0f172a"
+      "value": "var(--color-neutral-950)"
     },
     "--color-on-surface-muted": {
       "file": "theme.css",
@@ -286,7 +326,7 @@
     },
     "--color-primary": {
       "file": "theme.css",
-      "value": "#0f172a"
+      "value": "var(--color-neutral-950)"
     },
     "--color-primary-foreground": {
       "file": "theme.css",
@@ -326,7 +366,7 @@
     },
     "--color-border": {
       "file": "theme.css",
-      "value": "#e2e8f0"
+      "value": "var(--color-neutral-200)"
     },
     "--color-border-strong": {
       "file": "theme.css",
@@ -338,7 +378,7 @@
     },
     "--color-qr-render-light": {
       "file": "theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-disabled-opacity": {
       "file": "theme.css",
@@ -382,31 +422,31 @@
     },
     "--color-an-bg": {
       "file": "admin-theme.css",
-      "value": "#f8fafc"
+      "value": "var(--color-neutral-100)"
     },
     "--color-an-bg-elevated": {
       "file": "admin-theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-an-surface": {
       "file": "admin-theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-an-surface-muted": {
       "file": "admin-theme.css",
-      "value": "#f8fafc"
+      "value": "var(--color-neutral-100)"
     },
     "--color-an-surface-hover": {
       "file": "admin-theme.css",
-      "value": "#f1f5f9"
+      "value": "var(--color-neutral-100)"
     },
     "--color-an-surface-disabled": {
       "file": "admin-theme.css",
-      "value": "#f1f5f9"
+      "value": "var(--color-neutral-100)"
     },
     "--color-an-text": {
       "file": "admin-theme.css",
-      "value": "#0f172a"
+      "value": "var(--color-neutral-950)"
     },
     "--color-an-text-muted": {
       "file": "admin-theme.css",
@@ -418,7 +458,7 @@
     },
     "--color-an-border": {
       "file": "admin-theme.css",
-      "value": "#e2e8f0"
+      "value": "var(--color-neutral-200)"
     },
     "--color-an-border-hover": {
       "file": "admin-theme.css",
@@ -482,19 +522,19 @@
     },
     "--color-shell-bg": {
       "file": "admin-theme.css",
-      "value": "#f8fafc"
+      "value": "var(--color-neutral-100)"
     },
     "--color-shell-surface": {
       "file": "admin-theme.css",
-      "value": "#ffffff"
+      "value": "var(--color-surface-default)"
     },
     "--color-shell-border": {
       "file": "admin-theme.css",
-      "value": "#e2e8f0"
+      "value": "var(--color-neutral-200)"
     },
     "--color-shell-text": {
       "file": "admin-theme.css",
-      "value": "#0f172a"
+      "value": "var(--color-neutral-950)"
     }
   }
 }

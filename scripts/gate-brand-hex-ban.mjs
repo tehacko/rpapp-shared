@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 /**
- * Phase 1 CI — ban Option C / violet brand hex + raw slate-as-brand.
+ * Phase 1 CI — ban stray brand hex outside SSOT + raw slate-as-brand.
  *
- * Bans: #00203F #ADEFD1 #7C3AED #6366F1 #1E1B4B (Canva/violet)
- *       #1F5F78 (non-Doc1 primary drift)
- * Raw slate #0F172A / #F1F5F9 / #E2E8F0 fail unless the same line
- * declares or comments `--color-neutral-*`.
- * Non-official brand gradients (linear-gradient with banned brand hex) fail.
+ * Admin Option C violet (`#7C3AED` `#6366F1` `#1E1B4B`) is **allowed only** in
+ * `shared/src/tokens/brand-bridge.css` (DECISION-1 Option C admin rail/CTA).
+ * Elsewhere: use `--brand-admin-*` / `--brand-rail-*` tokens.
  *
- * @see ADR-FE-BRAND-002 · plan §A CI hex ban
+ * Always banned: `#00203F` `#ADEFD1` `#1F5F78` (legacy Canva / primary-drift).
+ * Raw slate `#0F172A` / `#F1F5F9` / `#E2E8F0` fail unless the same line
+ * declares `--color-neutral-*` or `--brand-rail-*`.
+ *
+ * @see ADR-FE-BRAND-002 · brand-palette.md Option C · plan §A CI hex ban
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative } from 'node:path';
@@ -56,16 +58,18 @@ function isTestFile(fileName) {
 }
 
 /** Absolute ban — never allowed in scanned sources */
-const BANNED_HEX = [
-  '#00203F',
-  '#ADEFD1',
-  '#7C3AED',
-  '#6366F1',
-  '#1E1B4B',
-  '#1F5F78',
-];
+const BANNED_HEX = ['#00203F', '#ADEFD1', '#1F5F78'];
 
-/** Slate — allowed only via `--color-neutral-*` on the same line */
+/**
+ * Admin Option C violet — SSOT in brand-bridge.css; also allowed in
+ * admin-app design-tokens.css so admin can pin rail/CTA if a stale
+ * package copy remaps `--brand-admin-*` onto consumer teal.
+ */
+const ADMIN_OPTION_C_HEX = ['#7C3AED', '#6366F1', '#1E1B4B'];
+const ADMIN_OPTION_C_ALLOW_RE =
+  /(?:^|\/)(?:brand-bridge\.css|admin-app\/src\/shared\/styles\/design-tokens\.css)$/;
+
+/** Slate — allowed only via `--color-neutral-*` or `--brand-rail-*` on the same line */
 const SLATE_HEX = ['#0F172A', '#F1F5F9', '#E2E8F0'];
 
 const OFFICIAL_GRADIENT_NEEDLES = [
@@ -75,7 +79,7 @@ const OFFICIAL_GRADIENT_NEEDLES = [
 ];
 
 const HEX_RE = /#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b/g;
-const NEUTRAL_ALLOW_RE = /--color-neutral-(?:950|100|200)\b/;
+const NEUTRAL_ALLOW_RE = /--color-neutral-(?:950|100|200)\b|--brand-rail-/;
 const LINEAR_GRADIENT_RE = /linear-gradient\s*\([^)]+\)/gi;
 
 /**
@@ -136,6 +140,7 @@ function scanFile(filePath, content) {
   /** @type {{ file: string, line: number, hex: string, reason: string }[]} */
   const hits = [];
   const rel = relative(REPO_ROOT, filePath).replace(/\\/g, '/');
+  const isAdminOptionCAllow = ADMIN_OPTION_C_ALLOW_RE.test(rel);
   const lines = content.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i += 1) {
@@ -151,7 +156,15 @@ function scanFile(filePath, content) {
           file: rel,
           line: lineNo,
           hex: hexNorm,
-          reason: 'banned Option C / violet / primary-drift brand hex',
+          reason: 'banned legacy Canva / primary-drift brand hex',
+        });
+      } else if (ADMIN_OPTION_C_HEX.includes(hexNorm) && !isAdminOptionCAllow) {
+        hits.push({
+          file: rel,
+          line: lineNo,
+          hex: hexNorm,
+          reason:
+            'admin Option C violet hex outside brand-bridge.css / admin design-tokens.css — use --brand-admin-* / --brand-rail-*',
         });
       } else if (SLATE_HEX.includes(hexNorm) && !slateAllowed(line, hexNorm)) {
         hits.push({
@@ -159,7 +172,7 @@ function scanFile(filePath, content) {
           line: lineNo,
           hex: hexNorm,
           reason:
-            'raw slate hex as brand — allow only on lines with --color-neutral-950|100|200',
+            'raw slate hex as brand — allow only on lines with --color-neutral-* or --brand-rail-*',
         });
       }
       match = HEX_RE.exec(line);
@@ -171,10 +184,12 @@ function scanFile(filePath, content) {
       const g = grad[0].replace(/\s+/g, ' ').toLowerCase();
       const isOfficial = OFFICIAL_GRADIENT_NEEDLES.some((n) => g.includes(n));
       const usesBanned = BANNED_HEX.some((h) => g.includes(h.toLowerCase()));
+      const usesAdminOptionC =
+        !isAdminOptionCAllow && ADMIN_OPTION_C_HEX.some((h) => g.includes(h.toLowerCase()));
       const usesSlateBrand = SLATE_HEX.some(
         (h) => g.includes(h.toLowerCase()) && !NEUTRAL_ALLOW_RE.test(line),
       );
-      if (!isOfficial && (usesBanned || usesSlateBrand)) {
+      if (!isOfficial && (usesBanned || usesAdminOptionC || usesSlateBrand)) {
         hits.push({
           file: rel,
           line: lineNo,
@@ -210,12 +225,12 @@ if (allHits.length > 0) {
     console.error(`  ${hit.file}:${String(hit.line)}  ${hit.hex}  — ${hit.reason}`);
   }
   console.error(
-    `\nRecovery: replace with Adriatic --color-brand-* / official gradients, or slate via --color-neutral-*. See ADR-FE-BRAND-002.`,
+    `\nRecovery: use Adriatic --color-brand-* (consumer) or Option C --brand-admin-* / --brand-rail-* (admin SSOT in brand-bridge.css). See brand-palette.md.`,
   );
   process.exit(1);
 }
 
 console.log(
-  `gate-brand-hex-ban: ok (${scanAll ? 'all surfaces' : 'tokens SSOT only'}; no banned Canva/violet/slate-as-brand hex)`,
+  `gate-brand-hex-ban: ok (${scanAll ? 'all surfaces' : 'tokens SSOT only'}; Option C violet only in brand-bridge; no stray brand hex)`,
 );
 process.exit(0);

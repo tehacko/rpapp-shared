@@ -4,7 +4,11 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> 
   readonly label?: string;
 };
 
-/** CMP-0006 Checkbox — native control. */
+/**
+ * CMP-0006 Checkbox — native control.
+ * D27: Checkbox = independent multi-selection. Use Switch for binary on/off;
+ * Radio for mutually exclusive choice among 2–5 options.
+ */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, label, id, ...rest }, ref) => {
     const input = (

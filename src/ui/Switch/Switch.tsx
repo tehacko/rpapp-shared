@@ -37,7 +37,11 @@ export type SwitchProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChang
   readonly onCheckedChange?: (checked: boolean) => void;
 };
 
-/** CMP-0008 Switch — button role=switch. */
+/**
+ * CMP-0008 Switch — button role=switch.
+ * D27: Switch = binary on/off toggle only. Use Checkbox for independent
+ * multi-selection; Radio for mutually exclusive choice among 2–5 options.
+ */
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ({ checked, onCheckedChange, className, disabled, ...rest }, ref) => (
     <button

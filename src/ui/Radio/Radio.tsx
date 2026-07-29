@@ -4,7 +4,11 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   readonly label?: string;
 };
 
-/** CMP-0007 Radio — native control. */
+/**
+ * CMP-0007 Radio — native control.
+ * D27: Radio = mutually exclusive choice among a small group (2–5 options).
+ * Use Switch for binary on/off; Checkbox for independent multi-selection.
+ */
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ className, label, id, ...rest }, ref) => {
     const input = (

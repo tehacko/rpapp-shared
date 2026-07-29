@@ -25,7 +25,35 @@ describe('Button', () => {
 
     const el = screen.getByRole('button', { name: 'Filter' });
     expect(el.className).toContain('text-xs');
+    expect(el.className).toContain('h-8');
     expect(el.className).toContain('border-[var(--color-gray-300)]');
+  });
+
+  it('preserves label space while loading', () => {
+    render(
+      <Button surface="admin" loading>
+        Save changes
+      </Button>
+    );
+
+    const el = screen.getByRole('button', { name: 'Save changes' });
+    expect(el).toHaveAttribute('data-loading', 'true');
+    expect(el).toBeDisabled();
+    expect(el).toHaveAttribute('aria-busy', 'true');
+    expect(el.textContent).toContain('Save changes');
+  });
+
+  it('requires accessible name for icon-only and sets native title tooltip', () => {
+    render(
+      <Button surface="admin" iconOnly aria-label="Close panel">
+        ×
+      </Button>
+    );
+
+    const el = screen.getByRole('button', { name: 'Close panel' });
+    expect(el).toHaveAttribute('data-icon-only', 'true');
+    expect(el).toHaveAttribute('title', 'Close panel');
+    expect(el.className).toContain('min-h-[44px]');
   });
 
   it('applies block width when block is true', () => {
