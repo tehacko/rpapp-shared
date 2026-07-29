@@ -8,14 +8,14 @@
 @import './brand-bridge.css';
 
 @theme {
-  --color-surface: #ffffff;
+  --color-surface: var(--color-surface-default);
   --color-surface-muted: #f8fafc;
-  --color-surface-elevated: #ffffff;
-  --color-surface-hover: #f1f5f9;
-  --color-on-surface: #0f172a;
+  --color-surface-elevated: var(--color-surface-default);
+  --color-surface-hover: var(--color-neutral-100);
+  --color-on-surface: var(--color-neutral-950);
   --color-on-surface-muted: #475569;
   --color-on-surface-disabled: #94a3b8;
-  --color-primary: #0f172a;
+  --color-primary: var(--color-neutral-950);
   --color-primary-foreground: #f8fafc;
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
@@ -26,11 +26,11 @@
   --color-danger-foreground: #fef2f2;
   --color-warning: #d97706;
   --color-warning-foreground: #fffbeb;
-  --color-border: #e2e8f0;
+  --color-border: var(--color-neutral-200);
   --color-border-strong: #cbd5e1;
   --color-focus-ring: var(--brand-consumer-accent);
   --color-qr-render-dark: #000000;
-  --color-qr-render-light: #ffffff;
+  --color-qr-render-light: var(--color-surface-default);
   --color-disabled-opacity: 0.55;
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
@@ -46,14 +46,14 @@
 @media (prefers-color-scheme: dark) {
   @theme {
     --color-surface: #0b1220;
-    --color-surface-muted: #0f172a;
+    --color-surface-muted: var(--color-neutral-950);
     --color-surface-elevated: #111a2e;
     --color-surface-hover: #162031;
-    --color-on-surface: #e2e8f0;
+    --color-on-surface: var(--color-neutral-200);
     --color-on-surface-muted: #94a3b8;
     --color-on-surface-disabled: #64748b;
     --color-primary: #f8fafc;
-    --color-primary-foreground: #0f172a;
+    --color-primary-foreground: var(--color-neutral-950);
     --color-accent: var(--brand-consumer-accent);
     --color-accent-foreground: var(--brand-consumer-accent-foreground);
     --color-accent-hover: var(--brand-consumer-accent-soft);
@@ -79,14 +79,14 @@
 .dark {
   color-scheme: dark;
   --color-surface: #0b1220;
-  --color-surface-muted: #0f172a;
+  --color-surface-muted: var(--color-neutral-950);
   --color-surface-elevated: #111a2e;
   --color-surface-hover: #162031;
-  --color-on-surface: #e2e8f0;
+  --color-on-surface: var(--color-neutral-200);
   --color-on-surface-muted: #94a3b8;
   --color-on-surface-disabled: #64748b;
   --color-primary: #f8fafc;
-  --color-primary-foreground: #0f172a;
+  --color-primary-foreground: var(--color-neutral-950);
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
   --color-accent-hover: var(--brand-consumer-accent-soft);
@@ -110,14 +110,14 @@
  */
 .light {
   color-scheme: light;
-  --color-surface: #ffffff;
+  --color-surface: var(--color-surface-default);
   --color-surface-muted: #f8fafc;
-  --color-surface-elevated: #ffffff;
-  --color-surface-hover: #f1f5f9;
-  --color-on-surface: #0f172a;
+  --color-surface-elevated: var(--color-surface-default);
+  --color-surface-hover: var(--color-neutral-100);
+  --color-on-surface: var(--color-neutral-950);
   --color-on-surface-muted: #475569;
   --color-on-surface-disabled: #94a3b8;
-  --color-primary: #0f172a;
+  --color-primary: var(--color-neutral-950);
   --color-primary-foreground: #f8fafc;
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
@@ -128,7 +128,7 @@
   --color-danger-foreground: #fef2f2;
   --color-warning: #d97706;
   --color-warning-foreground: #fffbeb;
-  --color-border: #e2e8f0;
+  --color-border: var(--color-neutral-200);
   --color-border-strong: #cbd5e1;
   --color-focus-ring: var(--brand-consumer-accent);
   --color-disabled-opacity: 0.55;

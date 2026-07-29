@@ -1,342 +1,350 @@
 {
-  "name": "pi-kiosk-shared",
-  "version": "2.2.43",
-  "type": "module",
-  "private": false,
-  "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
-  "keywords": [
-    "kiosk",
-    "typescript",
-    "types",
-    "api"
-  ],
-  "author": "tehacko@seznam.cz",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tehacko/pi-kiosk-shared.git"
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./analyticsExploreCaps": {
-      "types": "./dist/analyticsExploreCaps.d.ts",
-      "import": "./dist/analyticsExploreCaps.js",
-      "require": "./dist/analyticsExploreCaps.js"
-    },
-    "./analyticsApiTypes": {
-      "types": "./dist/analyticsApiTypes.d.ts",
-      "import": "./dist/analyticsApiTypes.js",
-      "require": "./dist/analyticsApiTypes.js"
-    },
-    "./analyticsEvents": {
-      "types": "./dist/analyticsEvents.d.ts",
-      "import": "./dist/analyticsEvents.js",
-      "require": "./dist/analyticsEvents.js"
-    },
-    "./analyticsEmitterManifest": {
-      "types": "./dist/analyticsEmitterManifest.d.ts",
-      "import": "./dist/analyticsEmitterManifest.js",
-      "require": "./dist/analyticsEmitterManifest.js"
-    },
-    "./crossTab": {
-      "types": "./dist/crossTab/index.d.ts",
-      "import": "./dist/crossTab/index.js",
-      "require": "./dist/crossTab/index.js"
-    },
-    "./analyticsDevLog": {
-      "types": "./dist/analyticsDevLog.d.ts",
-      "import": "./dist/analyticsDevLog.js",
-      "require": "./dist/analyticsDevLog.js"
-    },
-    "./analyticsConsentAllowlist": {
-      "types": "./dist/analyticsConsentAllowlist.d.ts",
-      "import": "./dist/analyticsConsentAllowlist.js",
-      "require": "./dist/analyticsConsentAllowlist.js"
-    },
-    "./analyticsConsentTier2": {
-      "types": "./dist/analyticsConsentTier2.d.ts",
-      "import": "./dist/analyticsConsentTier2.js",
-      "require": "./dist/analyticsConsentTier2.js"
-    },
-    "./analytics/metadataBuilders": {
-      "types": "./dist/analytics/metadataBuilders.d.ts",
-      "import": "./dist/analytics/metadataBuilders.js",
-      "require": "./dist/analytics/metadataBuilders.js"
-    },
-    "./analytics/missionControl": {
-      "types": "./dist/analytics/missionControl.d.ts",
-      "import": "./dist/analytics/missionControl.js",
-      "require": "./dist/analytics/missionControl.js"
-    },
-    "./analyticsAnonymousIdentity": {
-      "types": "./dist/analyticsAnonymousIdentity.d.ts",
-      "import": "./dist/analyticsAnonymousIdentity.js",
-      "require": "./dist/analyticsAnonymousIdentity.js"
-    },
-    "./analyticsEmitDedup": {
-      "types": "./dist/analyticsEmitDedup.d.ts",
-      "import": "./dist/analyticsEmitDedup.js",
-      "require": "./dist/analyticsEmitDedup.js"
-    },
-    "./analyticsIngestOutboxPolicy": {
-      "types": "./dist/analyticsIngestOutboxPolicy.d.ts",
-      "import": "./dist/analyticsIngestOutboxPolicy.js",
-      "require": "./dist/analyticsIngestOutboxPolicy.js"
-    },
-    "./clientLogRedaction": {
-      "types": "./dist/clientLogRedaction.d.ts",
-      "import": "./dist/clientLogRedaction.js",
-      "require": "./dist/clientLogRedaction.js"
-    },
-    "./sensitiveMetaKeys": {
-      "types": "./dist/sensitiveMetaKeys.d.ts",
-      "import": "./dist/sensitiveMetaKeys.js",
-      "require": "./dist/sensitiveMetaKeys.js"
-    },
-    "./logging": {
-      "types": "./dist/logging/index.d.ts",
-      "import": "./dist/logging/index.js",
-      "require": "./dist/logging/index.js"
-    },
-    "./logging/createClientLogger": {
-      "types": "./dist/logging/createClientLogger.d.ts",
-      "import": "./dist/logging/createClientLogger.js",
-      "require": "./dist/logging/createClientLogger.js"
-    },
-    "./barcode-scanner": {
-      "types": "./dist/barcode-scanner.d.ts",
-      "import": "./dist/barcode-scanner.js",
-      "require": "./dist/barcode-scanner.js"
-    },
-    "./loyalty/loyaltySessionHandoff": {
-      "types": "./dist/loyalty/loyaltySessionHandoff.d.ts",
-      "import": "./dist/loyalty/loyaltySessionHandoff.js",
-      "require": "./dist/loyalty/loyaltySessionHandoff.js"
-    },
-    "./promo/promoSessionHandoff": {
-      "types": "./dist/promo/promoSessionHandoff.d.ts",
-      "import": "./dist/promo/promoSessionHandoff.js",
-      "require": "./dist/promo/promoSessionHandoff.js"
-    },
-    "./promo/resolvePromoLoyaltyStack": {
-      "types": "./dist/promo/resolvePromoLoyaltyStack.d.ts",
-      "import": "./dist/promo/resolvePromoLoyaltyStack.js",
-      "require": "./dist/promo/resolvePromoLoyaltyStack.js"
-    },
-    "./promo/PromoCodeErrorCode": {
-      "types": "./dist/promo/PromoCodeErrorCode.d.ts",
-      "import": "./dist/promo/PromoCodeErrorCode.js",
-      "require": "./dist/promo/PromoCodeErrorCode.js"
-    },
-    "./promo/ApplyPromoCodeRequest": {
-      "types": "./dist/promo/ApplyPromoCodeRequest.d.ts",
-      "import": "./dist/promo/ApplyPromoCodeRequest.js",
-      "require": "./dist/promo/ApplyPromoCodeRequest.js"
-    },
-    "./promo/ApplyPromoCodeResponse": {
-      "types": "./dist/promo/ApplyPromoCodeResponse.d.ts",
-      "import": "./dist/promo/ApplyPromoCodeResponse.js",
-      "require": "./dist/promo/ApplyPromoCodeResponse.js"
-    },
-    "./promo/RemovePromoCodeRequest": {
-      "types": "./dist/promo/RemovePromoCodeRequest.d.ts",
-      "import": "./dist/promo/RemovePromoCodeRequest.js",
-      "require": "./dist/promo/RemovePromoCodeRequest.js"
-    },
-    "./checkout/sessionMetadataV4": {
-      "types": "./dist/checkout/sessionMetadataV4.d.ts",
-      "import": "./dist/checkout/sessionMetadataV4.js",
-      "require": "./dist/checkout/sessionMetadataV4.js"
-    },
-    "./checkout/sessionMetadataV5": {
-      "types": "./dist/checkout/sessionMetadataV5.d.ts",
-      "import": "./dist/checkout/sessionMetadataV5.js",
-      "require": "./dist/checkout/sessionMetadataV5.js"
-    },
-    "./checkout/CartLineFingerprint": {
-      "types": "./dist/checkout/CartLineFingerprint.d.ts",
-      "import": "./dist/checkout/CartLineFingerprint.js",
-      "require": "./dist/checkout/CartLineFingerprint.js"
-    },
-    "./sentry": {
-      "types": "./dist/sentry/initSentry.d.ts",
-      "import": "./dist/sentry/initSentry.js",
-      "require": "./dist/sentry/initSentry.js"
-    },
-    "./sentry/correlationTagBridge": {
-      "types": "./dist/sentry/correlationTagBridge.d.ts",
-      "import": "./dist/sentry/correlationTagBridge.js",
-      "require": "./dist/sentry/correlationTagBridge.js"
-    },
-    "./sentry/captureRateLimitBreadcrumb": {
-      "types": "./dist/sentry/captureRateLimitBreadcrumb.d.ts",
-      "import": "./dist/sentry/captureRateLimitBreadcrumb.js",
-      "require": "./dist/sentry/captureRateLimitBreadcrumb.js"
-    },
-    "./sentry/captureConflictBreadcrumb": {
-      "types": "./dist/sentry/captureConflictBreadcrumb.d.ts",
-      "import": "./dist/sentry/captureConflictBreadcrumb.js",
-      "require": "./dist/sentry/captureConflictBreadcrumb.js"
-    },
-    "./theme.css": "./src/tokens/theme.css",
-    "./admin-theme.css": "./src/tokens/admin-theme.css",
-    "./responsive.css": "./src/tokens/responsive.css",
-    "./responsive": {
-      "types": "./dist/responsive/index.d.ts",
-      "import": "./dist/responsive/index.js",
-      "require": "./dist/responsive/index.js"
-    },
-    "./ui": {
-      "types": "./dist/ui/index.d.ts",
-      "import": "./dist/ui/index.js",
-      "require": "./dist/ui/index.js"
-    },
-    "./ui/tvShim": {
-      "types": "./dist/ui/tvShim.d.ts",
-      "import": "./dist/ui/tvShim.js",
-      "require": "./dist/ui/tvShim.js"
-    },
-    "./tenant-entitlements": {
-      "types": "./dist/tenant-entitlements/index.d.ts",
-      "import": "./dist/tenant-entitlements/index.js",
-      "require": "./dist/tenant-entitlements/index.js"
-    },
-    "./theme": {
-      "types": "./dist/theme/ThemeProvider.d.ts",
-      "import": "./dist/theme/ThemeProvider.js",
-      "require": "./dist/theme/ThemeProvider.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "sensitiveMetaKeys": [
-        "./dist/sensitiveMetaKeys.d.ts"
-      ],
-      "clientLogRedaction": [
-        "./dist/clientLogRedaction.d.ts"
-      ],
-      "analyticsEvents": [
-        "./dist/analyticsEvents.d.ts"
-      ],
-      "analyticsApiTypes": [
-        "./dist/analyticsApiTypes.d.ts"
-      ],
-      "analyticsExploreCaps": [
-        "./dist/analyticsExploreCaps.d.ts"
-      ],
-      "crossTab": [
-        "./dist/crossTab/index.d.ts"
-      ],
-      "logging": [
-        "./dist/logging/index.d.ts"
-      ],
-      "logging/createClientLogger": [
-        "./dist/logging/createClientLogger.d.ts"
-      ]
-    }
-  },
-  "peerDependencies": {
-    "@marsidev/react-turnstile": "^1.0.0",
-    "@sentry/react": "^8.0.0",
-    "@tanstack/react-query": "^5.0.0",
-    "@zxing/browser": "^0.1.5",
-    "@zxing/library": "^0.21.3",
-    "react": "^18.0.0",
-    "react-i18next": "^14.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@sentry/react": {
-      "optional": true
-    },
-    "@marsidev/react-turnstile": {
-      "optional": true
-    },
-    "@zxing/browser": {
-      "optional": true
-    },
-    "@zxing/library": {
-      "optional": true
-    },
-    "react-i18next": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "@tanstack/react-query": "^5.0.0",
-    "tailwind-variants": "^0.3.0"
-  },
-  "scripts": {
-    "build": "tsc",
-    "build:clean": "npm run clean && tsc",
-    "dev": "tsc --watch",
-    "type-check": "tsc --noEmit",
-    "lint": "npm run type-check",
-    "test": "jest --config jest.config.cjs --passWithNoTests",
-    "postinstall": "node scripts/applyMonorepoPatches.mjs",
-    "test:watch": "jest --config jest.config.cjs --watch",
-    "test:coverage": "jest --config jest.config.cjs --coverage",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "clean": "rimraf dist",
-    "publish:local": "npm run build:clean && npm pack --pack-destination ../",
-    "prepublishOnly": "npm run build:clean",
-    "preversion": "npm run test -- --passWithNoTests",
-    "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'",
-    "audit:deps": "npm audit --audit-level=high",
-    "export:catalog": "npm run build && node scripts/exportAnalyticsCatalog.mjs"
-  },
-  "files": [
-    "dist",
-    "patches",
-    "src/tokens",
-    "scripts/applyMonorepoPatches.mjs",
-    "README.md"
-  ],
-  "devDependencies": {
-    "@marsidev/react-turnstile": "^1.1.0",
-    "@radix-ui/react-select": "^2.3.7",
-    "@sentry/react": "^8.55.0",
-    "@storybook/react-vite": "^9.1.20",
-    "@tanstack/react-query": "^5.66.0",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.6.0",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/user-event": "^14.6.0",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^20.19.41",
-    "@types/react": "^18.2.0",
-    "@zxing/browser": "^0.1.5",
-    "@zxing/library": "^0.21.3",
-    "handlebars": "^4.7.9",
-    "jest": "^30.4.0",
-    "jest-environment-jsdom": "^30.4.0",
-    "lucide-react": "^1.27.0",
-    "patch-package": "^8.0.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-i18next": "^14.1.0",
-    "rimraf": "^6.1.3",
-    "storybook": "^9.1.20",
-    "ts-jest": "^29.4.11",
-    "typescript": "^5.0.0",
-    "vite": "^6.4.3"
-  },
-  "overrides": {
-    "babel-plugin-istanbul": "^8.0.2",
-    "brace-expansion": "^5.0.8",
-    "fast-uri": "^3.1.4",
-    "glob": "^13.0.6",
-    "jsdom": "^27.4.0",
-    "minimatch": "^10.2.5",
-    "postcss": "^8.5.23",
-    "test-exclude": "^8.0.0",
-    "uuid": "^11.1.1"
-  }
+    "name":  "pi-kiosk-shared",
+    "version":  "2.2.43",
+    "type":  "module",
+    "private":  false,
+    "description":  "Shared types, API contracts, and error classes for Pi Kiosk system",
+    "keywords":  [
+                     "kiosk",
+                     "typescript",
+                     "types",
+                     "api"
+                 ],
+    "author":  "tehacko@seznam.cz",
+    "license":  "MIT",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/tehacko/pi-kiosk-shared.git"
+                   },
+    "main":  "dist/index.js",
+    "module":  "dist/index.js",
+    "types":  "dist/index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "types":  "./dist/index.d.ts",
+                              "import":  "./dist/index.js",
+                              "require":  "./dist/index.js"
+                          },
+                    "./analyticsExploreCaps":  {
+                                                   "types":  "./dist/analyticsExploreCaps.d.ts",
+                                                   "import":  "./dist/analyticsExploreCaps.js",
+                                                   "require":  "./dist/analyticsExploreCaps.js"
+                                               },
+                    "./analyticsApiTypes":  {
+                                                "types":  "./dist/analyticsApiTypes.d.ts",
+                                                "import":  "./dist/analyticsApiTypes.js",
+                                                "require":  "./dist/analyticsApiTypes.js"
+                                            },
+                    "./analyticsEvents":  {
+                                              "types":  "./dist/analyticsEvents.d.ts",
+                                              "import":  "./dist/analyticsEvents.js",
+                                              "require":  "./dist/analyticsEvents.js"
+                                          },
+                    "./analyticsEmitterManifest":  {
+                                                       "types":  "./dist/analyticsEmitterManifest.d.ts",
+                                                       "import":  "./dist/analyticsEmitterManifest.js",
+                                                       "require":  "./dist/analyticsEmitterManifest.js"
+                                                   },
+                    "./crossTab":  {
+                                       "types":  "./dist/crossTab/index.d.ts",
+                                       "import":  "./dist/crossTab/index.js",
+                                       "require":  "./dist/crossTab/index.js"
+                                   },
+                    "./analyticsDevLog":  {
+                                              "types":  "./dist/analyticsDevLog.d.ts",
+                                              "import":  "./dist/analyticsDevLog.js",
+                                              "require":  "./dist/analyticsDevLog.js"
+                                          },
+                    "./analyticsConsentAllowlist":  {
+                                                        "types":  "./dist/analyticsConsentAllowlist.d.ts",
+                                                        "import":  "./dist/analyticsConsentAllowlist.js",
+                                                        "require":  "./dist/analyticsConsentAllowlist.js"
+                                                    },
+                    "./analyticsConsentTier2":  {
+                                                    "types":  "./dist/analyticsConsentTier2.d.ts",
+                                                    "import":  "./dist/analyticsConsentTier2.js",
+                                                    "require":  "./dist/analyticsConsentTier2.js"
+                                                },
+                    "./analytics/metadataBuilders":  {
+                                                         "types":  "./dist/analytics/metadataBuilders.d.ts",
+                                                         "import":  "./dist/analytics/metadataBuilders.js",
+                                                         "require":  "./dist/analytics/metadataBuilders.js"
+                                                     },
+                    "./analytics/missionControl":  {
+                                                       "types":  "./dist/analytics/missionControl.d.ts",
+                                                       "import":  "./dist/analytics/missionControl.js",
+                                                       "require":  "./dist/analytics/missionControl.js"
+                                                   },
+                    "./analyticsAnonymousIdentity":  {
+                                                         "types":  "./dist/analyticsAnonymousIdentity.d.ts",
+                                                         "import":  "./dist/analyticsAnonymousIdentity.js",
+                                                         "require":  "./dist/analyticsAnonymousIdentity.js"
+                                                     },
+                    "./analyticsEmitDedup":  {
+                                                 "types":  "./dist/analyticsEmitDedup.d.ts",
+                                                 "import":  "./dist/analyticsEmitDedup.js",
+                                                 "require":  "./dist/analyticsEmitDedup.js"
+                                             },
+                    "./analyticsIngestOutboxPolicy":  {
+                                                          "types":  "./dist/analyticsIngestOutboxPolicy.d.ts",
+                                                          "import":  "./dist/analyticsIngestOutboxPolicy.js",
+                                                          "require":  "./dist/analyticsIngestOutboxPolicy.js"
+                                                      },
+                    "./clientLogRedaction":  {
+                                                 "types":  "./dist/clientLogRedaction.d.ts",
+                                                 "import":  "./dist/clientLogRedaction.js",
+                                                 "require":  "./dist/clientLogRedaction.js"
+                                             },
+                    "./sensitiveMetaKeys":  {
+                                                "types":  "./dist/sensitiveMetaKeys.d.ts",
+                                                "import":  "./dist/sensitiveMetaKeys.js",
+                                                "require":  "./dist/sensitiveMetaKeys.js"
+                                            },
+                    "./logging":  {
+                                      "types":  "./dist/logging/index.d.ts",
+                                      "import":  "./dist/logging/index.js",
+                                      "require":  "./dist/logging/index.js"
+                                  },
+                    "./logging/createClientLogger":  {
+                                                         "types":  "./dist/logging/createClientLogger.d.ts",
+                                                         "import":  "./dist/logging/createClientLogger.js",
+                                                         "require":  "./dist/logging/createClientLogger.js"
+                                                     },
+                    "./barcode-scanner":  {
+                                              "types":  "./dist/barcode-scanner.d.ts",
+                                              "import":  "./dist/barcode-scanner.js",
+                                              "require":  "./dist/barcode-scanner.js"
+                                          },
+                    "./loyalty/loyaltySessionHandoff":  {
+                                                            "types":  "./dist/loyalty/loyaltySessionHandoff.d.ts",
+                                                            "import":  "./dist/loyalty/loyaltySessionHandoff.js",
+                                                            "require":  "./dist/loyalty/loyaltySessionHandoff.js"
+                                                        },
+                    "./promo/promoSessionHandoff":  {
+                                                        "types":  "./dist/promo/promoSessionHandoff.d.ts",
+                                                        "import":  "./dist/promo/promoSessionHandoff.js",
+                                                        "require":  "./dist/promo/promoSessionHandoff.js"
+                                                    },
+                    "./promo/resolvePromoLoyaltyStack":  {
+                                                             "types":  "./dist/promo/resolvePromoLoyaltyStack.d.ts",
+                                                             "import":  "./dist/promo/resolvePromoLoyaltyStack.js",
+                                                             "require":  "./dist/promo/resolvePromoLoyaltyStack.js"
+                                                         },
+                    "./promo/PromoCodeErrorCode":  {
+                                                       "types":  "./dist/promo/PromoCodeErrorCode.d.ts",
+                                                       "import":  "./dist/promo/PromoCodeErrorCode.js",
+                                                       "require":  "./dist/promo/PromoCodeErrorCode.js"
+                                                   },
+                    "./promo/ApplyPromoCodeRequest":  {
+                                                          "types":  "./dist/promo/ApplyPromoCodeRequest.d.ts",
+                                                          "import":  "./dist/promo/ApplyPromoCodeRequest.js",
+                                                          "require":  "./dist/promo/ApplyPromoCodeRequest.js"
+                                                      },
+                    "./promo/ApplyPromoCodeResponse":  {
+                                                           "types":  "./dist/promo/ApplyPromoCodeResponse.d.ts",
+                                                           "import":  "./dist/promo/ApplyPromoCodeResponse.js",
+                                                           "require":  "./dist/promo/ApplyPromoCodeResponse.js"
+                                                       },
+                    "./promo/RemovePromoCodeRequest":  {
+                                                           "types":  "./dist/promo/RemovePromoCodeRequest.d.ts",
+                                                           "import":  "./dist/promo/RemovePromoCodeRequest.js",
+                                                           "require":  "./dist/promo/RemovePromoCodeRequest.js"
+                                                       },
+                    "./checkout/sessionMetadataV4":  {
+                                                         "types":  "./dist/checkout/sessionMetadataV4.d.ts",
+                                                         "import":  "./dist/checkout/sessionMetadataV4.js",
+                                                         "require":  "./dist/checkout/sessionMetadataV4.js"
+                                                     },
+                    "./checkout/sessionMetadataV5":  {
+                                                         "types":  "./dist/checkout/sessionMetadataV5.d.ts",
+                                                         "import":  "./dist/checkout/sessionMetadataV5.js",
+                                                         "require":  "./dist/checkout/sessionMetadataV5.js"
+                                                     },
+                    "./checkout/CartLineFingerprint":  {
+                                                           "types":  "./dist/checkout/CartLineFingerprint.d.ts",
+                                                           "import":  "./dist/checkout/CartLineFingerprint.js",
+                                                           "require":  "./dist/checkout/CartLineFingerprint.js"
+                                                       },
+                    "./sentry":  {
+                                     "types":  "./dist/sentry/initSentry.d.ts",
+                                     "import":  "./dist/sentry/initSentry.js",
+                                     "require":  "./dist/sentry/initSentry.js"
+                                 },
+                    "./sentry/correlationTagBridge":  {
+                                                          "types":  "./dist/sentry/correlationTagBridge.d.ts",
+                                                          "import":  "./dist/sentry/correlationTagBridge.js",
+                                                          "require":  "./dist/sentry/correlationTagBridge.js"
+                                                      },
+                    "./sentry/captureRateLimitBreadcrumb":  {
+                                                                "types":  "./dist/sentry/captureRateLimitBreadcrumb.d.ts",
+                                                                "import":  "./dist/sentry/captureRateLimitBreadcrumb.js",
+                                                                "require":  "./dist/sentry/captureRateLimitBreadcrumb.js"
+                                                            },
+                    "./sentry/captureConflictBreadcrumb":  {
+                                                               "types":  "./dist/sentry/captureConflictBreadcrumb.d.ts",
+                                                               "import":  "./dist/sentry/captureConflictBreadcrumb.js",
+                                                               "require":  "./dist/sentry/captureConflictBreadcrumb.js"
+                                                           },
+                    "./theme.css":  "./src/tokens/theme.css",
+                    "./admin-theme.css":  "./src/tokens/admin-theme.css",
+                    "./responsive.css":  "./src/tokens/responsive.css",
+                    "./responsive":  {
+                                         "types":  "./dist/responsive/index.d.ts",
+                                         "import":  "./dist/responsive/index.js",
+                                         "require":  "./dist/responsive/index.js"
+                                     },
+                    "./ui":  {
+                                 "types":  "./dist/ui/index.d.ts",
+                                 "import":  "./dist/ui/index.js",
+                                 "require":  "./dist/ui/index.js"
+                             },
+                    "./ui/tvShim":  {
+                                        "types":  "./dist/ui/tvShim.d.ts",
+                                        "import":  "./dist/ui/tvShim.js",
+                                        "require":  "./dist/ui/tvShim.js"
+                                    },
+                    "./tenant-entitlements":  {
+                                                  "types":  "./dist/tenant-entitlements/index.d.ts",
+                                                  "import":  "./dist/tenant-entitlements/index.js",
+                                                  "require":  "./dist/tenant-entitlements/index.js"
+                                              },
+                    "./theme":  {
+                                    "types":  "./dist/theme/ThemeProvider.d.ts",
+                                    "import":  "./dist/theme/ThemeProvider.js",
+                                    "require":  "./dist/theme/ThemeProvider.js"
+                                }
+                },
+    "typesVersions":  {
+                          "*":  {
+                                    "sensitiveMetaKeys":  [
+                                                              "./dist/sensitiveMetaKeys.d.ts"
+                                                          ],
+                                    "clientLogRedaction":  [
+                                                               "./dist/clientLogRedaction.d.ts"
+                                                           ],
+                                    "analyticsEvents":  [
+                                                            "./dist/analyticsEvents.d.ts"
+                                                        ],
+                                    "analyticsApiTypes":  [
+                                                              "./dist/analyticsApiTypes.d.ts"
+                                                          ],
+                                    "analyticsExploreCaps":  [
+                                                                 "./dist/analyticsExploreCaps.d.ts"
+                                                             ],
+                                    "crossTab":  [
+                                                     "./dist/crossTab/index.d.ts"
+                                                 ],
+                                    "logging":  [
+                                                    "./dist/logging/index.d.ts"
+                                                ],
+                                    "logging/createClientLogger":  [
+                                                                       "./dist/logging/createClientLogger.d.ts"
+                                                                   ]
+                                }
+                      },
+    "peerDependencies":  {
+                             "@marsidev/react-turnstile":  "^1.0.0",
+                             "@sentry/react":  "^8.0.0",
+                             "@tanstack/react-query":  "^5.0.0",
+                             "@zxing/browser":  "^0.1.5",
+                             "@zxing/library":  "^0.21.3",
+                             "react":  "^18.0.0",
+                             "react-i18next":  "^14.0.0"
+                         },
+    "peerDependenciesMeta":  {
+                                 "@sentry/react":  {
+                                                       "optional":  true
+                                                   },
+                                 "@marsidev/react-turnstile":  {
+                                                                   "optional":  true
+                                                               },
+                                 "@zxing/browser":  {
+                                                        "optional":  true
+                                                    },
+                                 "@zxing/library":  {
+                                                        "optional":  true
+                                                    },
+                                 "react-i18next":  {
+                                                       "optional":  true
+                                                   }
+                             },
+    "dependencies":  {
+                         "@tanstack/react-query":  "^5.0.0",
+                         "tailwind-variants":  "^0.3.0"
+                     },
+    "scripts":  {
+                    "build":  "tsc",
+                    "build:clean":  "npm run clean \u0026\u0026 tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit",
+                    "lint":  "npm run type-check",
+                    "test":  "jest --config jest.config.cjs --passWithNoTests",
+                    "test:workspace":  "npm run test:workspace:package --prefix .. -- shared",
+                    "postinstall":  "node scripts/applyMonorepoPatches.mjs",
+                    "test:watch":  "jest --config jest.config.cjs --watch",
+                    "test:coverage":  "jest --config jest.config.cjs --coverage",
+                    "storybook":  "storybook dev -p 6006",
+                    "build-storybook":  "storybook build",
+                    "clean":  "rimraf dist",
+                    "gate:tokens-sync":  "node scripts/gate-tokens-sync.mjs",
+                    "gate:tokens-sync:write":  "node scripts/gate-tokens-sync.mjs --write",
+                    "gate:brand-hex":  "node scripts/gate-brand-hex-ban.mjs",
+                    "gate:brand-hex:all":  "node scripts/gate-brand-hex-ban.mjs --all",
+                    "publish:local":  "npm run build:clean \u0026\u0026 npm pack --pack-destination ../",
+                    "prepublishOnly":  "npm run build:clean",
+                    "preversion":  "npm run test -- --passWithNoTests",
+                    "postversion":  "echo \u0027Version updated. Run git push \u0026\u0026 git push --tags manually if needed.\u0027",
+                    "audit:deps":  "npm audit --audit-level=high",
+                    "export:catalog":  "npm run build \u0026\u0026 node scripts/exportAnalyticsCatalog.mjs"
+                },
+    "files":  [
+                  "dist",
+                  "patches",
+                  "src/tokens",
+                  "scripts/applyMonorepoPatches.mjs",
+                  "README.md"
+              ],
+    "devDependencies":  {
+                            "@marsidev/react-turnstile":  "^1.1.0",
+                            "@radix-ui/react-select":  "^2.3.7",
+                            "@sentry/react":  "^8.55.0",
+                            "@storybook/react-vite":  "^9.1.20",
+                            "@tanstack/react-query":  "^5.66.0",
+                            "@testing-library/dom":  "^10.4.1",
+                            "@testing-library/jest-dom":  "^6.6.0",
+                            "@testing-library/react":  "^16.0.0",
+                            "@testing-library/user-event":  "^14.6.0",
+                            "@types/jest":  "^30.0.0",
+                            "@types/node":  "^20.19.41",
+                            "@types/react":  "^18.2.0",
+                            "@zxing/browser":  "^0.1.5",
+                            "@zxing/library":  "^0.21.3",
+                            "handlebars":  "^4.7.9",
+                            "jest":  "^30.4.0",
+                            "jest-environment-jsdom":  "^30.4.0",
+                            "lucide-react":  "^1.27.0",
+                            "patch-package":  "^8.0.1",
+                            "react":  "^18.3.1",
+                            "react-dom":  "^18.3.1",
+                            "react-i18next":  "^14.1.0",
+                            "rimraf":  "^6.1.3",
+                            "storybook":  "^9.1.20",
+                            "ts-jest":  "^29.4.11",
+                            "typescript":  "^5.0.0",
+                            "vite":  "^6.4.3"
+                        },
+    "overrides":  {
+                      "babel-plugin-istanbul":  "^8.0.2",
+                      "brace-expansion":  "^5.0.8",
+                      "fast-uri":  "^3.1.4",
+                      "glob":  "^13.0.6",
+                      "jsdom":  "^27.4.0",
+                      "minimatch":  "^10.2.5",
+                      "postcss":  "^8.5.23",
+                      "test-exclude":  "^8.0.0",
+                      "uuid":  "^11.1.1"
+                  },
+    "engines":  {
+                    "node":  "\u003e=24.0.0"
+                }
 }

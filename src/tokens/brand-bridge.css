@@ -14,26 +14,34 @@
   --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
 
-  /* ── Canva Up Above (provisional — pending PO hex confirmation) ── */
-  --brand-canva-sailor-blue: #00203f;
-  --brand-canva-mint: #adefd1;
+  /* ── Foundation + neutrals (ADR-FE-BRAND-002 / COLOR registry) ── */
+  --color-brand-primary: #1f6f78;
+  --color-brand-deep: #174b52;
+  --color-brand-accent: #58a9b5;
+  --color-brand-soft: #eef6f7;
+  --color-brand-text: #2a3136;
+  --color-brand-limestone: #d8d2c8;
+  --color-surface-default: #ffffff;
+  --color-neutral-950: #0f172a;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
 
   /* ── Semantic brand accents (DECISION-1 Option C) ── */
-  --brand-consumer-accent: var(--brand-canva-sailor-blue);
-  --brand-consumer-accent-soft: var(--brand-canva-mint);
-  --brand-consumer-accent-foreground: #ffffff;
-  --brand-admin-accent: #7c3aed;
-  --brand-admin-primary: #6365f0;
+  --brand-consumer-accent: var(--color-brand-primary);
+  --brand-consumer-accent-soft: var(--color-brand-soft);
+  --brand-consumer-accent-foreground: var(--color-surface-default);
+  --brand-admin-accent: var(--color-brand-primary);
+  --brand-admin-primary: var(--color-brand-primary);
 
   /* ── Admin rail palette (MOCKUP_VISUAL_SPEC_CACHE harmonization) ── */
-  --brand-rail-sidebar-bg: #1e1b4b;
-  --brand-rail-sidebar-bg-deep: #0f172a;
-  --brand-rail-sidebar-text: #e0e7ff;
-  --brand-rail-sidebar-muted: #a5b4fc;
+  --brand-rail-sidebar-bg: var(--color-brand-deep);
+  --brand-rail-sidebar-bg-deep: #0f3036;
+  --brand-rail-sidebar-text: var(--color-brand-soft);
+  --brand-rail-sidebar-muted: var(--color-brand-accent);
   --brand-rail-sidebar-active: var(--brand-admin-accent);
-  --brand-rail-sidebar-hover: rgba(124, 58, 237, 0.2);
-  --brand-rail-page-bg: #f1f5f9;
-  --brand-rail-card-border: #e2e8f0;
+  --brand-rail-sidebar-hover: color-mix(in srgb, var(--color-brand-primary) 20%, transparent);
+  --brand-rail-page-bg: var(--color-neutral-100);
+  --brand-rail-card-border: var(--color-neutral-200);
   --brand-rail-kpi-up: #05805a;
   --brand-rail-kpi-down: #da2325;
 

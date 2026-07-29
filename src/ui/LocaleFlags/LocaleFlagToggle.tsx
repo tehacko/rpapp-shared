@@ -10,11 +10,11 @@ const flagGroup = tv({
     placement: {
       floating: 'gap-2',
       inline: [
-        'gap-1.5 rounded-md border border-[var(--color-rail-card-border,var(--color-border,#e2e8f0))]',
+        'gap-1.5 rounded-md border border-[var(--color-rail-card-border,var(--color-border,var(--color-neutral-200)))]',
         'bg-[var(--color-surface-elevated,#fff)] p-1 shadow-sm',
       ].join(' '),
       header: [
-        'gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,#e2e8f0))]',
+        'gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,var(--color-neutral-200)))]',
         'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))] p-1 shadow-none',
       ].join(' '),
     },
@@ -31,7 +31,7 @@ const flagGroup = tv({
       placement: 'floating',
       class: [
         'fixed top-[var(--spacing-4,1rem)] right-[var(--spacing-4,1rem)] z-[10001]',
-        'rounded-[var(--radius-lg,0.5rem)] border border-[var(--color-border,#e2e8f0)]',
+        'rounded-[var(--radius-lg,0.5rem)] border border-[var(--color-border,var(--color-neutral-200))]',
         'bg-[var(--color-surface-elevated,#fff)] p-1.5 shadow-[var(--shadow-md,0_4px_6px_-1px_rgb(0_0_0_/_0.1))]',
       ].join(' '),
     },
@@ -40,7 +40,7 @@ const flagGroup = tv({
       placement: 'floating',
       class: [
         'fixed top-[var(--spacing-10)] right-[var(--spacing-10)] z-[var(--z-modal-backdrop)]',
-        'rounded-[var(--radius-xl)] border border-[var(--color-border,#e2e8f0)]',
+        'rounded-[var(--radius-xl)] border border-[var(--color-border,var(--color-neutral-200))]',
         'bg-[var(--color-surface-elevated,#fff)] p-2 shadow-[var(--shadow-lg)]',
       ].join(' '),
     },
@@ -56,7 +56,7 @@ const flagGroup = tv({
       surface: 'pickup',
       placement: 'floating',
       class: [
-        'fixed top-2.5 right-2.5 z-50 rounded-xl border border-[var(--color-border,#e2e8f0)]',
+        'fixed top-2.5 right-2.5 z-50 rounded-xl border border-[var(--color-border,var(--color-neutral-200))]',
         'bg-[var(--color-surface-elevated,#fff)] p-1.5 shadow-lg',
       ].join(' '),
     },
@@ -84,7 +84,7 @@ const flagButton = tv({
       false: 'opacity-75 hover:scale-105 hover:opacity-100',
     },
     surface: {
-      admin: 'focus-visible:outline-[var(--color-an-primary,#6366f1)]',
+      admin: 'focus-visible:outline-[var(--color-an-primary,var(--color-brand-primary))]',
       kiosk: 'focus-visible:outline-[var(--color-accent,#2563eb)]',
       customer: 'focus-visible:outline-[var(--color-accent)]',
       pickup: 'focus-visible:outline-[var(--color-accent,#2563eb)]',
@@ -94,7 +94,7 @@ const flagButton = tv({
     {
       surface: 'admin',
       pressed: true,
-      class: 'border-[var(--color-an-primary,#6366f1)] ring-2 ring-[var(--color-an-primary,#6366f1)]/25',
+      class: 'border-[var(--color-an-primary,var(--color-brand-primary))] ring-2 ring-[var(--color-an-primary,var(--color-brand-primary))]/25',
     },
     {
       surface: 'kiosk',

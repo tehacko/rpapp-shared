@@ -4,22 +4,22 @@
  *
  * MFE-v3-S-01: brand-bridge.css + design-tokens.css supply legacy/admin semantics.
  * MFE-v3-S-2: DECISION-2 C-Hybrid — focus/hover/disabled/elevated + dark via media + `.dark`.
- * Light/dark neutrals: admin dark is violet/indigo kin to the rail sidebar
- * (`#1e1b4b`); light stays slate neutrals. Primary / rail accents stay brand-scoped.
+ * Light/dark neutrals: admin dark follows the rail sidebar/deep brand surface.
+ * Light stays neutral-led while primary / rail accents remain brand-scoped.
  */
 @import './brand-bridge.css';
 
 @theme {
-  --color-an-bg: #f8fafc;
-  --color-an-bg-elevated: #ffffff;
-  --color-an-surface: #ffffff;
-  --color-an-surface-muted: #f8fafc;
-  --color-an-surface-hover: #f1f5f9;
-  --color-an-surface-disabled: #f1f5f9;
-  --color-an-text: #0f172a;
+  --color-an-bg: var(--color-neutral-100);
+  --color-an-bg-elevated: var(--color-surface-default);
+  --color-an-surface: var(--color-surface-default);
+  --color-an-surface-muted: var(--color-neutral-100);
+  --color-an-surface-hover: var(--color-neutral-100);
+  --color-an-surface-disabled: var(--color-neutral-100);
+  --color-an-text: var(--color-neutral-950);
   --color-an-text-muted: #475569;
   --color-an-text-disabled: #94a3b8;
-  --color-an-border: #e2e8f0;
+  --color-an-border: var(--color-neutral-200);
   --color-an-border-hover: #cbd5e1;
   --color-an-primary: var(--color-primary);
   --color-an-primary-hover: #4f46e5;
@@ -45,18 +45,17 @@
   --color-rail-sidebar-muted: var(--brand-rail-sidebar-muted);
   --color-rail-sidebar-active: var(--brand-rail-sidebar-active);
   --color-rail-sidebar-hover: var(--brand-rail-sidebar-hover);
-  --color-rail-page-bg: #f1f5f9;
-  --color-rail-card-border: #e2e8f0;
+  --color-rail-page-bg: var(--color-neutral-100);
+  --color-rail-card-border: var(--color-neutral-200);
   --color-rail-kpi-up: var(--brand-rail-kpi-up);
   --color-rail-kpi-down: var(--brand-rail-kpi-down);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Violet dark — kin to rail sidebar #1e1b4b (not consumer sailor blue) */
     --color-an-bg: #12102a;
-    --color-an-bg-elevated: #1e1b4b;
-    --color-an-surface: #1e1b4b;
+    --color-an-bg-elevated: var(--brand-rail-sidebar-bg);
+    --color-an-surface: var(--brand-rail-sidebar-bg);
     --color-an-surface-muted: #17153a;
     --color-an-surface-hover: #2a2660;
     --color-an-surface-disabled: #2a2660;
@@ -77,7 +76,7 @@
     --color-an-chart-5: #c4b5fd;
     --color-an-chart-6: #22d3ee;
     --color-shell-bg: #12102a;
-    --color-shell-surface: #1e1b4b;
+    --color-shell-surface: var(--brand-rail-sidebar-bg);
     --color-shell-border: #2f2b55;
     --color-shell-text: #e0e7ff;
     --color-rail-page-bg: #12102a;
@@ -86,14 +85,14 @@
 }
 
 /**
- * C-Hybrid user override — violet dark kin to `--brand-rail-sidebar-bg` (#1e1b4b).
+ * C-Hybrid user override — dark mode tracks `--brand-rail-sidebar-bg`.
  * Admin `applyInitialTheme()` / ThemeProvider toggles `.dark` on documentElement.
  */
 .dark {
   color-scheme: dark;
   --color-an-bg: #12102a;
-  --color-an-bg-elevated: #1e1b4b;
-  --color-an-surface: #1e1b4b;
+  --color-an-bg-elevated: var(--brand-rail-sidebar-bg);
+  --color-an-surface: var(--brand-rail-sidebar-bg);
   --color-an-surface-muted: #17153a;
   --color-an-surface-hover: #2a2660;
   --color-an-surface-disabled: #2a2660;
@@ -114,7 +113,7 @@
   --color-an-chart-5: #c4b5fd;
   --color-an-chart-6: #22d3ee;
   --color-shell-bg: #12102a;
-  --color-shell-surface: #1e1b4b;
+  --color-shell-surface: var(--brand-rail-sidebar-bg);
   --color-shell-border: #2f2b55;
   --color-shell-text: #e0e7ff;
   --color-rail-page-bg: #12102a;
@@ -127,16 +126,16 @@
  */
 .light {
   color-scheme: light;
-  --color-an-bg: #f8fafc;
-  --color-an-bg-elevated: #ffffff;
-  --color-an-surface: #ffffff;
-  --color-an-surface-muted: #f8fafc;
-  --color-an-surface-hover: #f1f5f9;
-  --color-an-surface-disabled: #f1f5f9;
-  --color-an-text: #0f172a;
+  --color-an-bg: var(--color-neutral-100);
+  --color-an-bg-elevated: var(--color-surface-default);
+  --color-an-surface: var(--color-surface-default);
+  --color-an-surface-muted: var(--color-neutral-100);
+  --color-an-surface-hover: var(--color-neutral-100);
+  --color-an-surface-disabled: var(--color-neutral-100);
+  --color-an-text: var(--color-neutral-950);
   --color-an-text-muted: #475569;
   --color-an-text-disabled: #94a3b8;
-  --color-an-border: #e2e8f0;
+  --color-an-border: var(--color-neutral-200);
   --color-an-border-hover: #cbd5e1;
   --color-an-primary: var(--color-primary);
   --color-an-primary-hover: #4f46e5;
@@ -149,10 +148,10 @@
   --color-an-chart-4: #ef4444;
   --color-an-chart-5: #8b5cf6;
   --color-an-chart-6: #06b6d4;
-  --color-shell-bg: #f8fafc;
-  --color-shell-surface: #ffffff;
-  --color-shell-border: #e2e8f0;
-  --color-shell-text: #0f172a;
-  --color-rail-page-bg: #f1f5f9;
-  --color-rail-card-border: #e2e8f0;
+  --color-shell-bg: var(--color-neutral-100);
+  --color-shell-surface: var(--color-surface-default);
+  --color-shell-border: var(--color-neutral-200);
+  --color-shell-text: var(--color-neutral-950);
+  --color-rail-page-bg: var(--color-neutral-100);
+  --color-rail-card-border: var(--color-neutral-200);
 }

@@ -1,6 +1,6 @@
 /**
  * ADM-TKT-0206 / EVID-0206 — shared package exports canonical capability IDs (LOCKED SSOT).
- * Does not assert CapabilityMap drift (CI gate MISSING — ADV-CI-SCRIPTS-001).
+ * CapabilityMap drift is enforced in CI via hardening gate (ADV-CI-SCRIPTS-001 closed).
  */
 import {
   TENANT_ADMIN_EVENTS_SUBSCRIBE,

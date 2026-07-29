@@ -1,0 +1,85 @@
+﻿node : gate-brand-hex-ban: FAILED ÔÇö banned brand / slate hex found:
+At line:1 char:1
++ node scripts/gate-brand-hex-ban.mjs --all *>&1 | Out-File -FilePath g ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (gate-brand-hex-...late hex found::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+  admin-app/src/features/account/components/AccountSettingsAuditPanel/AccountSettingsAuditPanel.tsx:53  #7C3AED  ÔÇö 
+banned Option C / violet / primary-drift brand hex
+  admin-app/src/features/analytics/components/AnalyticsScreen/chartThemeTokens.ts:12  #7C3AED  ÔÇö banned Option C / 
+violet / primary-drift brand hex
+  admin-app/src/features/analytics/components/AnalyticsScreen/chartThemeTokens.ts:20  #7C3AED  ÔÇö banned Option C / 
+violet / primary-drift brand hex
+  admin-app/src/features/analytics/components/AnalyticsScreen/components/FunnelKioskPerformanceTable.tsx:120  #6366F1  
+ÔÇö banned Option C / violet / primary-drift brand hex
+  admin-app/src/features/analytics/utils/colorPalette.ts:8  #6366F1  ÔÇö banned Option C / violet / primary-drift 
+brand hex
+  admin-app/src/features/analytics/utils/colorPalette.ts:30  #E2E8F0  ÔÇö raw slate hex as brand ÔÇö allow only on 
+lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics/utils/colorPalette.ts:57  #6366F1  ÔÇö banned Option C / violet / primary-drift 
+brand hex
+  admin-app/src/features/analytics/utils/funnelStageColors.ts:6  #7C3AED  ÔÇö banned Option C / violet / primary-drift 
+brand hex
+  admin-app/src/features/analytics/utils/funnelStageColors.ts:11  #6366F1  ÔÇö banned Option C / violet / 
+primary-drift brand hex
+  admin-app/src/features/analytics/utils/funnelStageColors.ts:17  #6366F1  ÔÇö banned Option C / violet / 
+primary-drift brand hex
+  admin-app/src/features/analytics-mission-control/components/MissionControlChartsGrid/MissionControlChartsGrid.module.
+css:16  #F1F5F9  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/components/MissionControlDegradedBanner/MissionControlDegradedBanner
+.module.css:2  #E2E8F0  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/components/MissionControlMiniSparkline/MissionControlMiniSparkline.m
+odule.css:20  #E2E8F0  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/components/MissionControlTenantsTable/MissionControlTenantsTable.mod
+ule.css:91  #F1F5F9  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/components/MissionControlTenantsTable/MissionControlTenantsTable.mod
+ule.css:113  #F1F5F9  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/components/MissionControlZoneErrorBoundary/MissionControlZoneErrorBo
+undary.module.css:2  #E2E8F0  ÔÇö raw slate hex as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/analytics-mission-control/context/MissionControlFilterContext.tsx:547  #6366F1  ÔÇö banned 
+Option C / violet / primary-drift brand hex
+  admin-app/src/features/analytics-mission-control/context/MissionControlFilterContext.tsx:547  #6366F1  ÔÇö banned 
+Option C / violet / primary-drift brand hex
+  admin-app/src/features/analytics-mission-control/tenant-command-center/components/paymentLaneColors.ts:9  #7C3AED  
+ÔÇö banned Option C / violet / primary-drift brand hex
+  admin-app/src/features/analytics-mission-control/tenant-command-center/components/TenantCommandCenterToolbar.tsx:28  
+#6366F1  ÔÇö banned Option C / violet / primary-drift brand hex
+  admin-app/src/features/compliance/pages/RetentionAdminScreen/RetentionAdminScreen.css:32  #E2E8F0  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/compliance/pages/RetentionAdminScreen/RetentionAdminScreen.css:67  #E2E8F0  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/compliance/pages/RetentionAdminScreen/RetentionAdminScreen.css:82  #0F172A  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/compliance/pages/RetentionAdminScreen/RetentionAdminScreen.css:83  #E2E8F0  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dashboard/components/Dashboard/Dashboard.tsx:514  #E2E8F0  ÔÇö raw slate hex as brand ÔÇö 
+allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/components/DevOutboxMissionControl/DevOutboxMissionControl.tsx:53  #6366F1  ÔÇö banned 
+Option C / violet / primary-drift brand hex
+  admin-app/src/features/dev/components/PlatformCommandCenter/pccChartTooltip.ts:4  #E2E8F0  ÔÇö raw slate hex as 
+brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/components/PlatformCommandCenter/pccChartTooltip.ts:6  #0F172A  ÔÇö raw slate hex as 
+brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/components/PlatformCommandCenter/pccChartTooltip.ts:12  #0F172A  ÔÇö raw slate hex as 
+brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/components/PlatformCommandCenter/pccChartTooltip.ts:17  #0F172A  ÔÇö raw slate hex as 
+brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/pages/DataLifecycleOpsPage/AggregatesOpsPanel.tsx:476  #0F172A  ÔÇö raw slate hex as 
+brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/pages/DataLifecycleOpsPage/RetentionOpsPanel.tsx:625  #0F172A  ÔÇö raw slate hex as brand 
+ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/pages/ReconciliationAdminPage/reconciliationUi.styles.ts:96  #F1F5F9  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/pages/ReconciliationAdminPage/reconciliationUi.styles.ts:156  #F1F5F9  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/dev/pages/ReconciliationAdminPage/reconciliationUi.styles.ts:200  #E2E8F0  ÔÇö raw slate hex 
+as brand ÔÇö allow only on lines with --color-neutral-950|100|200
+  admin-app/src/features/products/components/ProductsScreen/ProductsTable.tsx:111  #7C3AED  ÔÇö banned Option C / 
+violet / primary-drift brand hex
+  admin-app/src/shared/styles/tailwind/utilities.css:115  #F1F5F9  ÔÇö raw slate hex as brand ÔÇö allow only on lines 
+with --color-neutral-950|100|200
+
+Recovery: replace with Adriatic --color-brand-* / official gradients, or slate via --color-neutral-*. See 
+ADR-FE-BRAND-002.
