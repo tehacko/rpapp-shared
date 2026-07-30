@@ -8,7 +8,8 @@ const input = tv({
     'bg-[var(--color-surface,var(--color-an-surface))]',
     'text-[var(--color-on-surface,var(--color-an-text))]',
     'placeholder:text-[var(--color-on-surface-muted,var(--color-an-text-muted))]',
-    'focus-visible:outline-none focus-visible:border-[var(--color-focus-ring,var(--color-an-primary))]',
+    'focus-visible:outline-2 focus-visible:outline-offset-2',
+    'focus-visible:outline-[var(--color-focus-ring,var(--color-an-primary))]',
     'disabled:cursor-not-allowed disabled:opacity-60',
   ].join(' '),
   variants: {
