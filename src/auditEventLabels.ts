@@ -505,7 +505,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Potvrzení rizika hotovostní platby',
   },
   'payment.cash_checkout.self_confirm': {
-    en: 'Kiosk cash checkout self-confirmed',
+    en: 'sales point cash checkout self-confirmed',
     cs: 'Hotovostní platba u platebního místa potvrzena zákazníkem',
   },
   'payment.cash_shift.opened': {

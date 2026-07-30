@@ -20,7 +20,7 @@ const UNIVERSAL_DESCRIPTIONS: Record<
   LocalizedLabel
 > = {
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_STARTED]: {
-    en: 'Counts when a new customer visit starts on the kiosk or phone app. One count per new visit — doing the same thing again in the same visit does not add another. This is not the same as the “sessions started” number on some charts, which is calculated differently.',
+    en: 'Counts when a new customer visit starts on the sales point or phone app. One count per new visit — doing the same thing again in the same visit does not add another. This is not the same as the “sessions started” number on some charts, which is calculated differently.',
     cs: 'Počítá se, když u platebního místa nebo v aplikaci začne nová návštěva zákazníka. Jednou za každou novou návštěvu — opakování ve stejné návštěvě nepřidá další. Není totéž jako číslo „zahájených relací“ na některých grafech, které se počítá jinak.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_COMPLETED]: {
@@ -29,14 +29,14 @@ const UNIVERSAL_DESCRIPTIONS: Record<
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_ABANDONED]: {
     en: 'Counts when someone leaves without finishing — closed tab, walked away, timed out, or cancelled in a way that ends the visit. One count per time that happens for a visit. Not the same as “payment failed” when they only cancel a payment step.',
-    cs: 'Počítá se, když někdo odejde bez dokončení — zavře stránku, odejde od kiosku, vyprší čas, nebo zruší tak, že návštěva skončí. Jednou za každý takový konec návštěvy. Není totéž jako „platba selhala“, když zruší jen krok platby.',
+    cs: 'Počítá se, když někdo odejde bez dokončení — zavře stránku, odejde od platebního místa, vyprší čas, nebo zruší tak, že návštěva skončí. Jednou za každý takový konec návštěvy. Není totéž jako „platba selhala“, když zruší jen krok platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SESSION_RECOVERED]: {
     en: 'Counts when analytics detects a previously closed session and resumes tracking in a fresh session context. One count per recovery action.',
     cs: 'Počítá se, když analytika zjistí dříve uzavřenou relaci a pokračuje sledování v nové relaci. Jednou za obnovu.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.SCREEN_VIEWED]: {
-    en: 'Counts each time a screen is shown on the kiosk or customer app — home, cart, payment, and so on. Every time they open or return to a screen adds one. Not a new visit, not a payment result.',
+    en: 'Counts each time a screen is shown on the sales point or customer app — home, cart, payment, and so on. Every time they open or return to a screen adds one. Not a new visit, not a payment result.',
     cs: 'Počítá se pokaždé, když se u platebního místa nebo v aplikaci zobrazí obrazovka — úvod, košík, platba atd. Každé otevření nebo návrat na obrazovku přidá jednu. Není nová návštěva ani výsledek platby.',
   },
   [ANALYTICS_UNIVERSAL_EVENTS.CTA_CLICKED]: {
@@ -222,8 +222,8 @@ const RETAIL_DESCRIPTIONS = {
     cs: 'Počítá se, když zákazník vyzvedne připravenou objednávku. Jednou za úspěšné potvrzení vyzvednutí.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_TICKET_CREATED]: {
-    en: 'Counts when a kiosk collect-later ticket is created before payment. One count per ticket row.',
-    cs: 'Počítá se při vytvoření kioskového lístku collect-later před zaplacením. Jednou za každý lístek.',
+    en: 'Counts when a sales-point collect-later ticket is created before payment. One count per ticket row.',
+    cs: 'Počítá se při vytvoření lístku platebního místa collect-later před zaplacením. Jednou za každý lístek.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_PICKUP_SCHEDULED]: {
     en: 'Counts when a customer chooses a scheduled pickup slot. One count per scheduled slot selection.',
@@ -270,8 +270,8 @@ const RETAIL_DESCRIPTIONS = {
     cs: 'Počítá se při vydání QR nebo skenovacích údajů pro vyzvednutí objednávky. Jednou za vydání.',
   },
   [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_SCANNED]: {
-    en: 'Counts when staff or kiosk scans a pickup QR or short code to resolve an order. One count per scan.',
-    cs: 'Počítá se, když personál nebo kiosk naskenuje QR nebo krátký kód pro dohledání objednávky. Jednou za sken.',
+    en: 'Counts when staff or sales point scans a pickup QR or short code to resolve an order. One count per scan.',
+    cs: 'Počítá se, když personál nebo platební místo naskenuje QR nebo krátký kód pro dohledání objednávky. Jednou za sken.',
   },
   [ANALYTICS_RETAIL_EVENTS.PICKUP_STAFF_MARK_PAID]: {
     en: 'Counts when pickup staff marks an unpaid ticket as paid in cash at the stand. One count per mark-paid action.',
@@ -294,7 +294,7 @@ const RETAIL_DESCRIPTIONS = {
     cs: 'Počítá se, když je pozastavená objednávka uvolněna zpět do běžného toku. Jednou za uvolnění.',
   },
   [ANALYTICS_RETAIL_EVENTS.KIOSK_CASH_COMPLETE]: {
-    en: 'Counts when a kiosk cash checkout completes successfully. One count per completed cash sale.',
+    en: 'Counts when a sales point cash checkout completes successfully. One count per completed cash sale.',
     cs: 'Počítá se při úspěšném dokončení hotovostní pokladny u platebního místa. Jednou za hotovostní prodej.',
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
@@ -302,7 +302,7 @@ const RETAIL_DESCRIPTIONS = {
     cs: 'Počítá se při nastavení možností collect-later pro relaci (slot, režim atd.). Jednou za konfiguraci.',
   },
   [ANALYTICS_RETAIL_EVENTS.SLUG_LEGACY_REDIRECT]: {
-    en: 'Counts when a legacy kioskId shop URL redirects to a slug-based platební místo URL. One count per redirect.',
+    en: 'Counts when a legacy kioskId shop URL redirects to a slug-based sales point URL. One count per redirect.',
     cs: 'Počítá se při přesměrování staré URL s kioskId na URL s slugem platebního místa. Jednou za přesměrování.',
   },
   [ANALYTICS_RETAIL_EVENTS.TENANT_SWITCHED]: {
@@ -358,12 +358,12 @@ const KIOSK_DESCRIPTIONS: Record<
   LocalizedLabel
 > = {
   [ANALYTICS_KIOSK_EVENTS.KIOSK_WAKEUP]: {
-    en: 'Counts when the kiosk wakes up from the idle attract screen because someone touched it or it starts up. One count per wake-up. Starting a full customer visit may be counted separately.',
-    cs: 'Počítá se, když se kiosk probudí z úvodní obrazovky po dotyku nebo při startu. Jednou za probuzení. Zahájení celé návštěvy zákazníka se může počítat zvlášť.',
+    en: 'Counts when the sales point wakes up from the idle attract screen because someone touched it or it starts up. One count per wake-up. Starting a full customer visit may be counted separately.',
+    cs: 'Počítá se, když se platební místo probudí z úvodní obrazovky po dotyku nebo při startu. Jednou za probuzení. Zahájení celé návštěvy zákazníka se může počítat zvlášť.',
   },
   [ANALYTICS_KIOSK_EVENTS.KIOSK_TIMEOUT]: {
-    en: 'Counts when the kiosk sits unused too long and returns to the attract screen by itself. One count per timeout. Someone walking away mid-order may also count as visit abandoned.',
-    cs: 'Počítá se, když kiosk dlouho nikdo nepoužívá a sám se vrátí na úvodní obrazovku. Jednou za vypršení času. Odejití uprostřed objednávky může být také „návštěva opuštěna“.',
+    en: 'Counts when the sales point sits unused too long and returns to the attract screen by itself. One count per timeout. Someone walking away mid-order may also count as visit abandoned.',
+    cs: 'Počítá se, když platební místo dlouho nikdo nepoužívá a sám se vrátí na úvodní obrazovku. Jednou za vypršení času. Odejití uprostřed objednávky může být také „návštěva opuštěna“.',
   },
 };
 
@@ -434,8 +434,8 @@ const SERVER_OPS_DESCRIPTIONS: Record<
     cs: 'Počítá se, když administrátor vydá novou fyzickou věrnostní kartu. Emituje server; tajné údaje karty nejsou v metadatech.',
   },
   [ANALYTICS_SERVER_OPS_EVENTS.PHYSICAL_CARD_REVOKED]: {
-    en: 'Counts when a physical loyalty card is revoked and can no longer be scanned at a kiosk. Emitted server-side after admin revoke.',
-    cs: 'Počítá se, když je fyzická věrnostní karta zneplatněna a nelze ji již naskenovat na kiosku. Emituje server po zneplatnění administrátorem.',
+    en: 'Counts when a physical loyalty card is revoked and can no longer be scanned at a sales point. Emitted server-side after admin revoke.',
+    cs: 'Počítá se, když je fyzická věrnostní karta zneplatněna a nelze ji již naskenovat na platebním místě. Emituje server po zneplatnění administrátorem.',
   },
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_MISSED]: {
     en: 'Counts when an expected recurring donation payment did not arrive by the due date. One count per missed period on a standing-order setup. Emitted by the reconciliation worker, not by a customer session.',

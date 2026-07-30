@@ -164,7 +164,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když administrátor vytvoří nový produkt v katalogu. Jeden řádek za produkt.',
   },
   'admin.product.deactivated': {
-    en: 'Recorded when a product is hidden and cannot be sold on kiosks until turned back on. One line per product. The product file is not erased.',
+    en: 'Recorded when a product is hidden and cannot be sold on sales points until turned back on. One line per product. The product file is not erased.',
     cs: 'Zapíše se, když je produkt skrytý a na kioscích se neprodává, dokud se znovu nezapne. Jeden řádek za produkt. Produkt se ze systému nesmaže.',
   },
   'admin.product.reactivated': {
@@ -332,12 +332,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když se při ukládání galerie změní hlavní obrázek v katalogu. Jeden řádek při změně primárního obrázku.',
   },
   'admin.loyalty.physical_card_issued': {
-    en: 'Recorded when an administrator issues a new physical loyalty card for kiosk scanning. The full card payload is never stored in this log.',
-    cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na kiosku. Plná hodnota karty se v záznamu neukládá.',
+    en: 'Recorded when an administrator issues a new physical loyalty card for sales point scanning. The full card payload is never stored in this log.',
+    cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na platebním místě. Plná hodnota karty se v záznamu neukládá.',
   },
   'admin.loyalty.physical_card_revoked': {
-    en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a kiosk. One line per revoked card.',
-    cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na kiosku. Jeden řádek za zneplatněnou kartu.',
+    en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a sales point. One line per revoked card.',
+    cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na platebním místě. Jeden řádek za zneplatněnou kartu.',
   },
   'admin.promo.event.created': {
     en: 'Recorded when an operator creates a new promo event in draft state. One line per created event.',
@@ -504,7 +504,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se po potvrzení rizika hotovostní platby u politiky cash poskytovatele.',
   },
   'payment.cash_checkout.self_confirm': {
-    en: 'Recorded when a customer self-confirms kiosk cash checkout (ADR-PICKUP-CASH).',
+    en: 'Recorded when a customer self-confirms sales point cash checkout (ADR-PICKUP-CASH).',
     cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u platebního místa (ADR-PICKUP-CASH).',
   },
   'payment.cash_shift.opened': {
@@ -516,7 +516,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se při uzavření hotovostní směny se spočítanou závěrečnou hotovostí.',
   },
   'payment.cash_drawer.open_signal': {
-    en: 'Recorded when the kiosk signals a physical drawer open after cash payment completion.',
+    en: 'Recorded when the sales point signals a physical drawer open after cash payment completion.',
     cs: 'Zapíše se, když platební místo po dokončení hotovostní platby signalizuje otevření zásuvky.',
   },
   'export.analytics.explore.exported': {

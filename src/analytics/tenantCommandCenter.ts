@@ -2,6 +2,8 @@
  * Tenant Command Center admin API — shared wire contract (§6.0b / §6.0c).
  */
 
+import type { MissionControlFunnelSummary } from './missionControl.js';
+
 /** Payment-flow stacked-bar lane ids (PAYMENT_LANE_COLORS keys). */
 export type TenantCommandCenterLaneId =
   | 'created'
@@ -101,9 +103,29 @@ export interface TenantCommandCenterFreshness {
   readonly refreshMinutes: number;
 }
 
+/** Daily GMV point for Tržby v čase (same window as payment lanes / KPIs). */
+export interface TenantCommandCenterRevenueDay {
+  readonly date: string;
+  readonly revenueCents: number;
+  readonly orderCount: number;
+}
+
+/** Ranked product for Top produkty card. */
+export interface TenantCommandCenterTopProduct {
+  readonly productId: number;
+  readonly name: string;
+  readonly revenueCents: number;
+  readonly orderCount: number;
+  readonly quantity: number;
+}
+
+/** Funnel aggregate — same shape as Mission Control for FE adapter reuse. */
+export type TenantCommandCenterFunnelSummary = MissionControlFunnelSummary;
+
 /**
  * Aggregate wire for `GET /api/{tenant}/v1/admin/command-center/tenant`.
  * Field checklist: plan §6.0c; exact DTO: §6.1.
+ * Chart fields (funnel / revenueByDay / topProducts) share the request date window.
  */
 export interface TenantCommandCenterWire {
   readonly accessTier: TenantCommandCenterAccessTier;
@@ -121,4 +143,10 @@ export interface TenantCommandCenterWire {
   readonly topKiosks: readonly TenantCommandCenterTopKiosk[];
   readonly recentActivity: readonly TenantCommandCenterActivityItem[];
   readonly freshness: TenantCommandCenterFreshness;
+  /** Summary-grade: conversion funnel for the selected range (null when unavailable). */
+  readonly funnelSummary: TenantCommandCenterFunnelSummary | null;
+  /** Summary-grade: daily revenue series for Tržby v čase. */
+  readonly revenueByDay: readonly TenantCommandCenterRevenueDay[];
+  /** Summary-grade: top products by revenue (empty when no product rollups). */
+  readonly topProducts: readonly TenantCommandCenterTopProduct[];
 }
