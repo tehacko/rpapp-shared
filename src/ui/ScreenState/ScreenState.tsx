@@ -97,7 +97,7 @@ export function ScreenState({
         <div className="mt-3">
           <button
             type="button"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-[var(--color-action-primary,var(--color-an-primary,#4f46e5))] px-4 py-2 text-sm font-semibold text-white"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-[var(--color-action-primary,var(--color-an-primary,#18181b))] px-4 py-2 text-sm font-semibold text-[var(--color-an-on-primary,#ffffff)]"
             onClick={onRetry}
             data-testid={`${testId ?? 'screen-state'}-retry`}
           >

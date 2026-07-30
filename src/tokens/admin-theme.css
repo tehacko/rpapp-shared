@@ -4,7 +4,7 @@
  *
  * MFE-v3-S-01: brand-bridge.css + design-tokens.css supply legacy/admin semantics.
  * MFE-v3-S-2: DECISION-2 C-Hybrid — focus/hover/disabled/elevated + dark via media + `.dark`.
- * Light/dark neutrals: admin dark follows the rail sidebar/deep brand surface.
+ * Light/dark neutrals: admin uses charcoal / grey depth layers (page ≠ card).
  * Light stays neutral-led while primary / rail accents remain brand-scoped.
  */
 @import './brand-bridge.css';
@@ -17,25 +17,25 @@
   --color-an-surface-hover: var(--color-neutral-100);
   --color-an-surface-disabled: var(--color-neutral-100);
   --color-an-text: var(--color-neutral-950);
-  --color-an-text-muted: #475569;
-  --color-an-text-disabled: #94a3b8;
+  --color-an-text-muted: #52525b;
+  --color-an-text-disabled: #71717a;
   --color-an-border: var(--color-neutral-200);
-  --color-an-border-hover: #cbd5e1;
-  --color-an-primary: var(--color-primary);
-  --color-an-primary-hover: #4f46e5;
-  --color-an-primary-soft: var(--color-primary-light);
-  --color-an-focus-ring: var(--brand-admin-primary);
+  --color-an-border-hover: #d4d4d8;
+  --color-an-primary: var(--brand-admin-primary);
+  --color-an-primary-hover: #09090b;
+  --color-an-primary-soft: #f4f4f5;
+  --color-an-focus-ring: #52525b;
   --color-an-danger: var(--color-error);
   --color-an-success: var(--color-success);
   --color-an-warn: var(--color-warning);
-  --color-an-info: var(--color-info);
+  --color-an-info: #52525b;
   --color-an-disabled-opacity: 0.55;
-  --color-an-chart-1: var(--brand-admin-primary);
-  --color-an-chart-2: #14b8a6;
-  --color-an-chart-3: #f59e0b;
-  --color-an-chart-4: #ef4444;
-  --color-an-chart-5: #8b5cf6;
-  --color-an-chart-6: #06b6d4;
+  --color-an-chart-1: #2563eb;
+  --color-an-chart-2: #0d9488;
+  --color-an-chart-3: #d97706;
+  --color-an-chart-4: #dc2626;
+  --color-an-chart-5: #9333ea;
+  --color-an-chart-6: #0891b2;
   --color-shell-bg: var(--color-an-bg);
   --color-shell-surface: var(--color-an-surface);
   --color-shell-border: var(--color-an-border);
@@ -53,71 +53,71 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-an-bg: #12102a;
-    --color-an-bg-elevated: var(--brand-rail-sidebar-bg);
-    --color-an-surface: var(--brand-rail-sidebar-bg);
-    --color-an-surface-muted: #17153a;
-    --color-an-surface-hover: #2a2660;
-    --color-an-surface-disabled: #2a2660;
-    --color-an-text: #e0e7ff;
-    --color-an-text-muted: #a5b4fc;
-    --color-an-text-disabled: #818cf8;
-    --color-an-border: #2f2b55;
-    --color-an-border-hover: #3d3870;
-    --color-an-primary: #a78bfa;
-    --color-an-primary-hover: #c4b5fd;
-    --color-an-primary-soft: rgba(124, 58, 237, 0.22);
-    --color-an-focus-ring: #a78bfa;
+    --color-an-bg: #09090b;
+    --color-an-bg-elevated: #27272a;
+    --color-an-surface: #18181b;
+    --color-an-surface-muted: #0c0c0e;
+    --color-an-surface-hover: #27272a;
+    --color-an-surface-disabled: #141416;
+    --color-an-text: #fafafa;
+    --color-an-text-muted: #a1a1aa;
+    --color-an-text-disabled: #71717a;
+    --color-an-border: #3f3f46;
+    --color-an-border-hover: #52525b;
+    --color-an-primary: #fafafa;
+    --color-an-primary-hover: #e4e4e7;
+    --color-an-primary-soft: rgba(255, 255, 255, 0.1);
+    --color-an-focus-ring: #a1a1aa;
     --color-an-disabled-opacity: 0.5;
-    --color-an-chart-1: #a78bfa;
-    --color-an-chart-2: #2dd4bf;
-    --color-an-chart-3: #fbbf24;
-    --color-an-chart-4: #f87171;
-    --color-an-chart-5: #c4b5fd;
-    --color-an-chart-6: #22d3ee;
-    --color-shell-bg: #12102a;
-    --color-shell-surface: var(--brand-rail-sidebar-bg);
-    --color-shell-border: #2f2b55;
-    --color-shell-text: #e0e7ff;
-    --color-rail-page-bg: #12102a;
-    --color-rail-card-border: #2f2b55;
+    --color-an-chart-1: #3b82f6;
+    --color-an-chart-2: #14b8a6;
+    --color-an-chart-3: #f59e0b;
+    --color-an-chart-4: #ef4444;
+    --color-an-chart-5: #a855f7;
+    --color-an-chart-6: #06b6d4;
+    --color-shell-bg: #09090b;
+    --color-shell-surface: #18181b;
+    --color-shell-border: #3f3f46;
+    --color-shell-text: #fafafa;
+    --color-rail-page-bg: #09090b;
+    --color-rail-card-border: #3f3f46;
   }
 }
 
 /**
- * C-Hybrid user override — dark mode tracks `--brand-rail-sidebar-bg`.
+ * C-Hybrid user override — dark content surfaces are layered charcoal (not flat rail fill).
  * Admin `applyInitialTheme()` / ThemeProvider toggles `.dark` on documentElement.
  */
 .dark {
   color-scheme: dark;
-  --color-an-bg: #12102a;
-  --color-an-bg-elevated: var(--brand-rail-sidebar-bg);
-  --color-an-surface: var(--brand-rail-sidebar-bg);
-  --color-an-surface-muted: #17153a;
-  --color-an-surface-hover: #2a2660;
-  --color-an-surface-disabled: #2a2660;
-  --color-an-text: #e0e7ff;
-  --color-an-text-muted: #a5b4fc;
-  --color-an-text-disabled: #818cf8;
-  --color-an-border: #2f2b55;
-  --color-an-border-hover: #3d3870;
-  --color-an-primary: #a78bfa;
-  --color-an-primary-hover: #c4b5fd;
-  --color-an-primary-soft: rgba(124, 58, 237, 0.22);
-  --color-an-focus-ring: #a78bfa;
+  --color-an-bg: #09090b;
+  --color-an-bg-elevated: #27272a;
+  --color-an-surface: #18181b;
+  --color-an-surface-muted: #0c0c0e;
+  --color-an-surface-hover: #27272a;
+  --color-an-surface-disabled: #141416;
+  --color-an-text: #fafafa;
+  --color-an-text-muted: #a1a1aa;
+  --color-an-text-disabled: #71717a;
+  --color-an-border: #3f3f46;
+  --color-an-border-hover: #52525b;
+  --color-an-primary: #fafafa;
+  --color-an-primary-hover: #e4e4e7;
+  --color-an-primary-soft: rgba(255, 255, 255, 0.1);
+  --color-an-focus-ring: #a1a1aa;
   --color-an-disabled-opacity: 0.5;
-  --color-an-chart-1: #a78bfa;
-  --color-an-chart-2: #2dd4bf;
-  --color-an-chart-3: #fbbf24;
-  --color-an-chart-4: #f87171;
-  --color-an-chart-5: #c4b5fd;
-  --color-an-chart-6: #22d3ee;
-  --color-shell-bg: #12102a;
-  --color-shell-surface: var(--brand-rail-sidebar-bg);
-  --color-shell-border: #2f2b55;
-  --color-shell-text: #e0e7ff;
-  --color-rail-page-bg: #12102a;
-  --color-rail-card-border: #2f2b55;
+  --color-an-chart-1: #3b82f6;
+  --color-an-chart-2: #14b8a6;
+  --color-an-chart-3: #f59e0b;
+  --color-an-chart-4: #ef4444;
+  --color-an-chart-5: #a855f7;
+  --color-an-chart-6: #06b6d4;
+  --color-shell-bg: #09090b;
+  --color-shell-surface: #18181b;
+  --color-shell-border: #3f3f46;
+  --color-shell-text: #fafafa;
+  --color-rail-page-bg: #09090b;
+  --color-rail-card-border: #3f3f46;
 }
 
 /**
@@ -126,32 +126,32 @@
  */
 .light {
   color-scheme: light;
-  --color-an-bg: var(--color-neutral-100);
+  --color-an-bg: #f4f4f5;
   --color-an-bg-elevated: var(--color-surface-default);
   --color-an-surface: var(--color-surface-default);
-  --color-an-surface-muted: var(--color-neutral-100);
-  --color-an-surface-hover: var(--color-neutral-100);
-  --color-an-surface-disabled: var(--color-neutral-100);
-  --color-an-text: var(--color-neutral-950);
-  --color-an-text-muted: #475569;
-  --color-an-text-disabled: #94a3b8;
-  --color-an-border: var(--color-neutral-200);
-  --color-an-border-hover: #cbd5e1;
-  --color-an-primary: var(--color-primary);
-  --color-an-primary-hover: #4f46e5;
-  --color-an-primary-soft: var(--color-primary-light);
-  --color-an-focus-ring: var(--brand-admin-primary);
+  --color-an-surface-muted: #f4f4f5;
+  --color-an-surface-hover: #e4e4e7;
+  --color-an-surface-disabled: #f4f4f5;
+  --color-an-text: #09090b;
+  --color-an-text-muted: #52525b;
+  --color-an-text-disabled: #71717a;
+  --color-an-border: #e4e4e7;
+  --color-an-border-hover: #d4d4d8;
+  --color-an-primary: var(--brand-admin-primary);
+  --color-an-primary-hover: #09090b;
+  --color-an-primary-soft: #f4f4f5;
+  --color-an-focus-ring: #52525b;
   --color-an-disabled-opacity: 0.55;
-  --color-an-chart-1: var(--brand-admin-primary);
-  --color-an-chart-2: #14b8a6;
-  --color-an-chart-3: #f59e0b;
-  --color-an-chart-4: #ef4444;
-  --color-an-chart-5: #8b5cf6;
-  --color-an-chart-6: #06b6d4;
-  --color-shell-bg: var(--color-neutral-100);
+  --color-an-chart-1: #2563eb;
+  --color-an-chart-2: #0d9488;
+  --color-an-chart-3: #d97706;
+  --color-an-chart-4: #dc2626;
+  --color-an-chart-5: #9333ea;
+  --color-an-chart-6: #0891b2;
+  --color-shell-bg: #f4f4f5;
   --color-shell-surface: var(--color-surface-default);
-  --color-shell-border: var(--color-neutral-200);
-  --color-shell-text: var(--color-neutral-950);
-  --color-rail-page-bg: var(--color-neutral-100);
-  --color-rail-card-border: var(--color-neutral-200);
+  --color-shell-border: #e4e4e7;
+  --color-shell-text: #09090b;
+  --color-rail-page-bg: #f4f4f5;
+  --color-rail-card-border: #e4e4e7;
 }

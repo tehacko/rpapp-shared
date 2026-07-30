@@ -33,4 +33,37 @@ describe('themeContract light override precedence', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(document.documentElement.classList.contains('light')).toBe(false);
   });
+
+  it('defaults to light when storage empty and defaultPreference is light', () => {
+    createThemeApi(THEME_STORAGE_KEYS.admin, {
+      lightOverrideEnabled: true,
+      defaultPreference: 'light',
+      systemResolvesTo: 'light',
+    }).applyInitialTheme();
+    expect(document.documentElement.classList.contains('light')).toBe(true);
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+  });
+
+  it('keeps light when OS would be dark but systemResolvesTo is light', () => {
+    window.localStorage.setItem(THEME_STORAGE_KEYS.admin, 'system');
+    const api = createThemeApi(THEME_STORAGE_KEYS.admin, {
+      lightOverrideEnabled: true,
+      defaultPreference: 'light',
+      systemResolvesTo: 'light',
+    });
+    expect(api.getEffectiveTheme()).toBe('light');
+    api.applyInitialTheme();
+    expect(document.documentElement.classList.contains('light')).toBe(true);
+  });
+
+  it('persists explicit dark in localStorage for the app key', () => {
+    const api = createThemeApi(THEME_STORAGE_KEYS.admin, {
+      lightOverrideEnabled: true,
+      defaultPreference: 'light',
+      systemResolvesTo: 'light',
+    });
+    api.setTheme('dark');
+    expect(window.localStorage.getItem(THEME_STORAGE_KEYS.admin)).toBe('dark');
+    expect(api.getEffectiveTheme()).toBe('dark');
+  });
 });

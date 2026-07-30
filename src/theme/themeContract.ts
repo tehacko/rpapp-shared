@@ -2,7 +2,7 @@
  * DECISION-2 C-Hybrid theme contract — system default + user override.
  *
  * Persists `light` | `dark` | `system` in per-app `localStorage` keys.
- * Effective palette is applied via the `.dark` class on `<html>`.
+ * Effective palette is applied via the `.dark` / `.light` class on `<html>`.
  */
 
 export type ThemePreference = 'light' | 'dark' | 'system';
@@ -37,9 +37,12 @@ function resolveSystemTheme(): EffectiveTheme {
     : 'light';
 }
 
-function readStoredPreference(storageKey: string): ThemePreference {
+function readStoredPreference(
+  storageKey: string,
+  defaultPreference: ThemePreference,
+): ThemePreference {
   if (typeof window === 'undefined') {
-    return 'system';
+    return defaultPreference;
   }
   try {
     const raw = window.localStorage.getItem(storageKey);
@@ -49,12 +52,23 @@ function readStoredPreference(storageKey: string): ThemePreference {
   } catch {
     /* ignore quota / privacy errors */
   }
-  return 'system';
+  return defaultPreference;
 }
 
 export interface ThemeApplyOptions {
   /** When true, explicit `light` preference adds `.light` to override system dark media. */
   readonly lightOverrideEnabled?: boolean;
+  /**
+   * Preference when `localStorage` is empty.
+   * Admin uses `light` so dark is only on after an explicit toggle.
+   * Default: `system` (follow OS).
+   */
+  readonly defaultPreference?: ThemePreference;
+  /**
+   * When preference is `system`, resolve to this instead of OS.
+   * Use `light` with admin so legacy `system` values do not auto-dark.
+   */
+  readonly systemResolvesTo?: EffectiveTheme;
 }
 
 function applyThemeClasses(
@@ -74,6 +88,11 @@ function applyThemeClasses(
     return;
   }
 
+  if (lightOverrideEnabled && preference === 'system' && options?.systemResolvesTo === 'light') {
+    root.classList.add('light');
+    return;
+  }
+
   if (preference === 'dark' || effective === 'dark') {
     root.classList.add('dark');
   }
@@ -87,12 +106,15 @@ export function createThemeApi(
   storageKey: string,
   options?: ThemeApplyOptions,
 ): ThemeApi {
-  const getThemePreference = (): ThemePreference => readStoredPreference(storageKey);
+  const defaultPreference: ThemePreference = options?.defaultPreference ?? 'system';
+
+  const getThemePreference = (): ThemePreference =>
+    readStoredPreference(storageKey, defaultPreference);
 
   const getEffectiveTheme = (): EffectiveTheme => {
     const pref = getThemePreference();
     if (pref === 'system') {
-      return resolveSystemTheme();
+      return options?.systemResolvesTo ?? resolveSystemTheme();
     }
     return pref;
   };
@@ -118,6 +140,10 @@ export function createThemeApi(
 
   const subscribeToSystemTheme = (onChange?: () => void): (() => void) => {
     if (typeof window === 'undefined') {
+      return () => undefined;
+    }
+    if (options?.systemResolvesTo != null) {
+      /* OS changes ignored — preference does not follow system */
       return () => undefined;
     }
     const mq = window.matchMedia?.('(prefers-color-scheme: dark)');

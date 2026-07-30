@@ -2,15 +2,15 @@
 /**
  * Phase 1 CI — ban stray brand hex outside SSOT + raw slate-as-brand.
  *
- * Admin Option C violet (`#7C3AED` `#6366F1` `#1E1B4B`) is **allowed only** in
- * `shared/src/tokens/brand-bridge.css` (DECISION-1 Option C admin rail/CTA).
- * Elsewhere: use `--brand-admin-*` / `--brand-rail-*` tokens.
+ * Legacy admin violet / indigo (`#7C3AED` `#6366F1` `#1E1B4B` `#4F46E5` `#8B5CF6`
+ * `#A78BFA` `#C4B5FD` `#818CF8` `#4338CA`) is **banned** — admin is charcoal/grey.
+ * Use `--brand-admin-*` / `--brand-rail-*` / `--color-an-*` tokens.
  *
  * Always banned: `#00203F` `#ADEFD1` `#1F5F78` (legacy Canva / primary-drift).
  * Raw slate `#0F172A` / `#F1F5F9` / `#E2E8F0` fail unless the same line
  * declares `--color-neutral-*` or `--brand-rail-*`.
  *
- * @see ADR-FE-BRAND-002 · brand-palette.md Option C · plan §A CI hex ban
+ * @see ADR-FE-BRAND-002 · brand-palette.md · plan §A CI hex ban
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative } from 'node:path';
@@ -58,14 +58,30 @@ function isTestFile(fileName) {
 }
 
 /** Absolute ban — never allowed in scanned sources */
-const BANNED_HEX = ['#00203F', '#ADEFD1', '#1F5F78'];
+const BANNED_HEX = [
+  '#00203F',
+  '#ADEFD1',
+  '#1F5F78',
+  /* legacy admin violet / indigo — charcoal tokens only */
+  '#7C3AED',
+  '#6366F1',
+  '#1E1B4B',
+  '#4F46E5',
+  '#8B5CF6',
+  '#A78BFA',
+  '#C4B5FD',
+  '#818CF8',
+  '#4338CA',
+  '#EEF2FF',
+  '#E0E7FF',
+  '#F5F3FF',
+];
 
 /**
- * Admin Option C violet — SSOT in brand-bridge.css; also allowed in
- * admin-app design-tokens.css so admin can pin rail/CTA if a stale
- * package copy remaps `--brand-admin-*` onto consumer teal.
+ * @deprecated Option C violet allowlist removed — greys live in brand-bridge freely.
+ * Kept empty so scan logic still compiles if referenced.
  */
-const ADMIN_OPTION_C_HEX = ['#7C3AED', '#6366F1', '#1E1B4B'];
+const ADMIN_OPTION_C_HEX = [];
 const ADMIN_OPTION_C_ALLOW_RE =
   /(?:^|\/)(?:brand-bridge\.css|admin-app\/src\/shared\/styles\/design-tokens\.css)$/;
 
@@ -164,7 +180,7 @@ function scanFile(filePath, content) {
           line: lineNo,
           hex: hexNorm,
           reason:
-            'admin Option C violet hex outside brand-bridge.css / admin design-tokens.css — use --brand-admin-* / --brand-rail-*',
+            'legacy admin violet/indigo hex — use --brand-admin-* / --brand-rail-* / charcoal greys',
         });
       } else if (SLATE_HEX.includes(hexNorm) && !slateAllowed(line, hexNorm)) {
         hits.push({
@@ -225,12 +241,12 @@ if (allHits.length > 0) {
     console.error(`  ${hit.file}:${String(hit.line)}  ${hit.hex}  — ${hit.reason}`);
   }
   console.error(
-    `\nRecovery: use Adriatic --color-brand-* (consumer) or Option C --brand-admin-* / --brand-rail-* (admin SSOT in brand-bridge.css). See brand-palette.md.`,
+    `\nRecovery: use Adriatic --color-brand-* (consumer) or charcoal --brand-admin-* / --brand-rail-* (admin SSOT in brand-bridge.css). See brand-palette.md.`,
   );
   process.exit(1);
 }
 
 console.log(
-  `gate-brand-hex-ban: ok (${scanAll ? 'all surfaces' : 'tokens SSOT only'}; Option C violet only in brand-bridge; no stray brand hex)`,
+  `gate-brand-hex-ban: ok (${scanAll ? 'all surfaces' : 'tokens SSOT only'}; no legacy violet/indigo; no stray brand hex)`,
 );
 process.exit(0);

@@ -37,6 +37,10 @@ export interface ThemeProviderProps {
   storageKey: string;
   /** When true, explicit `light` preference adds `.light` to override system dark media. */
   lightOverrideEnabled?: boolean;
+  /** When storage empty — admin uses `light` so dark requires an explicit toggle. */
+  defaultPreference?: ThemePreference;
+  /** When preference is `system`, force this effective theme (admin: `light`). */
+  systemResolvesTo?: EffectiveTheme;
   children: ReactNode;
 }
 
@@ -47,11 +51,18 @@ export interface ThemeProviderProps {
 export function ThemeProvider({
   storageKey,
   lightOverrideEnabled = false,
+  defaultPreference,
+  systemResolvesTo,
   children,
 }: ThemeProviderProps): JSX.Element {
   const api = useMemo(
-    () => createThemeApi(storageKey, { lightOverrideEnabled }),
-    [storageKey, lightOverrideEnabled],
+    () =>
+      createThemeApi(storageKey, {
+        lightOverrideEnabled,
+        defaultPreference,
+        systemResolvesTo,
+      }),
+    [storageKey, lightOverrideEnabled, defaultPreference, systemResolvesTo],
   );
   const [preference, setPreference] = useState<ThemePreference>(() => api.getThemePreference());
   const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>(() => api.getEffectiveTheme());

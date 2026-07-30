@@ -43,8 +43,8 @@ export function Avatar({
   const initials = initialsFromName(name);
   const base = [
     'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full',
-    'bg-[var(--color-surface-muted,var(--color-an-primary-soft,#e0e7ff))]',
-    'font-semibold text-[var(--color-on-surface,var(--color-an-primary,#4f46e5))]',
+    'bg-[var(--color-surface-muted,var(--color-an-primary-soft,#e4e4e7))]',
+    'font-semibold text-[var(--color-on-surface,var(--color-an-primary,#18181b))]',
     SIZE_CLASS[size],
     className,
   ]

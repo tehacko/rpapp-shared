@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-29T18:47:02.406Z",
+  "generatedAt": "2026-07-30T06:48:08.022Z",
   "source": "shared/scripts/gate-tokens-sync.mjs",
   "inputs": [
     "brand-bridge.css",
@@ -26,14 +26,14 @@
         "--brand-consumer-accent": "var(--color-brand-primary)",
         "--brand-consumer-accent-soft": "var(--color-brand-soft)",
         "--brand-consumer-accent-foreground": "var(--color-surface-default)",
-        "--brand-admin-accent": "#7c3aed",
-        "--brand-admin-primary": "#6366f1",
-        "--brand-rail-sidebar-bg": "#1e1b4b",
-        "--brand-rail-sidebar-bg-deep": "var(--color-neutral-950)",
-        "--brand-rail-sidebar-text": "#e0e7ff",
-        "--brand-rail-sidebar-muted": "#a5b4fc",
+        "--brand-admin-accent": "#171717",
+        "--brand-admin-primary": "#18181b",
+        "--brand-rail-sidebar-bg": "#0a0a0a",
+        "--brand-rail-sidebar-bg-deep": "#000000",
+        "--brand-rail-sidebar-text": "#fafafa",
+        "--brand-rail-sidebar-muted": "#a3a3a3",
         "--brand-rail-sidebar-active": "var(--brand-admin-accent)",
-        "--brand-rail-sidebar-hover": "rgba(124, 58, 237, 0.2)",
+        "--brand-rail-sidebar-hover": "rgba(255, 255, 255, 0.08)",
         "--brand-rail-page-bg": "var(--color-neutral-100)",
         "--brand-rail-card-border": "var(--color-neutral-200)",
         "--brand-rail-kpi-up": "#05805a",
@@ -95,43 +95,43 @@
     {
       "file": "admin-theme.css",
       "properties": {
-        "--color-an-bg": "var(--color-neutral-100)",
+        "--color-an-bg": "#f4f4f5",
         "--color-an-bg-elevated": "var(--color-surface-default)",
         "--color-an-surface": "var(--color-surface-default)",
-        "--color-an-surface-muted": "var(--color-neutral-100)",
-        "--color-an-surface-hover": "var(--color-neutral-100)",
-        "--color-an-surface-disabled": "var(--color-neutral-100)",
-        "--color-an-text": "var(--color-neutral-950)",
-        "--color-an-text-muted": "#475569",
-        "--color-an-text-disabled": "#94a3b8",
-        "--color-an-border": "var(--color-neutral-200)",
-        "--color-an-border-hover": "#cbd5e1",
-        "--color-an-primary": "var(--color-primary)",
-        "--color-an-primary-hover": "#4f46e5",
-        "--color-an-primary-soft": "var(--color-primary-light)",
-        "--color-an-focus-ring": "var(--brand-admin-primary)",
+        "--color-an-surface-muted": "#f4f4f5",
+        "--color-an-surface-hover": "#e4e4e7",
+        "--color-an-surface-disabled": "#f4f4f5",
+        "--color-an-text": "#09090b",
+        "--color-an-text-muted": "#52525b",
+        "--color-an-text-disabled": "#71717a",
+        "--color-an-border": "#e4e4e7",
+        "--color-an-border-hover": "#d4d4d8",
+        "--color-an-primary": "var(--brand-admin-primary)",
+        "--color-an-primary-hover": "#09090b",
+        "--color-an-primary-soft": "#f4f4f5",
+        "--color-an-focus-ring": "#52525b",
         "--color-an-danger": "var(--color-error)",
         "--color-an-success": "var(--color-success)",
         "--color-an-warn": "var(--color-warning)",
-        "--color-an-info": "var(--color-info)",
+        "--color-an-info": "#52525b",
         "--color-an-disabled-opacity": "0.55",
-        "--color-an-chart-1": "var(--brand-admin-primary)",
-        "--color-an-chart-2": "#14b8a6",
-        "--color-an-chart-3": "#f59e0b",
-        "--color-an-chart-4": "#ef4444",
-        "--color-an-chart-5": "#8b5cf6",
-        "--color-an-chart-6": "#06b6d4",
-        "--color-shell-bg": "var(--color-neutral-100)",
+        "--color-an-chart-1": "#2563eb",
+        "--color-an-chart-2": "#0d9488",
+        "--color-an-chart-3": "#d97706",
+        "--color-an-chart-4": "#dc2626",
+        "--color-an-chart-5": "#9333ea",
+        "--color-an-chart-6": "#0891b2",
+        "--color-shell-bg": "#f4f4f5",
         "--color-shell-surface": "var(--color-surface-default)",
-        "--color-shell-border": "var(--color-neutral-200)",
-        "--color-shell-text": "var(--color-neutral-950)",
+        "--color-shell-border": "#e4e4e7",
+        "--color-shell-text": "#09090b",
         "--color-rail-sidebar-bg": "var(--brand-rail-sidebar-bg)",
         "--color-rail-sidebar-text": "var(--brand-rail-sidebar-text)",
         "--color-rail-sidebar-muted": "var(--brand-rail-sidebar-muted)",
         "--color-rail-sidebar-active": "var(--brand-rail-sidebar-active)",
         "--color-rail-sidebar-hover": "var(--brand-rail-sidebar-hover)",
-        "--color-rail-page-bg": "var(--color-neutral-100)",
-        "--color-rail-card-border": "var(--color-neutral-200)",
+        "--color-rail-page-bg": "#f4f4f5",
+        "--color-rail-card-border": "#e4e4e7",
         "--color-rail-kpi-up": "var(--brand-rail-kpi-up)",
         "--color-rail-kpi-down": "var(--brand-rail-kpi-down)"
       },
@@ -202,27 +202,27 @@
     },
     "--brand-admin-accent": {
       "file": "brand-bridge.css",
-      "value": "#7c3aed"
+      "value": "#171717"
     },
     "--brand-admin-primary": {
       "file": "brand-bridge.css",
-      "value": "#6366f1"
+      "value": "#18181b"
     },
     "--brand-rail-sidebar-bg": {
       "file": "brand-bridge.css",
-      "value": "#1e1b4b"
+      "value": "#0a0a0a"
     },
     "--brand-rail-sidebar-bg-deep": {
       "file": "brand-bridge.css",
-      "value": "var(--color-neutral-950)"
+      "value": "#000000"
     },
     "--brand-rail-sidebar-text": {
       "file": "brand-bridge.css",
-      "value": "#e0e7ff"
+      "value": "#fafafa"
     },
     "--brand-rail-sidebar-muted": {
       "file": "brand-bridge.css",
-      "value": "#a5b4fc"
+      "value": "#a3a3a3"
     },
     "--brand-rail-sidebar-active": {
       "file": "brand-bridge.css",
@@ -230,7 +230,7 @@
     },
     "--brand-rail-sidebar-hover": {
       "file": "brand-bridge.css",
-      "value": "rgba(124, 58, 237, 0.2)"
+      "value": "rgba(255, 255, 255, 0.08)"
     },
     "--brand-rail-page-bg": {
       "file": "brand-bridge.css",
@@ -278,11 +278,11 @@
     },
     "--color-rail-page-bg": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#f4f4f5"
     },
     "--color-rail-card-border": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-200)"
+      "value": "#e4e4e7"
     },
     "--color-rail-kpi-up": {
       "file": "admin-theme.css",
@@ -294,7 +294,7 @@
     },
     "--color-an-chart-1": {
       "file": "admin-theme.css",
-      "value": "var(--brand-admin-primary)"
+      "value": "#2563eb"
     },
     "--color-surface": {
       "file": "theme.css",
@@ -422,7 +422,7 @@
     },
     "--color-an-bg": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#f4f4f5"
     },
     "--color-an-bg-elevated": {
       "file": "admin-theme.css",
@@ -434,51 +434,51 @@
     },
     "--color-an-surface-muted": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#f4f4f5"
     },
     "--color-an-surface-hover": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#e4e4e7"
     },
     "--color-an-surface-disabled": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#f4f4f5"
     },
     "--color-an-text": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-950)"
+      "value": "#09090b"
     },
     "--color-an-text-muted": {
       "file": "admin-theme.css",
-      "value": "#475569"
+      "value": "#52525b"
     },
     "--color-an-text-disabled": {
       "file": "admin-theme.css",
-      "value": "#94a3b8"
+      "value": "#71717a"
     },
     "--color-an-border": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-200)"
+      "value": "#e4e4e7"
     },
     "--color-an-border-hover": {
       "file": "admin-theme.css",
-      "value": "#cbd5e1"
+      "value": "#d4d4d8"
     },
     "--color-an-primary": {
       "file": "admin-theme.css",
-      "value": "var(--color-primary)"
+      "value": "var(--brand-admin-primary)"
     },
     "--color-an-primary-hover": {
       "file": "admin-theme.css",
-      "value": "#4f46e5"
+      "value": "#09090b"
     },
     "--color-an-primary-soft": {
       "file": "admin-theme.css",
-      "value": "var(--color-primary-light)"
+      "value": "#f4f4f5"
     },
     "--color-an-focus-ring": {
       "file": "admin-theme.css",
-      "value": "var(--brand-admin-primary)"
+      "value": "#52525b"
     },
     "--color-an-danger": {
       "file": "admin-theme.css",
@@ -494,7 +494,7 @@
     },
     "--color-an-info": {
       "file": "admin-theme.css",
-      "value": "var(--color-info)"
+      "value": "#52525b"
     },
     "--color-an-disabled-opacity": {
       "file": "admin-theme.css",
@@ -502,27 +502,27 @@
     },
     "--color-an-chart-2": {
       "file": "admin-theme.css",
-      "value": "#14b8a6"
+      "value": "#0d9488"
     },
     "--color-an-chart-3": {
       "file": "admin-theme.css",
-      "value": "#f59e0b"
+      "value": "#d97706"
     },
     "--color-an-chart-4": {
       "file": "admin-theme.css",
-      "value": "#ef4444"
+      "value": "#dc2626"
     },
     "--color-an-chart-5": {
       "file": "admin-theme.css",
-      "value": "#8b5cf6"
+      "value": "#9333ea"
     },
     "--color-an-chart-6": {
       "file": "admin-theme.css",
-      "value": "#06b6d4"
+      "value": "#0891b2"
     },
     "--color-shell-bg": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-100)"
+      "value": "#f4f4f5"
     },
     "--color-shell-surface": {
       "file": "admin-theme.css",
@@ -530,11 +530,11 @@
     },
     "--color-shell-border": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-200)"
+      "value": "#e4e4e7"
     },
     "--color-shell-text": {
       "file": "admin-theme.css",
-      "value": "var(--color-neutral-950)"
+      "value": "#09090b"
     }
   }
 }

@@ -16,16 +16,16 @@ const adminButton = tv({
   variants: {
     intent: {
       primary: [
-        'border-0 bg-[var(--color-an-primary)] text-white shadow-sm',
+        'border-0 bg-[var(--color-an-primary)] text-[var(--color-an-on-primary,#ffffff)] shadow-sm',
         'hover:brightness-95 hover:-translate-y-px',
-        'hover:shadow-[0_4px_12px_rgba(99,102,241,0.35)]',
+        'hover:shadow-[0_4px_12px_rgba(24, 24, 27,0.35)]',
       ].join(' '),
       secondary: [
         'border border-[var(--color-gray-300)] bg-[var(--color-gray-200)]',
         'text-[var(--color-gray-800)] shadow-sm',
         'hover:border-[var(--color-an-primary)] hover:bg-[var(--color-an-primary-soft)]',
         'hover:text-[var(--color-an-primary)]',
-        'hover:shadow-[0_2px_6px_rgba(99,102,241,0.2)]',
+        'hover:shadow-[0_2px_6px_rgba(24, 24, 27,0.2)]',
       ].join(' '),
       ghost: [
         'border border-[var(--color-an-border)] bg-[var(--color-an-surface)]',

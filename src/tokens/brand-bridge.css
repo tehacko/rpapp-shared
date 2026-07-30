@@ -1,7 +1,8 @@
 /**
  * Brand bridge — Canva Up Above SSOT → theme.css / admin-theme.css consumers
  *
- * DECISION-1 Option C: --brand-consumer-accent (Canva teal) + --brand-admin-accent (PO violet)
+ * DECISION-1: --brand-consumer-accent (Canva teal) + --brand-admin-* (neutral charcoal)
+ * Admin chrome is black / white / grey only — consumer apps keep Canva teal.
  * Import before theme.css or admin-theme.css once MFE-v3-S-01 wires consumers.
  *
  * @see rpappp/up-backend/docs/FRONTEND/brand-palette.md
@@ -26,21 +27,21 @@
   --color-neutral-100: #f1f5f9;
   --color-neutral-200: #e2e8f0;
 
-  /* ── Semantic brand accents (DECISION-1 Option C) ── */
+  /* ── Semantic brand accents ── */
   --brand-consumer-accent: var(--color-brand-primary);
   --brand-consumer-accent-soft: var(--color-brand-soft);
   --brand-consumer-accent-foreground: var(--color-surface-default);
-  /* Admin PO mockup violet — do not collapse onto consumer teal */
-  --brand-admin-accent: #7c3aed;
-  --brand-admin-primary: #6366f1;
+  /* Admin — charcoal / near-black (not consumer teal, not violet) */
+  --brand-admin-accent: #171717;
+  --brand-admin-primary: #18181b;
 
-  /* ── Admin rail palette (MOCKUP_VISUAL_SPEC_CACHE / brand-palette.md) ── */
-  --brand-rail-sidebar-bg: #1e1b4b;
-  --brand-rail-sidebar-bg-deep: var(--color-neutral-950);
-  --brand-rail-sidebar-text: #e0e7ff;
-  --brand-rail-sidebar-muted: #a5b4fc;
+  /* ── Admin rail palette — near-black charcoal ── */
+  --brand-rail-sidebar-bg: #0a0a0a;
+  --brand-rail-sidebar-bg-deep: #000000;
+  --brand-rail-sidebar-text: #fafafa;
+  --brand-rail-sidebar-muted: #a3a3a3;
   --brand-rail-sidebar-active: var(--brand-admin-accent);
-  --brand-rail-sidebar-hover: rgba(124, 58, 237, 0.2);
+  --brand-rail-sidebar-hover: rgba(255, 255, 255, 0.08);
   --brand-rail-page-bg: var(--color-neutral-100);
   --brand-rail-card-border: var(--color-neutral-200);
   --brand-rail-kpi-up: #05805a;
