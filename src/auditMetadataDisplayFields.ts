@@ -88,6 +88,9 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'surface', labelKey: 'compliance.audit.metadata.surface' },
     { key: 'purpose', labelKey: 'compliance.audit.metadata.purpose' },
   ],
+  'auth.admin.password.set': [
+    { key: 'authChannel', labelKey: 'compliance.audit.metadata.authChannel' },
+  ],
   'customer.oidc.login': [
     { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
   ],
