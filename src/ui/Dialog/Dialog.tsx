@@ -1,7 +1,23 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
+import {
+  focusInitialInContainer,
+  handleFocusTrapKeyDown,
+  lockBodyScroll,
+  setBackgroundInert,
+} from '../overlay/overlayFocus.js';
+import {
+  OVERLAY_BACKDROP_ENTERED,
+  OVERLAY_BACKDROP_EXITED,
+  OVERLAY_MOTION_ENTERED,
+  OVERLAY_MOTION_EXITED,
+  OVERLAY_MOTION_TRANSITION,
+  useOverlayPresence,
+} from '../overlay/overlayMotion.js';
 
 /**
  * CMP-0010 Dialog — Radix-free modal shell (no portal library).
+ * Wave A harden: focus trap, restore, busy Escape/backdrop, scroll lock, labelledby, inert.
+ * Short enter/exit via motion tokens; Confirm inherits this surface.
  */
 export interface DialogProps {
   readonly open: boolean;
@@ -12,7 +28,22 @@ export interface DialogProps {
   readonly closeLabel?: string;
   readonly className?: string;
   readonly testId?: string;
+  /** When true, Escape and backdrop dismiss are no-ops; close control is disabled. */
+  readonly busy?: boolean;
+  /** Alias of busy (ConfirmDialog / pending flows). */
+  readonly pending?: boolean;
+  /** Optional description id for aria-describedby. */
+  readonly describedBy?: string;
+  /** role="alertdialog" for destructive confirms. */
+  readonly role?: 'dialog' | 'alertdialog';
+  /** Hide the built-in title row (caller supplies labelled chrome). */
+  readonly hideHeader?: boolean;
+  /** Stable id for title element; auto-generated when omitted. */
+  readonly titleId?: string;
 }
+
+const DIALOG_SHELL_PAD =
+  'pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))]';
 
 export function Dialog({
   open,
@@ -23,53 +54,130 @@ export function Dialog({
   closeLabel = 'Close',
   className,
   testId = 'dialog',
+  busy = false,
+  pending = false,
+  describedBy,
+  role = 'dialog',
+  hideHeader = false,
+  titleId: titleIdProp,
 }: DialogProps): JSX.Element | null {
+  const isBusy = busy || pending;
+  const generatedId = useId();
+  const titleId = titleIdProp ?? `${generatedId}-title`;
+  const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+  const { mounted, visible } = useOverlayPresence(open);
+
+  // Initial focus when opening; capture restore target before moving focus in.
+  useEffect(() => {
+    if (!open || !mounted) {
+      return;
+    }
+    restoreFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const panel = panelRef.current;
+    if (panel !== null) {
+      focusInitialInContainer(panel);
+    }
+  }, [open, mounted]);
+
+  // Inert + scroll lock for full mounted lifetime (including exit fade); restore focus on unmount.
+  useEffect(() => {
+    if (!mounted) {
+      return;
+    }
+    const unlock = lockBodyScroll();
+    const root = rootRef.current;
+    const clearInert = root !== null ? setBackgroundInert(root) : (): void => undefined;
+    return (): void => {
+      clearInert();
+      unlock();
+      const restore = restoreFocusRef.current;
+      if (restore !== null && typeof restore.focus === 'function') {
+        restore.focus();
+      }
+    };
+  }, [mounted]);
+
   useEffect(() => {
     if (!open) {
       return;
     }
     const onKey = (event: KeyboardEvent): void => {
+      const panel = panelRef.current;
+      if (panel !== null) {
+        handleFocusTrapKeyDown(panel, event);
+      }
       if (event.key === 'Escape') {
+        if (isBusy) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
         onClose();
       }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [open, onClose, isBusy]);
 
-  if (!open) {
+  if (!mounted) {
     return null;
   }
 
+  const showHeader = Boolean(title) && !hideHeader;
+  const labelledBy = title ? titleId : undefined;
+  const motionState = visible ? OVERLAY_MOTION_ENTERED : OVERLAY_MOTION_EXITED;
+  const backdropState = visible ? OVERLAY_BACKDROP_ENTERED : OVERLAY_BACKDROP_EXITED;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" data-testid={testId}>
+    <div
+      ref={rootRef}
+      className={`fixed inset-0 z-50 flex h-[100dvh] items-center justify-center ${DIALOG_SHELL_PAD}`}
+      data-testid={testId}
+    >
       <button
         type="button"
-        className="absolute inset-0 bg-black/40"
+        className={[
+          'absolute inset-0 bg-black/40',
+          OVERLAY_MOTION_TRANSITION,
+          backdropState,
+        ].join(' ')}
         aria-label={closeLabel}
         data-testid={`${testId}-overlay`}
+        tabIndex={-1}
+        disabled={isBusy || !closeOnOverlayClick || !open}
         onClick={() => {
-          if (closeOnOverlayClick) {
+          if (open && !isBusy && closeOnOverlayClick) {
             onClose();
           }
         }}
       />
       <div
-        role="dialog"
+        ref={panelRef}
+        role={role}
         aria-modal="true"
-        aria-label={title}
+        aria-labelledby={labelledBy}
+        aria-describedby={describedBy}
+        aria-busy={isBusy || undefined}
         className={[
           'relative z-10 w-full max-w-lg rounded-lg border border-[var(--color-border,var(--color-an-border))]',
           'bg-[var(--color-surface,var(--color-an-surface))] p-4 shadow-lg',
+          OVERLAY_MOTION_TRANSITION,
+          motionState,
           className,
         ]
           .filter(Boolean)
           .join(' ')}
         data-testid={`${testId}-content`}
       >
-        {title ? (
+        {showHeader ? (
           <header className="mb-3 flex items-start justify-between gap-3">
-            <h2 className="m-0 text-lg font-semibold text-[var(--color-on-surface,var(--color-an-text))]">
+            <h2
+              id={titleId}
+              className="m-0 text-lg font-semibold text-[var(--color-on-surface,var(--color-an-text))]"
+            >
               {title}
             </h2>
             <button
@@ -77,11 +185,16 @@ export function Dialog({
               className="rounded-md px-2 py-1 text-sm text-[var(--color-on-surface-muted)]"
               aria-label={closeLabel}
               onClick={onClose}
+              disabled={isBusy || !open}
               data-testid={`${testId}-close`}
             >
               ×
             </button>
           </header>
+        ) : title ? (
+          <span id={titleId} className="sr-only">
+            {title}
+          </span>
         ) : null}
         <div>{children}</div>
       </div>

@@ -1,4 +1,10 @@
 import type { HTMLAttributes } from 'react';
+import {
+  OVERLAY_MOTION_ENTERED,
+  OVERLAY_MOTION_EXITED,
+  OVERLAY_MOTION_TRANSITION,
+  useOverlayPresence,
+} from '../overlay/overlayMotion.js';
 
 export type ToastVariant = 'default' | 'success' | 'warn' | 'danger' | 'info';
 
@@ -8,6 +14,13 @@ export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
   readonly onDismiss?: () => void;
   readonly dismissLabel?: string;
   readonly testId?: string;
+  /**
+   * Controlled presence (default true). When false, applies EXITED motion classes;
+   * keep the node mounted until the parent removes it after `OVERLAY_EXIT_MS`.
+   */
+  readonly open?: boolean;
+  /** Force EXITED motion state (host-owned exit hold; alternative to `open={false}`). */
+  readonly exiting?: boolean;
 }
 
 const VARIANT_CLASS: Record<ToastVariant, string> = {
@@ -20,8 +33,15 @@ const VARIANT_CLASS: Record<ToastVariant, string> = {
   info: 'border-[var(--color-info,#0ea5e9)] bg-[color-mix(in_oklab,var(--color-info,#0ea5e9)_12%,transparent)] text-[var(--color-info,#0ea5e9)]',
 };
 
+function toastAriaLive(variant: ToastVariant): 'polite' | 'assertive' {
+  return variant === 'danger' || variant === 'warn' ? 'assertive' : 'polite';
+}
+
 /**
  * CMP-0011 Toast (= Snackbar) — presentational item; host owns queue/viewport.
+ * Live region: polite for success/info/default; assertive for danger/warn.
+ * Short enter/exit via motion tokens; motion-reduce disables transition.
+ * Toast does not self-unmount on exit — parent removes after `OVERLAY_EXIT_MS`.
  */
 export function Toast({
   message,
@@ -30,14 +50,24 @@ export function Toast({
   dismissLabel = 'Dismiss',
   className,
   testId = 'toast',
+  open = true,
+  exiting = false,
   ...rest
 }: ToastProps): JSX.Element {
+  const ariaLive = toastAriaLive(variant);
+  const { visible } = useOverlayPresence(open && !exiting);
+  const motionState =
+    exiting || !visible ? OVERLAY_MOTION_EXITED : OVERLAY_MOTION_ENTERED;
   return (
     <div
-      role="status"
+      role={ariaLive === 'assertive' ? 'alert' : 'status'}
+      aria-live={ariaLive}
+      aria-atomic="true"
       className={[
         'flex items-start gap-3 rounded-md border px-3 py-2 text-sm shadow-sm',
         VARIANT_CLASS[variant],
+        OVERLAY_MOTION_TRANSITION,
+        motionState,
         className,
       ]
         .filter(Boolean)

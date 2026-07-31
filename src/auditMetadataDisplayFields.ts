@@ -62,6 +62,38 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'auth.admin.break_glass.failed': [
     { key: 'failureReason', labelKey: 'compliance.audit.metadata.failureReason' },
   ],
+  'auth.admin.oidc.login.success': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+    { key: 'surface', labelKey: 'compliance.audit.metadata.surface' },
+  ],
+  'auth.admin.oidc.login.failed': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.oidc.invite.activated': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+    { key: 'adminUserId', labelKey: 'compliance.audit.metadata.adminUserId' },
+  ],
+  'auth.admin.oidc.link.created': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+  ],
+  'auth.admin.oidc.link.removed': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+  ],
+  'auth.admin.oidc.link.remove_denied': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
+  'auth.admin.oidc.session.exchanged': [
+    { key: 'surface', labelKey: 'compliance.audit.metadata.surface' },
+    { key: 'purpose', labelKey: 'compliance.audit.metadata.purpose' },
+  ],
+  'customer.oidc.login': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+  ],
+  'customer.oidc.email_merged': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+  ],
   'admin.capability.granted': [
     { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },

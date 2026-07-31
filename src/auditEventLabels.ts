@@ -71,6 +71,46 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Admin break-glass rejected',
     cs: 'Break-glass administrátora odmítnut',
   },
+  'auth.admin.oidc.login.success': {
+    en: 'Admin OIDC login succeeded',
+    cs: 'OIDC přihlášení administrátora úspěšné',
+  },
+  'auth.admin.oidc.login.failed': {
+    en: 'Admin OIDC login failed',
+    cs: 'OIDC přihlášení administrátora selhalo',
+  },
+  'auth.admin.oidc.invite.activated': {
+    en: 'Admin invite activated via OIDC',
+    cs: 'Pozvánka administrátora aktivována přes OIDC',
+  },
+  'auth.admin.oidc.link.created': {
+    en: 'Admin OIDC link created',
+    cs: 'OIDC vazba administrátora vytvořena',
+  },
+  'auth.admin.oidc.link.removed': {
+    en: 'Admin OIDC link removed',
+    cs: 'OIDC vazba administrátora odebrána',
+  },
+  'auth.admin.oidc.link.remove_denied': {
+    en: 'Admin OIDC unlink denied',
+    cs: 'Odpojení OIDC administrátora zamítnuto',
+  },
+  'auth.admin.oidc.session.exchanged': {
+    en: 'Admin OIDC session code exchanged',
+    cs: 'OIDC session kód administrátora vyměněn',
+  },
+  'auth.admin.password.set': {
+    en: 'Admin password set',
+    cs: 'Heslo administrátora nastaveno',
+  },
+  'customer.oidc.login': {
+    en: 'Customer OIDC login',
+    cs: 'OIDC přihlášení zákazníka',
+  },
+  'customer.oidc.email_merged': {
+    en: 'Customer OIDC email merged',
+    cs: 'OIDC e-mail zákazníka sloučen',
+  },
   'admin.invite.created': {
     en: 'Admin invite created',
     cs: 'Pozvánka administrátora vytvořena',

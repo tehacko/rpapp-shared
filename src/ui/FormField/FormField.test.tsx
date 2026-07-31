@@ -62,4 +62,24 @@ describe('FormField', () => {
     const error = screen.getByRole('alert');
     expect(error.className).toContain('text-[var(--color-an-danger)]');
   });
+
+  it('appends required marker and aria-required when required=true', () => {
+    render(<FormField label="Amount" required />);
+
+    expect(screen.getByText((_, el) => el?.tagName === 'LABEL' && el.textContent === 'Amount *')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Amount *' })).toHaveAttribute('aria-required', 'true');
+  });
+
+  it('wraps a custom child control with field a11y props', () => {
+    render(
+      <FormField label="Note" errorText="Too short">
+        <textarea data-testid="note-area" />
+      </FormField>,
+    );
+
+    const area = screen.getByTestId('note-area');
+    expect(area).toHaveAttribute('aria-invalid', 'true');
+    expect(area).toHaveAttribute('id');
+    expect(screen.getByRole('alert')).toHaveTextContent('Too short');
+  });
 });

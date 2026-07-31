@@ -1,4 +1,12 @@
-import { forwardRef, useId, type InputHTMLAttributes } from 'react';
+import {
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useId,
+  type InputHTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { tv } from '../tvShim.js';
 
 export type FormFieldSurface = 'admin' | 'customer' | 'kiosk' | 'pickup';
@@ -56,16 +64,37 @@ const consumerField = tv({
   defaultVariants: { invalid: false },
 });
 
-export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface FormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'children'> {
   readonly label: string;
   readonly surface?: FormFieldSurface;
   readonly helperText?: string;
   readonly errorText?: string;
+  /**
+   * Custom control (e.g. Textarea). Receives `id`, `aria-*`, and invalid styling
+   * props via clone. When omitted, FormField renders a default `<input>`.
+   */
+  readonly children?: ReactNode;
 }
+
+type ControlA11yProps = {
+  id: string;
+  'aria-invalid': 'true' | 'false';
+  'aria-describedby'?: string;
+  'aria-required'?: 'true';
+};
 
 export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
   (
-    { label, surface = 'customer', helperText, errorText, id: providedId, ...rest },
+    {
+      label,
+      surface = 'customer',
+      helperText,
+      errorText,
+      id: providedId,
+      required,
+      children,
+      ...rest
+    },
     ref
   ) => {
     const generatedId = useId();
@@ -85,19 +114,43 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       describedBy = helperId;
     }
 
+    const controlA11y: ControlA11yProps = {
+      id,
+      'aria-invalid': invalid ? 'true' : 'false',
+      ...(describedBy !== undefined ? { 'aria-describedby': describedBy } : {}),
+      ...(required === true ? { 'aria-required': 'true' as const } : {}),
+    };
+
+    let control: ReactNode;
+    if (children !== undefined && children !== null) {
+      if (isValidElement(children)) {
+        const child = children as ReactElement<Record<string, unknown>>;
+        control = cloneElement(child, {
+          ...controlA11y,
+          ...(invalid ? { invalid: true } : {}),
+        });
+      } else {
+        control = children;
+      }
+    } else {
+      control = (
+        <input
+          ref={ref}
+          className={slots.input()}
+          required={required}
+          {...rest}
+          {...controlA11y}
+        />
+      );
+    }
+
     return (
       <div className={slots.wrapper()}>
         <label htmlFor={id} className={slots.label()}>
           {label}
+          {required === true ? ' *' : null}
         </label>
-        <input
-          ref={ref}
-          id={id}
-          aria-invalid={invalid ? 'true' : 'false'}
-          aria-describedby={describedBy}
-          className={slots.input()}
-          {...rest}
-        />
+        {control}
         {invalid ? (
           <span id={errorId} role="alert" className={slots.error()}>
             {errorText}

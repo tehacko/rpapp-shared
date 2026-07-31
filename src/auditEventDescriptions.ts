@@ -71,6 +71,46 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a break-glass override is rejected (invalid token, staging pattern in prod, or missing ticket fields).',
     cs: 'Zapíše se, když je break-glass přepsání odmítnuto (neplatný token, staging vzor v prod, nebo chybějící ticket pole).',
   },
+  'auth.admin.oidc.login.success': {
+    en: 'Recorded when an administrator signs in successfully via Google or Apple OIDC. One line per successful federated login. Tokens are never stored here.',
+    cs: 'Zapíše se, když se administrátor úspěšně přihlásí přes Google nebo Apple OIDC. Jeden řádek za úspěšné federované přihlášení. Tokeny se sem neukládají.',
+  },
+  'auth.admin.oidc.login.failed': {
+    en: 'Recorded when an admin/dev OIDC login fails (unknown subject, email mismatch, or IdP error). One line per failed attempt.',
+    cs: 'Zapíše se, když admin/dev OIDC přihlášení selže (neznámý subject, neshoda e-mailu nebo chyba IdP). Jeden řádek za neúspěšný pokus.',
+  },
+  'auth.admin.oidc.invite.activated': {
+    en: 'Recorded when an invited administrator completes activation via OIDC (PENDING → ACTIVE). One line per activation.',
+    cs: 'Zapíše se, když pozvaný administrátor dokončí aktivaci přes OIDC (PENDING → ACTIVE). Jeden řádek za aktivaci.',
+  },
+  'auth.admin.oidc.link.created': {
+    en: 'Recorded when an authenticated administrator links Google or Apple as their first IdP. One line per link.',
+    cs: 'Zapíše se, když přihlášený administrátor propojí Google nebo Apple jako první IdP. Jeden řádek za vazbu.',
+  },
+  'auth.admin.oidc.link.removed': {
+    en: 'Recorded when an administrator unlinks a federated IdP. One line per successful unlink.',
+    cs: 'Zapíše se, když administrátor odpojí federované IdP. Jeden řádek za úspěšné odpojení.',
+  },
+  'auth.admin.oidc.link.remove_denied': {
+    en: 'Recorded when an OIDC unlink is denied (for example last-link forbid without a password). One line per denial.',
+    cs: 'Zapíše se, když je odpojení OIDC zamítnuto (např. zákaz poslední vazby bez hesla). Jeden řádek za zamítnutí.',
+  },
+  'auth.admin.oidc.session.exchanged': {
+    en: 'Recorded when a one-time OIDC session code is exchanged for a JWT or MFA-pending token. Codes and tokens are never stored here.',
+    cs: 'Zapíše se, když je jednorázový OIDC session kód vyměněn za JWT nebo MFA-pending token. Kódy ani tokeny se sem neukládají.',
+  },
+  'auth.admin.password.set': {
+    en: 'Recorded when an OIDC-only administrator sets a backup password for the first time. Passwords are never stored in this log.',
+    cs: 'Zapíše se, když administrátor pouze s OIDC nastaví poprvé záložní heslo. Hesla se v tomto záznamu neukládají.',
+  },
+  'customer.oidc.login': {
+    en: 'Recorded when a customer signs in via Google or Apple OIDC. One line per successful federation. Aligns customer-auth OIDC_LOGIN.',
+    cs: 'Zapíše se, když se zákazník přihlásí přes Google nebo Apple OIDC. Jeden řádek za úspěšnou federaci. Odpovídá customer-auth OIDC_LOGIN.',
+  },
+  'customer.oidc.email_merged': {
+    en: 'Recorded when a verified IdP email silently merges onto an existing customer account. One line per merge. Tokens are never stored.',
+    cs: 'Zapíše se, když ověřený e-mail z IdP tiše sloučí existující zákaznický účet. Jeden řádek za sloučení. Tokeny se neukládají.',
+  },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
     cs: 'Zapíše se, když se pozve nový administrátor e-mailem a musí si nastavit heslo. Jeden řádek za novou pozvánku. Odkaz z pozvánky se sem neukládá.',
