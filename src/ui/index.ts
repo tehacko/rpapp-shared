@@ -64,6 +64,7 @@ export {
 export { Loader, type LoaderProps } from './Loader/Loader.js';
 export { Textarea, type TextareaProps } from './Textarea/Textarea.js';
 export { Icon, ICON_SIZES, type IconProps, type IconSize } from './Icon/index.js';
+export { Star } from './Icon/Star.js';
 export { IconButton, type IconButtonProps } from './IconButton/index.js';
 export {
   handleFocusTrapKeyDown,
