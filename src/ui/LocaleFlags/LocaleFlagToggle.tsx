@@ -81,7 +81,7 @@ const flagButton = tv({
     },
     pressed: {
       true: 'opacity-100 shadow-sm',
-      false: 'opacity-75 hover:scale-105 hover:opacity-100',
+      false: 'opacity-75 hover:opacity-100',
     },
     surface: {
       admin: 'focus-visible:outline-[var(--color-an-primary,var(--color-brand-primary))]',

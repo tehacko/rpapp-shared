@@ -56,6 +56,16 @@ export {
 } from './BottomSheet/BottomSheet.js';
 export { Toast, type ToastProps, type ToastVariant } from './Toast/Toast.js';
 export {
+  FilterChip,
+  type FilterChipProps,
+} from './FilterChip/FilterChip.js';
+export {
+  SegmentTabs,
+  type SegmentTabItem,
+  type SegmentTabsProps,
+  type SegmentTabsVariant,
+} from './SegmentTabs/SegmentTabs.js';
+export {
   Skeleton,
   SkeletonText,
   type SkeletonProps,
@@ -66,6 +76,11 @@ export { Textarea, type TextareaProps } from './Textarea/Textarea.js';
 export { Icon, ICON_SIZES, type IconProps, type IconSize } from './Icon/index.js';
 export { Star } from './Icon/Star.js';
 export { IconButton, type IconButtonProps } from './IconButton/index.js';
+export { Badge, type BadgeProps } from './Badge/index.js';
+export {
+  QuantityStepper,
+  type QuantityStepperProps,
+} from './QuantityStepper/index.js';
 export {
   handleFocusTrapKeyDown,
   listFocusable,

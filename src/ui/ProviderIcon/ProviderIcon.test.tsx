@@ -39,4 +39,12 @@ describe('ProviderIcon', () => {
     expect(icon).toHaveAttribute('width', '18');
     expect(icon).toHaveAttribute('height', '18');
   });
+
+  it('caps numeric size at 64', () => {
+    render(<ProviderIcon providerId="stripe" size={128} title="Stripe" />);
+
+    const icon = screen.getByRole('img', { name: 'Stripe' });
+    expect(icon).toHaveAttribute('width', '64');
+    expect(icon).toHaveAttribute('height', '64');
+  });
 });

@@ -248,4 +248,59 @@ describe('Dialog', () => {
 
     expect(screen.getByTestId('dialog-content')).toHaveAttribute('aria-describedby', 'dlg-desc');
   });
+
+  it('spreads panelProps onto the role=dialog panel (data-scan-mode=expectCard)', () => {
+    render(
+      <Dialog
+        open
+        onClose={() => undefined}
+        title="Sign in"
+        panelProps={{ 'data-scan-mode': 'expectCard' }}
+      >
+        Body
+      </Dialog>,
+    );
+
+    const panel = screen.getByTestId('dialog-content');
+    expect(panel).toHaveAttribute('role', 'dialog');
+    expect(panel).toHaveAttribute('data-scan-mode', 'expectCard');
+  });
+
+  it('Escape closes only the topmost idle dialog when nested', () => {
+    const onCloseOuter = jest.fn();
+    const onCloseInner = jest.fn();
+    render(
+      <>
+        <Dialog open onClose={onCloseOuter} title="Outer" testId="outer">
+          Outer body
+        </Dialog>
+        <Dialog open onClose={onCloseInner} title="Inner" testId="inner">
+          Inner body
+        </Dialog>
+      </>,
+    );
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onCloseInner).toHaveBeenCalledTimes(1);
+    expect(onCloseOuter).not.toHaveBeenCalled();
+  });
+
+  it('Escape does not close a busy topmost dialog (idle under stays open)', () => {
+    const onCloseOuter = jest.fn();
+    const onCloseInner = jest.fn();
+    render(
+      <>
+        <Dialog open onClose={onCloseOuter} title="Outer" testId="outer">
+          Outer body
+        </Dialog>
+        <Dialog open busy onClose={onCloseInner} title="Inner" testId="inner">
+          Inner body
+        </Dialog>
+      </>,
+    );
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onCloseInner).not.toHaveBeenCalled();
+    expect(onCloseOuter).not.toHaveBeenCalled();
+  });
 });

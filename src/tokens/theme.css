@@ -19,6 +19,7 @@
   --color-primary-foreground: #f8fafc;
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
+  --color-on-accent: var(--color-accent-foreground);
   --color-accent-hover: #001a33;
   --color-success: #16a34a;
   --color-success-foreground: #ecfdf5;
@@ -56,6 +57,7 @@
     --color-primary-foreground: var(--color-neutral-950);
     --color-accent: var(--brand-consumer-accent);
     --color-accent-foreground: var(--brand-consumer-accent-foreground);
+    --color-on-accent: var(--color-accent-foreground);
     --color-accent-hover: var(--brand-consumer-accent-soft);
     --color-success: #22c55e;
     --color-success-foreground: #052e16;
@@ -89,6 +91,7 @@
   --color-primary-foreground: var(--color-neutral-950);
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
+  --color-on-accent: var(--color-accent-foreground);
   --color-accent-hover: var(--brand-consumer-accent-soft);
   --color-success: #22c55e;
   --color-success-foreground: #052e16;
@@ -121,6 +124,7 @@
   --color-primary-foreground: #f8fafc;
   --color-accent: var(--brand-consumer-accent);
   --color-accent-foreground: var(--brand-consumer-accent-foreground);
+  --color-on-accent: var(--color-accent-foreground);
   --color-accent-hover: #001a33;
   --color-success: #16a34a;
   --color-success-foreground: #ecfdf5;

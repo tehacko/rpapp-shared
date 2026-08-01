@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '../ui/Button/Button.js';
 
 interface DatabaseUnavailableProps {
   retryCount?: number;
@@ -130,29 +131,9 @@ export function DatabaseUnavailable({
         </div>
 
         {onRetry && (
-          <button
-            onClick={onRetry}
-            style={{
-              padding: '0.75rem 2rem',
-              fontSize: '1rem',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: '500',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#0056b3';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#007bff';
-            }}
-            type="button"
-          >
+          <Button type="button" intent="primary" size="md" onClick={onRetry}>
             🔄 Zkusit znovu
-          </button>
+          </Button>
         )}
 
         <div

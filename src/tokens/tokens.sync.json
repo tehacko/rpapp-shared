@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-30T06:48:08.022Z",
+  "generatedAt": "2026-08-01T10:43:15.394Z",
   "source": "shared/scripts/gate-tokens-sync.mjs",
   "inputs": [
     "brand-bridge.css",
@@ -67,6 +67,7 @@
         "--color-primary-foreground": "#f8fafc",
         "--color-accent": "var(--brand-consumer-accent)",
         "--color-accent-foreground": "var(--brand-consumer-accent-foreground)",
+        "--color-on-accent": "var(--color-accent-foreground)",
         "--color-accent-hover": "#001a33",
         "--color-success": "#16a34a",
         "--color-success-foreground": "#ecfdf5",
@@ -90,7 +91,7 @@
         "--motion-duration-base": "200ms",
         "--motion-easing-standard": "cubic-bezier(0.2, 0.8, 0.2, 1)"
       },
-      "count": 33
+      "count": 34
     },
     {
       "file": "admin-theme.css",
@@ -138,7 +139,7 @@
       "count": 39
     }
   ],
-  "mergedPropertyCount": 99,
+  "mergedPropertyCount": 100,
   "properties": {
     "--font-family-primary": {
       "file": "brand-bridge.css",
@@ -335,6 +336,10 @@
     "--color-accent-foreground": {
       "file": "theme.css",
       "value": "var(--brand-consumer-accent-foreground)"
+    },
+    "--color-on-accent": {
+      "file": "theme.css",
+      "value": "var(--color-accent-foreground)"
     },
     "--color-accent-hover": {
       "file": "theme.css",

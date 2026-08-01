@@ -1,5 +1,5 @@
 import { Minus, Plus } from '../Icon/lucide.js';
-import { IconButton } from '../IconButton/IconButton.js';
+import { IconButton, type IconButtonProps } from '../IconButton/IconButton.js';
 
 export interface QuantityStepperProps {
   readonly value: number;
@@ -11,6 +11,15 @@ export interface QuantityStepperProps {
   readonly disabled?: boolean;
   /** Accessible name for the stepper group (buttons get derived labels). */
   readonly 'aria-label': string;
+  /** Override decrease control accessible name (defaults to `${aria-label}: decrease`). */
+  readonly decreaseAriaLabel?: string;
+  /** Override increase control accessible name (defaults to `${aria-label}: increase`). */
+  readonly increaseAriaLabel?: string;
+  /**
+   * Control hit target. Prefer `md` (≥44) on kiosk / Spec touch surfaces.
+   * @default 'md'
+   */
+  readonly size?: NonNullable<IconButtonProps['size']>;
   readonly className?: string;
   readonly testId?: string;
 }
@@ -27,11 +36,16 @@ export function QuantityStepper({
   max,
   disabled = false,
   'aria-label': ariaLabel,
+  decreaseAriaLabel,
+  increaseAriaLabel,
+  size = 'md',
   className,
   testId = 'quantity-stepper',
 }: QuantityStepperProps): JSX.Element {
   const atMin = value <= min;
   const atMax = max !== undefined && value >= max;
+  const decLabel = decreaseAriaLabel ?? `${ariaLabel}: decrease`;
+  const incLabel = increaseAriaLabel ?? `${ariaLabel}: increase`;
 
   return (
     <div
@@ -42,9 +56,9 @@ export function QuantityStepper({
     >
       <IconButton
         icon={Minus}
-        size="sm"
+        size={size}
         tone="muted"
-        aria-label={`${ariaLabel}: decrease`}
+        aria-label={decLabel}
         disabled={disabled || atMin}
         onClick={onDec}
         data-testid={`${testId}-dec`}
@@ -58,8 +72,8 @@ export function QuantityStepper({
       </span>
       <IconButton
         icon={Plus}
-        size="sm"
-        aria-label={`${ariaLabel}: increase`}
+        size={size}
+        aria-label={incLabel}
         disabled={disabled || atMax}
         onClick={onInc}
         data-testid={`${testId}-inc`}

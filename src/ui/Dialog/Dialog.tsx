@@ -1,4 +1,10 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import {
+  useEffect,
+  useId,
+  useRef,
+  type HTMLAttributes,
+  type ReactNode,
+} from 'react';
 import {
   focusInitialInContainer,
   handleFocusTrapKeyDown,
@@ -14,6 +20,15 @@ import {
   useOverlayPresence,
 } from '../overlay/overlayMotion.js';
 
+const MODAL_DIALOG_SELECTOR =
+  '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]';
+
+/** True when `panel` is the last (topmost) modal dialog/alertdialog in document order. */
+function isTopmostModalDialog(panel: HTMLElement): boolean {
+  const dialogs = document.querySelectorAll(MODAL_DIALOG_SELECTOR);
+  return dialogs.length > 0 && dialogs[dialogs.length - 1] === panel;
+}
+
 /**
  * CMP-0010 Dialog — Radix-free modal shell (no portal library).
  * Wave A harden: focus trap, restore, busy Escape/backdrop, scroll lock, labelledby, inert.
@@ -27,6 +42,18 @@ export interface DialogProps {
   readonly closeOnOverlayClick?: boolean;
   readonly closeLabel?: string;
   readonly className?: string;
+  /** Optional class for the fixed full-viewport shell (backdrop + panel host). */
+  readonly shellClassName?: string;
+  /**
+   * Additive props for the role=dialog|alertdialog panel only (e.g. data-scan-mode).
+   * Never use panelAttrs — panelProps is the sole escape hatch.
+   */
+  readonly panelProps?: Omit<
+    HTMLAttributes<HTMLDivElement>,
+    'role' | 'children' | 'aria-modal'
+  > & {
+    readonly 'data-scan-mode'?: string;
+  };
   readonly testId?: string;
   /** When true, Escape and backdrop dismiss are no-ops; close control is disabled. */
   readonly busy?: boolean;
@@ -53,6 +80,8 @@ export function Dialog({
   closeOnOverlayClick = true,
   closeLabel = 'Close',
   className,
+  shellClassName,
+  panelProps,
   testId = 'dialog',
   busy = false,
   pending = false,
@@ -68,6 +97,10 @@ export function Dialog({
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const { mounted, visible } = useOverlayPresence(open);
+  const {
+    className: panelPropsClassName,
+    ...restPanelProps
+  } = panelProps ?? {};
 
   // Initial focus when opening; capture restore target before moving focus in.
   useEffect(() => {
@@ -106,15 +139,20 @@ export function Dialog({
     }
     const onKey = (event: KeyboardEvent): void => {
       const panel = panelRef.current;
-      if (panel !== null) {
-        handleFocusTrapKeyDown(panel, event);
+      if (panel === null) {
+        return;
       }
+      if (!isTopmostModalDialog(panel)) {
+        return;
+      }
+      handleFocusTrapKeyDown(panel, event);
       if (event.key === 'Escape') {
         if (isBusy) {
           event.preventDefault();
           event.stopPropagation();
           return;
         }
+        event.stopPropagation();
         onClose();
       }
     };
@@ -134,7 +172,13 @@ export function Dialog({
   return (
     <div
       ref={rootRef}
-      className={`fixed inset-0 z-50 flex h-[100dvh] items-center justify-center ${DIALOG_SHELL_PAD}`}
+      className={[
+        'fixed inset-0 z-[var(--z-dialog,50)] flex h-[100dvh] items-center justify-center',
+        DIALOG_SHELL_PAD,
+        shellClassName,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       data-testid={testId}
     >
       <button
@@ -155,6 +199,7 @@ export function Dialog({
         }}
       />
       <div
+        {...restPanelProps}
         ref={panelRef}
         role={role}
         aria-modal="true"
@@ -166,6 +211,7 @@ export function Dialog({
           'bg-[var(--color-surface,var(--color-an-surface))] p-4 shadow-lg',
           OVERLAY_MOTION_TRANSITION,
           motionState,
+          panelPropsClassName,
           className,
         ]
           .filter(Boolean)

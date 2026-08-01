@@ -39,12 +39,12 @@ export function resolveProviderIconAssetId(providerId: string): ProviderIconAsse
   return 'generic-bank';
 }
 
-function resolveSizePx(size: ProviderIconSize | undefined): number {
-  if (typeof size === 'number') {
-    return size;
-  }
+/** Hard cap — provider marks never exceed Icon ladder max (64). */
+export const PROVIDER_ICON_MAX_PX = 64;
 
-  return SIZE_PX[size ?? 'md'];
+function resolveSizePx(size: ProviderIconSize | undefined): number {
+  const raw = typeof size === 'number' ? size : SIZE_PX[size ?? 'md'];
+  return Math.min(raw, PROVIDER_ICON_MAX_PX);
 }
 
 function resolveAssetBasePath(assetBasePath: string): string {
