@@ -166,8 +166,8 @@ export function BottomSheet({
       >
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[var(--color-border)]" aria-hidden="true" />
         {showHeader ? (
-          <header className="mb-3 flex items-center justify-between gap-2">
-            <h2 id={titleId} className="m-0 text-base font-semibold">
+          <header className="mb-3 flex items-start justify-between gap-2">
+            <h2 id={titleId} className="m-0 pt-1 text-base font-semibold leading-tight">
               {title}
             </h2>
             <button
@@ -177,8 +177,9 @@ export function BottomSheet({
               disabled={isBusy || !open}
               data-testid={`${testId}-close`}
               className={[
-                'inline-flex h-11 min-h-11 w-11 min-w-11 shrink-0 items-center justify-center',
-                'rounded-full text-2xl leading-none text-[var(--color-on-surface-muted)]',
+                'inline-flex h-12 min-h-12 w-12 min-w-12 shrink-0 items-center justify-center self-start',
+                '-mt-1 rounded-full border border-[var(--color-border)] text-3xl leading-none',
+                'text-[var(--color-on-surface-muted)]',
                 'hover:bg-[var(--color-surface-hover,var(--color-surface-elevated))] hover:text-[var(--color-on-surface)]',
                 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus-ring,var(--color-accent))]',
                 'disabled:cursor-not-allowed disabled:opacity-50',

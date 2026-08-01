@@ -8,9 +8,11 @@ import {
 import { CzechFlagSvg } from './flagSvgs.js';
 
 describe('localeFlagRegistry', () => {
-  it('resolves cs and en from language tags', () => {
+  it('resolves cs, en, and sk from language tags', () => {
     expect(resolveActiveLocaleCode('cs-CZ', DEFAULT_LOCALE_FLAGS)).toBe('cs');
     expect(resolveActiveLocaleCode('en-US', DEFAULT_LOCALE_FLAGS)).toBe('en');
+    expect(resolveActiveLocaleCode('sk', DEFAULT_LOCALE_FLAGS)).toBe('sk');
+    expect(resolveActiveLocaleCode('sk-SK', DEFAULT_LOCALE_FLAGS)).toBe('sk');
     expect(resolveActiveLocaleCode(undefined, DEFAULT_LOCALE_FLAGS)).toBe('cs');
   });
 
@@ -28,12 +30,13 @@ describe('localeFlagRegistry', () => {
       },
     ]);
 
-    expect(merged).toHaveLength(3);
+    expect(merged).toHaveLength(4);
     expect(merged.find((entry) => entry.code === 'en')?.documentLang).toBe('en-GB');
   });
 
   it('resolves document lang from active locale option', () => {
     expect(resolveDocumentLang('en', DEFAULT_LOCALE_FLAGS)).toBe('en');
     expect(resolveDocumentLang('cs', DEFAULT_LOCALE_FLAGS)).toBe('cs');
+    expect(resolveDocumentLang('sk', DEFAULT_LOCALE_FLAGS)).toBe('sk');
   });
 });

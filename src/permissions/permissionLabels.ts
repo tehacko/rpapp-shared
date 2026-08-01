@@ -1,4 +1,8 @@
-import type { LabelLocale, LocalizedLabel } from '../labels/localizedLabel.js';
+import {
+  resolveLocalizedLabel,
+  type LabelLocale,
+  type LocalizedLabel,
+} from '../labels/localizedLabel.js';
 
 export type PermissionLevel = 'view' | 'manage';
 
@@ -150,13 +154,13 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
 };
 
 export function getPermissionLevelLabel(level: PermissionLevel, locale: LabelLocale): string {
-  return PERMISSION_LEVEL_LABELS[level][locale];
+  return resolveLocalizedLabel(PERMISSION_LEVEL_LABELS[level], locale);
 }
 
 export function getPermissionDomainLabel(domain: string, locale: LabelLocale): string {
   const known = PERMISSION_DOMAIN_LABELS[domain];
   if (known !== undefined) {
-    return known[locale];
+    return resolveLocalizedLabel(known, locale);
   }
   const fallback = domain
     .split(/[._-]/)
@@ -173,7 +177,7 @@ export function getPermissionResourceTitle(
 ): string | null {
   const known = PERMISSION_RESOURCE_LABELS[resourceKey];
   if (known !== undefined) {
-    return known[locale];
+    return resolveLocalizedLabel(known, locale);
   }
   return null;
 }

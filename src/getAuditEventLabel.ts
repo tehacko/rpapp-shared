@@ -1,6 +1,10 @@
 import { isAuditEventCode, type AuditEventCode } from './auditEventCodes.js';
 import { AUDIT_EVENT_LABELS } from './auditEventLabels.js';
-import type { LabelAudience, LabelLocale } from './labels/localizedLabel.js';
+import {
+  resolveLocalizedLabel,
+  type LabelAudience,
+  type LabelLocale,
+} from './labels/localizedLabel.js';
 
 export function getAuditEventLabel(
   code: string,
@@ -10,5 +14,5 @@ export function getAuditEventLabel(
   if (!isAuditEventCode(code)) {
     return code;
   }
-  return AUDIT_EVENT_LABELS[code as AuditEventCode][locale];
+  return resolveLocalizedLabel(AUDIT_EVENT_LABELS[code as AuditEventCode], locale);
 }

@@ -21,15 +21,15 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'auth.admin.password_reset.requested': {
     en: 'Admin password reset requested',
-    cs: 'Požadavek na reset hesla administrátora',
+    cs: 'Požadavek na obnovení hesla správce',
   },
   'auth.admin.password_reset.completed': {
     en: 'Admin password reset completed',
-    cs: 'Reset hesla administrátora dokončen',
+    cs: 'Obnovení hesla správce dokončeno',
   },
   'auth.admin.password_reset.failed': {
     en: 'Admin password reset failed',
-    cs: 'Reset hesla administrátora selhal',
+    cs: 'Obnovení hesla správce selhalo',
   },
   'auth.admin.mfa.enroll.success': {
     en: 'Admin MFA enroll succeeded',
@@ -57,47 +57,47 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'auth.admin.step_up.success': {
     en: 'Admin step-up succeeded',
-    cs: 'Step-up ověření administrátora úspěšné',
+    cs: 'Dodatečné ověření správce úspěšné',
   },
   'auth.admin.step_up.failed': {
     en: 'Admin step-up failed',
-    cs: 'Step-up ověření administrátora selhalo',
+    cs: 'Dodatečné ověření správce selhalo',
   },
   'auth.admin.break_glass.success': {
     en: 'Admin break-glass accepted',
-    cs: 'Break-glass administrátora přijat',
+    cs: 'Nouzové přepsání správce přijato',
   },
   'auth.admin.break_glass.failed': {
     en: 'Admin break-glass rejected',
-    cs: 'Break-glass administrátora odmítnut',
+    cs: 'Nouzové přepsání správce odmítnuto',
   },
   'auth.admin.oidc.login.success': {
     en: 'Admin OIDC login succeeded',
-    cs: 'OIDC přihlášení administrátora úspěšné',
+    cs: 'Přihlášení správce přes Google/Apple úspěšné',
   },
   'auth.admin.oidc.login.failed': {
     en: 'Admin OIDC login failed',
-    cs: 'OIDC přihlášení administrátora selhalo',
+    cs: 'Přihlášení správce přes Google/Apple selhalo',
   },
   'auth.admin.oidc.invite.activated': {
     en: 'Admin invite activated via OIDC',
-    cs: 'Pozvánka administrátora aktivována přes OIDC',
+    cs: 'Pozvánka správce aktivována přes Google/Apple',
   },
   'auth.admin.oidc.link.created': {
     en: 'Admin OIDC link created',
-    cs: 'OIDC vazba administrátora vytvořena',
+    cs: 'Propojeno přihlášení správce přes Google/Apple',
   },
   'auth.admin.oidc.link.removed': {
     en: 'Admin OIDC link removed',
-    cs: 'OIDC vazba administrátora odebrána',
+    cs: 'Odpojeno přihlášení správce přes Google/Apple',
   },
   'auth.admin.oidc.link.remove_denied': {
     en: 'Admin OIDC unlink denied',
-    cs: 'Odpojení OIDC administrátora zamítnuto',
+    cs: 'Odpojení Google/Apple přihlášení správce zamítnuto',
   },
   'auth.admin.oidc.session.exchanged': {
     en: 'Admin OIDC session code exchanged',
-    cs: 'OIDC session kód administrátora vyměněn',
+    cs: 'Jednorázový přihlašovací kód správce vyměněn',
   },
   'auth.admin.password.set': {
     en: 'Admin password set',
@@ -105,11 +105,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'customer.oidc.login': {
     en: 'Customer OIDC login',
-    cs: 'OIDC přihlášení zákazníka',
+    cs: 'Přihlášení zákazníka přes Google/Apple',
   },
   'customer.oidc.email_merged': {
     en: 'Customer OIDC email merged',
-    cs: 'OIDC e-mail zákazníka sloučen',
+    cs: 'E-mail zákazníka sloučen z Google/Apple',
   },
   'admin.invite.created': {
     en: 'Admin invite created',
@@ -382,43 +382,43 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.promo.event.created': {
     en: 'Promo event created',
-    cs: 'Promo akce vytvořena',
+    cs: 'Akce vytvořena',
   },
   'admin.promo.event.paused': {
     en: 'Promo event paused',
-    cs: 'Promo akce pozastavena',
+    cs: 'Akce pozastavena',
   },
   'admin.promo.reward.issued': {
     en: 'Promo reward issued',
-    cs: 'Promo odměna vydána',
+    cs: 'Propagační odměna vydána',
   },
   'admin.promo.reward.revoked': {
     en: 'Promo reward revoked',
-    cs: 'Promo odměna zrušena',
+    cs: 'Propagační odměna zrušena',
   },
   'admin.promo.enrollment.revoked': {
     en: 'Promo enrollment revoked',
-    cs: 'Promo registrace zrušena',
+    cs: 'Registrace k akci zrušena',
   },
   'commerce.promo.reward.activated': {
     en: 'Promo reward activated',
-    cs: 'Promo odměna aktivována',
+    cs: 'Propagační odměna aktivována',
   },
   'commerce.promo.reward.redeemed': {
     en: 'Promo reward redeemed',
-    cs: 'Promo odměna uplatněna',
+    cs: 'Propagační odměna uplatněna',
   },
   'commerce.promo.reward.rolled_back': {
     en: 'Promo reward rolled back',
-    cs: 'Promo odměna vrácena zpět',
+    cs: 'Propagační odměna vrácena zpět',
   },
   'commerce.promo.progress.updated': {
     en: 'Promo progress updated',
-    cs: 'Promo průběh aktualizován',
+    cs: 'Průběh akce aktualizován',
   },
   'commerce.promo.enrollment.created': {
     en: 'Promo enrollment created',
-    cs: 'Promo registrace vytvořena',
+    cs: 'Registrace k akci vytvořena',
   },
   'admin.product.barcode_assigned': {
     en: 'Product barcode assigned',
@@ -442,19 +442,19 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'pickup.device.paired': {
     en: 'Pickup device paired',
-    cs: 'Pickup zařízení spárováno',
+    cs: 'Zařízení pro vyzvednutí spárováno',
   },
   'pickup.device.pairing.failed': {
     en: 'Pickup device pairing failed',
-    cs: 'Spárování pickup zařízení selhalo',
+    cs: 'Spárování zařízení pro vyzvednutí selhalo',
   },
   'pickup.fulfillment.claim.acquired': {
     en: 'Fulfillment claim acquired',
-    cs: 'Soft claim na vyzvednutí získán',
+    cs: 'Převzetí objednávky k vyzvednutí získáno',
   },
   'pickup.fulfillment.claim.released': {
     en: 'Fulfillment claim released',
-    cs: 'Soft claim na vyzvednutí uvolněn',
+    cs: 'Převzetí objednávky k vyzvednutí uvolněno',
   },
   'dev.tenant.created': {
     en: 'Organization created (platform)',
@@ -478,15 +478,15 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'payment.admin_manual_complete': {
     en: 'Order marked paid (admin)',
-    cs: 'Objednávka označena jako zaplacená (admin)',
+    cs: 'Objednávka označena jako zaplacená (správce)',
   },
   'webhook_skipped_tenant_inactive': {
     en: 'Webhook skipped (inactive tenant)',
-    cs: 'Webhook přeskočen (neaktivní tenant)',
+    cs: 'Webhook přeskočen (neaktivní organizace)',
   },
   'payment.customer.refund.requested': {
     en: 'Customer refund requested',
-    cs: 'Zákazník požádal o vrácení',
+    cs: 'Zákazník požádal o vrácení platby',
   },
   'reconciliation.transaction.refund_candidate.marked': {
     en: 'Refund check marked',
@@ -570,15 +570,15 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'export.analytics.mission_control.exported': {
     en: 'Mission Control tenant export',
-    cs: 'Export tenantů Mission Control',
+    cs: 'Export organizací z Mission Control',
   },
   'analytics.mission_control.cross_tenant.read': {
     en: 'Mission Control cross-tenant read',
-    cs: 'Cross-tenant čtení Mission Control',
+    cs: 'Čtení napříč organizacemi v Mission Control',
   },
   'export.analytics.rollups.materialized': {
     en: 'Analytics rollups materialized',
-    cs: 'Analytické agregace materializovány',
+    cs: 'Analytické agregace připraveny',
   },
   'export.transactions.exported': {
     en: 'Transactions export',
@@ -590,7 +590,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'export.compliance.audit_events.exported': {
     en: 'Compliance audit events export',
-    cs: 'Export compliance audit událostí',
+    cs: 'Export compliance auditních událostí',
   },
   'export.consent.grantees': {
     en: 'Consent grantees export',
@@ -610,7 +610,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'gdpr.erasure.side_effects_pending': {
     en: 'GDPR erasure side-effects pending',
-    cs: 'GDPR výmaz — čekají vedlejší účinky',
+    cs: 'GDPR výmaz — čekají související úkony',
   },
 };
 

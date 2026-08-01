@@ -1,7 +1,12 @@
-import { CzechFlagSvg, EnglishFlagSvg, type LocaleFlagSvgComponent } from './flagSvgs.js';
+import {
+  CzechFlagSvg,
+  EnglishFlagSvg,
+  SlovakFlagSvg,
+  type LocaleFlagSvgComponent,
+} from './flagSvgs.js';
 
 export interface LocaleFlagOption {
-  /** i18n language code passed to `i18n.changeLanguage` (e.g. `cs`, `en`). */
+  /** i18n language code passed to `i18n.changeLanguage` (e.g. `cs`, `en`, `sk`). */
   readonly code: string;
   readonly Flag: LocaleFlagSvgComponent;
   /** When omitted, matches `lng === code` or `lng.startsWith(code)`. */
@@ -26,6 +31,12 @@ export const DEFAULT_LOCALE_FLAGS: readonly LocaleFlagOption[] = [
     Flag: EnglishFlagSvg,
     matchesLanguage: (lng) => defaultMatchesLanguage('en', lng),
     documentLang: 'en',
+  },
+  {
+    code: 'sk',
+    Flag: SlovakFlagSvg,
+    matchesLanguage: (lng) => defaultMatchesLanguage('sk', lng),
+    documentLang: 'sk',
   },
 ] as const;
 

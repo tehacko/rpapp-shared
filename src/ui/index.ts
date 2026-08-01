@@ -14,6 +14,7 @@ export {
 export {
   CzechFlagSvg,
   EnglishFlagSvg,
+  SlovakFlagSvg,
   DEFAULT_LOCALE_FLAGS,
   LocaleFlagToggle,
   buildLocaleLabelKey,

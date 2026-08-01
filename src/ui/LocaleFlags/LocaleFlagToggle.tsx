@@ -9,13 +9,16 @@ const flagGroup = tv({
   variants: {
     placement: {
       floating: 'gap-2',
+      /** Compact segmented track — w-fit so flex parents do not stretch it full-width. */
       inline: [
-        'flex-wrap gap-1.5 rounded-md border border-[var(--color-rail-card-border,var(--color-border,var(--color-neutral-200)))]',
-        'bg-[var(--color-surface-elevated,#fff)] p-1.5 shadow-sm',
+        'w-fit max-w-full flex-nowrap gap-0.5 self-start rounded-full',
+        'border border-[var(--color-rail-card-border,var(--color-border,var(--color-neutral-200)))]',
+        'bg-[var(--color-surface-muted,var(--color-an-surface-muted,#f4f4f5))] p-1 shadow-sm',
       ].join(' '),
       header: [
-        'flex-wrap gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,var(--color-neutral-200)))]',
-        'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))] p-1.5 shadow-none',
+        'w-fit max-w-full flex-nowrap gap-0.5 self-start rounded-full',
+        'border border-[var(--color-an-border,var(--color-border,var(--color-neutral-200)))]',
+        'bg-[var(--color-an-surface-muted,var(--color-surface-muted,#f4f4f5))] p-1 shadow-none',
       ].join(' '),
     },
     surface: {
@@ -70,7 +73,10 @@ const flagGroup = tv({
 const flagButton = tv({
   base: [
     'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full',
-    'border-2 border-transparent transition-all duration-150',
+    // Neutral rim keeps white flag bands readable on light sheets (CS/SK white edges).
+    'border-2 border-[color-mix(in_srgb,var(--color-foreground,#0f172a)_18%,transparent)]',
+    'bg-[var(--color-surface-elevated,#fff)]',
+    'transition-[opacity,filter,box-shadow,background-color,border-color] duration-150',
     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
   ].join(' '),
   variants: {
@@ -81,7 +87,7 @@ const flagButton = tv({
     },
     pressed: {
       true: 'opacity-100 shadow-sm',
-      false: 'opacity-75 hover:opacity-100',
+      false: 'opacity-40 grayscale-[0.55] hover:opacity-70 hover:grayscale-[0.2]',
     },
     surface: {
       admin: 'focus-visible:outline-[var(--color-an-primary,var(--color-brand-primary))]',
@@ -94,22 +100,38 @@ const flagButton = tv({
     {
       surface: 'admin',
       pressed: true,
-      class: 'border-[var(--color-an-primary,var(--color-brand-primary))] ring-2 ring-[var(--color-an-primary,var(--color-brand-primary))]/25',
+      class: [
+        'border-[var(--color-an-primary,var(--color-brand-primary))]',
+        'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))]',
+        'ring-2 ring-[var(--color-an-primary,var(--color-brand-primary))]/30',
+      ].join(' '),
     },
     {
       surface: 'kiosk',
       pressed: true,
-      class: 'border-[var(--color-accent,#2563eb)] ring-2 ring-[var(--color-accent,#2563eb)]/25',
+      class: [
+        'border-[var(--color-accent,#2563eb)]',
+        'bg-[var(--color-surface-elevated,#fff)]',
+        'ring-2 ring-[var(--color-accent,#2563eb)]/30',
+      ].join(' '),
     },
     {
       surface: 'customer',
       pressed: true,
-      class: 'border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/25',
+      class: [
+        'border-[var(--color-accent)]',
+        'bg-[var(--color-surface-elevated,#fff)]',
+        'ring-2 ring-[var(--color-accent)]/30',
+      ].join(' '),
     },
     {
       surface: 'pickup',
       pressed: true,
-      class: 'border-[var(--color-accent,#2563eb)] ring-2 ring-[var(--color-accent,#2563eb)]/25',
+      class: [
+        'border-[var(--color-accent,#2563eb)]',
+        'bg-[var(--color-surface-elevated,#fff)]',
+        'ring-2 ring-[var(--color-accent,#2563eb)]/30',
+      ].join(' '),
     },
   ],
   defaultVariants: {

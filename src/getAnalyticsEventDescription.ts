@@ -1,6 +1,10 @@
 import { isAnalyticsEventName, type AnalyticsEventName } from './analyticsEvents.js';
 import { ANALYTICS_EVENT_DESCRIPTIONS } from './analyticsEventDescriptions.js';
-import type { LabelAudience, LabelLocale } from './labels/localizedLabel.js';
+import {
+  resolveLocalizedLabel,
+  type LabelAudience,
+  type LabelLocale,
+} from './labels/localizedLabel.js';
 
 export function getAnalyticsEventDescription(
   name: string,
@@ -10,5 +14,5 @@ export function getAnalyticsEventDescription(
   if (!isAnalyticsEventName(name)) {
     return '';
   }
-  return ANALYTICS_EVENT_DESCRIPTIONS[name as AnalyticsEventName][locale];
+  return resolveLocalizedLabel(ANALYTICS_EVENT_DESCRIPTIONS[name as AnalyticsEventName], locale);
 }

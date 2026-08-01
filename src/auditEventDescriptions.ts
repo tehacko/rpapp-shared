@@ -21,19 +21,19 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'auth.admin.password_reset.requested': {
     en: 'Recorded when an administrator requests a password reset email. One line per request. The reset link itself is not stored here.',
-    cs: 'Zapíše se, když administrátor požádá o e-mail pro reset hesla. Jeden řádek za požadavek. Odkaz pro reset se sem neukládá.',
+    cs: 'Zapíše se, když administrátor požádá o e-mail pro obnovení hesla. Jeden řádek za požadavek. Odkaz pro obnovení se sem neukládá.',
   },
   'auth.admin.password_reset.completed': {
     en: 'Recorded when an administrator completes a password reset using a valid token. One line per successful reset. Passwords are never stored in this log.',
-    cs: 'Zapíše se, když administrátor dokončí reset hesla platným tokenem. Jeden řádek za úspěšný reset. Hesla se v tomto záznamu neukládají.',
+    cs: 'Zapíše se, když administrátor dokončí obnovení hesla platným odkazem. Jeden řádek za úspěšné obnovení. Hesla se v tomto záznamu neukládají.',
   },
   'auth.admin.password_reset.failed': {
     en: 'Recorded when a password reset attempt fails (invalid or expired token). One line per failed attempt. Passwords are never stored in this log.',
-    cs: 'Zapíše se, když reset hesla nevyjde (neplatný nebo expirovaný token). Jeden řádek za neúspěšný pokus. Hesla se v tomto záznamu neukládají.',
+    cs: 'Zapíše se, když obnovení hesla nevyjde (neplatný nebo vypršelý odkaz). Jeden řádek za neúspěšný pokus. Hesla se v tomto záznamu neukládají.',
   },
   'auth.admin.mfa.enroll.success': {
     en: 'Recorded when an administrator finishes MFA enrollment. One line per successful enroll. Secrets and recovery codes are never stored here.',
-    cs: 'Zapíše se, když administrátor dokončí registraci MFA. Jeden řádek za úspěšnou registraci. Tajné klíče ani recovery kódy se sem neukládají.',
+    cs: 'Zapíše se, když administrátor dokončí registraci MFA. Jeden řádek za úspěšnou registraci. Tajné klíče ani záložní kódy se sem neukládají.',
   },
   'auth.admin.mfa.enroll.failed': {
     en: 'Recorded when MFA enrollment fails (invalid TOTP or validation error). One line per failed attempt.',
@@ -57,27 +57,27 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'auth.admin.step_up.success': {
     en: 'Recorded when admin step-up verification succeeds and a stepUpUntil claim is issued. One line per success.',
-    cs: 'Zapíše se, když admin step-up ověření uspěje a je vydán nárok stepUpUntil. Jeden řádek za úspěch.',
+    cs: 'Zapíše se, když dodatečné ověření správce uspěje a je vydán časový nárok na citlivé akce. Jeden řádek za úspěch.',
   },
   'auth.admin.step_up.failed': {
     en: 'Recorded when admin step-up verification fails. One line per failed attempt.',
-    cs: 'Zapíše se, když admin step-up ověření selže. Jeden řádek za neúspěšný pokus.',
+    cs: 'Zapíše se, když dodatečné ověření správce selže. Jeden řádek za neúspěšný pokus.',
   },
   'auth.admin.break_glass.success': {
     en: 'Recorded when a ticketed break-glass override is accepted (incident id + reason). The env token itself is never stored.',
-    cs: 'Zapíše se, když je přijato ticketované break-glass přepsání (incident + důvod). Samotný env token se neukládá.',
+    cs: 'Zapíše se, když je přijato nouzové přepsání s evidovaným incidentem a důvodem. Samotný přístupový kód z prostředí se neukládá.',
   },
   'auth.admin.break_glass.failed': {
     en: 'Recorded when a break-glass override is rejected (invalid token, staging pattern in prod, or missing ticket fields).',
-    cs: 'Zapíše se, když je break-glass přepsání odmítnuto (neplatný token, staging vzor v prod, nebo chybějící ticket pole).',
+    cs: 'Zapíše se, když je nouzové přepsání odmítnuto (neplatný kód, stagingový vzor v produkci, nebo chybějící údaje o incidentu).',
   },
   'auth.admin.oidc.login.success': {
     en: 'Recorded when an administrator signs in successfully via Google or Apple OIDC. One line per successful federated login. Tokens are never stored here.',
-    cs: 'Zapíše se, když se administrátor úspěšně přihlásí přes Google nebo Apple OIDC. Jeden řádek za úspěšné federované přihlášení. Tokeny se sem neukládají.',
+    cs: 'Zapíše se, když se administrátor úspěšně přihlásí přes Google nebo Apple. Jeden řádek za úspěšné federované přihlášení. Tokeny se sem neukládají.',
   },
   'auth.admin.oidc.login.failed': {
     en: 'Recorded when an admin/dev OIDC login fails (unknown subject, email mismatch, or IdP error). One line per failed attempt.',
-    cs: 'Zapíše se, když admin/dev OIDC přihlášení selže (neznámý subject, neshoda e-mailu nebo chyba IdP). Jeden řádek za neúspěšný pokus.',
+    cs: 'Zapíše se, když admin/dev přihlášení přes Google nebo Apple selže (neznámý účet u poskytovatele, neshoda e-mailu nebo chyba identity). Jeden řádek za neúspěšný pokus.',
   },
   'auth.admin.oidc.invite.activated': {
     en: 'Recorded when an invited administrator completes activation via OIDC (PENDING → ACTIVE). One line per activation.',
@@ -85,11 +85,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'auth.admin.oidc.link.created': {
     en: 'Recorded when an authenticated administrator links Google or Apple as their first IdP. One line per link.',
-    cs: 'Zapíše se, když přihlášený administrátor propojí Google nebo Apple jako první IdP. Jeden řádek za vazbu.',
+    cs: 'Zapíše se, když přihlášený administrátor propojí Google nebo Apple jako první přihlašovací metodu. Jeden řádek za vazbu.',
   },
   'auth.admin.oidc.link.removed': {
     en: 'Recorded when an administrator unlinks a federated IdP. One line per successful unlink.',
-    cs: 'Zapíše se, když administrátor odpojí federované IdP. Jeden řádek za úspěšné odpojení.',
+    cs: 'Zapíše se, když administrátor odpojí federované přihlášení (Google/Apple). Jeden řádek za úspěšné odpojení.',
   },
   'auth.admin.oidc.link.remove_denied': {
     en: 'Recorded when an OIDC unlink is denied (for example last-link forbid without a password). One line per denial.',
@@ -97,7 +97,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'auth.admin.oidc.session.exchanged': {
     en: 'Recorded when a one-time OIDC session code is exchanged for a JWT or MFA-pending token. Codes and tokens are never stored here.',
-    cs: 'Zapíše se, když je jednorázový OIDC session kód vyměněn za JWT nebo MFA-pending token. Kódy ani tokeny se sem neukládají.',
+    cs: 'Zapíše se, když je jednorázový kód relace OIDC vyměněn za přihlašovací token nebo token čekající na MFA. Kódy ani tokeny se sem neukládají.',
   },
   'auth.admin.password.set': {
     en: 'Recorded when an OIDC-only administrator sets a backup password for the first time. Passwords are never stored in this log.',
@@ -105,11 +105,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'customer.oidc.login': {
     en: 'Recorded when a customer signs in via Google or Apple OIDC. One line per successful federation. Aligns customer-auth OIDC_LOGIN.',
-    cs: 'Zapíše se, když se zákazník přihlásí přes Google nebo Apple OIDC. Jeden řádek za úspěšnou federaci. Odpovídá customer-auth OIDC_LOGIN.',
+    cs: 'Zapíše se, když se zákazník přihlásí přes Google nebo Apple. Jeden řádek za úspěšné federované přihlášení.',
   },
   'customer.oidc.email_merged': {
     en: 'Recorded when a verified IdP email silently merges onto an existing customer account. One line per merge. Tokens are never stored.',
-    cs: 'Zapíše se, když ověřený e-mail z IdP tiše sloučí existující zákaznický účet. Jeden řádek za sloučení. Tokeny se neukládají.',
+    cs: 'Zapíše se, když ověřený e-mail z Google/Apple tiše sloučí existující zákaznický účet. Jeden řádek za sloučení. Tokeny se neukládají.',
   },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
@@ -149,7 +149,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.credentials.bank_secret.rotated': {
     en: 'Recorded when bank payment settings are updated in a “rotation” step without deleting them first. One line when this happens. Account numbers stay private.',
-    cs: 'Zapíše se při aktualizaci bankovního nastavení ve kroku „rotace“ bez předchozího smazání. Jeden řádek při této akci. Čísla účtů zůstávají soukromá.',
+    cs: 'Zapíše se při aktualizaci bankovního nastavení výměnou údajů bez předchozího smazání. Jeden řádek při této akci. Čísla účtů zůstávají soukromá.',
   },
   'admin.settings.updated': {
     en: 'Recorded when important organization or admin settings are saved. One line per successful save when the system writes this event. Exact setting values are not listed in the audit text.',
@@ -293,7 +293,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.tenant.deactivated': {
     en: 'Recorded when an entire customer organization (tenant) is soft-deactivated without legal closure. One line per soft deactivate. Customer personal data is not copied into this line.',
-    cs: 'Zapíše se, když je zákaznická organizace (tenant) soft-deaktivována bez právního uzavření. Jeden řádek za soft deaktivaci. Osobní údaje zákazníků se do řádku nekopírují.',
+    cs: 'Zapíše se, když je zákaznická organizace dočasně deaktivována bez právního uzavření. Jeden řádek za dočasnou deaktivaci. Osobní údaje zákazníků se do řádku nekopírují.',
   },
   'admin.tenant.permanently_deleted': {
     en: 'Recorded when an organization is fully deleted from the system. One line per delete run. Summary counts may appear, not full customer lists.',
@@ -305,11 +305,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.tenant.legal_closure_completed': {
     en: 'Recorded when Mode A legal closure finishes for an organization, including when it was already deactivated. One line per successful Mode A completion. Distinct from soft deactivate.',
-    cs: 'Zapíše se, když Mode A právní uzavření organizace doběhne, i když už byla deaktivovaná. Jeden řádek za úspěšné Mode A. Oddělené od soft deaktivace.',
+    cs: 'Zapíše se, když právní uzavření organizace (režim A) doběhne, i když už byla deaktivovaná. Jeden řádek za úspěšné právní uzavření. Oddělené od dočasné deaktivace.',
   },
   'admin.tenant.physical_purge_started': {
     en: 'Recorded when a physical purge (Mode B or grace worker) starts for an organization. One line per purge attempt start.',
-    cs: 'Zapíše se, když začne fyzické mazání (Mode B nebo grace worker) organizace. Jeden řádek za zahájení pokusu.',
+    cs: 'Zapíše se, když začne fyzické mazání (režim B nebo odložené mazání) organizace. Jeden řádek za zahájení pokusu.',
   },
   'admin.tenant.physical_purge_completed': {
     en: 'Recorded when a physical purge finishes successfully (Gone or runtime-only outcome). One line per successful completion.',
@@ -337,7 +337,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.tenant.access_cut': {
     en: 'Recorded when access cut revokes sessions, credentials, and related live access for an organization. One line per access-cut run.',
-    cs: 'Zapíše se, když access cut odvolá session, credentials a související živý přístup organizace. Jeden řádek za běh access cut.',
+    cs: 'Zapíše se, když systém odvolá relace, přihlašovací údaje a související živý přístup organizace. Jeden řádek za běh odvolání přístupu.',
   },
   'admin.donation_template.created': {
     en: 'Recorded when a new preset list of donation amounts is created. One line per new template.',

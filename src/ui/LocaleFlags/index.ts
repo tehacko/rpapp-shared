@@ -1,4 +1,10 @@
-export { CzechFlagSvg, EnglishFlagSvg, type LocaleFlagSvgComponent, type LocaleFlagSvgProps } from './flagSvgs.js';
+export {
+  CzechFlagSvg,
+  EnglishFlagSvg,
+  SlovakFlagSvg,
+  type LocaleFlagSvgComponent,
+  type LocaleFlagSvgProps,
+} from './flagSvgs.js';
 export {
   DEFAULT_LOCALE_FLAGS,
   buildLocaleLabelKey,

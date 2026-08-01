@@ -42,15 +42,22 @@ export function DatabaseUnavailable({
 
   const formatDelay = (ms: number): string => {
     const seconds = Math.ceil(ms / 1000);
+    const formatSeconds = (n: number): string => {
+      if (n === 1) return '1 sekundu';
+      if (n >= 2 && n <= 4) return `${n} sekundy`;
+      return `${n} sekund`;
+    };
     if (seconds < 60) {
-      return `${seconds} sekund`;
+      return formatSeconds(seconds);
     }
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
+    const minuteLabel =
+      minutes === 1 ? 'minuta' : minutes < 5 ? 'minuty' : 'minut';
     if (remainingSeconds === 0) {
-      return `${minutes} ${minutes === 1 ? 'minuta' : minutes < 5 ? 'minuty' : 'minut'}`;
+      return `${minutes} ${minuteLabel}`;
     }
-    return `${minutes} ${minutes === 1 ? 'minuta' : minutes < 5 ? 'minuty' : 'minut'} ${remainingSeconds} sekund`;
+    return `${minutes} ${minuteLabel} ${formatSeconds(remainingSeconds)}`;
   };
 
   return (
@@ -98,7 +105,7 @@ export function DatabaseUnavailable({
             lineHeight: '1.6',
           }}
         >
-          Server se pokouší připojit k databázi s exponenciálním backoff.
+          Server se znovu připojuje k databázi s postupně delšími prodlevami mezi pokusy.
           <br />
           Aplikace se automaticky znovu připojí, jakmile bude databáze dostupná.
         </p>
@@ -119,20 +126,20 @@ export function DatabaseUnavailable({
             <div>
               <strong>Další pokus za:</strong>{' '}
               <span style={{ color: '#007bff', fontWeight: 'bold' }}>
-                {countdown > 0 ? `${countdown} sekund` : 'právě teď...'}
+                {countdown > 0 ? `${countdown} s` : 'právě teď…'}
               </span>
             </div>
           )}
           {retryCount > 0 && (
             <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
-              Zpoždění: {formatDelay(nextRetryDelay)}
+              Prodleva: {formatDelay(nextRetryDelay)}
             </div>
           )}
         </div>
 
         {onRetry && (
           <Button type="button" intent="primary" size="md" onClick={onRetry}>
-            🔄 Zkusit znovu
+            Zkusit znovu
           </Button>
         )}
 
@@ -156,10 +163,10 @@ export function DatabaseUnavailable({
               paddingLeft: '1.5rem',
             }}
           >
-            <li>Zda je databázový server spuštěný</li>
-            <li>Zda je DATABASE_URL správně nakonfigurovaná</li>
-            <li>Zda je síťové připojení dostupné</li>
-            <li>Zda firewall umožňuje připojení</li>
+            <li>zda běží databázový server</li>
+            <li>zda je správně nastavená DATABASE_URL</li>
+            <li>zda je dostupné síťové připojení</li>
+            <li>zda firewall neblokuje připojení</li>
           </ul>
         </div>
       </div>
