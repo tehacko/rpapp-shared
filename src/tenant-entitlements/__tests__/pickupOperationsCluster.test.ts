@@ -37,6 +37,57 @@ describe('pickup operations cluster', () => {
     expect(isPickupOperationsClusterFollower('fulfillment_queue')).toBe(true);
     expect(isPickupOperationsClusterFollower('pickup_points')).toBe(true);
     expect(isPickupOperationsClusterFollower('staff_pickup_scan')).toBe(true);
+    // scheduled_pickup is Off-only denial, not a full cluster follower
+    expect(isPickupOperationsClusterFollower('scheduled_pickup')).toBe(false);
+  });
+
+  it('forces scheduled_pickup off when leader is off even if scheduled was on', () => {
+    const states = applySimpleStateDependencyImplications({
+      order_pickup_infrastructure: 'off',
+      scheduled_pickup: 'on',
+    });
+
+    expect(states.scheduled_pickup).toBe('off');
+  });
+
+  it('forces scheduled_pickup hardOff when leader is hardOff', () => {
+    const states = applySimpleStateDependencyImplications({
+      order_pickup_infrastructure: 'hardOff',
+      scheduled_pickup: 'on',
+    });
+
+    expect(states.scheduled_pickup).toBe('hardOff');
+  });
+
+  it('leaves scheduled_pickup as-is when leader is on', () => {
+    const states = applySimpleStateDependencyImplications({
+      order_pickup_infrastructure: 'on',
+      scheduled_pickup: 'off',
+      fulfillment_queue: 'off',
+      pickup_points: 'off',
+      staff_pickup_scan: 'off',
+    });
+
+    expect(states.scheduled_pickup).toBe('off');
+    expect(states.fulfillment_queue).toBe('on');
+  });
+
+  it('leaves scheduled_pickup on when leader is on', () => {
+    const states = applySimpleStateDependencyImplications({
+      order_pickup_infrastructure: 'on',
+      scheduled_pickup: 'on',
+    });
+
+    expect(states.scheduled_pickup).toBe('on');
+  });
+
+  it('does not overwrite scheduled_pickup when leader is softOff', () => {
+    const states = applySimpleStateDependencyImplications({
+      order_pickup_infrastructure: 'softOffVisible',
+      scheduled_pickup: 'on',
+    });
+
+    expect(states.scheduled_pickup).toBe('on');
   });
 
   it('forces fulfillment_queue off for DONATION_ONLY scope', () => {

@@ -18,7 +18,12 @@ export function isPickupOperationsClusterFollower(blockKey: EntitlementBlockKey)
   return isPickupOperationsClusterBlock(blockKey) && blockKey !== PICKUP_OPERATIONS_CLUSTER_LEADER;
 }
 
-/** Mirrors leader SIMPLE state onto fulfillment_queue, pickup_points, staff_pickup_scan. */
+/**
+ * Mirrors leader SIMPLE state onto fulfillment_queue, pickup_points, staff_pickup_scan.
+ * Off-only parent denial: when leader is `off`/`hardOff`, also force `scheduled_pickup`
+ * to that same state. When leader is `on`/softOff*, leave `scheduled_pickup` unchanged
+ * (baseline keeps scheduled OFF while infra ON — not a full cluster follower).
+ */
 export function applyPickupOperationsClusterSync(
   states: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
 ): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
@@ -31,6 +36,10 @@ export function applyPickupOperationsClusterSync(
     if (blockKey !== PICKUP_OPERATIONS_CLUSTER_LEADER) {
       result[blockKey] = leaderState;
     }
+  }
+  // Off-only denial — do NOT add scheduled_pickup to PICKUP_OPERATIONS_CLUSTER_BLOCK_KEYS
+  if (leaderState === 'off' || leaderState === 'hardOff') {
+    result.scheduled_pickup = leaderState;
   }
   return result;
 }

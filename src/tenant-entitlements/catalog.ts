@@ -198,7 +198,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['surface_kiosk', 'surface_customer'],
     parentOperator: 'OR',
-    notes: 'OR-parent §7.3; syncs Tenant PWA/pickup knobs',
+    notes:
+      'Master switch for pickup ops cluster (fulfillment_queue/pickup_points/staff_pickup_scan); SIMPLE Off forces scheduled_pickup Off; scheduled_pickup syncs Tenant.scheduledPickupEnabled via side-effects',
   },
   {
     blockKey: 'pickup_points',

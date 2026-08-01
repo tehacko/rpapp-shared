@@ -176,6 +176,13 @@ export function BottomSheet({
               onClick={onClose}
               disabled={isBusy || !open}
               data-testid={`${testId}-close`}
+              className={[
+                'inline-flex h-11 min-h-11 w-11 min-w-11 shrink-0 items-center justify-center',
+                'rounded-full text-2xl leading-none text-[var(--color-on-surface-muted)]',
+                'hover:bg-[var(--color-surface-hover,var(--color-surface-elevated))] hover:text-[var(--color-on-surface)]',
+                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus-ring,var(--color-accent))]',
+                'disabled:cursor-not-allowed disabled:opacity-50',
+              ].join(' ')}
             >
               ×
             </button>

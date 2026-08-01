@@ -10,12 +10,12 @@ const flagGroup = tv({
     placement: {
       floating: 'gap-2',
       inline: [
-        'gap-1.5 rounded-md border border-[var(--color-rail-card-border,var(--color-border,var(--color-neutral-200)))]',
-        'bg-[var(--color-surface-elevated,#fff)] p-1 shadow-sm',
+        'flex-wrap gap-1.5 rounded-md border border-[var(--color-rail-card-border,var(--color-border,var(--color-neutral-200)))]',
+        'bg-[var(--color-surface-elevated,#fff)] p-1.5 shadow-sm',
       ].join(' '),
       header: [
-        'gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,var(--color-neutral-200)))]',
-        'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))] p-1 shadow-none',
+        'flex-wrap gap-1.5 rounded-full border border-[var(--color-an-border,var(--color-border,var(--color-neutral-200)))]',
+        'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))] p-1.5 shadow-none',
       ].join(' '),
     },
     surface: {
@@ -76,8 +76,8 @@ const flagButton = tv({
   variants: {
     placement: {
       floating: 'h-10 w-10',
-      inline: 'h-8 w-8',
-      header: 'h-8 w-8',
+      inline: 'h-9 w-9',
+      header: 'h-9 w-9',
     },
     pressed: {
       true: 'opacity-100 shadow-sm',
@@ -123,8 +123,8 @@ const flagSize = tv({
   variants: {
     placement: {
       floating: 'h-10 w-10',
-      inline: 'h-8 w-8',
-      header: 'h-8 w-8',
+      inline: 'h-9 w-9',
+      header: 'h-9 w-9',
     },
   },
   defaultVariants: {
