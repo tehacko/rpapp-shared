@@ -5,9 +5,14 @@ import {
   resolveActiveLocaleCode,
   resolveDocumentLang,
 } from './localeFlagRegistry.js';
-import { CzechFlagSvg } from './flagSvgs.js';
+import { CzechFlagSvg, SlovakFlagSvg } from './flagSvgs.js';
 
 describe('localeFlagRegistry', () => {
+  it('includes cs, en, and sk with the Slovak flag component', () => {
+    expect(DEFAULT_LOCALE_FLAGS.map((locale) => locale.code)).toEqual(['cs', 'en', 'sk']);
+    expect(DEFAULT_LOCALE_FLAGS.find((locale) => locale.code === 'sk')?.Flag).toBe(SlovakFlagSvg);
+  });
+
   it('resolves cs, en, and sk from language tags', () => {
     expect(resolveActiveLocaleCode('cs-CZ', DEFAULT_LOCALE_FLAGS)).toBe('cs');
     expect(resolveActiveLocaleCode('en-US', DEFAULT_LOCALE_FLAGS)).toBe('en');

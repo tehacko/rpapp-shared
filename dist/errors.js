@@ -22,6 +22,10 @@ export class AppError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
+/** CS / SK / EN user-facing copy (Czech-first, same convention as backend API messages). */
+function csSkEn(cs, sk, en) {
+    return `${cs} / ${sk} / ${en}`;
+}
 // ===== Predefined Error Types =====
 export class ValidationError extends AppError {
     constructor(message, _field) {
@@ -30,50 +34,50 @@ export class ValidationError extends AppError {
     }
 }
 export class NetworkError extends AppError {
-    constructor(message = 'Chyba připojení k serveru') {
+    constructor(message = csSkEn('Chyba připojení k serveru', 'Chyba pripojenia k serveru', 'Server connection error')) {
         super(message, 'NETWORK_ERROR', 503);
         this.name = 'NetworkError';
     }
 }
 export class AuthenticationError extends AppError {
-    constructor(message = 'Neplatné přihlašovací údaje') {
+    constructor(message = csSkEn('Neplatné přihlašovací údaje', 'Neplatné prihlasovacie údaje', 'Invalid credentials')) {
         super(message, 'AUTH_ERROR', 401);
         this.name = 'AuthenticationError';
     }
 }
 export class NotFoundError extends AppError {
     constructor(resource = 'Zdroj') {
-        super(`${resource} nebyl nalezen`, 'NOT_FOUND', 404);
+        super(csSkEn(`${resource} nebyl nalezen`, `${resource === 'Zdroj' ? 'Zdroj' : resource} nebol nájdený`, `${resource === 'Zdroj' ? 'Resource' : resource} was not found`), 'NOT_FOUND', 404);
         this.name = 'NotFoundError';
     }
 }
 export class PaymentError extends AppError {
-    constructor(message = 'Chyba při zpracování platby') {
+    constructor(message = csSkEn('Chyba při zpracování platby', 'Chyba pri spracovaní platby', 'Payment processing error')) {
         super(message, 'PAYMENT_ERROR', 400);
         this.name = 'PaymentError';
     }
 }
 export class InventoryError extends AppError {
-    constructor(message = 'Chyba při správě zásob') {
+    constructor(message = csSkEn('Chyba při správě zásob', 'Chyba pri správe zásob', 'Inventory management error')) {
         super(message, 'INVENTORY_ERROR', 400);
         this.name = 'InventoryError';
     }
 }
 export class KioskError extends AppError {
-    constructor(message = 'Chyba konfigurace kiosku') {
+    constructor(message = csSkEn('Chyba konfigurace kiosku', 'Chyba konfigurácie kiosku', 'Kiosk configuration error')) {
         super(message, 'KIOSK_ERROR', 400);
         this.name = 'KioskError';
     }
 }
 /** Sales-point naming alias — retains `KIOSK_ERROR` code for v1 churn reduction. */
 export class SalesPointError extends KioskError {
-    constructor(message = 'Chyba konfigurace platebního místa') {
+    constructor(message = csSkEn('Chyba konfigurace platebního místa', 'Chyba konfigurácie platobného miesta', 'Sales point configuration error')) {
         super(message);
         this.name = 'SalesPointError';
     }
 }
 export class DatabaseError extends AppError {
-    constructor(message = 'Chyba databáze') {
+    constructor(message = csSkEn('Chyba databáze', 'Chyba databázy', 'Database error')) {
         super(message, 'DATABASE_ERROR', 503);
         this.name = 'DatabaseError';
     }
@@ -85,7 +89,8 @@ export const formatError = (error, details) => {
     const isAppError = error instanceof AppError;
     const errorObj = {
         code: isAppError ? error.code : 'UNKNOWN_ERROR',
-        message: error.message || 'Došlo k neočekávané chybě',
+        message: error.message ||
+            csSkEn('Došlo k neočekávané chybě', 'Došlo k neočakávanej chybe', 'An unexpected error occurred'),
         timestamp: new Date().toISOString(),
     };
     if (details) {
@@ -103,26 +108,27 @@ export const formatError = (error, details) => {
  */
 export const getErrorMessage = (error) => {
     if (error instanceof NetworkError) {
-        return 'Problém s připojením. Zkuste to znovu.';
+        return csSkEn('Problém s připojením. Zkuste to znovu.', 'Problém s pripojením. Skúste to znova.', 'Connection problem. Please try again.');
     }
     if (error instanceof ValidationError) {
         return error.message;
     }
     if (error instanceof AuthenticationError) {
-        return 'Neplatné přihlašovací údaje.';
+        return csSkEn('Neplatné přihlašovací údaje.', 'Neplatné prihlasovacie údaje.', 'Invalid credentials.');
     }
     if (error instanceof NotFoundError) {
         return error.message;
     }
     // Check for specific error messages
     if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
-        return 'Problém s připojením. Zkuste to znovu.';
+        return csSkEn('Problém s připojením. Zkuste to znovu.', 'Problém s pripojením. Skúste to znova.', 'Connection problem. Please try again.');
     }
     if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-        return 'Neplatné přihlašovací údaje.';
+        return csSkEn('Neplatné přihlašovací údaje.', 'Neplatné prihlasovacie údaje.', 'Invalid credentials.');
     }
     // Return original message if available, otherwise generic
-    return error.message || 'Něco se pokazilo. Zkuste to znovu.';
+    return (error.message ||
+        csSkEn('Něco se pokazilo. Zkuste to znovu.', 'Niečo sa pokazilo. Skúste to znova.', 'Something went wrong. Please try again.'));
 };
 // Multi-bank reconciliation codes (Wave 1 forward compatibility).
 export const BANK_ERROR_CODES = {

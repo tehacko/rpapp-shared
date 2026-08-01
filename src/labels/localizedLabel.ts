@@ -43,7 +43,7 @@ export function dotNotationToLabel(code: string): LocalizedLabel {
         .join(' '),
     )
     .join(' — ');
-  return { en, cs: en };
+  return { en, cs: en, sk: en };
 }
 
 export function snakeCaseToLabel(name: string): LocalizedLabel {
@@ -51,5 +51,5 @@ export function snakeCaseToLabel(name: string): LocalizedLabel {
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-  return { en, cs: en };
+  return { en, cs: en, sk: en };
 }

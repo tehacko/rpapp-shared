@@ -72,12 +72,14 @@ const flagGroup = tv({
 
 const flagButton = tv({
   base: [
-    // No overflow-hidden — flag SVGs clip themselves; hiding overflow chops the dual-tone rim
-    // that keeps white flag bands readable on light sheets.
+    // No overflow-hidden — SVGs self-clip; hiding overflow chops contrast rims.
     'inline-flex shrink-0 items-center justify-center rounded-full',
-    'border-2 border-[color-mix(in_srgb,var(--color-foreground,#0f172a)_22%,transparent)]',
+    // Always-on inset ring so white flag bands never melt into light sheets.
+    // Use ring (not only shadow) — pressed variants must not erase contrast.
+    'border border-black/25',
     'bg-[var(--color-surface-elevated,#fff)]',
-    'transition-[opacity,filter,box-shadow,background-color,border-color] duration-150',
+    'ring-1 ring-inset ring-black/20',
+    'transition-[opacity,filter,box-shadow,background-color,border-color,ring-color] duration-150',
     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
   ].join(' '),
   variants: {
@@ -87,7 +89,7 @@ const flagButton = tv({
       header: 'h-9 w-9',
     },
     pressed: {
-      true: 'opacity-100 shadow-sm',
+      true: 'opacity-100',
       false: 'opacity-40 grayscale-[0.55] hover:opacity-70 hover:grayscale-[0.2]',
     },
     surface: {
@@ -104,7 +106,7 @@ const flagButton = tv({
       class: [
         'border-[var(--color-an-primary,var(--color-brand-primary))]',
         'bg-[var(--color-an-surface,var(--color-surface-elevated,#fff))]',
-        'ring-2 ring-[var(--color-an-primary,var(--color-brand-primary))]/30',
+        'ring-2 ring-[var(--color-an-primary,var(--color-brand-primary))]/35',
       ].join(' '),
     },
     {
@@ -113,7 +115,7 @@ const flagButton = tv({
       class: [
         'border-[var(--color-accent,#2563eb)]',
         'bg-[var(--color-surface-elevated,#fff)]',
-        'ring-2 ring-[var(--color-accent,#2563eb)]/30',
+        'ring-2 ring-[var(--color-accent,#2563eb)]/35',
       ].join(' '),
     },
     {
@@ -122,7 +124,7 @@ const flagButton = tv({
       class: [
         'border-[var(--color-accent)]',
         'bg-[var(--color-surface-elevated,#fff)]',
-        'ring-2 ring-[var(--color-accent)]/30',
+        'ring-2 ring-[var(--color-accent)]/35',
       ].join(' '),
     },
     {
@@ -131,7 +133,7 @@ const flagButton = tv({
       class: [
         'border-[var(--color-accent,#2563eb)]',
         'bg-[var(--color-surface-elevated,#fff)]',
-        'ring-2 ring-[var(--color-accent,#2563eb)]/30',
+        'ring-2 ring-[var(--color-accent,#2563eb)]/35',
       ].join(' '),
     },
   ],

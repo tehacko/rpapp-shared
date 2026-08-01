@@ -65,6 +65,7 @@ export * from './checkout/sessionMetadataV3.js';
 export * from './checkout/sessionMetadataV4.js';
 export * from './checkout/sessionMetadataV5.js';
 export * from './checkout/CartLineFingerprint.js';
+export * from './order/index.js';
 export * from './promo/promoSessionHandoff.js';
 export * from './promo/resolvePromoLoyaltyStack.js';
 export * from './promo/PromoCodeErrorCode.js';

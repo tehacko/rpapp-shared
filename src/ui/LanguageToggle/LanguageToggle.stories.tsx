@@ -8,11 +8,19 @@ const shellLanguage = {
     groupLabel: 'Jazyk rozhraní',
     cs: 'Čeština',
     en: 'English',
+    sk: 'Slovenština',
   },
   en: {
     groupLabel: 'Interface language',
     cs: 'Čeština',
     en: 'English',
+    sk: 'Slovak',
+  },
+  sk: {
+    groupLabel: 'Jazyk rozhrania',
+    cs: 'Čeština',
+    en: 'English',
+    sk: 'Slovenčina',
   },
 } as const;
 
@@ -22,6 +30,7 @@ if (!i18n.isInitialized) {
   void i18n.use(initReactI18next).init({
     lng: 'cs',
     fallbackLng: 'cs',
+    supportedLngs: ['cs', 'en', 'sk'],
     ns: [...storybookNamespaces],
     defaultNS: 'customer',
     interpolation: { escapeValue: false },
@@ -36,6 +45,12 @@ if (!i18n.isInitialized) {
         storybookNamespaces.map((namespace) => [
           namespace,
           { shell: { language: shellLanguage.en } },
+        ])
+      ),
+      sk: Object.fromEntries(
+        storybookNamespaces.map((namespace) => [
+          namespace,
+          { shell: { language: shellLanguage.sk } },
         ])
       ),
     },
@@ -102,6 +117,15 @@ export const EnglishActive: Story = {
   loaders: [
     async () => {
       await i18n.changeLanguage('en');
+      return {};
+    },
+  ],
+};
+
+export const SlovakActive: Story = {
+  loaders: [
+    async () => {
+      await i18n.changeLanguage('sk');
       return {};
     },
   ],

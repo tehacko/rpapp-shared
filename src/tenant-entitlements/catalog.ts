@@ -225,7 +225,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockKey: 'scheduled_pickup',
     blockClass: 'CONDITIONAL',
     parentKeys: ['order_pickup_infrastructure'],
-    notes: 'Syncs Tenant.scheduledPickup* fields',
+    notes:
+      'Syncs Tenant.scheduledPickupEnabled only; Off-only parent denial when infra Off',
   },
   {
     blockKey: 'staff_pickup_scan',
@@ -276,7 +277,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockKey: 'analytics_detailed',
     blockClass: 'CONDITIONAL',
     parentKeys: ['analytics'],
-    notes: 'Advanced explore',
+    capabilityHint: 'analytics:detailed:read',
+    notes: 'Detailed analytics + event governance catalog/lookup (admin FE G3)',
   },
   {
     blockKey: 'mission_control',
@@ -297,7 +299,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockKey: 'customer_behavior_funnels',
     blockClass: 'CONDITIONAL',
     parentKeys: ['analytics_detailed'],
-    notes: 'Ingest tier ANALYTICS per CONSENT_TIER_MATRIX',
+    notes: 'Ingest quarantine/replay + product funnel (admin FE G10)',
   },
   {
     blockKey: 'analytics_benchmark',

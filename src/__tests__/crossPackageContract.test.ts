@@ -41,4 +41,14 @@ describe('crossPackageContract', () => {
     });
     expect(readiness.payableVerifiedMethodCount).toBe(1);
   });
+
+  it('exports order fulfillment list contracts (collectTiming / productCollectionMode)', async () => {
+    const mod = await import('../index.js');
+    expect(mod.PRODUCT_COLLECTION_MODES).toEqual(['PAY_AT_KIOSK', 'PREPAY_COLLECT_LATER']);
+    expect(mod.COLLECT_TIMINGS).toEqual(['NOW', 'LATER']);
+    expect(typeof mod.isProductCollectionMode).toBe('function');
+    expect(typeof mod.isCollectTiming).toBe('function');
+    expect(mod.isProductCollectionMode('PAY_AT_KIOSK')).toBe(true);
+    expect(mod.isCollectTiming('LATER')).toBe(true);
+  });
 });

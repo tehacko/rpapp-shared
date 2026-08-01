@@ -3,17 +3,19 @@
  */
 import '@testing-library/jest-dom';
 import { describe, expect, it, jest } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LocaleFlagToggle } from '../LocaleFlags/LocaleFlagToggle.js';
 import { DEFAULT_LOCALE_FLAGS } from '../LocaleFlags/localeFlagRegistry.js';
+import { SlovakFlagSvg } from '../LocaleFlags/flagSvgs.js';
 
 describe('LocaleFlagToggle', () => {
   it('includes Slovak in the default locale set', () => {
     expect(DEFAULT_LOCALE_FLAGS.map((locale) => locale.code)).toEqual(['cs', 'en', 'sk']);
+    expect(DEFAULT_LOCALE_FLAGS.find((locale) => locale.code === 'sk')?.Flag).toBe(SlovakFlagSvg);
   });
 
-  it('renders flag buttons with accessible labels and selection state', async () => {
+  it('renders flag buttons with accessible labels, contrast ring, and selection state', async () => {
     const user = userEvent.setup();
     const onSelect = jest.fn();
     const labels: Record<string, string> = {
@@ -48,6 +50,15 @@ describe('LocaleFlagToggle', () => {
     expect(slovak).toHaveAttribute('aria-pressed', 'false');
     expect(english.className).toMatch(/opacity-40/);
     expect(slovak.className).toMatch(/opacity-40/);
+
+    // Always-on contrast edge (inactive + active) — white bands must not melt into sheets.
+    for (const button of [czech, english, slovak]) {
+      expect(button.className).toMatch(/ring-1|ring-2/);
+      expect(button.className).not.toMatch(/overflow-hidden/);
+      expect(within(button).getByTestId('locale-flag-edge-rim')).toBeInTheDocument();
+    }
+
+    expect(within(slovak).getByTestId('slovak-flag-cross')).toBeInTheDocument();
 
     await user.click(slovak);
     expect(onSelect).toHaveBeenCalledWith('sk');

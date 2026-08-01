@@ -128,10 +128,12 @@ export interface SalesPointPublicCatalogMedia {
   readonly objectFit: 'cover' | 'contain';
 }
 
-export type SalesPointPublicProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+import type { ProductCollectionMode, SalesPointInteractionMode } from '../types.js';
 
-import type { SalesPointInteractionMode } from '../types.js';
-export type { SalesPointInteractionMode };
+/** Public-config alias — same union as {@link ProductCollectionMode}. */
+export type SalesPointPublicProductCollectionMode = ProductCollectionMode;
+
+export type { SalesPointInteractionMode, ProductCollectionMode };
 
 export interface SalesPointPublicConfigLocationFields {
   readonly salesPointSlug: string | null;

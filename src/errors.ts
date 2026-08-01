@@ -32,6 +32,11 @@ export class AppError extends Error {
   }
 }
 
+/** CS / SK / EN user-facing copy (Czech-first, same convention as backend API messages). */
+function csSkEn(cs: string, sk: string, en: string): string {
+  return `${cs} / ${sk} / ${en}`;
+}
+
 // ===== Predefined Error Types =====
 
 export class ValidationError extends AppError {
@@ -42,14 +47,26 @@ export class ValidationError extends AppError {
 }
 
 export class NetworkError extends AppError {
-  constructor(message: string = 'Chyba připojení k serveru') {
+  constructor(
+    message: string = csSkEn(
+      'Chyba připojení k serveru',
+      'Chyba pripojenia k serveru',
+      'Server connection error'
+    )
+  ) {
     super(message, 'NETWORK_ERROR', 503);
     this.name = 'NetworkError';
   }
 }
 
 export class AuthenticationError extends AppError {
-  constructor(message: string = 'Neplatné přihlašovací údaje') {
+  constructor(
+    message: string = csSkEn(
+      'Neplatné přihlašovací údaje',
+      'Neplatné prihlasovacie údaje',
+      'Invalid credentials'
+    )
+  ) {
     super(message, 'AUTH_ERROR', 401);
     this.name = 'AuthenticationError';
   }
@@ -57,27 +74,53 @@ export class AuthenticationError extends AppError {
 
 export class NotFoundError extends AppError {
   constructor(resource: string = 'Zdroj') {
-    super(`${resource} nebyl nalezen`, 'NOT_FOUND', 404);
+    super(
+      csSkEn(
+        `${resource} nebyl nalezen`,
+        `${resource === 'Zdroj' ? 'Zdroj' : resource} nebol nájdený`,
+        `${resource === 'Zdroj' ? 'Resource' : resource} was not found`
+      ),
+      'NOT_FOUND',
+      404
+    );
     this.name = 'NotFoundError';
   }
 }
 
 export class PaymentError extends AppError {
-  constructor(message: string = 'Chyba při zpracování platby') {
+  constructor(
+    message: string = csSkEn(
+      'Chyba při zpracování platby',
+      'Chyba pri spracovaní platby',
+      'Payment processing error'
+    )
+  ) {
     super(message, 'PAYMENT_ERROR', 400);
     this.name = 'PaymentError';
   }
 }
 
 export class InventoryError extends AppError {
-  constructor(message: string = 'Chyba při správě zásob') {
+  constructor(
+    message: string = csSkEn(
+      'Chyba při správě zásob',
+      'Chyba pri správe zásob',
+      'Inventory management error'
+    )
+  ) {
     super(message, 'INVENTORY_ERROR', 400);
     this.name = 'InventoryError';
   }
 }
 
 export class KioskError extends AppError {
-  constructor(message: string = 'Chyba konfigurace kiosku') {
+  constructor(
+    message: string = csSkEn(
+      'Chyba konfigurace kiosku',
+      'Chyba konfigurácie kiosku',
+      'Kiosk configuration error'
+    )
+  ) {
     super(message, 'KIOSK_ERROR', 400);
     this.name = 'KioskError';
   }
@@ -85,14 +128,22 @@ export class KioskError extends AppError {
 
 /** Sales-point naming alias — retains `KIOSK_ERROR` code for v1 churn reduction. */
 export class SalesPointError extends KioskError {
-  constructor(message: string = 'Chyba konfigurace platebního místa') {
+  constructor(
+    message: string = csSkEn(
+      'Chyba konfigurace platebního místa',
+      'Chyba konfigurácie platobného miesta',
+      'Sales point configuration error'
+    )
+  ) {
     super(message);
     this.name = 'SalesPointError';
   }
 }
 
 export class DatabaseError extends AppError {
-  constructor(message: string = 'Chyba databáze') {
+  constructor(
+    message: string = csSkEn('Chyba databáze', 'Chyba databázy', 'Database error')
+  ) {
     super(message, 'DATABASE_ERROR', 503);
     this.name = 'DatabaseError';
   }
@@ -118,7 +169,13 @@ export const formatError = (error: Error | AppError, details?: unknown): ErrorRe
   
   const errorObj: ErrorResponse['error'] = {
     code: isAppError ? error.code : 'UNKNOWN_ERROR',
-    message: error.message || 'Došlo k neočekávané chybě',
+    message:
+      error.message ||
+      csSkEn(
+        'Došlo k neočekávané chybě',
+        'Došlo k neočakávanej chybe',
+        'An unexpected error occurred'
+      ),
     timestamp: new Date().toISOString(),
   };
 
@@ -140,32 +197,55 @@ export const formatError = (error: Error | AppError, details?: unknown): ErrorRe
  */
 export const getErrorMessage = (error: Error | AppError): string => {
   if (error instanceof NetworkError) {
-    return 'Problém s připojením. Zkuste to znovu.';
+    return csSkEn(
+      'Problém s připojením. Zkuste to znovu.',
+      'Problém s pripojením. Skúste to znova.',
+      'Connection problem. Please try again.'
+    );
   }
-  
+
   if (error instanceof ValidationError) {
     return error.message;
   }
-  
+
   if (error instanceof AuthenticationError) {
-    return 'Neplatné přihlašovací údaje.';
+    return csSkEn(
+      'Neplatné přihlašovací údaje.',
+      'Neplatné prihlasovacie údaje.',
+      'Invalid credentials.'
+    );
   }
-  
+
   if (error instanceof NotFoundError) {
     return error.message;
   }
-  
+
   // Check for specific error messages
   if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
-    return 'Problém s připojením. Zkuste to znovu.';
+    return csSkEn(
+      'Problém s připojením. Zkuste to znovu.',
+      'Problém s pripojením. Skúste to znova.',
+      'Connection problem. Please try again.'
+    );
   }
-  
+
   if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-    return 'Neplatné přihlašovací údaje.';
+    return csSkEn(
+      'Neplatné přihlašovací údaje.',
+      'Neplatné prihlasovacie údaje.',
+      'Invalid credentials.'
+    );
   }
-  
+
   // Return original message if available, otherwise generic
-  return error.message || 'Něco se pokazilo. Zkuste to znovu.';
+  return (
+    error.message ||
+    csSkEn(
+      'Něco se pokazilo. Zkuste to znovu.',
+      'Niečo sa pokazilo. Skúste to znova.',
+      'Something went wrong. Please try again.'
+    )
+  );
 };
 
 // Multi-bank reconciliation codes (Wave 1 forward compatibility).

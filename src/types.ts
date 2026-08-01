@@ -113,7 +113,13 @@ export interface KioskProduct extends Product, CatalogImageFocal {
 
 export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
 
-export type SalesPointProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+/**
+ * Canonical product collection mode (Transaction / payment / admin / customer).
+ * Alias `SalesPointProductCollectionMode` kept for existing sales-point call sites.
+ */
+export type ProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+
+export type SalesPointProductCollectionMode = ProductCollectionMode;
 
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 
@@ -320,7 +326,7 @@ export interface CreateQRPaymentResponseData {
   paymentId: string;
   qrCodeData?: string;
   qrAccess?: 'allowed' | 'denied';
-  productCollectionMode?: 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
+  productCollectionMode?: ProductCollectionMode;
   amount: number;
   itemsCount: number;
   customerEmail?: string;
@@ -370,6 +376,8 @@ export interface GatewayCreateRequest {
   flowType?: TxFlowType;
   entryChannel?: TxEntryChannel;
   donationProjectCode?: string;
+  /** UI language (BCP-47 / ISO 639-1) for gateway checkout localization. */
+  language?: string;
 }
 
 /**

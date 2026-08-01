@@ -1534,7 +1534,6 @@ export {
   ShieldCogCorner,
   ShieldEllipsis,
   ShieldHalf,
-  ShieldKeyhole,
   ShieldMinus,
   ShieldOff,
   ShieldPlus,
