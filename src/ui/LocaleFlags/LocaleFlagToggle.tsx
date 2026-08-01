@@ -72,9 +72,10 @@ const flagGroup = tv({
 
 const flagButton = tv({
   base: [
-    'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full',
-    // Neutral rim keeps white flag bands readable on light sheets (CS/SK white edges).
-    'border-2 border-[color-mix(in_srgb,var(--color-foreground,#0f172a)_18%,transparent)]',
+    // No overflow-hidden — flag SVGs clip themselves; hiding overflow chops the dual-tone rim
+    // that keeps white flag bands readable on light sheets.
+    'inline-flex shrink-0 items-center justify-center rounded-full',
+    'border-2 border-[color-mix(in_srgb,var(--color-foreground,#0f172a)_22%,transparent)]',
     'bg-[var(--color-surface-elevated,#fff)]',
     'transition-[opacity,filter,box-shadow,background-color,border-color] duration-150',
     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',

@@ -41,10 +41,10 @@ function FlagInnerEdge(): JSX.Element {
     <circle
       cx="16"
       cy="16"
-      r="15.35"
+      r="15.2"
       fill="none"
-      stroke="rgba(15, 23, 42, 0.2)"
-      strokeWidth="1.1"
+      stroke="rgba(15, 23, 42, 0.32)"
+      strokeWidth="1.6"
     />
   );
 }
