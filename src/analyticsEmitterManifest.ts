@@ -333,7 +333,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: ANALYTICS_IDENTITY_EVENTS.IDENTITY_MATCHED, surface: 'server', layer: 'BE', required: true, reference: 'StartAnalyticsSessionUseCase' },
   { eventName: 'receipt_opened', surface: 'customer', layer: 'FE', required: true, reference: 'AccountPaymentsPage' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.RECEIPT_CREATED, surface: 'server', layer: 'BE', required: true, reference: 'GenerateReceiptUseCase' },
-  { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerShellHeader' },
+  { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerSettingsSheet' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'LoginWithPasswordUseCase' },
   { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'VerifyOtpUseCase' },
   {
@@ -1046,7 +1046,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'MarketingAnalyticsConsentModal',
   'CustomerAnalyticsProvider',
   'AccountPaymentsPage',
-  'CustomerShellHeader',
+  'CustomerSettingsSheet',
   'ProductCard',
   'ProductGrid',
   'customerErrorAnalytics',
@@ -1089,7 +1089,7 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
   CustomerAnalyticsProvider: 'rpapp-customer/src/shared/analytics/CustomerAnalyticsProvider.tsx',
   // Retail V1 thin-page / shell refs → emit site in hooks (same pattern as PhoneFirst*).
   AccountPaymentsPage: 'rpapp-customer/src/features/account/hooks/useAccountPaymentsScreen.ts',
-  CustomerShellHeader: 'rpapp-customer/src/app/CustomerShellHeader.tsx',
+  CustomerSettingsSheet: 'rpapp-customer/src/app/CustomerSettingsSheet.tsx',
   ProductCard: 'rpapp-customer/src/features/shop/components/ProductCard.tsx',
   ProductGrid: 'rpapp-kiosk/src/features/products/components/ProductGrid/ProductGrid.tsx',
   customerErrorAnalytics: 'rpapp-customer/src/shared/analytics/customerErrorAnalytics.ts',
