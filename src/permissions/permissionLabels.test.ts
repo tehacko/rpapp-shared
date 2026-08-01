@@ -15,7 +15,7 @@ describe('permissionLabels', () => {
 
   it('resolves known domain labels', () => {
     expect(getPermissionDomainLabel('tenant', 'en')).toBe('Tenant operations');
-    expect(getPermissionDomainLabel('tenant', 'cs')).toBe('Provoz tenantu');
+    expect(getPermissionDomainLabel('tenant', 'cs')).toBe('Provoz organizace');
   });
 
   it('resolves known resource titles in EN and CS', () => {

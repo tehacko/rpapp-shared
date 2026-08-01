@@ -477,15 +477,15 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'payment.admin_manual_complete': {
     en: 'Recorded when an admin marks a pending bank-transfer order as paid at the counter. One line per successful mark (idempotent replays reuse the same line).',
-    cs: 'Zapíše se, když administrátor označí čekající bankovní objednávku jako zaplacenou u pokladny. Jeden řádek za úspěšné označení (idempotentní opakování používá stejný řádek).',
+    cs: 'Zapíše se, když administrátor označí čekající bankovní objednávku jako zaplacenou u pokladny. Jeden řádek za úspěšné označení (opakované odeslání znovu použije stejný řádek).',
   },
   'webhook_skipped_tenant_inactive': {
     en: 'Recorded when a payment webhook is acknowledged without money mutation because the tenant is deactivated, deleted, or legally closed.',
-    cs: 'Zapíše se, když je platební webhook potvrzen bez peněžní mutace, protože tenant je deaktivovaný, smazaný nebo právně uzavřený.',
+    cs: 'Zapíše se, když je platební webhook potvrzen bez peněžní změny, protože organizace je deaktivovaná, smazaná nebo právně uzavřená.',
   },
   'payment.customer.refund.requested': {
     en: 'Recorded when a customer submits a refund request from the PWA after a failed or timed-out payment. One line per request (duplicate submissions are idempotent).',
-    cs: 'Zapíše se, když zákazník odešle žádost o vrácení z PWA po neúspěšné nebo expirované platbě. Jeden řádek za žádost (opakované odeslání je idempotentní).',
+    cs: 'Zapíše se, když zákazník odešle žádost o vrácení z zákaznické aplikace po neúspěšné nebo vypršené platbě. Jeden řádek za žádost (opakované odeslání znovu použije stejný záznam).',
   },
   'reconciliation.transaction.refund_candidate.marked': {
     en: 'Recorded when staff mark a bank payment as needing a possible refund check. One line per mark. Does not send money back by itself.',

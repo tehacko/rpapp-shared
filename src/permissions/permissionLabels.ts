@@ -15,7 +15,7 @@ export const PERMISSION_DOMAIN_LABELS: Record<string, LocalizedLabel> = {
   principal: { en: 'Account access', cs: 'Přístup k účtu' },
   account: { en: 'Account', cs: 'Účet' },
   permissions: { en: 'Permissions catalog', cs: 'Katalog oprávnění' },
-  tenant: { en: 'Tenant operations', cs: 'Provoz tenantu' },
+  tenant: { en: 'Tenant operations', cs: 'Provoz organizace' },
   platform: { en: 'Platform administration', cs: 'Správa platformy' },
   exceptions: { en: 'Exceptions', cs: 'Výjimky' },
   compliance: { en: 'Compliance', cs: 'Compliance' },
@@ -101,7 +101,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     en: 'Cross-tenant replay execute',
     cs: 'Spuštění přehrání napříč tenanty',
   },
-  tenantPermanentDelete: { en: 'Tenant permanent delete', cs: 'Trvalé smazání tenanta' },
+  tenantPermanentDelete: { en: 'Tenant permanent delete', cs: 'Trvalé smazání organizace' },
   refundResolve: { en: 'Refund resolve', cs: 'Vyřešení refundace' },
   complianceSensitiveAccess: {
     en: 'Compliance-sensitive access',
@@ -111,7 +111,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   // Platform (short titles for rare advanced UI)
   users: { en: 'Platform users', cs: 'Uživatelé platformy' },
   tenants: { en: 'Platform tenants', cs: 'Tenanti platformy' },
-  tenantPayments: { en: 'Tenant payments defaults', cs: 'Výchozí platby tenantů' },
+  tenantPayments: { en: 'Tenant payments defaults', cs: 'Výchozí platby organizací' },
   userTenantAssignments: {
     en: 'User–tenant assignments',
     cs: 'Přiřazení uživatelů k tenantům',

@@ -211,7 +211,7 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_PREPARED]: {
     en: 'Counts when staff or the system moves a collect-later order into preparation. One count per transition to preparing.',
-    cs: 'Počítá se, když personál nebo systém přesune objednávku collect-later do přípravy. Jednou za přechod do přípravy.',
+    cs: 'Počítá se, když personál nebo systém přesune objednávku k vyzvednutí později do přípravy. Jednou za přechod do přípravy.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_ORDER_READY]: {
     en: 'Counts when an order is marked ready for pickup. One count per ready transition. Customer notifications may follow separately.',
@@ -223,15 +223,15 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_TICKET_CREATED]: {
     en: 'Counts when a sales-point collect-later ticket is created before payment. One count per ticket row.',
-    cs: 'Počítá se při vytvoření lístku platebního místa collect-later před zaplacením. Jednou za každý lístek.',
+    cs: 'Počítá se při vytvoření lístku platebního místa pro vyzvednutí později před zaplacením. Jednou za každý lístek.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_PICKUP_SCHEDULED]: {
     en: 'Counts when a customer chooses a scheduled pickup slot. One count per scheduled slot selection.',
-    cs: 'Počítá se, když zákazník zvolí plánovaný slot vyzvednutí. Jednou za výběr slotu.',
+    cs: 'Počítá se, když zákazník zvolí plánovaný termín vyzvednutí. Jednou za výběr termínu.',
   },
   [ANALYTICS_RETAIL_EVENTS.RETAIL_PICKUP_SLOT_MISSED]: {
     en: 'Counts when a scheduled pickup window passes without collection. One count per missed window detected by workers.',
-    cs: 'Počítá se, když plánované okno vyzvednutí uplyne bez vyzvednutí. Jednou za zmeškané okno zjištěné workers.',
+    cs: 'Počítá se, když plánované okno vyzvednutí uplyne bez vyzvednutí. Jednou za zmeškané okno zjištěné pracovníky.',
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_MODE_SELECTED]: {
     en: 'Counts when a customer selects a checkout sub-mode (pay now, collect later, etc.). One count per selection.',
@@ -239,7 +239,7 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_CREATED]: {
     en: 'Counts when a payment handoff session is created so the customer can finish checkout on another device. One count per handoff row.',
-    cs: 'Počítá se při vytvoření relace pro předání platby, aby zákazník dokončil pokladnu na jiném zařízení. Jednou za každý handoff.',
+    cs: 'Počítá se při vytvoření relace pro předání platby, aby zákazník dokončil pokladnu na jiném zařízení. Jednou za každé předání.',
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_EXPIRED]: {
     en: 'Counts when a payment handoff session expires before completion. One count per expired handoff.',
@@ -247,7 +247,7 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_HANDOFF_COMPLETED]: {
     en: 'Counts when a customer completes checkout through a payment handoff link. One count per successful handoff completion.',
-    cs: 'Počítá se, když zákazník dokončí pokladnu přes odkaz handoff platby. Jednou za úspěšné dokončení handoffu.',
+    cs: 'Počítá se, když zákazník dokončí pokladnu přes odkaz pro předání platby. Jednou za úspěšné dokončení předání.',
   },
   [ANALYTICS_RETAIL_EVENTS.BUY_AGAIN_STARTED]: {
     en: 'Counts when a customer starts a buy-again flow from order history. One count per started buy-again attempt.',
@@ -259,11 +259,11 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.SELF_SERVICE_SLA_NOTICE_SHOWN]: {
     en: 'Counts when the pay-on-spot proximity SLA notice is shown (informational only).',
-    cs: 'Počítá se při zobrazení informativního SLA upozornění u platby na místě.',
+    cs: 'Počítá se při zobrazení informativního upozornění na dobu vyzvednutí u platby na místě.',
   },
   [ANALYTICS_RETAIL_EVENTS.CUSTOMER_PICKUP_ACK_INFORMATIONAL]: {
     en: 'Counts when a customer acknowledges prepay pickup on order detail (audit only).',
-    cs: 'Počítá se při potvrzení vyzvednutí u prepaid objednávky (pouze audit).',
+    cs: 'Počítá se při potvrzení vyzvednutí u předplacené objednávky (pouze audit).',
   },
   [ANALYTICS_RETAIL_EVENTS.PICKUP_QR_ISSUED]: {
     en: 'Counts when pickup QR or scan credentials are issued for an order. One count per issuance.',
@@ -299,15 +299,15 @@ const RETAIL_DESCRIPTIONS = {
   },
   [ANALYTICS_RETAIL_EVENTS.CHECKOUT_COLLECT_CONFIGURED]: {
     en: 'Counts when collect-later checkout options are configured for a session (slot, mode, etc.). One count per configuration.',
-    cs: 'Počítá se při nastavení možností collect-later pro relaci (slot, režim atd.). Jednou za konfiguraci.',
+    cs: 'Počítá se při nastavení možností vyzvednutí později pro relaci (termín, režim atd.). Jednou za konfiguraci.',
   },
   [ANALYTICS_RETAIL_EVENTS.SLUG_LEGACY_REDIRECT]: {
     en: 'Counts when a legacy kioskId shop URL redirects to a slug-based sales point URL. One count per redirect.',
-    cs: 'Počítá se při přesměrování staré URL s kioskId na URL s slugem platebního místa. Jednou za přesměrování.',
+    cs: 'Počítá se při přesměrování staré URL s kioskId na URL s identifikátorem platebního místa. Jednou za přesměrování.',
   },
   [ANALYTICS_RETAIL_EVENTS.TENANT_SWITCHED]: {
     en: 'Counts when a logged-in customer switches tenant context in the account shop flow. One count per switch.',
-    cs: 'Počítá se, když přihlášený zákazník přepne tenant v účtu/obchodu. Jednou za přepnutí.',
+    cs: 'Počítá se, když přihlášený zákazník přepne organizaci v účtu nebo obchodu. Jednou za přepnutí.',
   },
 };
 
@@ -439,11 +439,11 @@ const SERVER_OPS_DESCRIPTIONS: Record<
   },
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_MISSED]: {
     en: 'Counts when an expected recurring donation payment did not arrive by the due date. One count per missed period on a standing-order setup. Emitted by the reconciliation worker, not by a customer session.',
-    cs: 'Počítá se, když očekávaná platba opakovaného daru nedorazí do termínu. Jednou za každé zmeškané období trvalého příkazu. Emituje workers reconciliace, ne klientská relace.',
+    cs: 'Počítá se, když očekávaná platba opakovaného daru nedorazí do termínu. Jednou za každé zmeškané období trvalého příkazu. Odesílá pracovník párování plateb, ne klientská relace.',
   },
   [ANALYTICS_SERVER_OPS_EVENTS.RECURRING_PAYMENT_RECEIVED]: {
     en: 'Counts when an inbound bank movement matches a recurring donation standing-order setup. Emitted by reconciliation after SS match.',
-    cs: 'Počítá se, když příchozí bankovní pohyb sedí na trvalý příkaz k opakovanému daru. Emituje reconciliace po shodě SS.',
+    cs: 'Počítá se, když příchozí bankovní pohyb sedí na trvalý příkaz k opakovanému daru. Odesílá párování plateb po shodě VS/SS.',
   },
   [ANALYTICS_PROMO_EVENTS.PROMO_PREVIEW_EVALUATED]: {
     en: 'Counts when checkout promo pricing preview runs for a cart. Server-side only.',

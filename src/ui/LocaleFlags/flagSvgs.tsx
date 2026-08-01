@@ -8,18 +8,27 @@ const CS_FLAG_CLIP_ID = 'locale-flag-clip-cs';
 const EN_FLAG_CLIP_ID = 'locale-flag-clip-en';
 const SK_FLAG_CLIP_ID = 'locale-flag-clip-sk';
 
-/** Hairline rim so white flag edges stay visible on light surfaces. */
+/** Dual-tone rim: readable on both light sheets and dark surfaces. */
 function FlagEdgeRim(): JSX.Element {
   return (
-    <circle
-      cx="16"
-      cy="16"
-      r="15.25"
-      fill="none"
-      stroke="rgba(15, 23, 42, 0.22)"
-      strokeWidth="1.5"
-      vectorEffect="non-scaling-stroke"
-    />
+    <g aria-hidden="true">
+      <circle
+        cx="16"
+        cy="16"
+        r="15.1"
+        fill="none"
+        stroke="rgba(255, 255, 255, 0.92)"
+        strokeWidth="2.25"
+      />
+      <circle
+        cx="16"
+        cy="16"
+        r="15.1"
+        fill="none"
+        stroke="rgba(15, 23, 42, 0.38)"
+        strokeWidth="1.15"
+      />
+    </g>
   );
 }
 
@@ -64,7 +73,7 @@ export function EnglishFlagSvg({ className }: LocaleFlagSvgProps): JSX.Element {
 /**
  * Slovak flag (official colours): white / blue / red horizontal bands with the
  * national coat of arms — red shield, white patriarchal double cross, blue hills.
- * Edge rim keeps the white band readable on light UI backgrounds.
+ * Dual-tone rim keeps white band + circular silhouette readable on any surface.
  */
 export function SlovakFlagSvg({ className }: LocaleFlagSvgProps): JSX.Element {
   return (
@@ -78,27 +87,24 @@ export function SlovakFlagSvg({ className }: LocaleFlagSvgProps): JSX.Element {
         <rect width="32" height="10.6667" fill="#ffffff" />
         <rect y="10.6667" width="32" height="10.6667" fill="#0b4ea2" />
         <rect y="21.3333" width="32" height="10.6667" fill="#ee1c25" />
-        {/* Coat of arms — positioned on the hoist like the real flag */}
+        {/* Coat of arms on the hoist */}
         <path
-          d="M6.4 6.6 H15.6 V15.8 C15.6 19.4 11 22.2 11 22.2 C11 22.2 6.4 19.4 6.4 15.8 Z"
+          d="M6.15 6.35 H15.85 V15.55 C15.85 19.35 11 22.45 11 22.45 C11 22.45 6.15 19.35 6.15 15.55 Z"
           fill="#ee1c25"
           stroke="#ffffff"
-          strokeWidth="0.85"
+          strokeWidth="0.9"
           strokeLinejoin="round"
         />
-        {/* Three hills (Tatra / Matra / Fatra) */}
+        {/* Three hills */}
         <path
-          d="M7.35 19.15 C7.95 17.55 9.05 16.7 10.15 16.7 C11.05 16.7 11.65 17.25 12.05 17.85 C12.45 17.25 13.05 16.7 13.95 16.7 C15.05 16.7 16.15 17.55 16.75 19.15 Z"
+          d="M7.1 19.35 C7.75 17.55 8.95 16.55 10.2 16.55 C11.15 16.55 11.8 17.15 12.2 17.85 C12.6 17.15 13.25 16.55 14.2 16.55 C15.45 16.55 16.65 17.55 17.3 19.35 Z"
           fill="#0b4ea2"
         />
-        {/* Patriarchal double cross — wider bars (true Slovak proportions) */}
-        <g fill="#ffffff" stroke="none">
-          {/* Vertical beam */}
-          <rect x="10.15" y="8.35" width="1.7" height="9.35" rx="0.15" />
-          {/* Upper crossbar (wider) */}
-          <rect x="7.85" y="10.15" width="6.3" height="1.55" rx="0.15" />
-          {/* Lower crossbar (wider, slightly shorter than upper on real arms — keep both wide) */}
-          <rect x="8.15" y="12.55" width="5.7" height="1.55" rx="0.15" />
+        {/* Patriarchal double cross — wider bars matching real Slovak arms */}
+        <g fill="#ffffff">
+          <rect x="9.85" y="8.05" width="2.3" height="10.15" rx="0.2" />
+          <rect x="7.15" y="9.85" width="7.7" height="1.85" rx="0.2" />
+          <rect x="7.55" y="12.55" width="6.9" height="1.85" rx="0.2" />
         </g>
       </g>
       <FlagEdgeRim />
