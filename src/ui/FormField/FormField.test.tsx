@@ -34,22 +34,27 @@ describe('FormField', () => {
   });
 
   it('renders helper text with consumer muted token', () => {
-    render(<FormField label="Email" helperText="We never share your email." />);
+    const helperText = 'Helper copy';
+    render(<FormField label="Email" helperText={helperText} />);
 
-    const helper = screen.getByText('We never share your email.');
+    const helper = screen.getByText(helperText);
+    const input = screen.getByRole('textbox', { name: 'Email' });
     expect(helper).toHaveAttribute('id');
     expect(helper.className).toContain('text-[var(--color-on-surface-muted)]');
+    expect(input).toHaveAttribute('aria-describedby', helper.getAttribute('id') ?? '');
   });
 
   it('renders error text and marks input invalid', () => {
-    render(<FormField label="Email" errorText="Email is required" />);
+    const errorText = 'Required value';
+    render(<FormField label="Email" errorText={errorText} />);
 
     const input = screen.getByRole('textbox', { name: 'Email' });
     expect(input).toHaveAttribute('aria-invalid', 'true');
     expect(input.className).toContain('border-[var(--color-danger)]');
 
     const error = screen.getByRole('alert');
-    expect(error).toHaveTextContent('Email is required');
+    expect(error).toHaveTextContent(errorText);
+    expect(input).toHaveAttribute('aria-describedby', error.getAttribute('id') ?? '');
     expect(error.className).toContain('text-[var(--color-danger)]');
   });
 
@@ -71,8 +76,9 @@ describe('FormField', () => {
   });
 
   it('wraps a custom child control with field a11y props', () => {
+    const errorText = 'Control validation failed';
     render(
-      <FormField label="Note" errorText="Too short">
+      <FormField label="Note" errorText={errorText}>
         <textarea data-testid="note-area" />
       </FormField>,
     );
@@ -80,6 +86,8 @@ describe('FormField', () => {
     const area = screen.getByTestId('note-area');
     expect(area).toHaveAttribute('aria-invalid', 'true');
     expect(area).toHaveAttribute('id');
-    expect(screen.getByRole('alert')).toHaveTextContent('Too short');
+    const error = screen.getByRole('alert');
+    expect(error).toHaveTextContent(errorText);
+    expect(area).toHaveAttribute('aria-describedby', error.getAttribute('id') ?? '');
   });
 });

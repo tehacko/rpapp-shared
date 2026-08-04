@@ -82,6 +82,10 @@ export { Star } from './Icon/Star.js';
 export { IconButton, type IconButtonProps } from './IconButton/index.js';
 export { Badge, type BadgeProps } from './Badge/index.js';
 export {
+  BottomCartBar,
+  type BottomCartBarProps,
+} from './BottomCartBar/index.js';
+export {
   QuantityStepper,
   type QuantityStepperProps,
 } from './QuantityStepper/index.js';

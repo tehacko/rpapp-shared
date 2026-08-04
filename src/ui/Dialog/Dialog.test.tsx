@@ -122,15 +122,18 @@ describe('Dialog', () => {
   });
 
   it('sets aria-labelledby when title is provided', () => {
+    const title = 'Confirm destructive action';
     render(
-      <Dialog open onClose={() => undefined} title="Delete item" titleId="dlg-title">
+      <Dialog open onClose={() => undefined} title={title} titleId="dlg-title">
         Body
       </Dialog>,
     );
 
     const content = screen.getByTestId('dialog-content');
     expect(content).toHaveAttribute('aria-labelledby', 'dlg-title');
-    expect(document.getElementById('dlg-title')).toHaveTextContent('Delete item');
+    const titleEl = document.getElementById('dlg-title');
+    expect(titleEl).toBeInTheDocument();
+    expect(titleEl).toHaveTextContent(title);
   });
 
   it('omits aria-labelledby when title is not set', () => {

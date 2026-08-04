@@ -423,6 +423,36 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když systém odvolá relace, přihlašovací údaje a související živý přístup organizace. Jeden řádek za běh odvolání přístupu.',
     sk: 'Zapíše sa, keď systém odvolá relácie, prihlasovacie údaje a súvisiaci živý prístup organizácie. Jeden riadok za beh odvolania prístupu.',
   },
+  'admin.tenant.logo_uploaded': {
+    en: 'Recorded when an administrator uploads an organization logo. One line per upload.',
+    cs: 'Zapíše se, když administrátor nahraje logo organizace. Jeden řádek za nahrání.',
+    sk: 'Zapíše sa, keď administrátor nahrá logo organizácie. Jeden riadok za nahranie.',
+  },
+  'admin.tenant.logo_replaced': {
+    en: 'Recorded when an administrator replaces an organization logo. One line per replace.',
+    cs: 'Zapíše se, když administrátor nahradí logo organizace. Jeden řádek za nahrazení.',
+    sk: 'Zapíše sa, keď administrátor nahradí logo organizácie. Jeden riadok za nahradenie.',
+  },
+  'admin.tenant.logo_deleted': {
+    en: 'Recorded when an administrator deletes an organization logo. One line per delete.',
+    cs: 'Zapíše se, když administrátor smaže logo organizace. Jeden řádek za smazání.',
+    sk: 'Zapíše sa, keď administrátor vymaže logo organizácie. Jeden riadok za vymazanie.',
+  },
+  'admin.salesPoint.image_uploaded': {
+    en: 'Recorded when an administrator uploads a sales point image. One line per upload.',
+    cs: 'Zapíše se, když administrátor nahraje obrázek prodejního místa. Jeden řádek za nahrání.',
+    sk: 'Zapíše sa, keď administrátor nahrá obrázok predajného miesta. Jeden riadok za nahranie.',
+  },
+  'admin.salesPoint.image_replaced': {
+    en: 'Recorded when an administrator replaces a sales point image. One line per replace.',
+    cs: 'Zapíše se, když administrátor nahradí obrázek prodejního místa. Jeden řádek za nahrazení.',
+    sk: 'Zapíše sa, keď administrátor nahradí obrázok predajného miesta. Jeden riadok za nahradenie.',
+  },
+  'admin.salesPoint.image_deleted': {
+    en: 'Recorded when an administrator deletes a sales point image. One line per delete.',
+    cs: 'Zapíše se, když administrátor smaže obrázek prodejního místa. Jeden řádek za smazání.',
+    sk: 'Zapíše sa, keď administrátor vymaže obrázok predajného miesta. Jeden riadok za vymazanie.',
+  },
   'admin.donation_template.created': {
     en: 'Recorded when a new preset list of donation amounts is created. One line per new template.',
     cs: 'Zapíše se při vytvoření nového seznamu přednastavených částek daru. Jeden řádek za novou šablonu.',

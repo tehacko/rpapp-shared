@@ -122,15 +122,18 @@ describe('BottomSheet', () => {
   });
 
   it('sets aria-labelledby when title is provided', () => {
+    const title = 'Payment filters';
     render(
-      <BottomSheet open onClose={() => undefined} title="Filters" titleId="sheet-title">
+      <BottomSheet open onClose={() => undefined} title={title} titleId="sheet-title">
         Body
       </BottomSheet>,
     );
 
     const content = screen.getByTestId('bottom-sheet-content');
     expect(content).toHaveAttribute('aria-labelledby', 'sheet-title');
-    expect(document.getElementById('sheet-title')).toHaveTextContent('Filters');
+    const titleEl = document.getElementById('sheet-title');
+    expect(titleEl).toBeInTheDocument();
+    expect(titleEl).toHaveTextContent(title);
   });
 
   it('omits aria-labelledby when title is not set', () => {

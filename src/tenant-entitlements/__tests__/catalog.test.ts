@@ -8,10 +8,10 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 46 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(46);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(46);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(46);
+  it('contains exactly 47 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(47);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(47);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(47);
   });
 
   it('uses catalog version 1 for initial seed', () => {
@@ -21,7 +21,14 @@ describe('tenant entitlement catalog', () => {
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(46);
+    expect(new Set(keysFromCatalog).size).toBe(47);
+  });
+
+  it('includes admin_notifications as CONDITIONAL default-off inbox block', () => {
+    const notifications = getEntitlementBlockCatalogEntry('admin_notifications');
+    expect(notifications.blockClass).toBe('CONDITIONAL');
+    expect(notifications.parentKeys).toEqual([]);
+    expect(notifications.routeSuffix).toBe('inbox');
   });
 
   it('includes mission_control under analytics_detailed with MC capability hint', () => {

@@ -64,9 +64,13 @@ describe('Card', () => {
   });
 
   it('renders children with default customer surface', () => {
-    render(<Card>Order summary</Card>);
+    render(
+      <Card>
+        <span data-testid="card-child">Order summary</span>
+      </Card>,
+    );
 
-    expect(screen.getByText('Order summary')).toBeInTheDocument();
+    expect(screen.getByTestId('card-child')).toBeInTheDocument();
   });
 
   it('applies admin elevated variant classes', () => {

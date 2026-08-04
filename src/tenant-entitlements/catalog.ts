@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 46 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 47 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -340,6 +340,15 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'account-settings',
     notes: 'account-settings + ops-settings tab; always on (DEV policy UI locked)',
+  },
+  {
+    blockKey: 'admin_notifications',
+    blockClass: 'CONDITIONAL',
+    parentKeys: [],
+    routeSuffix: 'inbox',
+    capabilityHint: 'admin:outbox:read',
+    notes:
+      'In-app admin inbox: header bell, account notification prefs, tenant /inbox — default OFF',
   },
   {
     blockKey: 'bank_account_administration',

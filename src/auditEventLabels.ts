@@ -423,6 +423,36 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Přístup organizace odříznut',
     sk: 'Prístup organizácie odrezaný',
   },
+  'admin.tenant.logo_uploaded': {
+    en: 'Organization logo uploaded',
+    cs: 'Logo organizace nahráno',
+    sk: 'Logo organizácie nahrané',
+  },
+  'admin.tenant.logo_replaced': {
+    en: 'Organization logo replaced',
+    cs: 'Logo organizace nahrazeno',
+    sk: 'Logo organizácie nahradené',
+  },
+  'admin.tenant.logo_deleted': {
+    en: 'Organization logo deleted',
+    cs: 'Logo organizace smazáno',
+    sk: 'Logo organizácie vymazané',
+  },
+  'admin.salesPoint.image_uploaded': {
+    en: 'Sales point image uploaded',
+    cs: 'Obrázek prodejního místa nahrán',
+    sk: 'Obrázok predajného miesta nahraný',
+  },
+  'admin.salesPoint.image_replaced': {
+    en: 'Sales point image replaced',
+    cs: 'Obrázek prodejního místa nahrazen',
+    sk: 'Obrázok predajného miesta nahradený',
+  },
+  'admin.salesPoint.image_deleted': {
+    en: 'Sales point image deleted',
+    cs: 'Obrázek prodejního místa smazán',
+    sk: 'Obrázok predajného miesta vymazaný',
+  },
   'admin.donation_template.created': {
     en: 'Donation amount template created',
     cs: 'Šablona částek daru vytvořena',
