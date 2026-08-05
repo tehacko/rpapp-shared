@@ -235,6 +235,29 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'deviceLabel', labelKey: 'compliance.audit.metadata.deviceLabel' },
     { key: 'version', labelKey: 'compliance.audit.metadata.version' },
   ],
+  'admin.inventory.incident.reported': [
+    { key: 'incidentId', labelKey: 'compliance.audit.metadata.incidentId' },
+    { key: 'productId', labelKey: 'compliance.audit.metadata.productId' },
+    { key: 'suspectedUnits', labelKey: 'compliance.audit.metadata.suspectedUnits' },
+  ],
+  'pickup.inventory.checkup_applied': [
+    { key: 'checkupId', labelKey: 'compliance.audit.metadata.checkupId' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'lineCount', labelKey: 'compliance.audit.metadata.lineCount' },
+    { key: 'holdFloorOverride', labelKey: 'compliance.audit.metadata.holdFloorOverride' },
+    { key: 'overrideMovedLines', labelKey: 'compliance.audit.metadata.overrideMovedLines' },
+    { key: 'overrideReason', labelKey: 'compliance.audit.metadata.overrideReason' },
+  ],
+  'pickup.inventory.incident.opened': [
+    { key: 'incidentId', labelKey: 'compliance.audit.metadata.incidentId' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'overrideReason', labelKey: 'compliance.audit.metadata.overrideReason' },
+  ],
+  'inventory.incident.anomaly.signalled': [
+    { key: 'incidentId', labelKey: 'compliance.audit.metadata.incidentId' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'anomalyKind', labelKey: 'compliance.audit.metadata.anomalyKind' },
+  ],
   'admin.loyalty.physical_card_issued': [
     { key: 'cardId', labelKey: 'compliance.audit.metadata.cardId' },
     { key: 'displayHint', labelKey: 'compliance.audit.metadata.displayHint' },

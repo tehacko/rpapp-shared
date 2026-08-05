@@ -598,6 +598,26 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Převzetí objednávky k vyzvednutí uvolněno',
     sk: 'Prevzatie objednávky na vyzdvihnutie uvoľnené',
   },
+  'admin.inventory.incident.reported': {
+    en: 'Inventory incident reported (admin)',
+    cs: 'Inventurní incident nahlášen (admin)',
+    sk: 'Inventúrny incident nahlásený (admin)',
+  },
+  'pickup.inventory.checkup_applied': {
+    en: 'Inventory checkup applied',
+    cs: 'Inventurní kontrola uplatněna',
+    sk: 'Inventúrna kontrola uplatnená',
+  },
+  'pickup.inventory.incident.opened': {
+    en: 'Inventory incident opened (pickup)',
+    cs: 'Inventurní incident otevřen (pickup)',
+    sk: 'Inventúrny incident otvorený (pickup)',
+  },
+  'inventory.incident.anomaly.signalled': {
+    en: 'Inventory incident anomaly signalled',
+    cs: 'Signál anomálie inventurního incidentu',
+    sk: 'Signál anomálie inventúrneho incidentu',
+  },
   'dev.tenant.created': {
     en: 'Organization created (platform)',
     cs: 'Organizace založena (platforma)',

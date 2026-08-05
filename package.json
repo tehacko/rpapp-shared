@@ -175,6 +175,11 @@
             "import": "./dist/order/fulfillmentContracts.js",
             "require": "./dist/order/fulfillmentContracts.js"
         },
+        "./contracts/inventory": {
+            "types": "./dist/contracts/inventory/index.d.ts",
+            "import": "./dist/contracts/inventory/index.js",
+            "require": "./dist/contracts/inventory/index.js"
+        },
         "./sentry": {
             "types": "./dist/sentry/initSentry.d.ts",
             "import": "./dist/sentry/initSentry.js",
@@ -306,6 +311,12 @@
         "gate:tokens-sync:write": "node scripts/gate-tokens-sync.mjs --write",
         "gate:brand-hex": "node scripts/gate-brand-hex-ban.mjs",
         "gate:brand-hex:all": "node scripts/gate-brand-hex-ban.mjs --all",
+        "generate:inventory-contract": "node scripts/sync-inventory-contract-enums.mjs",
+        "check:inventory-contract-sync": "node scripts/sync-inventory-contract-enums.mjs --check",
+        "gate:inventory-contract-drift": "npm run check:inventory-contract-sync && node scripts/check-inventory-contract-drift.mjs",
+        "check:inventory-contract-drift": "node scripts/check-inventory-contract-drift.mjs",
+        "gate:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
+        "check:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
         "publish:local": "npm run build:clean && npm pack --pack-destination ../",
         "prepublishOnly": "npm run build:clean",
         "preversion": "npm run test -- --passWithNoTests",

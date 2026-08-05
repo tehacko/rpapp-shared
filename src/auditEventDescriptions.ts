@@ -598,6 +598,26 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když pickup personál uvolní soft claim na vyzvednutí objednávky.',
     sk: 'Zapíše sa, keď pickup personál uvoľní soft claim na vyzdvihnutie objednávky.',
   },
+  'admin.inventory.incident.reported': {
+    en: 'Recorded when an administrator reports an inventory shortage/mismatch incident for review.',
+    cs: 'Zapíše se, když administrátor nahlásí inventurní incident (nedostatek / neshoda) k review.',
+    sk: 'Zapíše sa, keď administrátor nahlási inventúrny incident (nedostatok / nezhodnosť) na review.',
+  },
+  'pickup.inventory.checkup_applied': {
+    en: 'Recorded when checkup counts are applied (variance handling / incident open as applicable).',
+    cs: 'Zapíše se, když jsou inventurní počty uplatněny (včetně odchylek / otevření incidentu).',
+    sk: 'Zapíše sa, keď sú inventúrne počty uplatnené (vrátane odchýlok / otvorenia incidentu).',
+  },
+  'pickup.inventory.incident.opened': {
+    en: 'Recorded when pickup staff open an inventory shortage/mismatch incident during checkup apply.',
+    cs: 'Zapíše se, když pickup personál při uplatnění kontroly otevře inventurní incident (nedostatek / neshoda).',
+    sk: 'Zapíše sa, keď pickup personál pri uplatnení kontroly otvorí inventúrny incident (nedostatok / nezhodnosť).',
+  },
+  'inventory.incident.anomaly.signalled': {
+    en: 'Recorded when inventory anomaly detection signals a pattern (repeated shortage or high-frequency apply).',
+    cs: 'Zapíše se, když detekce inventurních anomálií signalizuje vzor (opakovaný nedostatek / časté uplatnění).',
+    sk: 'Zapíše sa, keď detekcia inventúrnych anomálií signalizuje vzor (opakovaný nedostatok / časté uplatnenie).',
+  },
   'dev.tenant.created': {
     en: 'Recorded when platform staff create a brand-new organization in the dev tools. One line per new organization. Invitation links and passwords are not stored here.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích založí novou organizaci. Jeden řádek za novou organizaci. Odkazy z pozvánek a hesla se sem neukládají.',
