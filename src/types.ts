@@ -386,7 +386,7 @@ export interface GatewayCreateRequest {
  * Shape of the `payment_completed` event broadcast over the kiosk
  * realtime channel after a successful first-transition-to-COMPLETED.
  * `postKioskHandoffToken` is present only when the feature is enabled
- * AND the tenant has a `customerFrontendUrl` configured.
+ * AND `AUTH_CUSTOMER_APP_BASE_URL` is configured.
  */
 export interface PaymentCompletedRealtimePayload {
   paymentId: string;

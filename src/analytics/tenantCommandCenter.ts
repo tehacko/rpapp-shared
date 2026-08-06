@@ -56,6 +56,15 @@ export interface TenantCommandCenterKpis {
   readonly kiosksOnlinePct: PercentMetric;
   /** Human label e.g. "126 z 128 online" for tcc-kpi-kiosks. */
   readonly kiosksOnlineLabel: string;
+  /**
+   * Active sales-point count (virtual identities). Kept on the wire for
+   * drill-downs; Overview strip always uses paidOrders / avgOrder (not online %).
+   */
+  readonly activeSalesPoints: CountMetric;
+  /** Paid / completed orders in the selected TCC window (commerce rollup). */
+  readonly paidOrders: CountMetric;
+  /** Average order value for the window (revenue ÷ paidOrders; 0 when no orders). */
+  readonly avgOrderValue: MoneyMetric;
   readonly conversionRate: PercentMetric;
 }
 

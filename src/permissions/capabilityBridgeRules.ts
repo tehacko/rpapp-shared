@@ -41,6 +41,20 @@ const BRIDGE_TARGET_BY_SOURCE = new Map<string, readonly string[]>([
   ['dev:aggregates:run', ['platform.aggregates.manage', 'platform.aggregates.view']],
   ['dev:compliance:audit:read', ['platform.complianceAudit.view']],
   ['dev:compliance:gdpr:read', ['platform.complianceGdpr.view']],
+  // Tenant compliance — legacy JWT keys → canonical page/nav SoT
+  // system:pii:* also mirrors CapabilityMap includes → system:logs:* (parity with impliesCapability)
+  ['system:logs:read', ['tenant.systemLogs.view']],
+  ['system:logs:manage', ['tenant.systemLogs.manage', 'tenant.systemLogs.view']],
+  ['system:pii:read', ['tenant.systemPii.view', 'tenant.systemLogs.view']],
+  [
+    'system:pii:manage',
+    [
+      'tenant.systemPii.manage',
+      'tenant.systemPii.view',
+      'tenant.systemLogs.manage',
+      'tenant.systemLogs.view',
+    ],
+  ],
   [
     'config:payments:read',
     [
@@ -214,6 +228,10 @@ export const BRIDGE_PARITY_FIXTURE_GRANTS = [
   'tenant.paymentClaims.approve',
   'tenant.paymentPreferences.view',
   'tenant.paymentPreferences.manage',
+  'system:logs:read',
+  'system:logs:manage',
+  'system:pii:read',
+  'system:pii:manage',
 ] as const;
 
 export const BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS = [
@@ -227,4 +245,8 @@ export const BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS = [
   'platform.complianceAudit.view',
   'platform.complianceGdpr.view',
   'tenant.reconciliation.read',
+  'tenant.systemLogs.view',
+  'tenant.systemLogs.manage',
+  'tenant.systemPii.view',
+  'tenant.systemPii.manage',
 ] as const;

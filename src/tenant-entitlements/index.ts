@@ -39,6 +39,17 @@ export {
 export type { TenantAllowedPurposes, TenantSurfaceScope } from './tenantScopeTypes.js';
 
 export {
+  isBankAccountAllowedPurposesCompatible,
+  isBankAccountPurposeSelectable,
+  isDonationPurposeAllowed,
+  isProductPurposeAllowed,
+  resolveBankAccountAllowedPurposes,
+  shouldClearTenantDefaultDonationProjectId,
+  shouldShowBankAccountPurposeSection,
+  shouldSyncBankAccountsToTenantAllowedPurposes,
+} from './bankAccountPurposeScope.js';
+
+export {
   TENANT_AXIS_CONTROLLED_BLOCK_KEYS,
   TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS,
   TENANT_PURPOSE_AXIS_BLOCK_KEYS,

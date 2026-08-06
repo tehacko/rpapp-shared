@@ -134,4 +134,35 @@ describe('effectiveCapabilities client mirror', () => {
       true,
     );
   });
+
+  it('legacy system:logs:read implies tenant.systemLogs.view (forward-only)', () => {
+    expect(hasEffectiveCapability(['system:logs:read'], 'tenant.systemLogs.view')).toBe(true);
+    expect(hasEffectiveCapability(['tenant.systemLogs.view'], 'system:logs:read')).toBe(false);
+  });
+
+  it('legacy system:logs:manage implies tenant.systemLogs.manage and .view', () => {
+    expect(hasEffectiveCapability(['system:logs:manage'], 'tenant.systemLogs.manage')).toBe(true);
+    expect(hasEffectiveCapability(['system:logs:manage'], 'tenant.systemLogs.view')).toBe(true);
+  });
+
+  it('legacy system:pii:read implies tenant.systemPii.view and tenant.systemLogs.view (CapabilityMap includes)', () => {
+    expect(hasEffectiveCapability(['system:pii:read'], 'tenant.systemPii.view')).toBe(true);
+    expect(hasEffectiveCapability(['system:pii:read'], 'tenant.systemLogs.view')).toBe(true);
+    expect(hasEffectiveCapability(['tenant.systemPii.view'], 'system:pii:read')).toBe(false);
+  });
+
+  it('legacy system:pii:manage implies pii+logs manage and view', () => {
+    expect(hasEffectiveCapability(['system:pii:manage'], 'tenant.systemPii.manage')).toBe(true);
+    expect(hasEffectiveCapability(['system:pii:manage'], 'tenant.systemPii.view')).toBe(true);
+    expect(hasEffectiveCapability(['system:pii:manage'], 'tenant.systemLogs.manage')).toBe(true);
+    expect(hasEffectiveCapability(['system:pii:manage'], 'tenant.systemLogs.view')).toBe(true);
+  });
+
+  it('canonical tenant.systemLogs.view alone satisfies hasEffectiveCapability', () => {
+    expect(hasEffectiveCapability(['tenant.systemLogs.view'], 'tenant.systemLogs.view')).toBe(true);
+  });
+
+  it('canonical tenant.systemPii.view alone satisfies hasEffectiveCapability', () => {
+    expect(hasEffectiveCapability(['tenant.systemPii.view'], 'tenant.systemPii.view')).toBe(true);
+  });
 });
