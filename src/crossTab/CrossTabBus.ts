@@ -7,6 +7,8 @@ const STORAGE_PREFIX = 'rpapp-crosstab:';
 const STORAGE_DEBOUNCE_MS = 50;
 const TAB_ID_SYMBOL = Symbol.for('rpapp.crossTab.tabId');
 const SEQUENCE_SYMBOL = Symbol.for('rpapp.crossTab.sequence');
+/** Cap remembered peer tabs for BC+storage dual-delivery dedupe. */
+const MAX_SEEN_PEER_TABS = 32;
 
 interface CrossTabGlobalState {
   [TAB_ID_SYMBOL]?: string;
@@ -19,8 +21,17 @@ export interface CrossTabEnvelope<TMessage extends { type: string }> {
   payload: TMessage;
 }
 
+export interface CrossTabPublishOptions {
+  /**
+   * When true (default), notify same-tab subscribers synchronously on publish.
+   * Auth buses that already apply local side effects should pass false so
+   * publish is cross-tab only (BroadcastChannel + storage) — avoids self-echo.
+   */
+  readonly notifyLocalSubscribers?: boolean;
+}
+
 export interface CrossTabBus<TMessage extends { type: string }> {
-  publish(message: TMessage): void;
+  publish(message: TMessage, options?: CrossTabPublishOptions): void;
   subscribe(handler: (msg: TMessage) => void): () => void;
   close(): void;
 }
@@ -90,6 +101,8 @@ export function createCrossTabBus<TMessage extends { type: string }>(
   const { channelName, debounceMs = STORAGE_DEBOUNCE_MS } = options;
   const tabId = getTabId();
   const subscribers = new Set<(msg: TMessage) => void>();
+  /** Last accepted envelope sequence per peer tabId (G24 BC+storage dedupe). */
+  const lastSequenceByTabId = new Map<string, number>();
   let closed = false;
   let broadcast: BroadcastChannel | null = null;
   let storageTimer: ReturnType<typeof setTimeout> | null = null;
@@ -102,6 +115,21 @@ export function createCrossTabBus<TMessage extends { type: string }>(
     for (const handler of subscribers) {
       handler(msg);
     }
+  };
+
+  const rememberPeerSequence = (peerTabId: string, sequence: number): boolean => {
+    const previous = lastSequenceByTabId.get(peerTabId);
+    if (previous !== undefined && sequence <= previous) {
+      return false;
+    }
+    if (!lastSequenceByTabId.has(peerTabId) && lastSequenceByTabId.size >= MAX_SEEN_PEER_TABS) {
+      const oldestKey = lastSequenceByTabId.keys().next().value;
+      if (typeof oldestKey === 'string') {
+        lastSequenceByTabId.delete(oldestKey);
+      }
+    }
+    lastSequenceByTabId.set(peerTabId, sequence);
+    return true;
   };
 
   const flushStorage = (): void => {
@@ -130,6 +158,10 @@ export function createCrossTabBus<TMessage extends { type: string }>(
   const parseIncoming = (raw: unknown): TMessage | null => {
     if (isEnvelope<TMessage>(raw)) {
       if (raw.tabId === tabId) {
+        return null;
+      }
+      // G24 — BC + storage fallback can deliver the same envelope twice.
+      if (!rememberPeerSequence(raw.tabId, raw.sequence)) {
         return null;
       }
       return raw.payload;
@@ -173,12 +205,15 @@ export function createCrossTabBus<TMessage extends { type: string }>(
   }
 
   return {
-    publish(message: TMessage): void {
+    publish(message: TMessage, publishOptions?: CrossTabPublishOptions): void {
       if (closed) {
         return;
       }
-      // GAP-P0-05: local subscribers first, then broadcast + storage fallback.
-      notify(message);
+      const notifyLocal = publishOptions?.notifyLocalSubscribers !== false;
+      // GAP-P0-05 / G3: optional same-tab notify (default true); then BC + storage.
+      if (notifyLocal) {
+        notify(message);
+      }
       const envelope: CrossTabEnvelope<TMessage> = {
         tabId,
         sequence: nextSequence(),
@@ -211,6 +246,7 @@ export function createCrossTabBus<TMessage extends { type: string }>(
       broadcast?.close();
       broadcast = null;
       subscribers.clear();
+      lastSequenceByTabId.clear();
     },
   };
 }

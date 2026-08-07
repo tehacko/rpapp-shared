@@ -1,4 +1,8 @@
-export { createCrossTabBus, type CrossTabBus } from './CrossTabBus.js';
+export {
+  createCrossTabBus,
+  type CrossTabBus,
+  type CrossTabPublishOptions,
+} from './CrossTabBus.js';
 
 /** In-memory session hand-off for same-origin tabs when no refresh cookie exists. */
 export interface CustomerAuthCrossTabSessionSnapshot {

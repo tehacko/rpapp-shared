@@ -121,4 +121,40 @@ describe('createCrossTabBus', () => {
 
     bus.close();
   });
+
+  it('G3: notifyLocalSubscribers:false skips same-tab notify but still posts BC', () => {
+    const bus = createCrossTabBus<TestMessage>({ channelName: 'test-bus-no-local' });
+    const received: TestMessage[] = [];
+    const unsubscribe = bus.subscribe((msg) => {
+      received.push(msg);
+    });
+
+    bus.publish({ type: 'ping', at: 6 }, { notifyLocalSubscribers: false });
+
+    expect(received).toEqual([]);
+    expect(harness.getPostedMessages('test-bus-no-local')).toHaveLength(1);
+    unsubscribe();
+    bus.close();
+  });
+
+  it('G24: dedupes identical envelope delivered via BC then storage', () => {
+    const bus = createCrossTabBus<TestMessage>({ channelName: 'test-bus-dedupe' });
+    const received: TestMessage[] = [];
+    const unsubscribe = bus.subscribe((msg) => {
+      received.push(msg);
+    });
+
+    const envelope: TestEnvelope = {
+      tabId: 'peer-tab',
+      sequence: 42,
+      payload: { type: 'ping', at: 7 },
+    };
+
+    harness.emitBroadcast('test-bus-dedupe', envelope);
+    harness.emitStorage('test-bus-dedupe', envelope);
+
+    expect(received).toEqual([{ type: 'ping', at: 7 }]);
+    unsubscribe();
+    bus.close();
+  });
 });

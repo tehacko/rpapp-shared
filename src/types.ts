@@ -129,6 +129,10 @@ export interface SalesPoint {
   name: string;
   location: string;
   description?: string;
+  /** WGS84 latitude; null when unset. */
+  lat?: number | null;
+  /** WGS84 longitude; null when unset. */
+  lng?: number | null;
   isActive: boolean;
   defaultVatRate?: number | null;
   lastHeartbeat?: string | null;
