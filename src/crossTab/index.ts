@@ -4,21 +4,22 @@ export {
   type CrossTabPublishOptions,
 } from './CrossTabBus.js';
 
-/** In-memory session hand-off for same-origin tabs when no refresh cookie exists. */
-export interface CustomerAuthCrossTabSessionSnapshot {
-  accessToken: string;
-  refreshToken: string;
-  customerId: number;
-  tenantId: number;
-  membershipStatus: 'ACTIVE';
-}
+export {
+  shouldHonorAdminAuthBusMessage,
+  type AdminAuthHonorMessage,
+  type ShouldHonorAdminAuthBusMessageContext,
+} from './shouldHonorAdminAuthBusMessage.js';
+
+export {
+  markSameTabExplicitAuth,
+  hasSameTabExplicitAuth,
+  clearSameTabExplicitAuth,
+} from './sameTabExplicitAuth.js';
 
 export type CustomerAuthCrossTabMessage =
   | {
       type: 'login';
       tenantCode: string;
-      /** Present when login did not persist an HttpOnly refresh cookie. */
-      session?: CustomerAuthCrossTabSessionSnapshot;
     }
   | { type: 'logout'; tenantCode: string; scope?: 'global' }
   | { type: 'session-refreshed'; tenantCode: string };
@@ -39,14 +40,18 @@ export type KioskTabCrossTabMessage =
   | { type: 'kiosk-customer-session-changed' }
   | { type: 'staff-logout' };
 
+/** XT-G12 — optional bus scope; `platform` always honored by `shouldHonorAdminAuthBusMessage`. */
+export type AdminAuthCrossTabScope = 'platform' | 'tenant';
+
 export type AdminAuthCrossTabMessage =
-  | { type: 'login'; tenantCode: string }
-  | { type: 'logout'; tenantCode: string }
-  | { type: 'session-refreshed'; tenantCode: string }
+  | { type: 'login'; tenantCode: string; scope?: AdminAuthCrossTabScope }
+  | { type: 'logout'; tenantCode: string; scope?: AdminAuthCrossTabScope }
+  | { type: 'session-refreshed'; tenantCode: string; scope?: AdminAuthCrossTabScope }
   | {
       type: 'tenant-changed';
       tenantCode: string;
       previousTenantCode?: string;
+      scope?: AdminAuthCrossTabScope;
     };
 
 export type PickupStaffAuthCrossTabMessage =

@@ -25,12 +25,13 @@ export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
 
 const VARIANT_CLASS: Record<ToastVariant, string> = {
   default: 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-on-surface)]',
+  // Mix tint into opaque surface (not transparent) so page text never bleeds through.
   success:
-    'border-[var(--color-success,var(--color-an-success))] bg-[color-mix(in_oklab,var(--color-success,var(--color-an-success))_12%,transparent)] text-[var(--color-success,var(--color-an-success))]',
-  warn: 'border-[var(--color-warning,var(--color-an-warn))] bg-[color-mix(in_oklab,var(--color-warning,var(--color-an-warn))_12%,transparent)] text-[var(--color-warning,var(--color-an-warn))]',
+    'border-[var(--color-success,var(--color-an-success))] bg-[color-mix(in_oklab,var(--color-success,var(--color-an-success))_12%,var(--color-surface-elevated,var(--color-surface)))] text-[var(--color-success,var(--color-an-success))]',
+  warn: 'border-[var(--color-warning,var(--color-an-warn))] bg-[color-mix(in_oklab,var(--color-warning,var(--color-an-warn))_12%,var(--color-surface-elevated,var(--color-surface)))] text-[var(--color-warning,var(--color-an-warn))]',
   danger:
-    'border-[var(--color-danger,var(--color-an-danger))] bg-[color-mix(in_oklab,var(--color-danger,var(--color-an-danger))_12%,transparent)] text-[var(--color-danger,var(--color-an-danger))]',
-  info: 'border-[var(--color-info,#0ea5e9)] bg-[color-mix(in_oklab,var(--color-info,#0ea5e9)_12%,transparent)] text-[var(--color-info,#0ea5e9)]',
+    'border-[var(--color-danger,var(--color-an-danger))] bg-[color-mix(in_oklab,var(--color-danger,var(--color-an-danger))_12%,var(--color-surface-elevated,var(--color-surface)))] text-[var(--color-danger,var(--color-an-danger))]',
+  info: 'border-[var(--color-info,#0ea5e9)] bg-[color-mix(in_oklab,var(--color-info,#0ea5e9)_12%,var(--color-surface-elevated,var(--color-surface)))] text-[var(--color-info,#0ea5e9)]',
 };
 
 function toastAriaLive(variant: ToastVariant): 'polite' | 'assertive' {
