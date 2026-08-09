@@ -16,13 +16,28 @@ export {
   clearSameTabExplicitAuth,
 } from './sameTabExplicitAuth.js';
 
+/** Customer XT scope — `platform` always honored (admin XT-G12 parity). */
+export type CustomerAuthCrossTabScope = 'platform' | 'tenant';
+
+/**
+ * Logout bus scope (G8 / admin XT-G2 parity):
+ * - `platform` | `tenant` — default publish; honor platform always / tenant home match
+ * - `global` — intentional logout-all only (nuclear all shells)
+ */
+export type CustomerAuthLogoutCrossTabScope = CustomerAuthCrossTabScope | 'global';
+
 export type CustomerAuthCrossTabMessage =
   | {
       type: 'login';
       tenantCode: string;
+      scope?: CustomerAuthCrossTabScope;
     }
-  | { type: 'logout'; tenantCode: string; scope?: 'global' }
-  | { type: 'session-refreshed'; tenantCode: string };
+  | { type: 'logout'; tenantCode: string; scope?: CustomerAuthLogoutCrossTabScope }
+  | {
+      type: 'session-refreshed';
+      tenantCode: string;
+      scope?: CustomerAuthCrossTabScope;
+    };
 
 export type CustomerConsentCrossTabMessage = {
   type: 'consent-updated';
