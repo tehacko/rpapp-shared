@@ -83,6 +83,7 @@ export { IconButton, type IconButtonProps } from './IconButton/index.js';
 export { Badge, type BadgeProps } from './Badge/index.js';
 export {
   BottomCartBar,
+  type BottomCartBarAppearance,
   type BottomCartBarProps,
 } from './BottomCartBar/index.js';
 export {

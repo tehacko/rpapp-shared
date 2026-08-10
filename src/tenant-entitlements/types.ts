@@ -72,6 +72,13 @@ export interface EntitlementBlockCatalogEntry {
   readonly parentOperator?: EntitlementParentOperator;
   /** Parents that may be absent without blocking entitlement (e.g. tax_management for fiscal). */
   readonly optionalParentKeys?: readonly EntitlementBlockKey[];
+  /**
+   * Always-AND parents evaluated before parentKeys/parentOperator.
+   * Use when a block needs infra ∧ (A ∨ B) without nested parent expressions
+   * (e.g. staff_pickup_scan: order_pickup_infrastructure ∧ (pickup_points ∨ immediate_self_pickup)).
+   * Catalog-runtime SSOT only — not a Prisma catalog column.
+   */
+  readonly requiredParentKeys?: readonly EntitlementBlockKey[];
   readonly adminNavSectionId?: string;
   readonly routeSuffix?: string;
   readonly capabilityHint?: string;

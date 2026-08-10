@@ -6,6 +6,9 @@ import {
   type ReactNode,
 } from 'react';
 
+/** Visual recipe for the floating cart chrome. Default `pill` preserves kiosk. */
+export type BottomCartBarAppearance = 'pill' | 'compact';
+
 /**
  * Retail V1 bottom cart bar — single source of truth for the floating
  * Icon | Summary | CTA chrome (Customer StickyCartBar, kiosk, and any future
@@ -15,8 +18,8 @@ import {
  * before the shrink-0 CTA. Count line may clip pathological emptySummary only
  * (overflow-hidden, no ellipsis). Price is never clipped or truncated.
  *
- * Expand choreography is capped to transform/opacity within the fixed 76px bar
- * (no layout jump / no height change from 76px).
+ * Expand choreography is capped to transform/opacity within the fixed bar
+ * height (pill 76px / compact 68px — no layout jump from height change).
  */
 export interface BottomCartBarProps {
   readonly itemCountLabel: string;
@@ -30,7 +33,7 @@ export interface BottomCartBarProps {
   readonly payAria: string;
   /**
    * Optional pay-disabled reason — announced via aria-describedby on the CTA
-   * so the 76px bar layout never gains a third text line.
+   * so the bar layout never gains a third text line.
    */
   readonly statusMessage?: string | null;
   readonly onOpenCart: () => void;
@@ -40,6 +43,11 @@ export interface BottomCartBarProps {
   readonly payTestId?: string;
   readonly className?: string;
   readonly icon?: ReactNode;
+  /**
+   * `pill` — accent-filled rounded-[999px] h-[76px] (kiosk default).
+   * `compact` — elevated surface, rounded-2xl, ~68px; accent only on Pay CTA.
+   */
+  readonly appearance?: BottomCartBarAppearance;
 }
 
 function DefaultCartIcon(): JSX.Element {
@@ -82,9 +90,11 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
       payTestId = 'bottom-cart-bar-pay',
       className,
       icon,
+      appearance = 'pill',
     },
     payButtonRef,
   ): JSX.Element {
+    const isCompact = appearance === 'compact';
     const showBadge = badgeCount > 0;
     const statusId =
       statusMessage !== null && statusMessage.length > 0
@@ -127,15 +137,41 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
       };
     }, [badgeCount, priceLabel]);
 
+    const barSurfaceClass = isCompact
+      ? [
+          'h-[68px] rounded-2xl bg-[var(--color-surface-elevated)]',
+          'text-[var(--color-on-surface)] shadow-[var(--shadow-popover)]',
+        ].join(' ')
+      : [
+          'h-[76px] rounded-[999px] bg-[var(--color-accent)]',
+          'text-[var(--color-accent-foreground)] shadow-[0_4px_20px_rgba(0,0,0,0.18)]',
+        ].join(' ');
+
+    const openButtonTextClass = isCompact
+      ? 'text-[var(--color-on-surface)] focus-visible:outline-[var(--color-accent)]'
+      : 'text-[var(--color-accent-foreground)] focus-visible:outline-[var(--color-accent-foreground)]';
+
+    const priceSizeClass = isCompact
+      ? 'text-base tabular-nums'
+      : 'text-[24px] tabular-nums';
+
+    const payFocusClass = isCompact
+      ? 'focus-visible:outline-[var(--color-accent)]'
+      : 'focus-visible:outline-[var(--color-accent-foreground)]';
+
+    const payEnabledClass = isCompact
+      ? 'bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:opacity-90'
+      : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90';
+
     return (
       <div
         className={[
           // Flex + min-w-min: reserve intrinsic width for Icon|Summary (price/count) before shrink-0 CTA.
           // Clip only pathological emptySummary on the count line — never hard-clip price or normal plurals.
-          'pointer-events-auto mx-3 mb-3 flex h-[76px] items-center gap-3',
-          'rounded-[999px] bg-[var(--color-accent)] px-4 py-3 text-[var(--color-accent-foreground)]',
-          'shadow-[0_4px_20px_rgba(0,0,0,0.18)]',
-          // G9: soft scale pulse on count increase — transform only within fixed 76px
+          'pointer-events-auto mx-3 mb-3 flex items-center gap-3',
+          'px-4 py-3',
+          barSurfaceClass,
+          // G9: soft scale pulse on count increase — transform only within fixed bar height
           'origin-center transition-[transform,box-shadow,opacity] duration-200 ease-out',
           barPulse ? 'scale-[1.02]' : 'scale-100',
           'max-[389px]:mx-2 max-[389px]:gap-2 max-[389px]:px-3 max-[389px]:py-2.5',
@@ -144,10 +180,16 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
           .filter(Boolean)
           .join(' ')}
         data-testid={testId}
+        data-appearance={appearance}
       >
         <button
           type="button"
-          className="flex min-h-11 min-w-min flex-1 items-center gap-3 rounded-full text-left text-[var(--color-accent-foreground)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-foreground)] max-[389px]:gap-2"
+          className={[
+            'flex min-h-11 min-w-min flex-1 items-center gap-3 rounded-full text-left',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+            openButtonTextClass,
+            'max-[389px]:gap-2',
+          ].join(' ')}
           onClick={onOpenCart}
           aria-label={openCartAria}
           data-testid={openTestId}
@@ -180,7 +222,8 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
             {/* Price: intrinsic width, never clipped or ellipsized */}
             <span
               className={[
-                'mt-0.5 block w-max whitespace-nowrap text-[24px] font-bold leading-none tabular-nums',
+                'mt-0.5 block w-max whitespace-nowrap font-bold leading-none',
+                priceSizeClass,
                 'transition-[opacity,transform] duration-200 ease-out',
                 pricePulse ? 'translate-y-[-1px] opacity-80' : 'translate-y-0 opacity-100',
               ].join(' ')}
@@ -208,12 +251,13 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
             'inline-flex h-[52px] min-h-[44px] min-w-[128px] shrink-0 items-center justify-center',
             'rounded-[18px] px-4 text-base font-semibold',
             'transition-[background-color,color,opacity] duration-200 ease-out',
-            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-foreground)]',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+            payFocusClass,
             'disabled:cursor-not-allowed',
             'max-[389px]:min-w-[108px] max-[389px]:px-3',
             payDisabled || payPending
               ? 'bg-[var(--cart-bar-cta-disabled,#B0B0B0)] text-[var(--cart-bar-cta-disabled-fg,#111111)]'
-              : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90',
+              : payEnabledClass,
           ].join(' ')}
         >
           {payPending ? '…' : payLabel}

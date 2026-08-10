@@ -62,10 +62,21 @@ describe('tenant entitlement catalog', () => {
     });
   });
 
-  it('lists staff_pickup_scan OR parents in catalog as SSOT (ENT-PR-03)', () => {
+  it('lists staff_pickup_scan OR parents + required infra in catalog as SSOT (ENT-PR-03)', () => {
     const staffPickupScan = getEntitlementBlockCatalogEntry('staff_pickup_scan');
     expect(staffPickupScan.parentKeys).toEqual(['pickup_points', 'immediate_self_pickup']);
     expect(staffPickupScan.parentOperator).toBe('OR');
+    expect(staffPickupScan.requiredParentKeys).toEqual(['order_pickup_infrastructure']);
+  });
+
+  it('keeps immediate_self_pickup independent of order_pickup_infrastructure', () => {
+    const immediate = getEntitlementBlockCatalogEntry('immediate_self_pickup');
+    expect(immediate.parentKeys).toEqual([]);
+  });
+
+  it('gates customer_self_collect on immediate_self_pickup AND order_pickup_infrastructure', () => {
+    const selfCollect = getEntitlementBlockCatalogEntry('customer_self_collect');
+    expect(selfCollect.parentKeys).toEqual(['immediate_self_pickup', 'order_pickup_infrastructure']);
   });
 
   it('guards isEntitlementBlockKey for known and unknown keys', () => {

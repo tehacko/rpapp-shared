@@ -1,6 +1,6 @@
 /**
  * Catalog parent satisfaction for SIMPLE entitlement drafts.
- * SSOT for AND/OR + optionalParentKeys — used by editor, save PARENT-01, and runtime resolver.
+ * SSOT for AND/OR + optionalParentKeys + requiredParentKeys — used by editor, save PARENT-01, and runtime resolver.
  */
 import { TENANT_ENTITLEMENT_BLOCK_CATALOG, getEntitlementBlockCatalogEntry } from './catalog.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
@@ -38,6 +38,11 @@ export function areEntitlementBlockParentsSatisfiedBy(
   isParentActive: (parentKey: EntitlementBlockKey) => boolean,
 ): boolean {
   const entry = getEntitlementBlockCatalogEntry(blockKey);
+  const alwaysRequired = entry.requiredParentKeys ?? [];
+  if (alwaysRequired.length > 0 && !alwaysRequired.every((key) => isParentActive(key))) {
+    return false;
+  }
+
   const parentKeys = entry.parentKeys;
   if (parentKeys.length === 0) {
     return true;
@@ -73,12 +78,13 @@ function catalogParentDepth(blockKey: EntitlementBlockKey, cache: Map<Entitlemen
     return cached;
   }
   const entry = getEntitlementBlockCatalogEntry(blockKey);
-  if (entry.parentKeys.length === 0) {
+  const allParents = [...entry.parentKeys, ...(entry.requiredParentKeys ?? [])];
+  if (allParents.length === 0) {
     cache.set(blockKey, 0);
     return 0;
   }
   let maxParent = 0;
-  for (const parentKey of entry.parentKeys) {
+  for (const parentKey of allParents) {
     maxParent = Math.max(maxParent, catalogParentDepth(parentKey, cache));
   }
   const depth = maxParent + 1;
@@ -92,8 +98,9 @@ function deniedChildSimpleState(
 ): SimpleEntitlementState {
   const entry = getEntitlementBlockCatalogEntry(blockKey);
   const optional = new Set(entry.optionalParentKeys ?? []);
-  const parentsToInspect =
+  const orAndParents =
     entry.parentOperator === 'OR' ? entry.parentKeys : entry.parentKeys.filter((key) => !optional.has(key));
+  const parentsToInspect = [...(entry.requiredParentKeys ?? []), ...orAndParents];
 
   for (const parentKey of parentsToInspect) {
     if (states[parentKey] === 'hardOff') {

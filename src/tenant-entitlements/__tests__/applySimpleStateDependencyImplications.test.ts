@@ -112,4 +112,68 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.payments_hub_ui).toBe('on');
     expect(implied.bank_inbox_claims_api).toBe('on');
   });
+
+  it('forces immediate_self_pickup on when pickup infra is Off and product_vending is active', () => {
+    const implied = applySimpleStateDependencyImplications({
+      product_vending: 'on',
+      order_pickup_infrastructure: 'hardOff',
+      immediate_self_pickup: 'hardOff',
+      fulfillment_queue: 'hardOff',
+      pickup_points: 'hardOff',
+      staff_pickup_scan: 'hardOff',
+    });
+
+    expect(implied.order_pickup_infrastructure).toBe('hardOff');
+    expect(implied.immediate_self_pickup).toBe('on');
+  });
+
+  it('forces immediate_self_pickup on when pickup infra is softOff and product_vending is active', () => {
+    const implied = applySimpleStateDependencyImplications({
+      product_vending: 'on',
+      surface_customer: 'on',
+      order_pickup_infrastructure: 'softOffVisible',
+      immediate_self_pickup: 'off',
+    });
+
+    expect(implied.order_pickup_infrastructure).toBe('softOffVisible');
+    expect(implied.immediate_self_pickup).toBe('on');
+  });
+
+  it('forces immediate_self_pickup on when pickup infra is missing and product_vending is active', () => {
+    const implied = applySimpleStateDependencyImplications({
+      product_vending: 'on',
+      immediate_self_pickup: 'hardOff',
+    });
+
+    expect(implied.immediate_self_pickup).toBe('on');
+  });
+
+  it('G13: collect-only does not leave optional self-collect / staff scan On when infra Off', () => {
+    const implied = applySimpleStateDependencyImplications({
+      product_vending: 'on',
+      order_pickup_infrastructure: 'off',
+      immediate_self_pickup: 'on',
+      customer_self_collect: 'on',
+      staff_pickup_scan: 'on',
+      pickup_points: 'on',
+      fulfillment_queue: 'on',
+    });
+
+    expect(implied.immediate_self_pickup).toBe('on');
+    expect(implied.order_pickup_infrastructure).toBe('off');
+    // Cluster sync forces staff Off with infra; parent denial forces customer_self_collect Off
+    expect(implied.staff_pickup_scan).toBe('off');
+    expect(implied.customer_self_collect).toBe('off');
+  });
+
+  it('does not force immediate_self_pickup on for donation-only when infra is Off', () => {
+    const implied = applySimpleStateDependencyImplications({
+      product_vending: 'off',
+      donation: 'on',
+      order_pickup_infrastructure: 'off',
+      immediate_self_pickup: 'off',
+    });
+
+    expect(implied.immediate_self_pickup).toBe('off');
+  });
 });

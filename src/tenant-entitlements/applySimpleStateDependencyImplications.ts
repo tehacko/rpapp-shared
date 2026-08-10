@@ -1,4 +1,5 @@
 import { applyCatalogParentDenialImplications } from './catalogParentSatisfaction.js';
+import { shouldForceImmediateSelfPickupCollectOnly } from './immediateSelfPickupCollectOnly.js';
 import { applyPickupOperationsClusterSync } from './pickupOperationsCluster.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
@@ -86,6 +87,13 @@ export function applySimpleStateDependencyImplications(
 
   const withAnalytics = applyAnalyticsClusterImplications(result);
   const withPickup = applyPickupOperationsClusterSync(withAnalytics);
+
+  // Collect-only path: inactive pickup-ops infra (off/hardOff/softOff*/missing) must not
+  // leave product tenants without a handoff. Force immediate On (not a child of infra).
+  if (shouldForceImmediateSelfPickupCollectOnly(withPickup)) {
+    withPickup.immediate_self_pickup = 'on';
+  }
+
   // Last: catalog parent gates — children cannot stay runtime-active when parents are Off.
   return applyCatalogParentDenialImplications(withPickup);
 }

@@ -219,14 +219,16 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   {
     blockKey: 'immediate_self_pickup',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['order_pickup_infrastructure'],
-    notes: 'Mirror mode; syncs Tenant.immediatePickupGraceMinutes',
+    parentKeys: [],
+    notes:
+      'Independent of order_pickup_infrastructure (core NOW collect). Collect-only: inactive infra (off/hardOff/softOff*/missing) + product_vending active ⇒ SIMPLE/resolver/validator force On. Tenant.immediatePickupGraceMinutes is a Dev tenant setting (not entitlement side-effect sync)',
   },
   {
     blockKey: 'customer_self_collect',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['immediate_self_pickup'],
-    notes: 'Customer collect flows',
+    parentKeys: ['immediate_self_pickup', 'order_pickup_infrastructure'],
+    notes:
+      'Optional post-purchase self-collect ack/verify (not core NOW checkout collect). Requires immediate_self_pickup AND order_pickup_infrastructure — aligns with assertCustomerSelfCollectWriteEntitled',
   },
   {
     blockKey: 'scheduled_pickup',
@@ -240,8 +242,9 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['pickup_points', 'immediate_self_pickup'],
     parentOperator: 'OR',
+    requiredParentKeys: ['order_pickup_infrastructure'],
     notes:
-      'Pickup staff app; catalog SSOT (ENT-PR-03): pickup_points OR immediate_self_pickup — no resolver override',
+      'Pickup staff scan ops; requires order_pickup_infrastructure ∧ (pickup_points ∨ immediate_self_pickup) — ENT-PR-03 OR + infra (PICKUP_ENTITLEMENT optional surfaces)',
   },
   {
     blockKey: 'surface_kiosk',

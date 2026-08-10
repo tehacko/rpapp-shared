@@ -96,29 +96,56 @@ describe('areEntitlementBlockParentsSatisfied', () => {
     ).toBe(true);
   });
 
-  it('staff_pickup_scan: OR satisfaction for pickup_points | immediate_self_pickup (catalog SSOT)', () => {
+  it('staff_pickup_scan: requires infra AND (pickup_points OR immediate_self_pickup)', () => {
     const entry = getEntitlementBlockCatalogEntry('staff_pickup_scan');
     expect(entry.parentOperator).toBe('OR');
     expect(entry.parentKeys).toEqual(['pickup_points', 'immediate_self_pickup']);
+    expect(entry.requiredParentKeys).toEqual(['order_pickup_infrastructure']);
 
     expect(
       areEntitlementBlockParentsSatisfied('staff_pickup_scan', {
+        order_pickup_infrastructure: 'on',
         pickup_points: 'on',
         immediate_self_pickup: 'off',
       }),
     ).toBe(true);
     expect(
       areEntitlementBlockParentsSatisfied('staff_pickup_scan', {
+        order_pickup_infrastructure: 'on',
         pickup_points: 'off',
         immediate_self_pickup: 'on',
       }),
     ).toBe(true);
     expect(
       areEntitlementBlockParentsSatisfied('staff_pickup_scan', {
+        order_pickup_infrastructure: 'on',
         pickup_points: 'off',
         immediate_self_pickup: 'off',
       }),
     ).toBe(false);
+    // Collect-only bookstore: immediate On must not entitle staff scan without infra
+    expect(
+      areEntitlementBlockParentsSatisfied('staff_pickup_scan', {
+        order_pickup_infrastructure: 'off',
+        pickup_points: 'off',
+        immediate_self_pickup: 'on',
+      }),
+    ).toBe(false);
+  });
+
+  it('customer_self_collect: requires immediate_self_pickup AND order_pickup_infrastructure', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('customer_self_collect', {
+        immediate_self_pickup: 'on',
+        order_pickup_infrastructure: 'off',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('customer_self_collect', {
+        immediate_self_pickup: 'on',
+        order_pickup_infrastructure: 'on',
+      }),
+    ).toBe(true);
   });
 });
 
@@ -194,9 +221,16 @@ describe('applyCatalogParentDenialImplications', () => {
 });
 
 describe('areEntitlementBlockParentsSatisfiedBy', () => {
-  it('uses the caller callback for OR parents (staff_pickup_scan)', () => {
+  it('uses the caller callback for OR parents (staff_pickup_scan) and requiredParentKeys', () => {
+    // immediate alone is insufficient — requiredParentKeys requires order_pickup_infrastructure
     expect(
       areEntitlementBlockParentsSatisfiedBy('staff_pickup_scan', (key) => key === 'immediate_self_pickup'),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfiedBy(
+        'staff_pickup_scan',
+        (key) => key === 'order_pickup_infrastructure' || key === 'immediate_self_pickup',
+      ),
     ).toBe(true);
     expect(areEntitlementBlockParentsSatisfiedBy('staff_pickup_scan', () => false)).toBe(false);
   });

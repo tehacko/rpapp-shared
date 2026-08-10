@@ -72,23 +72,47 @@ export function focusInitialInContainer(
 }
 
 let scrollLockCount = 0;
+let previousHtmlOverflow: string | null = null;
 let previousBodyOverflow: string | null = null;
+let previousHtmlOverscroll: string | null = null;
+let previousBodyOverscroll: string | null = null;
 
-/** Nested-safe body scroll lock while any overlay is open. */
+/**
+ * Nested-safe document scroll lock while any overlay is open.
+ * On first lock (0→1): saves html+body overflow and overscrollBehavior, then
+ * sets overflow=hidden and overscrollBehavior=none on both (AdminLoginShell pattern).
+ * On unlock when count→0: restores previous values.
+ */
 export function lockBodyScroll(): () => void {
   if (typeof document === 'undefined') {
     return () => undefined;
   }
   if (scrollLockCount === 0) {
-    previousBodyOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const html = document.documentElement;
+    const { body } = document;
+    previousHtmlOverflow = html.style.overflow;
+    previousBodyOverflow = body.style.overflow;
+    previousHtmlOverscroll = html.style.overscrollBehavior;
+    previousBodyOverscroll = body.style.overscrollBehavior;
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    html.style.overscrollBehavior = 'none';
+    body.style.overscrollBehavior = 'none';
   }
   scrollLockCount += 1;
   return (): void => {
     scrollLockCount = Math.max(0, scrollLockCount - 1);
     if (scrollLockCount === 0 && previousBodyOverflow !== null) {
-      document.body.style.overflow = previousBodyOverflow;
+      const html = document.documentElement;
+      const { body } = document;
+      html.style.overflow = previousHtmlOverflow ?? '';
+      body.style.overflow = previousBodyOverflow;
+      html.style.overscrollBehavior = previousHtmlOverscroll ?? '';
+      body.style.overscrollBehavior = previousBodyOverscroll ?? '';
+      previousHtmlOverflow = null;
       previousBodyOverflow = null;
+      previousHtmlOverscroll = null;
+      previousBodyOverscroll = null;
     }
   };
 }

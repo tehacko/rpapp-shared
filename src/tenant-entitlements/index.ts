@@ -22,6 +22,13 @@ export {
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
 export {
+  isOrderPickupInfrastructureInactiveForCollectOnlyForce,
+  isOrderPickupInfrastructureInactiveForCollectOnlyForceAxes,
+  shouldForceImmediateSelfPickupCollectOnly,
+  shouldForceImmediateSelfPickupCollectOnlyFromAxes,
+} from './immediateSelfPickupCollectOnly.js';
+
+export {
   applyCatalogParentDenialImplications,
   areEntitlementBlockParentsSatisfied,
   areEntitlementBlockParentsSatisfiedBy,
@@ -55,6 +62,21 @@ export {
   shouldShowBankAccountPurposeSection,
   shouldSyncBankAccountsToTenantAllowedPurposes,
 } from './bankAccountPurposeScope.js';
+
+export {
+  isProductOnlyMode1CarveOutAllowed,
+  isProductOnlyPurpose,
+  resolveOmittedCreateReconciliationMode,
+  resolvePurposeOwnedReconciliationMode,
+} from './purposeOwnedReconciliationMode.js';
+
+export type {
+  BankReconciliationPersistMode,
+  ProductOnlyMode1CarveOutInput,
+  PurposeOwnedReconciliationEntitlementFlags,
+  ResolveOmittedCreateReconciliationModeInput,
+  ResolvePurposeOwnedReconciliationModeInput,
+} from './purposeOwnedReconciliationMode.js';
 
 export {
   TENANT_AXIS_CONTROLLED_BLOCK_KEYS,

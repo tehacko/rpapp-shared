@@ -1,1 +1,5 @@
-export { BottomCartBar, type BottomCartBarProps } from './BottomCartBar.js';
+export {
+  BottomCartBar,
+  type BottomCartBarAppearance,
+  type BottomCartBarProps,
+} from './BottomCartBar.js';
