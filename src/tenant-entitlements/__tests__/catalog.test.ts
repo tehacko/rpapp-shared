@@ -62,6 +62,12 @@ describe('tenant entitlement catalog', () => {
     });
   });
 
+  it('lists staff_pickup_scan OR parents in catalog as SSOT (ENT-PR-03)', () => {
+    const staffPickupScan = getEntitlementBlockCatalogEntry('staff_pickup_scan');
+    expect(staffPickupScan.parentKeys).toEqual(['pickup_points', 'immediate_self_pickup']);
+    expect(staffPickupScan.parentOperator).toBe('OR');
+  });
+
   it('guards isEntitlementBlockKey for known and unknown keys', () => {
     expect(isEntitlementBlockKey('product_vending')).toBe(true);
     expect(isEntitlementBlockKey('platform_dev')).toBe(false);

@@ -22,6 +22,13 @@ export {
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
 export {
+  applyCatalogParentDenialImplications,
+  areEntitlementBlockParentsSatisfied,
+  areEntitlementBlockParentsSatisfiedBy,
+  isEntitlementParentRuntimeActive,
+} from './catalogParentSatisfaction.js';
+
+export {
   PICKUP_OPERATIONS_CLUSTER_BLOCK_KEYS,
   PICKUP_OPERATIONS_CLUSTER_LEADER,
   applyPickupOperationsClusterSync,

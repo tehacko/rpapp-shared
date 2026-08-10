@@ -1,3 +1,4 @@
+import { applyCatalogParentDenialImplications } from './catalogParentSatisfaction.js';
 import { applyPickupOperationsClusterSync } from './pickupOperationsCluster.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
@@ -84,5 +85,7 @@ export function applySimpleStateDependencyImplications(
   }
 
   const withAnalytics = applyAnalyticsClusterImplications(result);
-  return applyPickupOperationsClusterSync(withAnalytics);
+  const withPickup = applyPickupOperationsClusterSync(withAnalytics);
+  // Last: catalog parent gates — children cannot stay runtime-active when parents are Off.
+  return applyCatalogParentDenialImplications(withPickup);
 }

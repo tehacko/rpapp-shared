@@ -76,4 +76,40 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.mission_control).toBe('off');
     expect(implied.analytics_detailed).toBeUndefined();
   });
+
+  it('PARENT-01 forces payments_hub_ui off when payment_reconciliation is hardOff', () => {
+    const implied = applySimpleStateDependencyImplications({
+      payment_rails_strategy: 'on',
+      payment_reconciliation: 'hardOff',
+      payments_hub_ui: 'on',
+      bank_inbox_claims_api: 'on',
+    });
+
+    expect(implied.payments_hub_ui).toBe('hardOff');
+    expect(implied.bank_inbox_claims_api).toBe('hardOff');
+  });
+
+  it('PARENT-01 forces children off (not hardOff) when parent is soft Off', () => {
+    const implied = applySimpleStateDependencyImplications({
+      payment_rails_strategy: 'on',
+      payment_reconciliation: 'off',
+      payments_hub_ui: 'on',
+      bank_inbox_claims_api: 'softOffVisible',
+    });
+
+    expect(implied.payments_hub_ui).toBe('off');
+    expect(implied.bank_inbox_claims_api).toBe('off');
+  });
+
+  it('PARENT-01 leaves children on when payment_reconciliation is on', () => {
+    const implied = applySimpleStateDependencyImplications({
+      payment_rails_strategy: 'on',
+      payment_reconciliation: 'on',
+      payments_hub_ui: 'on',
+      bank_inbox_claims_api: 'on',
+    });
+
+    expect(implied.payments_hub_ui).toBe('on');
+    expect(implied.bank_inbox_claims_api).toBe('on');
+  });
 });

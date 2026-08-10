@@ -238,9 +238,10 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   {
     blockKey: 'staff_pickup_scan',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['pickup_points'],
+    parentKeys: ['pickup_points', 'immediate_self_pickup'],
     parentOperator: 'OR',
-    notes: 'Pickup staff app; pickup_points OR mirror mode (resolved ENT-PR-03)',
+    notes:
+      'Pickup staff app; catalog SSOT (ENT-PR-03): pickup_points OR immediate_self_pickup — no resolver override',
   },
   {
     blockKey: 'surface_kiosk',
