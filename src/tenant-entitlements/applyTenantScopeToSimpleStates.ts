@@ -40,6 +40,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
   return {
     sales_point_management: ON,
     payment_rails_strategy: ON,
+    payment_cash: ON,
     payment_reconciliation: ON,
     payments_hub_ui: ON,
     bank_inbox_claims_api: ON,

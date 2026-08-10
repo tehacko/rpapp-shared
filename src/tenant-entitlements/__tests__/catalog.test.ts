@@ -8,20 +8,26 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 47 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(47);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(47);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(47);
+  it('contains exactly 48 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(48);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(48);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(48);
   });
 
-  it('uses catalog version 1 for initial seed', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(1);
+  it('uses catalog version 2 after payment_cash', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(2);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(47);
+    expect(new Set(keysFromCatalog).size).toBe(48);
+  });
+
+  it('includes payment_cash as CONDITIONAL under payment_rails_strategy', () => {
+    const paymentCash = getEntitlementBlockCatalogEntry('payment_cash');
+    expect(paymentCash.blockClass).toBe('CONDITIONAL');
+    expect(paymentCash.parentKeys).toEqual(['payment_rails_strategy']);
   });
 
   it('includes admin_notifications as CONDITIONAL default-off inbox block', () => {

@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 47 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 48 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -163,6 +163,13 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: ['sales_point_management'],
     notes: 'Bank/rails; always on — channel config via payment-entitlements tab',
+  },
+  {
+    blockKey: 'payment_cash',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['payment_rails_strategy'],
+    notes:
+      'Cash channel ceiling; seeded ENABLED; Dev may DISABLED — when DISABLED cash never contributes to payReady / cash offer / cash create. Reserved (docs only, not a catalog key): payment_card_present',
   },
   {
     blockKey: 'payment_reconciliation',

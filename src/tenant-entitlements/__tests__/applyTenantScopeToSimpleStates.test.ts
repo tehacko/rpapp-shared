@@ -16,6 +16,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.surface_customer).toBe('off');
     expect(states.customer_auth_pwa).toBe('off');
     expect(states.payment_rails_strategy).toBe('on');
+    expect(states.payment_cash).toBe('on');
     expect(states.payment_reconciliation).toBe('on');
     expect(states.payments_hub_ui).toBe('on');
     expect(states.bank_inbox_claims_api).toBe('on');

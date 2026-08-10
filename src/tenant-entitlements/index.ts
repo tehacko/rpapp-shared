@@ -103,6 +103,15 @@ export {
 } from './evaluatePosture.js';
 
 export {
+  PAYMENT_CASH_BLOCK_KEY,
+  PAYMENT_CARD_PRESENT_RESERVED_KEY,
+  canCashContributeToPayReady,
+  isPaymentCashAxesEntitled,
+  isPaymentCashEntitledFromChecker,
+  isPaymentCashRuntimeModeActive,
+} from './paymentCashEntitlement.js';
+
+export {
   evaluateNavEntitlement,
   evaluateNavEntitlementFromVisible,
 } from './evaluateNavEntitlement.js';

@@ -71,6 +71,10 @@ export function countCustomerPayableVerifiedMethods(
   ) {
     count += 1;
   }
+  // Customer cash — Approach A only via isMethodPayableForCount (BAN isCashMethodPayableForCount).
+  if (methods.cash !== undefined && isMethodPayableForCount(methods.cash, input.requireVerified)) {
+    count += 1;
+  }
   return count;
 }
 

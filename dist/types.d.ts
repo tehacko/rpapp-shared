@@ -102,6 +102,18 @@ export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
 export type ProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 export type SalesPointProductCollectionMode = ProductCollectionMode;
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
+/** Stable publish-gate codes for Obchody directory eligibility (Wave 6). */
+export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS';
+/** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
+export interface CustomerDirectorySalesPointEligibility {
+    readonly salesPointId: number;
+    readonly listable: boolean;
+    readonly listedAt: string | null;
+    readonly hasPublishablePay: boolean;
+    readonly failedPublishGates: readonly CustomerDirectoryPublishGateCode[];
+    readonly stickyOos: boolean;
+    readonly delistRisk: boolean;
+}
 export interface SalesPoint {
     id: number;
     code?: string | null;
@@ -123,6 +135,8 @@ export interface SalesPoint {
     cardPresentLocationId?: string | null;
     /** Side-table SalesPointImage present (admin list enrichment). */
     hasImage?: boolean;
+    /** REQUIRED Obchody eligibility on admin SP list/detail responses. */
+    directoryEligibility: CustomerDirectorySalesPointEligibility;
     /** Optional signed/auth stream hint — not a Prisma column. */
     imageUrl?: string | null;
     thumbnailUrl?: string | null;

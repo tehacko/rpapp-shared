@@ -53,6 +53,29 @@ describe('PaymentSurfaceReadiness — Phase E counting (§10.E.2)', () => {
     expect(count).toBe(1);
   });
 
+  it('counts customer cash via isMethodPayableForCount (not isCashMethodPayableForCount)', () => {
+    expect(
+      countCustomerPayableVerifiedMethods(
+        {
+          bankTransfer: method({ enabled: false, ready: false, verified: false }),
+          gateway: method({ enabled: false, ready: false, verified: false }),
+          cash: method({ enabled: true, ready: true, verified: false }),
+        },
+        { requireVerified: true, walletPaymentsEnabled: false },
+      ),
+    ).toBe(0);
+    expect(
+      countCustomerPayableVerifiedMethods(
+        {
+          bankTransfer: method({ enabled: false, ready: false, verified: false }),
+          gateway: method({ enabled: false, ready: false, verified: false }),
+          cash: method({ enabled: true, ready: true, verified: true }),
+        },
+        { requireVerified: true, walletPaymentsEnabled: false },
+      ),
+    ).toBe(1);
+  });
+
   it('requires verified when PAYMENT_WIRING_RUNTIME_REQUIRE_VERIFIED is true', () => {
     expect(
       isMethodPayableForCount(
