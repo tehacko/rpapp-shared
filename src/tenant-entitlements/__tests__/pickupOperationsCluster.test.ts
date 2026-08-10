@@ -20,7 +20,9 @@ describe('pickup operations cluster', () => {
   });
 
   it('keeps followers on when leader is on', () => {
+    // Catalog: order_pickup_infrastructure requires surface_kiosk OR surface_customer.
     const states = applySimpleStateDependencyImplications({
+      surface_kiosk: 'on',
       order_pickup_infrastructure: 'on',
       fulfillment_queue: 'off',
       pickup_points: 'off',
@@ -61,6 +63,7 @@ describe('pickup operations cluster', () => {
 
   it('leaves scheduled_pickup as-is when leader is on', () => {
     const states = applySimpleStateDependencyImplications({
+      surface_kiosk: 'on',
       order_pickup_infrastructure: 'on',
       scheduled_pickup: 'off',
       fulfillment_queue: 'off',
@@ -74,6 +77,7 @@ describe('pickup operations cluster', () => {
 
   it('leaves scheduled_pickup on when leader is on', () => {
     const states = applySimpleStateDependencyImplications({
+      surface_kiosk: 'on',
       order_pickup_infrastructure: 'on',
       scheduled_pickup: 'on',
     });
@@ -83,6 +87,7 @@ describe('pickup operations cluster', () => {
 
   it('does not overwrite scheduled_pickup when leader is softOff', () => {
     const states = applySimpleStateDependencyImplications({
+      surface_kiosk: 'on',
       order_pickup_infrastructure: 'softOffVisible',
       scheduled_pickup: 'on',
     });
