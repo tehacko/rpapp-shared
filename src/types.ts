@@ -5,6 +5,8 @@
  * used across kiosk, admin, and backend applications.
  */
 
+import type { LocalizedNameMap } from './labels/localizedNameMap.js';
+
 // ===== Transaction & Receipt Status Enums =====
 
 export enum TransactionStatus {
@@ -69,6 +71,8 @@ export interface OffboardingDecisionDTO {
 export interface Product {
   id: number;
   name: string;
+  /** Optional per-locale display-name overrides; omit/null = use `name`. */
+  nameLocales?: LocalizedNameMap | null;
   price: number;
   description: string;
   image?: string;
@@ -148,6 +152,8 @@ export interface SalesPoint {
   id: number;
   code?: string | null;
   name: string;
+  /** Optional per-locale display-name overrides; null when none stored. */
+  nameLocales?: LocalizedNameMap | null;
   location: string;
   description?: string;
   /** WGS84 latitude; null when unset. */

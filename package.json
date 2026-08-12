@@ -145,6 +145,11 @@
             "import": "./dist/promo/ApplyPromoCodeResponse.js",
             "require": "./dist/promo/ApplyPromoCodeResponse.js"
         },
+        "./promo/resolveApplyPromoEventDisplayName": {
+            "types": "./dist/promo/resolveApplyPromoEventDisplayName.d.ts",
+            "import": "./dist/promo/resolveApplyPromoEventDisplayName.js",
+            "require": "./dist/promo/resolveApplyPromoEventDisplayName.js"
+        },
         "./promo/RemovePromoCodeRequest": {
             "types": "./dist/promo/RemovePromoCodeRequest.d.ts",
             "import": "./dist/promo/RemovePromoCodeRequest.js",

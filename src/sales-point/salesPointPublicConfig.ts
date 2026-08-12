@@ -1,4 +1,5 @@
 import type { PaymentSurfaceReadiness } from '../payment/PaymentSurfaceReadiness.js';
+import type { LocalizedNameMap } from '../labels/localizedNameMap.js';
 
 /**
  * Sales-point public-config contract (v1).
@@ -30,6 +31,8 @@ export interface SalesPointPublicDonationProject {
   readonly id: number;
   readonly code: string;
   readonly name: string;
+  /** Per-locale display-name overrides; null when none stored. */
+  readonly nameLocales: LocalizedNameMap | null;
   readonly description: string | null;
   readonly imageUrl: string | null;
   readonly thumbnailUrl?: string | null;
