@@ -66,7 +66,7 @@ describe('analyticsEmitterManifest', () => {
         (cell) => cell.eventName === 'account_logged_in' && cell.layer === 'BE',
       ).map((cell) => cell.reference);
       expect(references).toEqual(
-        expect.arrayContaining(['LoginWithPasswordUseCase', 'VerifyOtpUseCase']),
+        expect.arrayContaining(['LoginCustomerWithPasswordUseCase', 'VerifyCustomerOtpUseCase']),
       );
     });
 

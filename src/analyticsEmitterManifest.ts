@@ -334,8 +334,8 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   { eventName: 'receipt_opened', surface: 'customer', layer: 'FE', required: true, reference: 'AccountPaymentsPage' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.RECEIPT_CREATED, surface: 'server', layer: 'BE', required: true, reference: 'GenerateReceiptUseCase' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'customer', layer: 'FE', required: true, reference: 'CustomerProfileSheet' },
-  { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'LoginWithPasswordUseCase' },
-  { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'VerifyOtpUseCase' },
+  { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'LoginCustomerWithPasswordUseCase' },
+  { eventName: 'account_logged_in', surface: 'server', layer: 'BE', required: true, reference: 'VerifyCustomerOtpUseCase' },
   {
     eventName: 'checkout_handoff_created',
     surface: 'server',
@@ -343,8 +343,7 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     required: true,
     reference: 'CreateCheckoutPaymentHandoffUseCase',
   },
-  { eventName: 'account_created', surface: 'server', layer: 'BE', required: true, reference: 'RegisterCustomerUseCase' },
-  { eventName: 'tenant_switched', surface: 'server', layer: 'BE', required: true, reference: 'SwitchCustomerTenantUseCase' },
+  { eventName: 'account_created', surface: 'server', layer: 'BE', required: true, reference: 'PlatformRegisterCustomerUseCase' },
   { eventName: 'retail_pickup_slot_missed', surface: 'server', layer: 'BE', required: true, reference: 'CancelOrderFulfillmentOnPaymentTerminalUseCase' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.ACCOUNT_LOGGED_OUT, surface: 'server', layer: 'BE', required: true, reference: 'LogoutCustomerSessionUseCase' },
   { eventName: ANALYTICS_ACCOUNT_EVENTS.PROFILE_UPDATED, surface: 'server', layer: 'BE', required: true, reference: 'PutReceiptLocalePreferenceUseCase' },
@@ -1126,20 +1125,18 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/infrastructure/workers/RecurringDonationMissedPeriodWorker.ts',
   AdvanceRecurringDonationScheduleOnInboundMatch:
     'up-backend/src/application/use-cases/reconciliation/AdvanceRecurringDonationScheduleOnInboundMatch.ts',
-  LoginWithPasswordUseCase:
-    'up-backend/src/application/use-cases/customer-auth/LoginWithPasswordUseCase.ts',
-  VerifyOtpUseCase:
-    'up-backend/src/application/use-cases/customer-auth/VerifyOtpUseCase.ts',
+  LoginCustomerWithPasswordUseCase:
+    'up-backend/src/application/use-cases/customer-auth/LoginCustomerWithPasswordUseCase.ts',
+  VerifyCustomerOtpUseCase:
+    'up-backend/src/application/use-cases/customer-auth/VerifyCustomerOtpUseCase.ts',
   CreateCheckoutPaymentHandoffUseCase:
     'up-backend/src/application/use-cases/checkout-handoff/CreateCheckoutPaymentHandoffUseCase.ts',
   LookupProductByBarcodeUseCase:
     'up-backend/src/application/use-cases/product/LookupProductByBarcodeUseCase.ts',
   ManageProductBarcodeUseCase:
     'up-backend/src/application/use-cases/product/barcode/ManageProductBarcodeUseCase.ts',
-  RegisterCustomerUseCase:
-    'up-backend/src/application/use-cases/customer-auth/RegisterCustomerUseCase.ts',
-  SwitchCustomerTenantUseCase:
-    'up-backend/src/application/use-cases/customer-auth/SwitchCustomerTenantUseCase.ts',
+  PlatformRegisterCustomerUseCase:
+    'up-backend/src/application/use-cases/customer-auth/PlatformRegisterCustomerUseCase.ts',
   CancelOrderFulfillmentOnPaymentTerminalUseCase:
     'up-backend/src/application/use-cases/order/CancelOrderFulfillmentOnPaymentTerminalUseCase.ts',
   CancelIntentUseCase:
@@ -1224,13 +1221,12 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'CreatePostKioskAnalyticsChildSessionUseCase',
   'RecurringDonationMissedPeriodWorker',
   'AdvanceRecurringDonationScheduleOnInboundMatch',
-  'LoginWithPasswordUseCase',
-  'VerifyOtpUseCase',
+  'LoginCustomerWithPasswordUseCase',
+  'VerifyCustomerOtpUseCase',
   'CreateCheckoutPaymentHandoffUseCase',
   'LookupProductByBarcodeUseCase',
   'ManageProductBarcodeUseCase',
-  'RegisterCustomerUseCase',
-  'SwitchCustomerTenantUseCase',
+  'PlatformRegisterCustomerUseCase',
   'CancelOrderFulfillmentOnPaymentTerminalUseCase',
   'CancelIntentUseCase',
   'LogoutCustomerSessionUseCase',
