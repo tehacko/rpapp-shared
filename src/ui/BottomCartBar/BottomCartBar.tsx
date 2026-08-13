@@ -45,7 +45,8 @@ export interface BottomCartBarProps {
   readonly icon?: ReactNode;
   /**
    * `pill` — accent-filled rounded-[999px] h-[76px] (kiosk default).
-   * `compact` — elevated surface, rounded-2xl, ~68px; accent only on Pay CTA.
+   * `compact` — theme-inverse accent fill (same as primary buttons), rounded-2xl,
+   * ~68px; Pay CTA uses `--customer-cart-bar-pay-*` (opposite of the bar).
    */
   readonly appearance?: BottomCartBarAppearance;
 }
@@ -139,30 +140,28 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
 
     const barSurfaceClass = isCompact
       ? [
-          'box-border h-[68px] rounded-2xl bg-[var(--color-surface-elevated)]',
-          'text-[var(--color-on-surface)]',
-          'border border-[var(--color-border)]',
-          'shadow-[var(--shadow-card)]',
+          // Theme-inverse fill (black on light / soft grey on dark) — matches Add/primary buttons.
+          'box-border h-[68px] rounded-2xl bg-[var(--color-accent)]',
+          'text-[var(--color-accent-foreground)]',
+          'shadow-[var(--shadow-popover)]',
         ].join(' ')
       : [
           'h-[76px] rounded-[999px] bg-[var(--color-accent)]',
           'text-[var(--color-accent-foreground)] shadow-[0_4px_20px_rgba(0,0,0,0.18)]',
         ].join(' ');
 
-    const openButtonTextClass = isCompact
-      ? 'text-[var(--color-on-surface)] focus-visible:outline-[var(--color-accent)]'
-      : 'text-[var(--color-accent-foreground)] focus-visible:outline-[var(--color-accent-foreground)]';
+    const openButtonTextClass =
+      'text-[var(--color-accent-foreground)] focus-visible:outline-[var(--color-accent-foreground)]';
 
     const priceSizeClass = isCompact
       ? 'text-base tabular-nums'
       : 'text-[24px] tabular-nums';
 
-    const payFocusClass = isCompact
-      ? 'focus-visible:outline-[var(--color-accent)]'
-      : 'focus-visible:outline-[var(--color-accent-foreground)]';
+    const payFocusClass =
+      'focus-visible:outline-[var(--color-accent-foreground)]';
 
     const payEnabledClass = isCompact
-      ? 'bg-[var(--customer-cart-bar-pay-bg,#000000)] text-[var(--customer-cart-bar-pay-fg,#ffffff)] hover:opacity-90'
+      ? 'bg-[var(--customer-cart-bar-pay-bg,#ffffff)] text-[var(--customer-cart-bar-pay-fg,#000000)] hover:opacity-90'
       : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90';
 
     return (

@@ -52,7 +52,7 @@ describe('BottomCartBar appearance recipes', () => {
     expect(pay.className).not.toContain('bg-[var(--color-accent)]');
   });
 
-  it('compact: rounded-2xl elevated surface + shadow-card; customer pay CTA (not accent)', () => {
+  it('compact: rounded-2xl theme-inverse accent bar; pay CTA opposite of bar', () => {
     render(<BottomCartBar {...baseProps} appearance="compact" />);
 
     const bar = screen.getByTestId('bottom-cart-bar');
@@ -62,14 +62,13 @@ describe('BottomCartBar appearance recipes', () => {
     expect(bar.className).toContain('rounded-2xl');
     expect(bar.className).toContain('h-[68px]');
     expect(bar.className).toContain('box-border');
-    expect(bar.className).toContain('bg-[var(--color-surface-elevated)]');
-    expect(bar.className).toContain('text-[var(--color-on-surface)]');
-    expect(bar.className).toContain('border');
-    expect(bar.className).toContain('border-[var(--color-border)]');
-    expect(bar.className).toContain('shadow-[var(--shadow-card)]');
-    expect(bar.className).not.toContain('shadow-[var(--shadow-popover)]');
+    expect(bar.className).toContain('bg-[var(--color-accent)]');
+    expect(bar.className).toContain('text-[var(--color-accent-foreground)]');
+    expect(bar.className).toContain('shadow-[var(--shadow-popover)]');
+    expect(bar.className).not.toContain('bg-[var(--color-surface-elevated)]');
+    expect(bar.className).not.toContain('border-[var(--color-border)]');
+    expect(bar.className).not.toContain('shadow-[var(--shadow-card)]');
     expect(bar.className).not.toContain('rounded-[999px]');
-    expect(bar.className).not.toContain('bg-[var(--color-accent)]');
 
     const price = screen.getByText('60 Kč');
     expect(price.className).toContain('text-base');
@@ -77,12 +76,16 @@ describe('BottomCartBar appearance recipes', () => {
     expect(price.className).not.toContain('text-[24px]');
 
     const openCart = screen.getByTestId('bottom-cart-bar-open');
-    expect(openCart.className).toContain('focus-visible:outline-[var(--color-accent)]');
+    expect(openCart.className).toContain(
+      'focus-visible:outline-[var(--color-accent-foreground)]',
+    );
 
     const pay = screen.getByTestId('bottom-cart-bar-pay');
-    expect(pay.className).toContain('bg-[var(--customer-cart-bar-pay-bg,#000000)]');
-    expect(pay.className).toContain('text-[var(--customer-cart-bar-pay-fg,#ffffff)]');
-    expect(pay.className).toContain('focus-visible:outline-[var(--color-accent)]');
+    expect(pay.className).toContain('bg-[var(--customer-cart-bar-pay-bg,#ffffff)]');
+    expect(pay.className).toContain('text-[var(--customer-cart-bar-pay-fg,#000000)]');
+    expect(pay.className).toContain(
+      'focus-visible:outline-[var(--color-accent-foreground)]',
+    );
     expect(pay.className).not.toContain('bg-[var(--color-accent)]');
     expect(pay.className).not.toContain('text-[var(--color-accent-foreground)]');
   });
@@ -139,7 +142,7 @@ describe('BottomCartBar appearance recipes', () => {
       'text-[var(--cart-bar-cta-disabled-fg,#111111)]',
     );
     expect(disabledPay.className).not.toContain(
-      'bg-[var(--customer-cart-bar-pay-bg,#000000)]',
+      'bg-[var(--customer-cart-bar-pay-bg,#ffffff)]',
     );
 
     rerender(
@@ -151,16 +154,16 @@ describe('BottomCartBar appearance recipes', () => {
     const enabledPay = screen.getByTestId('bottom-cart-bar-pay');
     expect(enabledPay).toBeEnabled();
     expect(enabledPay.className).toContain(
-      'focus-visible:outline-[var(--color-accent)]',
+      'focus-visible:outline-[var(--color-accent-foreground)]',
     );
     expect(enabledPay.className).toContain(
-      'bg-[var(--customer-cart-bar-pay-bg,#000000)]',
+      'bg-[var(--customer-cart-bar-pay-bg,#ffffff)]',
     );
 
     const openCart = screen.getByTestId('bottom-cart-bar-open');
     expect(openCart.className).toContain('min-w-min');
     expect(openCart.className).toContain(
-      'focus-visible:outline-[var(--color-accent)]',
+      'focus-visible:outline-[var(--color-accent-foreground)]',
     );
   });
 });
