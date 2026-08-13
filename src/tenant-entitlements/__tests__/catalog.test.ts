@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 48 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(48);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(48);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(48);
+  it('contains exactly 49 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(49);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(49);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(49);
   });
 
-  it('uses catalog version 2 after payment_cash', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(2);
+  it('uses catalog version 3 after admin_mfa', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(3);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(48);
+    expect(new Set(keysFromCatalog).size).toBe(49);
   });
 
   it('includes payment_cash as CONDITIONAL under payment_rails_strategy', () => {
@@ -35,6 +35,13 @@ describe('tenant entitlement catalog', () => {
     expect(notifications.blockClass).toBe('CONDITIONAL');
     expect(notifications.parentKeys).toEqual([]);
     expect(notifications.routeSuffix).toBe('inbox');
+  });
+
+  it('includes admin_mfa as CONDITIONAL default-off TOTP block under tenant_ops_settings', () => {
+    const adminMfa = getEntitlementBlockCatalogEntry('admin_mfa');
+    expect(adminMfa.blockClass).toBe('CONDITIONAL');
+    expect(adminMfa.parentKeys).toEqual(['tenant_ops_settings']);
+    expect(adminMfa.capabilityHint).toBe('account.self.manage');
   });
 
   it('includes mission_control under analytics_detailed with MC capability hint', () => {

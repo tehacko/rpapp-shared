@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 48 blocks).
+ * Authoritative block list lives in catalog.ts (§6.3, 49 blocks).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -132,6 +132,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'comms_governance',
   'permission_management_rbac',
   'tenant_ops_settings',
+  'admin_mfa',
   'admin_notifications',
   'bank_account_administration',
   'receipt_delivery',
@@ -140,7 +141,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 2 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 3 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 export const TENANT_SURFACE_PRESET_IDS = [

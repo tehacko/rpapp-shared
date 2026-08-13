@@ -141,6 +141,12 @@ export {
 } from './paymentCashEntitlement.js';
 
 export {
+  ADMIN_MFA_BLOCK_KEY,
+  DEFAULT_OFF_ROLLOUT_BLOCK_KEYS,
+  isDefaultOffRolloutBlockKey,
+} from './adminMfaEntitlement.js';
+
+export {
   evaluateNavEntitlement,
   evaluateNavEntitlementFromVisible,
 } from './evaluateNavEntitlement.js';

@@ -139,8 +139,10 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
 
     const barSurfaceClass = isCompact
       ? [
-          'h-[68px] rounded-2xl bg-[var(--color-surface-elevated)]',
-          'text-[var(--color-on-surface)] shadow-[var(--shadow-popover)]',
+          'box-border h-[68px] rounded-2xl bg-[var(--color-surface-elevated)]',
+          'text-[var(--color-on-surface)]',
+          'border border-[var(--color-border)]',
+          'shadow-[var(--shadow-card)]',
         ].join(' ')
       : [
           'h-[76px] rounded-[999px] bg-[var(--color-accent)]',
@@ -160,7 +162,7 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
       : 'focus-visible:outline-[var(--color-accent-foreground)]';
 
     const payEnabledClass = isCompact
-      ? 'bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:opacity-90'
+      ? 'bg-[var(--customer-cart-bar-pay-bg,#000000)] text-[var(--customer-cart-bar-pay-fg,#ffffff)] hover:opacity-90'
       : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90';
 
     return (
@@ -168,7 +170,7 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
         className={[
           // Flex + min-w-min: reserve intrinsic width for Icon|Summary (price/count) before shrink-0 CTA.
           // Clip only pathological emptySummary on the count line — never hard-clip price or normal plurals.
-          'pointer-events-auto mx-3 mb-3 flex items-center gap-3',
+          'pointer-events-auto mx-3 mb-3 flex min-w-min items-center gap-3',
           'px-4 py-3',
           barSurfaceClass,
           // G9: soft scale pulse on count increase — transform only within fixed bar height

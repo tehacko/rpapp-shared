@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 48 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 49 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -351,6 +351,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'account-settings',
     notes: 'account-settings + ops-settings tab; always on (DEV policy UI locked)',
+  },
+  {
+    blockKey: 'admin_mfa',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['tenant_ops_settings'],
+    capabilityHint: 'account.self.manage',
+    notes:
+      'Admin TOTP authenticator enroll/login/step-up. Default OFF (rollout flag) — enable per tenant. Email OTP is never used for admin.',
   },
   {
     blockKey: 'admin_notifications',

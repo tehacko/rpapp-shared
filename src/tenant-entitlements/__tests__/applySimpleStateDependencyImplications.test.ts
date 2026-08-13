@@ -176,4 +176,13 @@ describe('applySimpleStateDependencyImplications', () => {
 
     expect(implied.immediate_self_pickup).toBe('off');
   });
+
+  it('does not turn admin_mfa on when tenant_ops_settings is on (default-off rollout)', () => {
+    const implied = applySimpleStateDependencyImplications({
+      tenant_ops_settings: 'on',
+      admin_mfa: 'off',
+    });
+
+    expect(implied.admin_mfa).toBe('off');
+  });
 });
