@@ -24,6 +24,9 @@ export function useTurnstileAuth(apiBaseUrl: string): UseTurnstileAuthResult {
     queryKey: ['turnstile-config', apiBaseUrl],
     queryFn: () => fetchTurnstileConfig(apiBaseUrl),
     staleTime: 5 * 60_000,
+    // Same as useTurnstileExecute — one probe, no retry stampede on dead API.
+    retry: false,
+    refetchOnReconnect: false,
   });
 
   const siteKey = query.data?.siteKey ?? null;

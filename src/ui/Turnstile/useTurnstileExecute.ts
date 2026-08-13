@@ -40,7 +40,10 @@ export function useTurnstileExecute(apiBaseUrl = ''): UseTurnstileExecuteResult 
     queryKey: ['turnstile-config', apiBaseUrl],
     queryFn: () => fetchTurnstileConfig(apiBaseUrl),
     staleTime: 5 * 60_000,
-    retry: 2,
+    // BAN retry stampede when API/proxy is down (ECONNREFUSED → Vite proxy spam).
+    // Fail closed once; caller uses refetchConfig() / page refresh to retry.
+    retry: false,
+    refetchOnReconnect: false,
   });
 
   const siteKey = query.data?.siteKey ?? null;
