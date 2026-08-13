@@ -378,8 +378,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   {
     blockKey: 'receipt_delivery',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['comms_governance'],
-    notes: 'Receipt provider overrides',
+    parentKeys: ['transactions'],
+    notes: 'Receipt provider overrides (independent of comms_governance / tenant credentials)',
   },
   {
     blockKey: 'bank_inbox_claims_api',

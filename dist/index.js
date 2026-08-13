@@ -79,6 +79,8 @@ export { PERMISSION_DOMAIN_LABELS, PERMISSION_LEVEL_LABELS, PERMISSION_RESOURCE_
 export { expandCapabilitiesForClientCheck, grantImpliesTarget, hasEffectiveCapability, hasAnyEffectiveCapability, ADMIN_USERS_MANAGE_BRIDGE_SOURCES, ADMIN_USERS_MANAGE_BRIDGE_TARGETS, BRIDGE_PARITY_FIXTURE_GRANTS, BRIDGE_PARITY_FIXTURE_EXPECTED_TARGETS, } from './permissions/effectiveCapabilities.js';
 export { TENANT_ADMIN_EVENTS_SUBSCRIBE, TENANT_ADMIN_USERS_VIEW, TENANT_ADMIN_USERS_MANAGE, TENANT_RECONCILIATION_READ, TENANT_BANK_INBOX_MANAGE, TENANT_PAYMENT_CLAIMS_APPROVE, } from './permissions/canonicalCapabilityIds.js';
 export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, TurnstileConfigFetchError, } from './auth/turnstileTypes.js';
+export { CUSTOMER_CONTACT_POLICY_MODES, resolveContactIdentifierCopyKind, resolveContactIdentifierInputMode, resolvePasswordIdentifierCopyKind, } from './auth/customerContactPolicy.js';
+export { DEFAULT_CUSTOMER_CONTACT_POLICY_PAYLOAD, normalizePhoneToE164, passwordAllowsPhoneLookup, resolveOtpIdentifierCopyVariant, resolvePasswordIdentifierCopyVariant, resolveSignInIdentifierInputMode, } from './auth/customerContactPolicyUi.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { computePollRetryDelayMs, isServerOverloadPollError, } from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';

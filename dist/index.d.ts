@@ -81,6 +81,10 @@ export { TENANT_ADMIN_EVENTS_SUBSCRIBE, TENANT_ADMIN_USERS_VIEW, TENANT_ADMIN_US
 export type { PermissionLevel } from './permissions/permissionLabels.js';
 export { TURNSTILE_PUBLIC_CONFIG_PATH, fetchTurnstileConfig, appendTurnstileToken, TurnstileConfigFetchError, } from './auth/turnstileTypes.js';
 export type { TurnstileConfigData, TurnstileAuthBodyFields, AdminLoginRequest, ExchangeSuperAdminInviteSessionRequest, CompleteSuperAdminInviteRequest, PickupStaffLoginRequest, CustomerAuthTurnstileBody, } from './auth/turnstileTypes.js';
+export { CUSTOMER_CONTACT_POLICY_MODES, resolveContactIdentifierCopyKind, resolveContactIdentifierInputMode, resolvePasswordIdentifierCopyKind, } from './auth/customerContactPolicy.js';
+export type { CustomerContactPolicyMode, CustomerContactPolicyPayload, ContactIdentifierCopyKind, PasswordIdentifierCopyKind, } from './auth/customerContactPolicy.js';
+export { DEFAULT_CUSTOMER_CONTACT_POLICY_PAYLOAD, normalizePhoneToE164, passwordAllowsPhoneLookup, resolveOtpIdentifierCopyVariant, resolvePasswordIdentifierCopyVariant, resolveSignInIdentifierInputMode, } from './auth/customerContactPolicyUi.js';
+export type { ContactPolicyOtpCopyVariant, ContactPolicyPasswordCopyVariant, } from './auth/customerContactPolicyUi.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { computePollRetryDelayMs, isServerOverloadPollError, type PollRetryBackoffOptions, } from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';

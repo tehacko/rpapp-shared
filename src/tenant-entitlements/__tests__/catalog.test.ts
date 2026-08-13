@@ -86,6 +86,12 @@ describe('tenant entitlement catalog', () => {
     expect(selfCollect.parentKeys).toEqual(['immediate_self_pickup', 'order_pickup_infrastructure']);
   });
 
+  it('reparents receipt_delivery under transactions (Wave 6 / Comms A)', () => {
+    const receiptDelivery = getEntitlementBlockCatalogEntry('receipt_delivery');
+    expect(receiptDelivery.blockClass).toBe('CONDITIONAL');
+    expect(receiptDelivery.parentKeys).toEqual(['transactions']);
+  });
+
   it('guards isEntitlementBlockKey for known and unknown keys', () => {
     expect(isEntitlementBlockKey('product_vending')).toBe(true);
     expect(isEntitlementBlockKey('platform_dev')).toBe(false);

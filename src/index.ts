@@ -125,6 +125,30 @@ export type {
   PickupStaffLoginRequest,
   CustomerAuthTurnstileBody,
 } from './auth/turnstileTypes.js';
+export {
+  CUSTOMER_CONTACT_POLICY_MODES,
+  resolveContactIdentifierCopyKind,
+  resolveContactIdentifierInputMode,
+  resolvePasswordIdentifierCopyKind,
+} from './auth/customerContactPolicy.js';
+export type {
+  CustomerContactPolicyMode,
+  CustomerContactPolicyPayload,
+  ContactIdentifierCopyKind,
+  PasswordIdentifierCopyKind,
+} from './auth/customerContactPolicy.js';
+export {
+  DEFAULT_CUSTOMER_CONTACT_POLICY_PAYLOAD,
+  normalizePhoneToE164,
+  passwordAllowsPhoneLookup,
+  resolveOtpIdentifierCopyVariant,
+  resolvePasswordIdentifierCopyVariant,
+  resolveSignInIdentifierInputMode,
+} from './auth/customerContactPolicyUi.js';
+export type {
+  ContactPolicyOtpCopyVariant,
+  ContactPolicyPasswordCopyVariant,
+} from './auth/customerContactPolicyUi.js';
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export {
   computePollRetryDelayMs,
