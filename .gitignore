@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Cross-process mutex for scripts/ensureDist.mjs (local only)
+.ensureDist.lock
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
