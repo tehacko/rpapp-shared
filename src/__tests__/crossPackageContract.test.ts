@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
 import {
   ANALYTICS_EMITTER_FE_REFERENCE_PATHS,
   ANALYTICS_EMITTER_MANIFEST,
@@ -29,6 +31,33 @@ describe('crossPackageContract', () => {
       required: expect.any(Boolean),
       reference: expect.any(String),
     });
+  });
+
+  it('main barrel does not export React UI (Node/backend-safe)', async () => {
+    const mod = await import('../index.js');
+    expect('DatabaseUnavailable' in mod).toBe(false);
+    expect('useDatabaseHealth' in mod).toBe(false);
+    expect('useSubmitCooldown' in mod).toBe(false);
+    expect('CatalogImagePlaceholder' in mod).toBe(false);
+    expect('ProviderIcon' in mod).toBe(false);
+  });
+
+  it('main barrel compiled graph is Node-without-React (static gate)', () => {
+    const sharedRoot = path.join(__dirname, '..', '..');
+    const scriptPath = path.join(
+      sharedRoot,
+      'scripts',
+      'assert-main-barrel-node-safe.mjs',
+    );
+    // Gate asserts shared/dist AND each existing consumer install copy of
+    // pi-kiosk-shared. Missing install under an existing consumer package dir
+    // fails unless GATE_ALLOW_MISSING_CONSUMERS / ENSURE_DIST_* skip is set.
+    const output = execFileSync(process.execPath, [scriptPath], {
+      encoding: 'utf8',
+      cwd: sharedRoot,
+    });
+    expect(output).toMatch(/\[shared\/dist\] visited \d+ files/);
+    expect(output).toMatch(/assert-main-barrel-node-safe: PASS/);
   });
 
   it('E-AC-7/H10: exports PaymentSurfaceReadiness from package entry', () => {

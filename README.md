@@ -1,8 +1,15 @@
-# @pi-kiosk/shared
+# pi-kiosk-shared
 
 Shared types, API contracts, and error classes for the Pi Kiosk system.
 
-This package contains only **contracts** - types, API endpoints, and error classes that are shared between the backend and frontend applications. All implementation details (components, hooks, utilities, config) have been moved to individual apps.
+## Entries
+
+- **Main entry `pi-kiosk-shared`**: Node-safe contracts, types, and API helpers for backend and frontends. Does **not** re-export React UI.
+- **`pi-kiosk-shared/ui`**: React primitives and hooks (`Button`, `useSubmitCooldown`, `DatabaseUnavailable`, `CatalogImagePlaceholder`, `ProviderIcon`, …). Requires the React peer. Backends that never import `/ui` may omit React **only after** they consume a Node-safe main barrel — see [Temporary retention](#temporary-retention) and `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
+
+## Temporary retention
+
+`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel (registry `2.2.70` may still pull React UI through the main entry). Do **not** drop those deps until that consume path is proven; then remove them after consumers install `2.2.71+`. Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
 
 ## Installation
 
@@ -51,11 +58,68 @@ try {
 }
 ```
 
-## What's NOT in this package
+### React UI (`pi-kiosk-shared/ui`)
 
-- **Components**: Live in each app under `src/shared/ui/` / `src/shared/components/` (e.g. `rpapp-kiosk`, `rpapp-admin`, `rpapp-customer`, `rpapp-pickup`)
-- **Hooks**: App-local under `src/shared/hooks` or feature folders
-- **Utilities / validation / config**: App-local — not published from this package
+```tsx
+import { Button, useSubmitCooldown } from 'pi-kiosk-shared/ui';
+```
+
+Frontends import React modules from `/ui`. The **target** main barrel (local overlay / published `2.2.71+`) is Node-safe. Until that barrel is what cold/start paths consume, see [Temporary retention](#temporary-retention).
+
+## What's in this package vs apps
+
+- **`pi-kiosk-shared`**: contracts, types, API helpers — shared by backend and frontends.
+- **`pi-kiosk-shared/ui`**: cross-app source for React primitives and hooks.
+- **App-local clones**: some apps may still keep local copies of primitives under `src/shared/ui/` or `src/shared/components/`. Prefer `/ui` for new shared UI; migrate leftovers when touching those files.
+
+## Local monorepo overlay
+
+Consumers keep `"pi-kiosk-shared": "^2.2.70"` in `package.json` / lockfiles until **2.2.71 is published** (Railway `npm ci` must not request an unpublished version).
+
+**Documented cold path (monorepo):** `npm ci` / `npm install` in each app runs lifecycle hooks → `scripts/overlaySharedIfPresent.mjs` → `shared/scripts/ensureDist.mjs` when sibling `../shared` exists:
+
+| Package | Install hook (cold path) |
+|---------|----------------|
+| `up-backend` | `prepare` → `overlaySharedIfPresent.mjs` (+ husky) → `ensureDist.mjs` |
+| `admin-app`, `rpapp-kiosk`, `rpapp-customer`, `rpapp-pickup` | `postinstall` → `overlaySharedIfPresent.mjs` (+ patches) → `ensureDist.mjs` |
+
+That script no-ops (exit 0) only when the sibling `../shared` **directory is absent** (true app-only / Railway clones). If `../shared` exists as a directory but is incomplete (missing `package.json` and/or `scripts/ensureDist.mjs`), the overlay fails exit 1 with recovery — empty/stub shared trees are not silent. When the layout is complete it runs `shared/scripts/ensureDist.mjs` (with `ENSURE_DIST_ALLOW_MISSING_CONSUMERS=1` so single-package install does not fail siblings), which compiles this package and copies `package.json` + `dist` into each consumer `node_modules/pi-kiosk-shared` so Node/tsx/tsc load the Node-safe barrel and remapped `/ui` exports.
+
+**Policy — half-tree / one-app install:** any frontend `prebuild` / `predev` path that invokes `ensureDist.mjs` (admin/customer/pickup `prebuildShared.mjs`, kiosk `ensure-shared-consume.mjs`) must also pass `ENSURE_DIST_ALLOW_MISSING_CONSUMERS=1`, matching `overlaySharedIfPresent` / postinstall. Bare `ensureDist` hard-fails when sibling consumers lack `node_modules`; with the allow flag, one-app monorepo install stays green through prebuild.
+
+**Secondary (not the cold path):** `up-backend` `predev` / `prebuild` / `prestart` (`ensure-shared` → same `overlaySharedIfPresent.mjs`); frontends `predev` / `prebuild` (`prebuildShared.mjs`, kiosk `ensure-shared-consume.mjs`) also refresh the overlay before dev/build.
+
+```bash
+# Documented cold path — from any consumer (runs prepare/postinstall overlay)
+npm ci
+# or: npm install
+
+# Optional manual / shared-root rebuild + overlay all five consumers
+cd ../shared   # from a consumer, or start in shared/
+node scripts/ensureDist.mjs
+
+# Prove the compiled main barrel does not import React — checks shared/dist
+# AND each consumer's node_modules/pi-kiosk-shared/dist/index.js (up-backend,
+# admin-app, rpapp-kiosk, rpapp-customer, rpapp-pickup). Also smokes
+# import('pi-kiosk-shared') from up-backend cwd. Missing consumer install
+# fails by default; opt-out: ENSURE_DIST_SKIP_MISSING_CONSUMERS=1,
+# GATE_ALLOW_MISSING_CONSUMERS=1, or ENSURE_DIST_ALLOW_MISSING_CONSUMERS=1.
+npm run gate:main-barrel-node-safe
+```
+
+### Cold overlay proof
+
+From `shared/`, prove the documented cold path:
+
+1. **DIAGNOSTIC** — `npm pack` registry `2.2.70` in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`).
+2. **PASS** — wipe that consumer’s `node_modules/pi-kiosk-shared`, then `npm install` with **scripts on** (no package args) so `prepare` / `postinstall` overlays during install; assert Node-safe barrel + `NODE_IMPORT_OK`.
+
+```bash
+npm run prove:cold-overlay -- up-backend
+npm run prove:cold-overlay -- --all   # serial across all consumers (never parallel)
+```
+
+Do **not** use `--ignore-scripts` then hand `npm run prepare` as the heal. Evidence is overwritten as markdown under `.cursor/artifacts/pi-kiosk-shared-cold-overlay-proof*.md` (not `.log`).
 
 ## Development
 

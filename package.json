@@ -1,6 +1,6 @@
 {
     "name": "pi-kiosk-shared",
-    "version": "2.2.70",
+    "version": "2.2.71",
     "type": "module",
     "private": false,
     "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -292,10 +292,18 @@
         },
         "react-i18next": {
             "optional": true
+        },
+        "react": {
+            "optional": true
+        },
+        "lucide-react": {
+            "optional": true
+        },
+        "@tanstack/react-query": {
+            "optional": true
         }
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.0.0",
         "tailwind-variants": "^0.3.0"
     },
     "scripts": {
@@ -313,6 +321,8 @@
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "clean": "rimraf dist",
+        "gate:main-barrel-node-safe": "node scripts/assert-main-barrel-node-safe.mjs",
+        "prove:cold-overlay": "node scripts/prove-pi-kiosk-shared-cold-overlay.mjs",
         "gate:tokens-sync": "node scripts/gate-tokens-sync.mjs",
         "gate:tokens-sync:write": "node scripts/gate-tokens-sync.mjs --write",
         "gate:brand-hex": "node scripts/gate-brand-hex-ban.mjs",

@@ -2,7 +2,12 @@
  * Pi Kiosk Shared Package
  *
  * Exports shared types, API contracts, error classes, and utilities
- * for use across kiosk, admin, and backend applications.
+ * for use across kiosk, admin, customer, pickup, and backend.
+ *
+ * Main barrel is Node-safe (no React UI). Runtime JS (not `.d.ts`):
+ * - `tsx watch` and `node dist/server.js` both resolve `node_modules/pi-kiosk-shared`
+ *   after `ensureDist.mjs` overlays this `dist` (registry 2.2.70 tarball is stale).
+ * React UI is `pi-kiosk-shared/ui`.
  *
  * Note: relative imports use explicit `.js` extensions so the compiled
  * `dist/*.js` is consumable by native Node ESM (e.g. backend running
@@ -20,9 +25,6 @@ export * from './loyalty/types.js';
 export * from './loyalty/loyaltySessionHandoff.js';
 export * from './api.js';
 export * from './errors.js';
-export * from './components/DatabaseUnavailable.js';
-export * from './hooks/useDatabaseHealth.js';
-export { useSubmitCooldown, type UseSubmitCooldownResult } from './hooks/useSubmitCooldown.js';
 export * from './analyticsEvents.js';
 export * from './analyticsEmitterManifest.js';
 export * from './analyticsPiiTags.js';
@@ -76,7 +78,6 @@ export * from './promo/ApplyPromoCodeResponse.js';
 export * from './promo/resolveApplyPromoEventDisplayName.js';
 export * from './promo/RemovePromoCodeRequest.js';
 export * from './catalogImagePresentation.js';
-export * from './CatalogImagePlaceholder.js';
 export * from './directoryMonogram.js';
 export * from './tenant/tenantPathResolution.js';
 
@@ -139,14 +140,6 @@ export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHan
 export * from './barcode/index.js';
 export * from './tenant-entitlements/index.js';
 export * from './screenState/types.js';
-export {
-  ProviderIcon,
-  PROVIDER_ICON_ASSET_IDS,
-  resolveProviderIconAssetId,
-  type ProviderIconAssetId,
-  type ProviderIconProps,
-  type ProviderIconSize,
-} from './ui/ProviderIcon/index.js';
 export { normalizeIban } from './payment/normalizeIban.js';
 export {
   extractCzBankCode,

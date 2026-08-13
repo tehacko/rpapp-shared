@@ -14,7 +14,7 @@ export type FormFieldSurface = 'admin' | 'customer' | 'kiosk' | 'pickup';
 const adminField = tv({
   slots: {
     wrapper: 'flex flex-col gap-1.5 w-full',
-    label: 'text-sm font-medium text-[var(--color-an-text)]',
+    label: 'text-sm font-semibold text-[var(--color-an-text)]',
     input: [
       'h-10 w-full rounded-md border bg-[var(--color-an-surface)] px-3 text-sm',
       'border-[var(--color-an-border)] text-[var(--color-an-text)]',

@@ -14,6 +14,10 @@ describe('FormField', () => {
     expect(input.className).toContain('text-[var(--color-on-surface)]');
     expect(input.className).toContain('border-[var(--color-border)]');
     expect(input.className).not.toContain('--color-an-text');
+
+    const label = screen.getByText('Email');
+    expect(label.className).toContain('font-medium');
+    expect(label.className).not.toContain('font-semibold');
   });
 
   it('applies admin surface tokens', () => {
@@ -23,6 +27,10 @@ describe('FormField', () => {
     expect(input.className).toContain('text-[var(--color-an-text)]');
     expect(input.className).toContain('border-[var(--color-an-border)]');
     expect(input.className).not.toContain('--color-on-surface');
+
+    const label = screen.getByText('Email');
+    expect(label.className).toContain('font-semibold');
+    expect(label.className).not.toContain('font-medium');
   });
 
   it('applies kiosk touch sizing with consumer tokens', () => {
