@@ -18,9 +18,15 @@
  * ENSURE_DIST_EXTRA_CONSUMERS — optional comma-separated consumer dirs (relative to
  * repo root) appended to the built-in list for local probes / one-off overlays.
  *
- * replaceDir is Windows-safe: stage under os.tmpdir(), rm dest with retries, rename;
- * on EPERM/EEXIST/ENOTEMPTY/ESRCH fall back / retry. Mid-failure restores dest from
- * tmp when possible so consumers never keep a half-deleted dist.
+ * ENSURE_DIST_ONLY_CONSUMERS — optional comma-separated consumer dirs to overlay
+ * (instead of every built-in consumer). Consumer predev/prepare/postinstall MUST
+ * set this to themselves so parallel `npm run dev` cannot tear each other's
+ * node_modules/pi-kiosk-shared/dist. Bare `node scripts/ensureDist.mjs` still
+ * overlays all consumers (ops / prove / manual heal).
+ *
+ * replaceDir is Windows-safe: stage under os.tmpdir(), then in-place cpSync into
+ * dest only (never wipe dest before new bytes). Mid-failure restores dest from
+ * tmp when possible. After each overlay, assert dist/index.js exists.
  */
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -48,9 +54,18 @@ const extraConsumers = (process.env.ENSURE_DIST_EXTRA_CONSUMERS ?? '')
   .filter(Boolean);
 const allConsumers = [...CONSUMERS, ...extraConsumers];
 
+/** Optional: overlay only these consumers (consumer hooks set this to self). */
+const onlyConsumers = (process.env.ENSURE_DIST_ONLY_CONSUMERS ?? '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+const consumersToOverlay =
+  onlyConsumers.length > 0 ? onlyConsumers : allConsumers;
+
 const RM_OPTS = { recursive: true, force: true, maxRetries: 15, retryDelay: 100 };
 const LOCK_WAIT_MS = 120_000;
 const LOCK_STALE_MS = 180_000;
+const LOCK_HEARTBEAT_MS = 15_000;
 
 /**
  * @param {number} ms
@@ -76,7 +91,45 @@ function isTransientFsError(err) {
 }
 
 /**
+ * @param {number} pid
+ * @returns {boolean}
+ */
+function isPidAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) {
+    return false;
+  }
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (err) {
+    const code = err && typeof err === 'object' ? /** @type {{ code?: string }} */ (err).code : undefined;
+    // EPERM: process exists but we cannot signal it — treat as alive.
+    return code === 'EPERM';
+  }
+}
+
+/**
+ * @returns {{ pid: number | null, ageMs: number } | null}
+ */
+function readLockMeta() {
+  try {
+    const stat = fs.statSync(lockPath);
+    const raw = fs.readFileSync(lockPath, 'utf8');
+    const firstLine = raw.split(/\r?\n/, 1)[0]?.trim() ?? '';
+    const pid = Number.parseInt(firstLine, 10);
+    return {
+      pid: Number.isInteger(pid) ? pid : null,
+      ageMs: Date.now() - stat.mtimeMs,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Cross-process mutex so overlapping predev/prepare/postinstall cannot race overlays.
+ * Stale locks are removed only when the holder PID is dead (or age exceeds LOCK_STALE_MS
+ * and the PID cannot be read) — never while a live holder is still compiling/overlaying.
  * @template T
  * @param {() => T} fn
  * @returns {T}
@@ -85,6 +138,8 @@ function withEnsureDistLock(fn) {
   const started = Date.now();
   /** @type {number | undefined} */
   let fd;
+  /** @type {ReturnType<typeof setInterval> | undefined} */
+  let heartbeat;
   for (;;) {
     try {
       fd = fs.openSync(lockPath, 'wx');
@@ -95,17 +150,24 @@ function withEnsureDistLock(fn) {
       if (code !== 'EEXIST') {
         throw err;
       }
-      try {
-        const ageMs = Date.now() - fs.statSync(lockPath).mtimeMs;
-        if (ageMs > LOCK_STALE_MS) {
+      const meta = readLockMeta();
+      if (meta) {
+        const holderAlive = meta.pid !== null && isPidAlive(meta.pid);
+        const staleByAge = meta.ageMs > LOCK_STALE_MS && !holderAlive;
+        const staleDeadHolder = meta.pid !== null && !holderAlive;
+        if (staleDeadHolder || staleByAge) {
           console.warn(
-            `[ensureDist] WARNING: stale lock ${lockPath} (age ${Math.round(ageMs / 1000)}s); removing and retrying.`
+            `[ensureDist] WARNING: stale lock ${lockPath} ` +
+              `(pid=${meta.pid ?? 'unknown'}, age ${Math.round(meta.ageMs / 1000)}s, alive=${holderAlive}); ` +
+              'removing and retrying.'
           );
-          fs.rmSync(lockPath, { force: true });
+          try {
+            fs.rmSync(lockPath, { force: true });
+          } catch {
+            // retry acquire
+          }
           continue;
         }
-      } catch {
-        // lock vanished between EEXIST and stat — retry acquire
       }
       if (Date.now() - started > LOCK_WAIT_MS) {
         throw new Error(
@@ -118,9 +180,25 @@ function withEnsureDistLock(fn) {
     }
   }
 
+  // Keep mtime fresh so waiters never treat a long tsc/overlay as stale.
+  heartbeat = setInterval(() => {
+    try {
+      const now = new Date();
+      fs.utimesSync(lockPath, now, now);
+    } catch {
+      // lock may already be released
+    }
+  }, LOCK_HEARTBEAT_MS);
+  if (typeof heartbeat.unref === 'function') {
+    heartbeat.unref();
+  }
+
   try {
     return fn();
   } finally {
+    if (heartbeat !== undefined) {
+      clearInterval(heartbeat);
+    }
     if (fd !== undefined) {
       try {
         fs.closeSync(fd);
@@ -140,13 +218,16 @@ function withEnsureDistLock(fn) {
  * @param {string} src
  * @param {string} dest
  * @param {number} [attempts]
+ * @param {{ wipeDest?: boolean }} [opts] wipeDest=true only for disposable tmp dirs —
+ *   never wipe a live consumer dist (empty-window race with tsx/vite).
  */
-function cpSyncRetry(src, dest, attempts = 6) {
+function cpSyncRetry(src, dest, attempts = 6, opts = {}) {
+  const wipeDest = opts.wipeDest !== false;
   /** @type {unknown} */
   let lastErr;
   for (let i = 0; i < attempts; i += 1) {
     try {
-      if (fs.existsSync(dest)) {
+      if (wipeDest && fs.existsSync(dest)) {
         fs.rmSync(dest, RM_OPTS);
       }
       fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -157,10 +238,12 @@ function cpSyncRetry(src, dest, attempts = 6) {
       if (!isTransientFsError(err) || i === attempts - 1) {
         throw err;
       }
-      try {
-        fs.rmSync(dest, RM_OPTS);
-      } catch {
-        // ignore partial tree
+      if (wipeDest) {
+        try {
+          fs.rmSync(dest, RM_OPTS);
+        } catch {
+          // ignore partial tree
+        }
       }
       sleepSync(50 * (i + 1) * (i + 1));
     }
@@ -196,9 +279,50 @@ function restoreDestFromTmp(tmp, dest) {
 }
 
 /**
+ * Remove files/dirs under `dest` that are not present under `src` (same relative path).
+ * @param {string} src
+ * @param {string} dest
+ */
+function pruneExtras(src, dest) {
+  if (!fs.existsSync(dest)) {
+    return;
+  }
+  /** @type {string[]} */
+  const stack = [dest];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current === undefined) {
+      break;
+    }
+    let entries;
+    try {
+      entries = fs.readdirSync(current, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      const destPath = path.join(current, entry.name);
+      const rel = path.relative(dest, destPath);
+      const srcPath = path.join(src, rel);
+      if (!fs.existsSync(srcPath)) {
+        try {
+          fs.rmSync(destPath, RM_OPTS);
+        } catch {
+          // ignore locked leftovers
+        }
+        continue;
+      }
+      if (entry.isDirectory()) {
+        stack.push(destPath);
+      }
+    }
+  }
+}
+
+/**
  * Replace `dest` with contents of `src` in a Windows-safe way.
- * Stages under os.tmpdir() (not a node_modules sibling) to avoid concurrent
- * rm/cp races deleting a mid-copy tree (ESRCH on Windows).
+ * Stages under os.tmpdir(), then merges in place — never deletes `dest` first
+ * (that empty window races concurrent `tsx`/`vite` imports of dist/index.js).
  * @param {string} src
  * @param {string} dest
  */
@@ -212,31 +336,58 @@ function replaceDir(src, dest) {
   } catch {
     // ignore
   }
-  cpSyncRetry(src, tmp);
+  // tmp is disposable — wipe+copy OK.
+  cpSyncRetry(src, tmp, 6, { wipeDest: true });
 
-  try {
-    fs.rmSync(dest, RM_OPTS);
-  } catch {
-    // Dest may still exist (locked). Rename or copy fallback handles it.
-  }
-
-  try {
-    fs.renameSync(tmp, dest);
-    return;
-  } catch (renameErr) {
-    if (!isTransientFsError(renameErr)) {
-      restoreDestFromTmp(tmp, dest);
-      throw renameErr;
+  /** @type {unknown} */
+  let lastErr;
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    try {
+      fs.mkdirSync(dest, { recursive: true });
+      fs.cpSync(tmp, dest, { recursive: true });
+      pruneExtras(tmp, dest);
+      fs.rmSync(tmp, RM_OPTS);
+      return;
+    } catch (err) {
+      lastErr = err;
+      if (!isTransientFsError(err) || attempt === 7) {
+        break;
+      }
+      sleepSync(50 * (attempt + 1) * (attempt + 1));
     }
   }
 
-  // Windows: dest often locked / cross-device rename fails — copy into place.
+  // Last resort: still merge-only (wipeDest: false) — never empty dest.
   try {
-    cpSyncRetry(tmp, dest);
+    cpSyncRetry(tmp, dest, 6, { wipeDest: false });
+    pruneExtras(tmp, dest);
     fs.rmSync(tmp, RM_OPTS);
   } catch (copyErr) {
     restoreDestFromTmp(tmp, dest);
-    throw copyErr;
+    throw copyErr ?? lastErr;
+  }
+}
+
+/**
+ * Fail closed if overlay left a consumer without a resolvable main entry.
+ * @param {string} destRoot
+ * @param {string} consumer
+ */
+function assertConsumerOverlay(destRoot, consumer) {
+  const indexJs = path.join(destRoot, 'dist', 'index.js');
+  if (!fs.existsSync(indexJs)) {
+    throw new Error(
+      `[ensureDist] overlay incomplete for ${consumer}: missing ${indexJs}. ` +
+        'Likely a concurrent ensureDist or antivirus lock. Recovery: stop other ' +
+        '`npm run dev` / ensure-shared processes, delete shared/.ensureDist.lock if ' +
+        'stale, then re-run ensureDist from this package.'
+    );
+  }
+  if (fs.statSync(indexJs).size < 1) {
+    throw new Error(
+      `[ensureDist] overlay incomplete for ${consumer}: empty ${indexJs}. ` +
+        'Recovery: re-run ensureDist after closing IDE/antivirus locks on node_modules.'
+    );
   }
 }
 
@@ -256,7 +407,7 @@ function runEnsureDist() {
 
   const skippedConsumers = [];
 
-  for (const consumer of allConsumers) {
+  for (const consumer of consumersToOverlay) {
     const nodeModules = path.join(repoRoot, consumer, 'node_modules');
     if (!fs.existsSync(nodeModules)) {
       skippedConsumers.push(consumer);
@@ -275,6 +426,7 @@ function runEnsureDist() {
       replaceDir(tokensSrc, path.join(destRoot, 'src', 'tokens'));
     }
 
+    assertConsumerOverlay(destRoot, consumer);
     console.log(`[ensureDist] overlaid ${packageName} into ${consumer}/node_modules`);
   }
 

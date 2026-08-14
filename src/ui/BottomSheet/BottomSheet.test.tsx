@@ -191,7 +191,9 @@ describe('BottomSheet', () => {
     expect(Boolean(page.inert)).toBe(true);
     expect(Boolean(screen.getByTestId('bottom-sheet').inert)).toBe(false);
     expect(screen.getByTestId('bottom-sheet-content').className).toContain('max-h-[85dvh]');
-    expect(screen.getByTestId('bottom-sheet').className).toContain('h-[100dvh]');
+    expect(screen.getByTestId('bottom-sheet').className).toContain(
+      'bottom-[var(--customer-bottom-chrome,0px)]',
+    );
 
     rerender(<Harness open={false} />);
     // open=false but still mounted for exit fade — page must stay inert

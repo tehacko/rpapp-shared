@@ -126,7 +126,10 @@ export function BottomSheet({
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-50 flex h-[100dvh] max-h-[100dvh] items-end justify-center"
+      // Clear `--customer-bottom-chrome` (BottomNav) so the sheet + backdrop sit
+      // above tab chrome — same offset token as StickyCart / Toast / cookie banner.
+      // Defaults to 0px when the token is unset (kiosk / non-customer hosts).
+      className="fixed inset-x-0 top-0 bottom-[var(--customer-bottom-chrome,0px)] z-50 flex items-end justify-center"
       data-testid={testId}
     >
       <button
@@ -178,14 +181,24 @@ export function BottomSheet({
               data-testid={`${testId}-close`}
               className={[
                 'inline-flex h-12 min-h-12 w-12 min-w-12 shrink-0 items-center justify-center self-start',
-                '-mt-1 rounded-full border border-[var(--color-border)] text-3xl leading-none',
+                '-mt-1 rounded-full border border-[var(--color-border)]',
                 'text-[var(--color-on-surface-muted)]',
                 'hover:bg-[var(--color-surface-hover,var(--color-surface-elevated))] hover:text-[var(--color-on-surface)]',
                 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus-ring,var(--color-accent))]',
                 'disabled:cursor-not-allowed disabled:opacity-50',
               ].join(' ')}
             >
-              ×
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
             </button>
           </header>
         ) : title ? (
