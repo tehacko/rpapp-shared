@@ -204,7 +204,9 @@ function applySurfaceScopeToStates(
       result.surface_kiosk = OFF;
       result.surface_customer = ON;
       result.customer_auth_pwa = ON;
-      result.realtime_device_transport = OFF;
+      // Customer shop catalog SSE (/events/:salesPointId) needs live transport
+      // without enabling the kiosk surface (bookstore / payment-only tenants).
+      result.realtime_device_transport = ON;
       break;
     case 'BOTH':
       result.surface_kiosk = ON;

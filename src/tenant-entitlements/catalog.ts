@@ -270,8 +270,10 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   {
     blockKey: 'realtime_device_transport',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['surface_kiosk'],
-    notes: 'WS/SSE',
+    parentKeys: ['surface_kiosk', 'surface_customer'],
+    parentOperator: 'OR',
+    notes:
+      'WS/SSE for kiosk and customer shop catalog live updates — entitled when either surface is on',
   },
   {
     blockKey: 'customer_auth_pwa',

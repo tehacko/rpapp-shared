@@ -39,6 +39,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.surface_kiosk).toBe('off');
     expect(states.surface_customer).toBe('on');
     expect(states.customer_auth_pwa).toBe('on');
+    expect(states.realtime_device_transport).toBe('on');
   });
 
   it('allows kiosk + donations only (previously impossible with bundled preset)', () => {
