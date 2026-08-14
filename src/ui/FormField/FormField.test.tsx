@@ -66,6 +66,15 @@ describe('FormField', () => {
     expect(error.className).toContain('text-[var(--color-danger)]');
   });
 
+  it('marks invalid without duplicating message text (summary owns copy)', () => {
+    render(<FormField label="Email" invalid />);
+
+    const input = screen.getByRole('textbox', { name: 'Email' });
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+    expect(input.className).toContain('border-[var(--color-danger)]');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
   it('renders admin error with admin danger token', () => {
     render(<FormField label="Email" surface="admin" errorText="Required" />);
 

@@ -84,6 +84,7 @@ export { DEFAULT_CUSTOMER_CONTACT_POLICY_PAYLOAD, normalizePhoneToE164, password
 export { isRateLimitError, getRetryAfterMs } from './http/rateLimitError.js';
 export { computePollRetryDelayMs, isServerOverloadPollError, } from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
+export { pickLocalizedApiMessage } from './errors/pickLocalizedApiMessage.js';
 export { createCoalescedRefetchScheduler, } from './catalog/createCoalescedRefetchScheduler.js';
 export { sha256Hex, isRealtimeEnvelope, verifyEnvelopeChecksum, isSupportedRealtimeEnvelopeVersion, SUPPORTED_REALTIME_EVENT_VERSION, REALTIME_SSE_VALIDATION_CODES, parseRealtimeCatalogSseMessage, unwrapRealtimeCatalogSsePayload, normalizeRealtimeCatalogSseEventData, } from './realtime/index.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';

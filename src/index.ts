@@ -156,6 +156,7 @@ export {
   type PollRetryBackoffOptions,
 } from './http/pollRetryBackoff.js';
 export { formatRateLimitMessage } from './errors/formatRateLimitMessage.js';
+export { pickLocalizedApiMessage } from './errors/pickLocalizedApiMessage.js';
 export {
   createCoalescedRefetchScheduler,
   type CoalescedRefetchScheduler,

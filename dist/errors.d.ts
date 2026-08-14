@@ -56,9 +56,10 @@ export interface ErrorResponse {
 export declare const formatError: (error: Error | AppError, details?: unknown) => ErrorResponse;
 /**
  * Get user-friendly error message from error object
- * Used in React components to display to users
+ * Used in React components to display to users.
+ * Pass `locale` (UI language) so CS/SK/EN slash-joined API copy is reduced to one language.
  */
-export declare const getErrorMessage: (error: Error | AppError) => string;
+export declare const getErrorMessage: (error: Error | AppError, locale?: string) => string;
 export declare const BANK_ERROR_CODES: {
     readonly BANK_ACCOUNT_PURPOSE_NOT_ALLOWED: "BANK_ACCOUNT_PURPOSE_NOT_ALLOWED";
     readonly BANK_ACCOUNT_NOT_CONFIGURED: "BANK_ACCOUNT_NOT_CONFIGURED";

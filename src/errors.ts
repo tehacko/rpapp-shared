@@ -32,7 +32,9 @@ export class AppError extends Error {
   }
 }
 
-/** CS / SK / EN user-facing copy (Czech-first, same convention as backend API messages). */
+import { pickLocalizedApiMessage } from './errors/pickLocalizedApiMessage.js';
+
+/** CS / SK / EN user-facing copy (Czech-first wire format; UI picks via pickLocalizedApiMessage). */
 function csSkEn(cs: string, sk: string, en: string): string {
   return `${cs} / ${sk} / ${en}`;
 }
@@ -193,59 +195,54 @@ export const formatError = (error: Error | AppError, details?: unknown): ErrorRe
 
 /**
  * Get user-friendly error message from error object
- * Used in React components to display to users
+ * Used in React components to display to users.
+ * Pass `locale` (UI language) so CS/SK/EN slash-joined API copy is reduced to one language.
  */
-export const getErrorMessage = (error: Error | AppError): string => {
+export const getErrorMessage = (error: Error | AppError, locale?: string): string => {
+  let message: string;
+
   if (error instanceof NetworkError) {
-    return csSkEn(
+    message = csSkEn(
       'Problém s připojením. Zkuste to znovu.',
       'Problém s pripojením. Skúste to znova.',
       'Connection problem. Please try again.'
     );
-  }
-
-  if (error instanceof ValidationError) {
-    return error.message;
-  }
-
-  if (error instanceof AuthenticationError) {
-    return csSkEn(
+  } else if (error instanceof ValidationError) {
+    message = error.message;
+  } else if (error instanceof AuthenticationError) {
+    message = csSkEn(
       'Neplatné přihlašovací údaje.',
       'Neplatné prihlasovacie údaje.',
       'Invalid credentials.'
     );
-  }
-
-  if (error instanceof NotFoundError) {
-    return error.message;
-  }
-
-  // Check for specific error messages
-  if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
-    return csSkEn(
+  } else if (error instanceof NotFoundError) {
+    message = error.message;
+  } else if (error.message.includes('Failed to fetch') || error.message.includes('fetch')) {
+    message = csSkEn(
       'Problém s připojením. Zkuste to znovu.',
       'Problém s pripojením. Skúste to znova.',
       'Connection problem. Please try again.'
     );
-  }
-
-  if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-    return csSkEn(
+  } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+    message = csSkEn(
       'Neplatné přihlašovací údaje.',
       'Neplatné prihlasovacie údaje.',
       'Invalid credentials.'
     );
+  } else {
+    message =
+      error.message ||
+      csSkEn(
+        'Něco se pokazilo. Zkuste to znovu.',
+        'Niečo sa pokazilo. Skúste to znova.',
+        'Something went wrong. Please try again.'
+      );
   }
 
-  // Return original message if available, otherwise generic
-  return (
-    error.message ||
-    csSkEn(
-      'Něco se pokazilo. Zkuste to znovu.',
-      'Niečo sa pokazilo. Skúste to znova.',
-      'Something went wrong. Please try again.'
-    )
-  );
+  if (locale !== undefined && locale.trim().length > 0) {
+    return pickLocalizedApiMessage(message, locale);
+  }
+  return message;
 };
 
 // Multi-bank reconciliation codes (Wave 1 forward compatibility).

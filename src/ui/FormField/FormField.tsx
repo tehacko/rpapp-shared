@@ -68,7 +68,17 @@ export interface FormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   readonly label: string;
   readonly surface?: FormFieldSurface;
   readonly helperText?: string;
+  /**
+   * Inline error copy. Prefer this only when the form has no FormErrorSummary.
+   * When FormErrorSummary owns the message, pass `invalid` instead so the text
+   * is not doubled (single source of truth).
+   */
   readonly errorText?: string;
+  /**
+   * Marks the control invalid (border + aria-invalid) without rendering message
+   * text. Use with FormErrorSummary so the summary is the sole copy channel.
+   */
+  readonly invalid?: boolean;
   /**
    * Custom control (e.g. Textarea). Receives `id`, `aria-*`, and invalid styling
    * props via clone. When omitted, FormField renders a default `<input>`.
@@ -90,6 +100,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       surface = 'customer',
       helperText,
       errorText,
+      invalid: invalidProp = false,
       id: providedId,
       required,
       children,
@@ -101,14 +112,15 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
     const id = providedId ?? `field-${generatedId}`;
     const helperId = `${id}-helper`;
     const errorId = `${id}-error`;
-    const invalid = errorText !== undefined && errorText.length > 0;
+    const showErrorText = errorText !== undefined && errorText.length > 0;
+    const invalid = showErrorText || invalidProp === true;
     const slots =
       surface === 'admin'
         ? adminField({ invalid })
         : consumerField({ surface, invalid });
 
     let describedBy: string | undefined;
-    if (invalid) {
+    if (showErrorText) {
       describedBy = errorId;
     } else if (helperText !== undefined) {
       describedBy = helperId;
@@ -151,7 +163,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           {required === true ? ' *' : null}
         </label>
         {control}
-        {invalid ? (
+        {showErrorText ? (
           <span id={errorId} role="alert" className={slots.error()}>
             {errorText}
           </span>
