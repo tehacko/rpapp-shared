@@ -144,9 +144,9 @@ export interface TenantCommandCenterWire {
   readonly paymentFlowSummary: TenantCommandCenterPaymentFlowSummary;
   readonly incidents: readonly TenantCommandCenterIncident[];
   /**
-   * Active SIC attention-queue total (§6.0.2).
-   * Summary tier: `0` (queue not loaded). Full tier: from
-   * `GetSuccessIncidentAttentionQueueSummaryUseCase.activeTotal`.
+   * Active SIC attention-queue total (§6.0.2). Tenant full tier is P0 only
+   * (urgent after “I paid”). Summary tier: `0` (queue not loaded).
+   * `GetSuccessIncidentAttentionQueueSummaryUseCase.activeTotal` with audience tenant.
    */
   readonly activeIncidentTotal: number;
   readonly topKiosks: readonly TenantCommandCenterTopKiosk[];

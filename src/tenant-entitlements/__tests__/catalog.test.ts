@@ -8,20 +8,28 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 49 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(49);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(49);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(49);
+  it('contains exactly 50 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(50);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(50);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
   });
 
-  it('uses catalog version 3 after admin_mfa', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(3);
+  it('uses catalog version 4 after inventory_incidents', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(4);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(49);
+    expect(new Set(keysFromCatalog).size).toBe(50);
+  });
+
+  it('includes inventory_incidents as CONDITIONAL child of inventory_management', () => {
+    const incidents = getEntitlementBlockCatalogEntry('inventory_incidents');
+    expect(incidents.blockClass).toBe('CONDITIONAL');
+    expect(incidents.parentKeys).toEqual(['inventory_management']);
+    expect(incidents.adminNavSectionId).toBe('inventory-incidents');
+    expect(incidents.capabilityHint).toBe('ops:inventory:read');
   });
 
   it('includes payment_cash as CONDITIONAL under payment_rails_strategy', () => {

@@ -115,4 +115,13 @@ describe('isTenantScopeLockedBlock', () => {
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').inventory_management).toBe('on');
     expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').inventory_management).toBe('off');
   });
+
+  it('defaults inventory_incidents to hardOff and keeps it independently toggleable when products are sold', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').inventory_incidents).toBe('hardOff');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').inventory_incidents).toBe('hardOff');
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').inventory_incidents).toBe('hardOff');
+    expect(isTenantScopeLockedBlock('inventory_incidents', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('inventory_incidents', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('inventory_incidents', 'DONATION_ONLY', 'BOTH')).toBe(true);
+  });
 });

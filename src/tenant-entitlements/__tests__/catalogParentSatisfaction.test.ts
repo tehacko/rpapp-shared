@@ -87,6 +87,18 @@ describe('areEntitlementBlockParentsSatisfied', () => {
     ).toBe(true);
   });
 
+  it('requires inventory_management for inventory_incidents', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'off' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'hardOff' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'on' }),
+    ).toBe(true);
+  });
+
   it('requires payment_reconciliation for payments_hub_ui / bank_inbox_claims_api', () => {
     expect(
       areEntitlementBlockParentsSatisfied('payments_hub_ui', { payment_reconciliation: 'off' }),
@@ -150,6 +162,15 @@ describe('areEntitlementBlockParentsSatisfied', () => {
 });
 
 describe('applyCatalogParentDenialImplications', () => {
+  it('forces inventory_incidents hardOff when inventory_management is hardOff', () => {
+    const implied = applyCatalogParentDenialImplications({
+      inventory_management: 'hardOff',
+      inventory_incidents: 'on',
+    });
+
+    expect(implied.inventory_incidents).toBe('hardOff');
+  });
+
   it('forces payments_hub_ui and bank_inbox_claims_api hardOff when payment_reconciliation is hardOff', () => {
     const implied = applyCatalogParentDenialImplications({
       payment_reconciliation: 'hardOff',

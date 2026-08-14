@@ -51,9 +51,12 @@ export function applySimpleStateDependencyImplications(
   const result: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> = { ...states };
 
   const vendingActive = isRuntimeActiveSimpleState(result.product_vending);
-  const inventoryActive = isRuntimeActiveSimpleState(result.inventory_management);
   const loyaltyActive = isRuntimeActiveSimpleState(result.loyalty_program);
   const promotionsActive = isRuntimeActiveSimpleState(result.promotions_program);
+
+  // inventory_incidents is a catalog child of inventory_management (PARENT-01 cascade-off).
+  // Child On must not imply parent On — inventory_management stays purpose-locked.
+  const inventoryActive = isRuntimeActiveSimpleState(result.inventory_management);
 
   if (inventoryActive) {
     if (!vendingActive) {

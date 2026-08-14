@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 49 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 50 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -143,6 +143,15 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentOperator: 'AND',
     adminNavSectionId: 'inventory',
     capabilityHint: 'ops:inventory:read',
+  },
+  {
+    blockKey: 'inventory_incidents',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['inventory_management'],
+    adminNavSectionId: 'inventory-incidents',
+    capabilityHint: 'ops:inventory:read',
+    notes:
+      'Child of inventory_management — parent must be On to enable; parent Off/HardOff forces child Off/HardOff (PARENT-01). Child On does not imply parent On. Seed: hardOff for min/bookstore; On for full-demo/max',
   },
   {
     blockKey: 'loyalty_program',

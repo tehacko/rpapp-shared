@@ -160,6 +160,20 @@ export {
   createCoalescedRefetchScheduler,
   type CoalescedRefetchScheduler,
 } from './catalog/createCoalescedRefetchScheduler.js';
+export {
+  sha256Hex,
+  isRealtimeEnvelope,
+  verifyEnvelopeChecksum,
+  isSupportedRealtimeEnvelopeVersion,
+  SUPPORTED_REALTIME_EVENT_VERSION,
+  REALTIME_SSE_VALIDATION_CODES,
+  parseRealtimeCatalogSseMessage,
+  unwrapRealtimeCatalogSsePayload,
+  normalizeRealtimeCatalogSseEventData,
+  type RealtimeEnvelope,
+  type ParseRealtimeCatalogSseResult,
+  type ParseRealtimeCatalogSseStatus,
+} from './realtime/index.js';
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
 export * from './barcode/index.js';
 export * from './tenant-entitlements/index.js';

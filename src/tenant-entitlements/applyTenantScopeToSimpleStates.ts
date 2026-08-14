@@ -55,6 +55,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     comms_governance: ON,
     tenant_ops_settings: ON,
     inventory_management: OFF,
+    inventory_incidents: HARD_OFF,
     loyalty_program: OFF,
     promotions_program: OFF,
   };
@@ -91,6 +92,7 @@ export function isProductCommerceAllowed(allowedPurposes: TenantAllowedPurposes)
 const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
   'inventory_management',
+  'inventory_incidents',
   'loyalty_program',
   'promotions_program',
   'analytics_summary',
@@ -162,6 +164,7 @@ function applyAllowedPurposesToStates(
       result.product_vending = OFF;
       result.donation = ON;
       result.inventory_management = OFF;
+      result.inventory_incidents = HARD_OFF;
       result.loyalty_program = OFF;
       result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;
