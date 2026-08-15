@@ -26,7 +26,11 @@ export interface CustomerContactPolicyPayload {
   verifyBothRequired: boolean;
   /** `both_required` | `both_loose` — leftover Ověřit stays optional after one channel. */
   optionalSecondVerify: boolean;
-  /** OIDC add-phone is always optional (G8). */
+  /**
+   * OIDC skippable add-phone one-shot — true only for `email` | `both_loose`.
+   * False for `phone` | `both_required` | `both_enforce` (session gate; not
+   * the same as profile upsert `oidcExemptPhone`). Payload field stays boolean.
+   */
   oidcPhoneOptional: boolean;
   /** Policy allows phone and SMS OTP transport is ready. */
   phoneOtpAvailable: boolean;

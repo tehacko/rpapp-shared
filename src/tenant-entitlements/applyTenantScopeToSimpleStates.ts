@@ -54,6 +54,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     mission_control: ON,
     comms_governance: ON,
     tenant_ops_settings: ON,
+    audit_logs_admin_ui: ON,
     inventory_management: OFF,
     inventory_incidents: HARD_OFF,
     loyalty_program: OFF,

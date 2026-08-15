@@ -74,6 +74,91 @@ describe('APIClient', () => {
     });
   });
 
+  it('G5/G16 — kiosk shared client picks one locale from slash-joined error (no " / ")', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      statusText: 'Bad Request',
+      headers: { get: () => null },
+      json: async () => ({
+        error:
+          'Neplatné přihlašovací údaje / Neplatné prihlasovacie údaje / Invalid credentials',
+        code: 'INVALID_CREDENTIALS',
+      }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const client = new APIClient('https://api.example', 'secret', 'acme', 1, 'cs');
+    let caught: unknown;
+    try {
+      await client.get('/api/products');
+    } catch (err) {
+      caught = err;
+    }
+    expect(caught).toBeInstanceOf(Error);
+    const message = (caught as Error).message;
+    expect(message).toContain('Neplatné přihlašovací údaje');
+    expect(message.includes(' / ')).toBe(false);
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'Accept-Language': expect.stringMatching(/^cs/i),
+        }),
+      }),
+    );
+  });
+
+  it('sends Accept-Language and picks CS/SK/EN error copy by locale', async () => {
+    const tri = 'Neplatné přihlašovací údaje / Neplatné prihlasovacie údaje / Invalid credentials';
+    const fetchMock = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+      statusText: 'Unauthorized',
+      headers: { get: () => null },
+      json: async () => ({ error: tri }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const csClient = new APIClient('https://api.example', undefined, undefined, undefined, 'cs');
+    await expect(csClient.get('/api/x')).rejects.toThrow(
+      'HTTP 401: Neplatné přihlašovací údaje',
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'Accept-Language': 'cs',
+        }),
+      }),
+    );
+
+    const enClient = createAPIClient('https://api.example', undefined, undefined, undefined, 'en');
+    await expect(enClient.get('/api/x')).rejects.toThrow('HTTP 401: Invalid credentials');
+    expect(enClient.getLocale()).toBe('en');
+  });
+
+  it('defaults Accept-Language to cs when locale omitted', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({
+      ok: true,
+      headers: { get: () => null },
+      json: async () => ({ ok: true }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const client = createAPIClient('https://api.example');
+    expect(client.getLocale()).toBe('cs');
+    await client.get('/api/products');
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'Accept-Language': 'cs',
+        }),
+      }),
+    );
+  });
+
   it('handles non-json error bodies and invalid endpoints', async () => {
     const fetchMock = jest.fn().mockResolvedValue({
       ok: false,

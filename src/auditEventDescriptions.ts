@@ -134,9 +134,9 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     sk: 'Zapíše sa, keď sa zákazník prihlási cez Google alebo Apple. Jeden riadok za úspešné federované prihlásenie.',
   },
   'customer.oidc.email_merged': {
-    en: 'Recorded when a verified IdP email silently merges onto an existing customer account. One line per merge. Tokens are never stored.',
-    cs: 'Zapíše se, když ověřený e-mail z Google/Apple tiše sloučí existující zákaznický účet. Jeden řádek za sloučení. Tokeny se neukládají.',
-    sk: 'Zapíše sa, keď overený e-mail z Google/Apple potichu zlúči existujúci zákaznícky účet. Jeden riadok za zlúčenie. Tokeny sa neukladajú.',
+    en: 'Historical: verified IdP email was associated with an existing customer (silent merge retired; live path requires Account Link). One line per past merge. Tokens are never stored.',
+    cs: 'Historické: ověřený e-mail z Google/Apple byl přiřazen k existujícímu zákaznickému účtu (tiché sloučení zrušeno; živá cesta vyžaduje propojení účtu). Jeden řádek za minulé sloučení. Tokeny se neukládají.',
+    sk: 'Historické: overený e-mail z Google/Apple bol priradený k existujúcemu zákazníckemu účtu (tiché zlúčenie zrušené; živá cesta vyžaduje prepojenie účtu). Jeden riadok za minulé zlúčenie. Tokeny sa neukladajú.',
   },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',

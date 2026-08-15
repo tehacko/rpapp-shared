@@ -22,15 +22,20 @@ export function resolveLocalizedLabel(label: LocalizedLabel, locale: LabelLocale
   return label.en ?? label.cs;
 }
 
-/** Map an i18n language / BCP-47 tag to a LabelLocale. */
+/**
+ * Map an i18n language / BCP-47 tag to a LabelLocale.
+ * Trim + case-insensitive; unknown / missing → `cs` (platform default).
+ * Must stay identical to backend `pickLocalizedApiMessage` locale normalize (G5).
+ */
 export function normalizeLabelLocale(language: string | undefined): LabelLocale {
-  if (language?.startsWith('sk')) {
+  const primary = (language ?? 'cs').trim().toLowerCase();
+  if (primary.startsWith('sk')) {
     return 'sk';
   }
-  if (language?.startsWith('cs')) {
-    return 'cs';
+  if (primary.startsWith('en')) {
+    return 'en';
   }
-  return 'en';
+  return 'cs';
 }
 
 export function dotNotationToLabel(code: string): LocalizedLabel {

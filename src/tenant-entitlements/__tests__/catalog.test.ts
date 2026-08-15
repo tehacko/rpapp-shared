@@ -32,6 +32,19 @@ describe('tenant entitlement catalog', () => {
     expect(incidents.capabilityHint).toBe('ops:inventory:read');
   });
 
+  it('gdpr_consent_admin_ui has no tenant adminNavSectionId (platform DEV UI)', () => {
+    const gdpr = getEntitlementBlockCatalogEntry('gdpr_consent_admin_ui');
+    expect(gdpr.adminNavSectionId).toBeUndefined();
+    expect(gdpr.notes).toMatch(/dev\/compliance/i);
+  });
+
+  it('audit_logs_admin_ui is CONDITIONAL (DEV Feature Policy allow/deny)', () => {
+    const audit = getEntitlementBlockCatalogEntry('audit_logs_admin_ui');
+    expect(audit.blockClass).toBe('CONDITIONAL');
+    expect(audit.immutableDefaults).toBeUndefined();
+    expect(audit.adminNavSectionId).toBe('audit-logs');
+  });
+
   it('includes payment_cash as CONDITIONAL under payment_rails_strategy', () => {
     const paymentCash = getEntitlementBlockCatalogEntry('payment_cash');
     expect(paymentCash.blockClass).toBe('CONDITIONAL');

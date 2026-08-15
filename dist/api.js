@@ -1,6 +1,8 @@
 import { readRequestId, setClientCorrelationId, } from './logging/index.js';
 // Bridge only — must NOT import ./sentry/initSentry.js (static @sentry/react breaks Node/backend).
 import { setSentryCorrelationId } from './sentry/correlationTagBridge.js';
+import { pickLocalizedApiMessage } from './errors/pickLocalizedApiMessage.js';
+import { buildPromoApplyAcceptLanguage } from './promo/resolveApplyPromoEventDisplayName.js';
 /**
  * Shared API Utilities
  *
@@ -102,7 +104,9 @@ export class APIClient {
     kioskSecret;
     tenantCode;
     salesPointId;
-    constructor(baseUrl, kioskSecret, tenantCode, salesPointId) {
+    /** UI locale for Accept-Language + error message pick (default `cs`). */
+    locale;
+    constructor(baseUrl, kioskSecret, tenantCode, salesPointId, locale) {
         if (!baseUrl || typeof baseUrl !== 'string') {
             throw new Error('APIClient: baseUrl is required and must be a string');
         }
@@ -110,6 +114,14 @@ export class APIClient {
         this.kioskSecret = kioskSecret;
         this.tenantCode = tenantCode;
         this.salesPointId = salesPointId;
+        this.locale = normalizeApiClientLocale(locale);
+    }
+    /** Update UI locale used for Accept-Language and pickLocalizedApiMessage. */
+    setLocale(locale) {
+        this.locale = normalizeApiClientLocale(locale);
+    }
+    getLocale() {
+        return this.locale;
     }
     injectTenantIntoEndpoint(endpoint) {
         if (!this.tenantCode) {
@@ -140,8 +152,10 @@ export class APIClient {
         }
         const headers = {
             'Content-Type': 'application/json',
+            'Accept-Language': buildPromoApplyAcceptLanguage(this.locale),
             ...(options.headers || {}),
         };
+        ensureAcceptLanguageHeader(headers, this.locale);
         // Add sales point device headers when available
         if (this.kioskSecret) {
             headers['X-Sales-Point-Secret'] = this.kioskSecret;
@@ -171,6 +185,7 @@ export class APIClient {
             catch {
                 // keep statusText
             }
+            message = pickLocalizedApiMessage(message, this.locale);
             if (requestId !== undefined) {
                 setClientCorrelationId(requestId);
                 setSentryCorrelationId(requestId);
@@ -208,7 +223,10 @@ export class APIClient {
         }
         const tenantEndpoint = this.injectTenantIntoEndpoint(endpoint);
         const url = `${this.baseUrl}${tenantEndpoint}`;
-        const headers = { 'Content-Type': 'application/json' };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept-Language': buildPromoApplyAcceptLanguage(this.locale),
+        };
         if (ifNoneMatch) {
             headers['If-None-Match'] = ifNoneMatch;
         }
@@ -231,7 +249,8 @@ export class APIClient {
             return { status: 304, etag };
         }
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const statusMessage = pickLocalizedApiMessage(response.statusText, this.locale);
+            throw new Error(`HTTP ${response.status}: ${statusMessage}`);
         }
         const data = (await response.json());
         return { status: 200, data, etag };
@@ -252,16 +271,33 @@ export class APIClient {
         return this.request(endpoint, { method: 'DELETE' });
     }
 }
+/** Normalize optional UI locale; empty / missing → `cs` (platform default). */
+export function normalizeApiClientLocale(locale) {
+    if (typeof locale === 'string' && locale.trim().length > 0) {
+        return locale.trim();
+    }
+    return 'cs';
+}
+/**
+ * Ensure Accept-Language is set (caller headers win when already present).
+ */
+function ensureAcceptLanguageHeader(headers, locale) {
+    const hasAcceptLanguage = Object.keys(headers).some((key) => key.toLowerCase() === 'accept-language');
+    if (!hasAcceptLanguage) {
+        headers['Accept-Language'] = buildPromoApplyAcceptLanguage(locale);
+    }
+}
 /**
  * Factory function to create API client
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
  * @param salesPointId - Optional sales point id (sent as `X-Sales-Point-Id` when set; pair with secret for device auth)
+ * @param locale - Optional UI locale for Accept-Language + error pick (defaults to `cs`)
  */
-export const createAPIClient = (baseUrl, kioskSecret, tenantCode, salesPointId) => {
+export const createAPIClient = (baseUrl, kioskSecret, tenantCode, salesPointId, locale) => {
     // Fallback to default if not provided
     const url = baseUrl || 'http://localhost:3015';
-    return new APIClient(url, kioskSecret, tenantCode, salesPointId);
+    return new APIClient(url, kioskSecret, tenantCode, salesPointId, locale);
 };
 //# sourceMappingURL=api.js.map

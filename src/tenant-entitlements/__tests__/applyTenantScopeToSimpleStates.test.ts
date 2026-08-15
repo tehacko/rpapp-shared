@@ -57,6 +57,13 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(inferSurfaceScopeFromSimpleStates(states)).toBe('BOTH');
   });
 
+  it('defaults audit_logs_admin_ui ON in baseline (DEV Feature Policy allow/deny)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').audit_logs_admin_ui).toBe('on');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'CUSTOMER_ONLY').audit_logs_admin_ui).toBe(
+      'on',
+    );
+  });
+
   it('stripAxisControlledSimpleStates removes axis keys only', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY', {
       analytics_summary: 'off',

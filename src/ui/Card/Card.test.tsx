@@ -7,6 +7,7 @@ import '@testing-library/jest-dom';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import { Card } from './Card.js';
+import { applyJsdomColumnFillFromParent } from './jsdomColumnFillLayout.js';
 
 const responsiveCssPath = join(__dirname, '../../tokens/responsive.css');
 
@@ -55,7 +56,11 @@ describe('Card', () => {
   beforeAll(() => {
     const style = document.createElement('style');
     style.setAttribute('data-testid', 'responsive-contract-css');
-    style.textContent = readFileSync(responsiveCssPath, 'utf8');
+    style.textContent = [
+      readFileSync(responsiveCssPath, 'utf8'),
+      /* Tailwind utilities are not compiled in Jest — stub height fill only. */
+      '.h-full { height: 100%; }',
+    ].join('\n');
     document.head.appendChild(style);
   });
 
@@ -148,5 +153,38 @@ describe('Card', () => {
     expect(css).toContain('@container rp-card (min-width: 28rem)');
     expect(css).toContain('--rp-card-content-gap: 1rem');
     expect(css).toContain('@media (min-width: 1024px)');
+  });
+
+  it('measured height: inner fills stretched outer when parent height is definite (G1)', () => {
+    const PARENT_H = 400;
+    const PARENT_W = 320;
+
+    const { container } = render(
+      <div
+        data-testid="card-stretch-parent"
+        style={{ height: `${PARENT_H}px`, width: `${PARENT_W}px` }}
+      >
+        <Card className="h-full" padded={false}>
+          <div data-testid="card-fill-child" className="h-full">
+            Stretched
+          </div>
+        </Card>
+      </div>,
+    );
+
+    const parent = screen.getByTestId('card-stretch-parent');
+    const outer = container.querySelector('.rp-card-container') as HTMLElement;
+    const inner = container.querySelector('.rp-card-container-inner') as HTMLElement;
+
+    expect(getComputedStyle(outer).display).toBe('flex');
+    expect(getComputedStyle(outer).flexDirection).toBe('column');
+    expect(getComputedStyle(inner).flexGrow).toBe('1');
+    expect(getComputedStyle(outer).height).toBe('100%');
+
+    applyJsdomColumnFillFromParent(parent, PARENT_W, PARENT_H);
+
+    expect(outer.offsetHeight).toBe(PARENT_H);
+    expect(Math.abs(inner.offsetHeight - outer.offsetHeight)).toBeLessThanOrEqual(1);
+    expect(screen.getByTestId('card-fill-child').offsetHeight).toBe(inner.offsetHeight);
   });
 });

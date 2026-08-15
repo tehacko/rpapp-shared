@@ -92,7 +92,12 @@ export declare class APIClient {
     private kioskSecret?;
     private tenantCode?;
     private salesPointId?;
-    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number);
+    /** UI locale for Accept-Language + error message pick (default `cs`). */
+    private locale;
+    constructor(baseUrl: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number, locale?: string);
+    /** Update UI locale used for Accept-Language and pickLocalizedApiMessage. */
+    setLocale(locale: string | undefined): void;
+    getLocale(): string;
     private injectTenantIntoEndpoint;
     private request;
     get<T>(endpoint: string, headers?: Record<string, string>): Promise<T>;
@@ -108,12 +113,15 @@ export declare class APIClient {
     put<T>(endpoint: string, data?: unknown): Promise<T>;
     delete<T>(endpoint: string): Promise<T>;
 }
+/** Normalize optional UI locale; empty / missing → `cs` (platform default). */
+export declare function normalizeApiClientLocale(locale: string | undefined): string;
 /**
  * Factory function to create API client
  * @param baseUrl - Optional API base URL (defaults to localhost:3015)
  * @param kioskSecret - Optional kiosk authentication secret
  * @param tenantCode - Optional tenant code for multi-tenant routing
  * @param salesPointId - Optional sales point id (sent as `X-Sales-Point-Id` when set; pair with secret for device auth)
+ * @param locale - Optional UI locale for Accept-Language + error pick (defaults to `cs`)
  */
-export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number) => APIClient;
+export declare const createAPIClient: (baseUrl?: string, kioskSecret?: string, tenantCode?: string, salesPointId?: number, locale?: string) => APIClient;
 //# sourceMappingURL=api.d.ts.map

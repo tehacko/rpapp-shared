@@ -30,10 +30,19 @@
 .rp-card-container {
   container-type: inline-size;
   container-name: rp-card;
+  /* Single child (inner): flex fill so grid-stretched / h-full cards
+     propagate height to consumers (e.g. ProductCard mt-auto). When the
+     outer height is auto, flex-basis:auto keeps content-sized cards. */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .rp-card-container-inner {
   --rp-card-content-gap: 0.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 .rp-kpi-container {
