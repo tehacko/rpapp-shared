@@ -78,6 +78,8 @@ export declare const API_ENDPOINTS: {
     readonly HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: "/health/payment-providers/check-bank-transfer";
     readonly CHECK_TRANSACTIONS: "/api/check-new-transactions";
     readonly EVENTS: "/events/:salesPointId";
+    /** Public SSE — Obchody / customer directory inventory-parity updates. */
+    readonly PUBLIC_DIRECTORY_EVENTS: "/api/v1/public/directory/events";
 };
 /**
  * Typed HTTP client for API communication

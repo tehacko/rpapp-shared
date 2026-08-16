@@ -100,7 +100,9 @@ export const API_ENDPOINTS = {
   HEALTH_PAYMENT_PROVIDERS: '/health/payment-providers',
   HEALTH_PAYMENT_PROVIDERS_CHECK_BANK_TRANSFER: '/health/payment-providers/check-bank-transfer',
   CHECK_TRANSACTIONS: '/api/check-new-transactions',
-  EVENTS: '/events/:salesPointId'
+  EVENTS: '/events/:salesPointId',
+  /** Public SSE — Obchody / customer directory inventory-parity updates. */
+  PUBLIC_DIRECTORY_EVENTS: '/api/v1/public/directory/events',
 } as const;
 
 // ===== API Client =====
