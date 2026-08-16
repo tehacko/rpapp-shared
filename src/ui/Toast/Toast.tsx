@@ -65,7 +65,7 @@ export function Toast({
       aria-live={ariaLive}
       aria-atomic="true"
       className={[
-        'flex items-start gap-3 rounded-md border px-3 py-2 text-sm shadow-sm',
+        'flex min-w-0 max-w-full items-start gap-3 overflow-hidden rounded-md border px-3 py-2 text-sm shadow-sm',
         VARIANT_CLASS[variant],
         OVERLAY_MOTION_TRANSITION,
         motionState,
@@ -77,7 +77,7 @@ export function Toast({
       data-variant={variant}
       {...rest}
     >
-      <p className="m-0 flex-1">{message}</p>
+      <p className="m-0 min-w-0 flex-1 break-words">{message}</p>
       {onDismiss ? (
         <button
           type="button"

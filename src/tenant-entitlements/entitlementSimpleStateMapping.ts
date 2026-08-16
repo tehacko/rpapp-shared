@@ -4,6 +4,12 @@ import type { EntitlementBlockAxes, EntitlementBlockClass, EntitlementBlockKey, 
 const CORE_REQUIRED_ON: SimpleEntitlementState = 'on';
 
 export function axesToSimpleState(axes: EntitlementBlockAxes): SimpleEntitlementState {
+  // Legacy CORE_IMMUTABLE rows (and ALWAYS_ON immutableDefaults) used runtimeMode
+  // ALWAYS_ON — treat as Zapnuto so Feature Policy does not show false "Vypnuto"
+  // and save round-trips migrate ALWAYS_ON → ENABLED for CONDITIONAL blocks.
+  if (axes.runtimeMode === 'ALWAYS_ON') {
+    return 'on';
+  }
   if (
     axes.runtimeMode === 'ENABLED' &&
     axes.visibilityMode === 'VISIBLE' &&

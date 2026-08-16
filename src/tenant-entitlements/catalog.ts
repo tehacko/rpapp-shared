@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 50 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 51 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -55,6 +55,13 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'kiosks',
     notes: 'Sales points in admin; DEV may HIDDEN+READ_ONLY (D-ENT-26)',
+  },
+  {
+    blockKey: 'sales_point_individual_settings',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['sales_point_management'],
+    notes:
+      'Per sales-point Mobilní obchod / mobile shop channel editor on Prodejní kanály. Default OFF — full-demo (railway-cafe / *-max) On',
   },
   {
     blockKey: 'catalog_administration',

@@ -36,6 +36,12 @@ const offAxes: EntitlementBlockAxes = {
   mutationMode: 'BLOCK_ALL',
 };
 
+const alwaysOnAxes: EntitlementBlockAxes = {
+  runtimeMode: 'ALWAYS_ON',
+  visibilityMode: 'VISIBLE',
+  mutationMode: 'READ_ONLY',
+};
+
 describe('axesToSimpleState', () => {
   it('maps known axis triples to simple states', () => {
     expect(axesToSimpleState(onAxes)).toBe('on');
@@ -43,6 +49,10 @@ describe('axesToSimpleState', () => {
     expect(axesToSimpleState(softOffHiddenAxes)).toBe('softOffHidden');
     expect(axesToSimpleState(hardOffAxes)).toBe('hardOff');
     expect(axesToSimpleState(offAxes)).toBe('off');
+  });
+
+  it('maps ALWAYS_ON (legacy immutable / pre-CONDITIONAL rows) to on', () => {
+    expect(axesToSimpleState(alwaysOnAxes)).toBe('on');
   });
 });
 
@@ -72,6 +82,16 @@ describe('simpleStatesFromPolicyAxes', () => {
     expect(states.loyalty_program).toBe('hardOff');
   });
 
+  it('maps legacy ALWAYS_ON audit_logs_admin_ui row to on (CONDITIONAL migration)', () => {
+    const states = simpleStatesFromPolicyAxes([
+      {
+        blockKey: 'audit_logs_admin_ui',
+        ...alwaysOnAxes,
+      },
+    ]);
+    expect(states.audit_logs_admin_ui).toBe('on');
+  });
+
   it('omits catalog blocks with no matching policy row', () => {
     const states = simpleStatesFromPolicyAxes([
       {
@@ -85,10 +105,9 @@ describe('simpleStatesFromPolicyAxes', () => {
 });
 
 describe('resolveSimpleStateForBlock', () => {
-  it('maps immutableDefaults through axesToSimpleState (ALWAYS_ON → off)', () => {
-    // ALWAYS_ON immutable axes are not an ENABLED triple — axesToSimpleState falls through to off.
-    expect(resolveSimpleStateForBlock('platform_core', {})).toBe('off');
-    expect(resolveSimpleStateForBlock('dev_entitlement_policy_editor', {})).toBe('off');
+  it('maps immutableDefaults through axesToSimpleState (ALWAYS_ON → on)', () => {
+    expect(resolveSimpleStateForBlock('platform_core', {})).toBe('on');
+    expect(resolveSimpleStateForBlock('dev_entitlement_policy_editor', {})).toBe('on');
   });
 
   it('forces CORE_REQUIRED to on', () => {

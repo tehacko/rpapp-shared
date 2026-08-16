@@ -8,20 +8,26 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 50 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(50);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(50);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
+  it('contains exactly 51 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(51);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
   });
 
-  it('uses catalog version 4 after inventory_incidents', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(4);
+  it('uses catalog version 5 after sales_point_individual_settings', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(5);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(50);
+    expect(new Set(keysFromCatalog).size).toBe(51);
+  });
+
+  it('includes sales_point_individual_settings as CONDITIONAL default-off under sales_point_management', () => {
+    const individual = getEntitlementBlockCatalogEntry('sales_point_individual_settings');
+    expect(individual.blockClass).toBe('CONDITIONAL');
+    expect(individual.parentKeys).toEqual(['sales_point_management']);
   });
 
   it('includes inventory_incidents as CONDITIONAL child of inventory_management', () => {

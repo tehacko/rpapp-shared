@@ -146,6 +146,13 @@ export {
   isDefaultOffRolloutBlockKey,
 } from './adminMfaEntitlement.js';
 
+export { SALES_POINT_INDIVIDUAL_SETTINGS_BLOCK_KEY } from './salesPointIndividualSettingsEntitlement.js';
+
+export {
+  PLATFORM_DEFAULT_ALLOW_DENY_BLOCK_KEYS,
+  isPlatformDefaultAllowDenyBlockKey,
+} from './platformDefaultAllowDeny.js';
+
 export {
   evaluateNavEntitlement,
   evaluateNavEntitlementFromVisible,

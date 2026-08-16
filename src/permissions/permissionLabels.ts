@@ -271,7 +271,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     sk: 'Prehratie outboxu — spustenie',
   },
   aggregates: { en: 'Aggregates', cs: 'Agregace', sk: 'Agregácie' },
-  successIncident: { en: 'Success incident', cs: 'Success incident', sk: 'Success incident' },
+  successIncident: { en: 'Success incident', cs: 'Centrum událostí', sk: 'Centrum udalostí' },
   hardeningMetrics: { en: 'Hardening metrics', cs: 'Hardening metriky', sk: 'Hardening metriky' },
   overview: { en: 'Platform overview', cs: 'Přehled platformy', sk: 'Prehľad platformy' },
   reconciliation: {

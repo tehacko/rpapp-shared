@@ -52,4 +52,19 @@ describe('Toast', () => {
     const exited = OVERLAY_MOTION_EXITED.split(/\s+/).every((t) => toast.className.includes(t));
     expect(entered || exited).toBe(true);
   });
+
+  it('wraps long unbroken tokens inside the message slot', () => {
+    const message =
+      'Skipping cached failure for GET|/api/v1/dev/aggregates/observability|default';
+    render(<Toast message={message} />);
+
+    const toast = screen.getByTestId('toast');
+    expect(toast.className).toContain('min-w-0');
+    expect(toast.className).toContain('overflow-hidden');
+
+    const paragraph = screen.getByText(message);
+    expect(paragraph.tagName).toBe('P');
+    expect(paragraph.className).toContain('min-w-0');
+    expect(paragraph.className).toContain('break-words');
+  });
 });
