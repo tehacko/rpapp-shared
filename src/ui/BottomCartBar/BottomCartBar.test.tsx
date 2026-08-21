@@ -90,6 +90,40 @@ describe('BottomCartBar appearance recipes', () => {
     expect(pay.className).not.toContain('text-[var(--color-accent-foreground)]');
   });
 
+  it('panel: Card elevated surface, no floating margins; accent pay CTA', () => {
+    render(<BottomCartBar {...baseProps} appearance="panel" />);
+
+    const bar = screen.getByTestId('bottom-cart-bar');
+    expect(bar).toHaveAttribute('data-appearance', 'panel');
+    expect(bar.className).toContain('pointer-events-auto');
+    expect(bar.className).toContain('w-full');
+    expect(bar.className).toContain('rounded-xl');
+    expect(bar.className).toContain('border-[var(--color-border)]');
+    expect(bar.className).toContain('bg-[var(--color-surface-elevated)]');
+    expect(bar.className).toContain('text-[var(--color-on-surface)]');
+    expect(bar.className).toContain('shadow-[var(--shadow-card)]');
+    expect(bar.className).toContain('mx-0');
+    expect(bar.className).toContain('mb-0');
+    expect(bar.className).not.toContain('rounded-[999px]');
+    expect(bar.className).not.toContain('rounded-2xl');
+    expect(bar.className).not.toContain('h-[68px]');
+    expect(bar.className).not.toContain('h-[76px]');
+
+    const price = screen.getByText('60 Kč');
+    expect(price.className).toContain('text-base');
+    expect(price.className).toContain('tabular-nums');
+
+    const openCart = screen.getByTestId('bottom-cart-bar-open');
+    expect(openCart.className).toContain(
+      'focus-visible:outline-[var(--color-accent)]',
+    );
+
+    const pay = screen.getByTestId('bottom-cart-bar-pay');
+    expect(pay.className).toContain('bg-[var(--color-accent)]');
+    expect(pay.className).toContain('text-[var(--color-accent-foreground)]');
+    expect(pay.className).not.toContain('bg-[var(--customer-cart-bar-pay-bg,#ffffff)]');
+  });
+
   it('AC-06: compact Czech price at 320px — full price visible, disabled pay uses cart-bar-cta-disabled', () => {
     const czechProps = {
       ...baseProps,

@@ -36,6 +36,8 @@ export interface BottomSheetProps {
   readonly describedBy?: string;
   readonly hideHeader?: boolean;
   readonly titleId?: string;
+  /** Extra classes for the fixed outer container (e.g. `lg:items-center`). */
+  readonly containerClassName?: string;
 }
 
 export function BottomSheet({
@@ -52,6 +54,7 @@ export function BottomSheet({
   describedBy,
   hideHeader = false,
   titleId: titleIdProp,
+  containerClassName,
 }: BottomSheetProps): JSX.Element | null {
   const isBusy = busy || pending;
   const generatedId = useId();
@@ -129,7 +132,7 @@ export function BottomSheet({
       // Clear `--customer-bottom-chrome` (BottomNav) so the sheet + backdrop sit
       // above tab chrome — same offset token as StickyCart / Toast / cookie banner.
       // Defaults to 0px when the token is unset (kiosk / non-customer hosts).
-      className="fixed inset-x-0 top-0 bottom-[var(--customer-bottom-chrome,0px)] z-50 flex items-end justify-center"
+      className={`fixed inset-x-0 top-0 bottom-[var(--customer-bottom-chrome,0px)] z-50 flex items-end justify-center${containerClassName ? ` ${containerClassName}` : ''}`}
       data-testid={testId}
     >
       <button

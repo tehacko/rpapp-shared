@@ -63,7 +63,20 @@ describe('Button', () => {
       </Button>
     );
 
-    expect(screen.getByRole('button', { name: 'Full width' }).className).toContain('w-full');
+    const el = screen.getByRole('button', { name: 'Full width' });
+    expect(el.className).toContain('w-full');
+    expect(el.className).toContain('max-w-sm');
+    expect(el.className).toContain('mx-auto');
+  });
+
+  it('caps customer button width even without block', () => {
+    render(
+      <Button surface="customer" className="w-full">
+        Stretched
+      </Button>
+    );
+
+    expect(screen.getByRole('button', { name: 'Stretched' }).className).toContain('max-w-sm');
   });
 
   it('forwards click handlers', async () => {

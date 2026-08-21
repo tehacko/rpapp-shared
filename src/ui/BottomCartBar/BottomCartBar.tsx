@@ -6,8 +6,12 @@ import {
   type ReactNode,
 } from 'react';
 
-/** Visual recipe for the floating cart chrome. Default `pill` preserves kiosk. */
-export type BottomCartBarAppearance = 'pill' | 'compact';
+/**
+ * Visual recipe for cart chrome.
+ * Default `pill` preserves kiosk; `compact` = mobile floater; `panel` = desktop
+ * docked/side summary (Card customer surface tokens — not a floating bar).
+ */
+export type BottomCartBarAppearance = 'pill' | 'compact' | 'panel';
 
 /**
  * Retail V1 bottom cart bar — single source of truth for the floating
@@ -20,6 +24,7 @@ export type BottomCartBarAppearance = 'pill' | 'compact';
  *
  * Expand choreography is capped to transform/opacity within the fixed bar
  * height (pill 76px / compact 68px — no layout jump from height change).
+ * `panel` is auto-height (desktop sticky/side summary).
  */
 export interface BottomCartBarProps {
   readonly itemCountLabel: string;
@@ -47,6 +52,8 @@ export interface BottomCartBarProps {
    * `pill` — accent-filled rounded-[999px] h-[76px] (kiosk default).
    * `compact` — theme-inverse accent fill (same as primary buttons), rounded-2xl,
    * ~68px; Pay CTA uses `--customer-cart-bar-pay-*` (opposite of the bar).
+   * `panel` — elevated Card surface, bordered, no floating margins; desktop
+   * sticky/inline/side summary (Spec §20.2).
    */
   readonly appearance?: BottomCartBarAppearance;
 }
@@ -96,6 +103,7 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
     payButtonRef,
   ): JSX.Element {
     const isCompact = appearance === 'compact';
+    const isPanel = appearance === 'panel';
     const showBadge = badgeCount > 0;
     const statusId =
       statusMessage !== null && statusMessage.length > 0
@@ -138,44 +146,61 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
       };
     }, [badgeCount, priceLabel]);
 
-    const barSurfaceClass = isCompact
+    const barSurfaceClass = isPanel
       ? [
-          // Theme-inverse fill (black on light / soft grey on dark) — matches Add/primary buttons.
-          'box-border h-[68px] rounded-2xl bg-[var(--color-accent)]',
-          'text-[var(--color-accent-foreground)]',
-          'shadow-[var(--shadow-popover)]',
+          // Card customer surface — docked/side summary, not a floating mobile bar.
+          'box-border min-h-[72px] w-full rounded-xl border border-[var(--color-border)]',
+          'bg-[var(--color-surface-elevated)] text-[var(--color-on-surface)]',
+          'shadow-[var(--shadow-card)]',
         ].join(' ')
-      : [
-          'h-[76px] rounded-[999px] bg-[var(--color-accent)]',
-          'text-[var(--color-accent-foreground)] shadow-[0_4px_20px_rgba(0,0,0,0.18)]',
-        ].join(' ');
+      : isCompact
+        ? [
+            // Theme-inverse fill (black on light / soft grey on dark) — matches Add/primary buttons.
+            'box-border h-[68px] rounded-2xl bg-[var(--color-accent)]',
+            'text-[var(--color-accent-foreground)]',
+            'shadow-[var(--shadow-popover)]',
+          ].join(' ')
+        : [
+            'h-[76px] rounded-[999px] bg-[var(--color-accent)]',
+            'text-[var(--color-accent-foreground)] shadow-[0_4px_20px_rgba(0,0,0,0.18)]',
+          ].join(' ');
 
-    const openButtonTextClass =
-      'text-[var(--color-accent-foreground)] focus-visible:outline-[var(--color-accent-foreground)]';
+    const openButtonTextClass = isPanel
+      ? 'text-[var(--color-on-surface)] focus-visible:outline-[var(--color-accent)]'
+      : 'text-[var(--color-accent-foreground)] focus-visible:outline-[var(--color-accent-foreground)]';
 
-    const priceSizeClass = isCompact
+    const priceSizeClass = isCompact || isPanel
       ? 'text-base tabular-nums'
       : 'text-[24px] tabular-nums';
 
-    const payFocusClass =
-      'focus-visible:outline-[var(--color-accent-foreground)]';
+    const payFocusClass = isPanel
+      ? 'focus-visible:outline-[var(--color-accent)]'
+      : 'focus-visible:outline-[var(--color-accent-foreground)]';
 
-    const payEnabledClass = isCompact
-      ? 'bg-[var(--customer-cart-bar-pay-bg,#ffffff)] text-[var(--customer-cart-bar-pay-fg,#000000)] hover:opacity-90'
-      : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90';
+    const payEnabledClass = isPanel
+      ? 'bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:opacity-90'
+      : isCompact
+        ? 'bg-[var(--customer-cart-bar-pay-bg,#ffffff)] text-[var(--customer-cart-bar-pay-fg,#000000)] hover:opacity-90'
+        : 'bg-[var(--cart-bar-cta,#C9A84C)] text-[var(--cart-bar-cta-fg,#111111)] hover:opacity-90';
+
+    const layoutClass = isPanel
+      ? 'pointer-events-auto mx-0 mb-0 flex w-full min-w-min flex-col items-stretch gap-3 sm:flex-row sm:items-center'
+      : [
+          'pointer-events-auto mx-3 mb-3 flex min-w-min items-center gap-3',
+          'max-[389px]:mx-2 max-[389px]:gap-2 max-[389px]:px-3 max-[389px]:py-2.5',
+        ].join(' ');
 
     return (
       <div
         className={[
           // Flex + min-w-min: reserve intrinsic width for Icon|Summary (price/count) before shrink-0 CTA.
           // Clip only pathological emptySummary on the count line — never hard-clip price or normal plurals.
-          'pointer-events-auto mx-3 mb-3 flex min-w-min items-center gap-3',
+          layoutClass,
           'px-4 py-3',
           barSurfaceClass,
           // G9: soft scale pulse on count increase — transform only within fixed bar height
           'origin-center transition-[transform,box-shadow,opacity] duration-200 ease-out',
           barPulse ? 'scale-[1.02]' : 'scale-100',
-          'max-[389px]:mx-2 max-[389px]:gap-2 max-[389px]:px-3 max-[389px]:py-2.5',
           className ?? '',
         ]
           .filter(Boolean)
@@ -189,8 +214,10 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
             'flex min-h-11 min-w-min flex-1 items-center gap-3 rounded-full text-left',
             'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
             openButtonTextClass,
-            'max-[389px]:gap-2',
-          ].join(' ')}
+            isPanel ? '' : 'max-[389px]:gap-2',
+          ]
+            .filter(Boolean)
+            .join(' ')}
           onClick={onOpenCart}
           aria-label={openCartAria}
           data-testid={openTestId}
@@ -250,16 +277,19 @@ export const BottomCartBar = forwardRef<HTMLButtonElement, BottomCartBarProps>(
           data-testid={payTestId}
           className={[
             'inline-flex h-[52px] min-h-[44px] min-w-[128px] shrink-0 items-center justify-center',
-            'rounded-[18px] px-4 text-base font-semibold',
+            isPanel ? 'w-full rounded-xl sm:w-auto sm:rounded-[18px]' : 'rounded-[18px]',
+            'px-4 text-base font-semibold',
             'transition-[background-color,color,opacity] duration-200 ease-out',
             'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
             payFocusClass,
             'disabled:cursor-not-allowed',
-            'max-[389px]:min-w-[108px] max-[389px]:px-3',
+            isPanel ? '' : 'max-[389px]:min-w-[108px] max-[389px]:px-3',
             payDisabled || payPending
               ? 'bg-[var(--cart-bar-cta-disabled,#B0B0B0)] text-[var(--cart-bar-cta-disabled-fg,#111111)]'
               : payEnabledClass,
-          ].join(' ')}
+          ]
+            .filter(Boolean)
+            .join(' ')}
         >
           {payPending ? '…' : payLabel}
         </button>

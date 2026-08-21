@@ -153,10 +153,15 @@ const pickupButton = tv({
   },
 });
 
+/**
+ * Customer CTA recipe — always caps width (max-w-sm / 24rem) so block / w-full
+ * buttons never balloon across wide panels. Block also centers under the cap.
+ * Escape hatch for rare full-bleed chrome: pass `className="max-w-none"`.
+ */
 const customerButton = tv({
   base: [
     'relative inline-flex items-center justify-center gap-2',
-    'rounded-md font-medium transition-colors duration-150',
+    'max-w-sm rounded-md font-medium transition-colors duration-150',
     'focus-visible:outline-2 focus-visible:outline-offset-2',
     'focus-visible:outline-[var(--color-focus-ring)]',
     'disabled:cursor-not-allowed disabled:opacity-60',
@@ -180,11 +185,11 @@ const customerButton = tv({
       xl: 'h-12 min-h-12 px-5 text-lg',
     },
     block: {
-      true: 'w-full',
+      true: 'mx-auto w-full',
       false: '',
     },
     iconOnly: {
-      true: 'aspect-square px-0 min-h-[44px] min-w-[44px]',
+      true: 'aspect-square max-w-none px-0 min-h-[44px] min-w-[44px]',
       false: '',
     },
   },

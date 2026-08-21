@@ -97,6 +97,7 @@ export {
   QuantityStepper,
   type QuantityStepperProps,
 } from './QuantityStepper/index.js';
+export { Switch, type SwitchProps } from './Switch/Switch.js';
 export {
   handleFocusTrapKeyDown,
   listFocusable,
