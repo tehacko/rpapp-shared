@@ -138,6 +138,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Historické: ověřený e-mail z Google/Apple byl přiřazen k existujícímu zákaznickému účtu (tiché sloučení zrušeno; živá cesta vyžaduje propojení účtu). Jeden řádek za minulé sloučení. Tokeny se neukládají.',
     sk: 'Historické: overený e-mail z Google/Apple bol priradený k existujúcemu zákazníckemu účtu (tiché zlúčenie zrušené; živá cesta vyžaduje prepojenie účtu). Jeden riadok za minulé zlúčenie. Tokeny sa neukladajú.',
   },
+  'customer.oidc.link.remove_denied': {
+    en: 'Recorded when a customer tries to unlink their last Google/Apple sign-in without a password backup. One line per denied attempt.',
+    cs: 'Zapíše se, když zákazník zkusí odpojit poslední Google/Apple přihlášení bez záložního hesla. Jeden řádek za zamítnutý pokus.',
+    sk: 'Zapíše sa, keď zákazník skúsi odpojiť posledné Google/Apple prihlásenie bez záložného hesla. Jeden riadok za zamietnutý pokus.',
+  },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
     cs: 'Zapíše se, když se pozve nový administrátor e-mailem a musí si nastavit heslo. Jeden řádek za novou pozvánku. Odkaz z pozvánky se sem neukládá.',
@@ -292,6 +297,21 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a category is removed permanently from the catalog setup. One line per category. Historical records remain for compliance.',
     cs: 'Zapíše se, když je kategorie trvale odstraněna z katalogu. Jeden řádek za kategorii. Historické záznamy zůstávají kvůli evidenci.',
     sk: 'Zapíše sa, keď je kategória trvale odstránená z katalógu. Jeden riadok za kategóriu. Historické záznamy zostávajú kvôli evidencii.',
+  },
+  'admin.category.icon_uploaded': {
+    en: 'Recorded when an administrator uploads an icon image for a product category. One line per successful upload.',
+    cs: 'Zapíše se, když administrátor nahraje ikonu pro produktovou kategorii. Jeden řádek za úspěšné nahrání.',
+    sk: 'Zapíše sa, keď administrátor nahrá ikonu pre produktovú kategóriu. Jeden riadok za úspešné nahranie.',
+  },
+  'admin.category.icon_replaced': {
+    en: 'Recorded when an administrator replaces an existing category icon with a new image. One line per successful replace.',
+    cs: 'Zapíše se, když administrátor nahradí existující ikonu kategorie novým obrázkem. Jeden řádek za úspěšnou výměnu.',
+    sk: 'Zapíše sa, keď administrátor nahradí existujúcu ikonu kategórie novým obrázkom. Jeden riadok za úspešnú výmenu.',
+  },
+  'admin.category.icon_deleted': {
+    en: 'Recorded when an administrator deletes a category icon. One line per successful delete.',
+    cs: 'Zapíše se, když administrátor smaže ikonu kategorie. Jeden řádek za úspěšné smazání.',
+    sk: 'Zapíše sa, keď administrátor zmaže ikonu kategórie. Jeden riadok za úspešné zmazanie.',
   },
   'admin.variant.archived': {
     en: 'Recorded when a product variant is archived and removed from active offer management. One line per variant.',
@@ -812,5 +832,20 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a GDPR erasure request completed in the database but follow-up side-effects (sessions, analytics, auth artifacts) failed and need operator retry.',
     cs: 'Zapíše se, když žádost o výmaz byla v databázi dokončena, ale následné vedlejší účinky (relace, analytika, autentizační artefakty) selhaly a vyžadují ruční opakování.',
     sk: 'Zapíše sa, keď žiadosť o výmaz bola v databáze dokončená, ale následné vedľajšie účinky (relácie, analytika, autentizačné artefakty) zlyhali a vyžadujú ručné opakovanie.',
+  },
+  'platform.category.created': {
+    en: 'Recorded when platform staff create a global platform taxonomy category. One line per successful create. Tenant-scoped categories are not included.',
+    cs: 'Zapíše se, když pracovníci platformy vytvoří globální platformovou taxonomickou kategorii. Jeden řádek za úspěšné vytvoření. Kategorie vázané na organizaci sem nepatří.',
+    sk: 'Zapíše sa, keď pracovníci platformy vytvoria globálnu platformovú taxonomickú kategóriu. Jeden riadok za úspešné vytvorenie. Kategórie viazané na organizáciu sem nepatria.',
+  },
+  'platform.category.updated': {
+    en: 'Recorded when platform staff update a global platform taxonomy category (name, slug, parent, or other fields). One line per successful update.',
+    cs: 'Zapíše se, když pracovníci platformy upraví globální platformovou taxonomickou kategorii (název, slug, rodič nebo jiné pole). Jeden řádek za úspěšnou změnu.',
+    sk: 'Zapíše sa, keď pracovníci platformy upravía globálnu platformovú taxonomickú kategóriu (názov, slug, rodič alebo iné pole). Jeden riadok za úspešnú zmenu.',
+  },
+  'platform.category.deactivated': {
+    en: 'Recorded when platform staff soft-deactivate a global platform taxonomy category. One line per successful deactivation. Prefer this over hard delete.',
+    cs: 'Zapíše se, když pracovníci platformy soft-deaktivují globální platformovou taxonomickou kategorii. Jeden řádek za úspěšnou deaktivaci. Preferováno před tvrdým smazáním.',
+    sk: 'Zapíše sa, keď pracovníci platformy soft-deaktivujú globálnu platformovú taxonomickú kategóriu. Jeden riadok za úspešnú deaktiváciu. Preferované pred tvrdým zmazaním.',
   },
 };

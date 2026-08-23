@@ -138,6 +138,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'E-mail zákazníka sloučen z Google/Apple',
     sk: 'E-mail zákazníka zlúčený z Google/Apple',
   },
+  'customer.oidc.link.remove_denied': {
+    en: 'Customer OIDC unlink denied',
+    cs: 'Odpojení Google/Apple u zákazníka zamítnuto',
+    sk: 'Odpojenie Google/Apple u zákazníka zamietnuté',
+  },
   'admin.invite.created': {
     en: 'Admin invite created',
     cs: 'Pozvánka administrátora vytvořena',
@@ -292,6 +297,21 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Category permanently deleted',
     cs: 'Kategorie trvale smazána',
     sk: 'Kategória trvalo zmazaná',
+  },
+  'admin.category.icon_uploaded': {
+    en: 'Category icon uploaded',
+    cs: 'Ikona kategorie nahrána',
+    sk: 'Ikona kategórie nahraná',
+  },
+  'admin.category.icon_replaced': {
+    en: 'Category icon replaced',
+    cs: 'Ikona kategorie nahrazena',
+    sk: 'Ikona kategórie nahradená',
+  },
+  'admin.category.icon_deleted': {
+    en: 'Category icon deleted',
+    cs: 'Ikona kategorie smazána',
+    sk: 'Ikona kategórie zmazaná',
   },
   'admin.variant.archived': {
     en: 'Variant archived',
@@ -812,6 +832,21 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'GDPR erasure side-effects pending',
     cs: 'GDPR výmaz — čekají související úkony',
     sk: 'GDPR výmaz — čakajú súvisiace úkony',
+  },
+  'platform.category.created': {
+    en: 'Platform category created',
+    cs: 'Platformová kategorie vytvořena',
+    sk: 'Platformová kategória vytvorená',
+  },
+  'platform.category.updated': {
+    en: 'Platform category updated',
+    cs: 'Platformová kategorie upravena',
+    sk: 'Platformová kategória upravená',
+  },
+  'platform.category.deactivated': {
+    en: 'Platform category deactivated',
+    cs: 'Platformová kategorie deaktivována',
+    sk: 'Platformová kategória deaktivovaná',
   },
 };
 

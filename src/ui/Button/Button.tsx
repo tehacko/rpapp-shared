@@ -162,6 +162,7 @@ const customerButton = tv({
   base: [
     'relative inline-flex items-center justify-center gap-2',
     'max-w-sm rounded-md font-medium transition-colors duration-150',
+    'whitespace-nowrap',
     'focus-visible:outline-2 focus-visible:outline-offset-2',
     'focus-visible:outline-[var(--color-focus-ring)]',
     'disabled:cursor-not-allowed disabled:opacity-60',

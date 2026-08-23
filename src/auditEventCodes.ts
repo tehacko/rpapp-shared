@@ -30,6 +30,7 @@ export const AUDIT_EVENT_CODES = [
   'auth.admin.password.set',
   'customer.oidc.login',
   'customer.oidc.email_merged',
+  'customer.oidc.link.remove_denied',
   'admin.invite.created',
   'admin.invite.resent',
   'admin.invite.activated',
@@ -61,6 +62,9 @@ export const AUDIT_EVENT_CODES = [
   'admin.category.deactivated',
   'admin.category.reactivated',
   'admin.category.permanently_deleted',
+  'admin.category.icon_uploaded',
+  'admin.category.icon_replaced',
+  'admin.category.icon_deleted',
   'admin.variant.archived',
   'admin.variant.restored',
   'admin.variant.permanently_deleted',
@@ -165,6 +169,9 @@ export const AUDIT_EVENT_CODES = [
   'export.consent.grantees',
   'gdpr.erasure.completed',
   'gdpr.erasure.side_effects_pending',
+  'platform.category.created',
+  'platform.category.updated',
+  'platform.category.deactivated',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

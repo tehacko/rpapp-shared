@@ -97,6 +97,10 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'customer.oidc.email_merged': [
     { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
   ],
+  'customer.oidc.link.remove_denied': [
+    { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+  ],
   'admin.capability.granted': [
     { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },
@@ -142,6 +146,12 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'admin.category.deactivated': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
   'admin.category.reactivated': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
   'admin.category.permanently_deleted': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'admin.category.icon_uploaded': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'admin.category.icon_replaced': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'admin.category.icon_deleted': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'platform.category.created': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'platform.category.updated': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
+  'platform.category.deactivated': [{ key: 'categoryId', labelKey: 'compliance.audit.metadata.categoryId' }],
   'admin.variant.archived': [{ key: 'variantId', labelKey: 'compliance.audit.metadata.variantId' }],
   'admin.variant.restored': [{ key: 'variantId', labelKey: 'compliance.audit.metadata.variantId' }],
   'admin.variant.permanently_deleted': [{ key: 'variantId', labelKey: 'compliance.audit.metadata.variantId' }],
