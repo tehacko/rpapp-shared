@@ -186,7 +186,7 @@ const customerButton = tv({
       xl: 'h-12 min-h-12 px-5 text-lg',
     },
     block: {
-      true: 'mx-auto w-full',
+      true: 'flex mx-auto w-full',
       false: '',
     },
     iconOnly: {

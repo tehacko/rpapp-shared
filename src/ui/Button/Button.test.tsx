@@ -67,6 +67,8 @@ describe('Button', () => {
     expect(el.className).toContain('w-full');
     expect(el.className).toContain('max-w-sm');
     expect(el.className).toContain('mx-auto');
+    expect(el.className).toContain('flex');
+    expect(el.className).not.toContain('inline-flex');
   });
 
   it('caps customer button width even without block', () => {

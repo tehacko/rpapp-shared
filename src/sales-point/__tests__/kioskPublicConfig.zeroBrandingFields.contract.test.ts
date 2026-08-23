@@ -13,6 +13,7 @@ import type {
 
 const FORBIDDEN_ROOT_BRANDING_KEYS = [
   'logoUrl',
+  'wordmarkUrl',
   'tenantLogoUrl',
   'tenantLogo',
   'salesPointImage',

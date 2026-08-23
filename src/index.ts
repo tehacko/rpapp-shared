@@ -80,6 +80,7 @@ export * from './promo/resolveApplyPromoEventDisplayName.js';
 export * from './promo/RemovePromoCodeRequest.js';
 export * from './catalogImagePresentation.js';
 export * from './directoryMonogram.js';
+export * from './branding/consumerSquareLogo.js';
 export * from './tenant/tenantPathResolution.js';
 
 export * from './tenant/tenantLifecycle.js';
