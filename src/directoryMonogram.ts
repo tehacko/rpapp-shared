@@ -166,6 +166,38 @@ export function hashDirectoryMonogramId(id: number): number {
   return x >>> 0;
 }
 
+/**
+ * Stable monogram seed from a string key (e.g. tenantCode when tenantId unknown).
+ * Same key → same color across cards; never use per-row ids (transactionId).
+ */
+export function hashDirectoryMonogramKey(key: string): number {
+  const trimmed = key.trim();
+  let h = 2166136261;
+  for (let i = 0; i < trimmed.length; i += 1) {
+    h ^= trimmed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Prefer numeric tenantId; otherwise hash tenantCode so the same org shares one color.
+ */
+export function resolveDirectoryMonogramEntityId(input: {
+  readonly tenantId?: number | null;
+  readonly tenantCode?: string | null;
+}): number {
+  const tenantId = input.tenantId;
+  if (typeof tenantId === 'number' && Number.isFinite(tenantId) && tenantId > 0) {
+    return Math.trunc(tenantId);
+  }
+  const code = typeof input.tenantCode === 'string' ? input.tenantCode.trim() : '';
+  if (code.length > 0) {
+    return hashDirectoryMonogramKey(code);
+  }
+  return 0;
+}
+
 function clampByte(value: number): number {
   return Math.min(255, Math.max(0, Math.round(value)));
 }

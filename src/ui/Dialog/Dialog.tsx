@@ -5,6 +5,7 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from 'react';
+import { createPortal } from 'react-dom';
 import {
   focusInitialInContainer,
   handleFocusTrapKeyDown,
@@ -30,7 +31,9 @@ function isTopmostModalDialog(panel: HTMLElement): boolean {
 }
 
 /**
- * CMP-0010 Dialog — Radix-free modal shell (no portal library).
+ * CMP-0010 Dialog — Radix-free modal shell.
+ * Portals to `document.body` so `fixed inset-0` is not clipped by ancestors with
+ * `container-type` / transform / filter (e.g. Card `rp-card-container`).
  * Wave A harden: focus trap, restore, busy Escape/backdrop, scroll lock, labelledby, inert.
  * Short enter/exit via motion tokens; Confirm inherits this surface.
  */
@@ -160,7 +163,7 @@ export function Dialog({
     return () => window.removeEventListener('keydown', onKey, true);
   }, [open, onClose, isBusy]);
 
-  if (!mounted) {
+  if (!mounted || typeof document === 'undefined') {
     return null;
   }
 
@@ -169,7 +172,7 @@ export function Dialog({
   const motionState = visible ? OVERLAY_MOTION_ENTERED : OVERLAY_MOTION_EXITED;
   const backdropState = visible ? OVERLAY_BACKDROP_ENTERED : OVERLAY_BACKDROP_EXITED;
 
-  return (
+  return createPortal(
     <div
       ref={rootRef}
       className={[
@@ -244,6 +247,7 @@ export function Dialog({
         ) : null}
         <div>{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

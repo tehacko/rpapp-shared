@@ -3,7 +3,9 @@ import {
   directoryMonogramColors,
   directoryMonogramLabel,
   hashDirectoryMonogramId,
+  hashDirectoryMonogramKey,
   resolveDirectoryMonogram,
+  resolveDirectoryMonogramEntityId,
 } from '../directoryMonogram.js';
 
 function parseHex(hex: string): { r: number; g: number; b: number } {
@@ -37,6 +39,21 @@ describe('directoryMonogram', () => {
       const ratio = contrastRatio(parseHex(colors.backgroundColor), parseHex(colors.textColor));
       expect(ratio).toBeGreaterThanOrEqual(4.5);
     }
+  });
+
+  it('resolveDirectoryMonogramEntityId prefers tenantId and hashes tenantCode stably', () => {
+    expect(resolveDirectoryMonogramEntityId({ tenantId: 99, tenantCode: 'x' })).toBe(99);
+    expect(hashDirectoryMonogramKey('railway-cafe')).toBe(
+      hashDirectoryMonogramKey('railway-cafe'),
+    );
+    expect(
+      resolveDirectoryMonogramEntityId({ tenantId: null, tenantCode: 'railway-cafe' }),
+    ).toBe(hashDirectoryMonogramKey('railway-cafe'));
+    expect(
+      resolveDirectoryMonogramEntityId({ tenantId: null, tenantCode: 'railway-cafe' }),
+    ).not.toBe(
+      resolveDirectoryMonogramEntityId({ tenantId: null, tenantCode: 'railway-bookstore' }),
+    );
   });
 
   it('resolveDirectoryMonogram combines label and colors', () => {

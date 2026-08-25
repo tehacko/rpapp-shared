@@ -9,7 +9,7 @@ Shared types, API contracts, and error classes for the Pi Kiosk system.
 
 ## Temporary retention
 
-`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry latest **2.2.82**, or monorepo overlay / `file:../shared` **2.2.83**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
+`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry tarball from `npm view`, or monorepo overlay of sibling `../shared` **2.2.86**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
 
 ## Installation
 
@@ -74,7 +74,7 @@ Frontends import React modules from `/ui`. The **target** main barrel (local ove
 
 ## Local monorepo overlay
 
-**Honesty (SSOT):** All five monorepo consumers (`up-backend`, `admin-app`, `rpapp-kiosk`, `rpapp-customer`, `rpapp-pickup`) use `"pi-kiosk-shared": "file:../shared"` (source `2.2.83` — do **not** regress locks to `2.2.82.tgz`). Registry latest is **2.2.82** (`npm view`); publish of `2.2.83` is Blocked without npm auth. Separate-repo / Railway consumers keep `"pi-kiosk-shared": "^2.2.82"` until **2.2.83 is published** (`npm ci` must not request an unpublished version; after publish bump env/target to `^2.2.83`).
+**Honesty (SSOT):** All five monorepo consumers (`up-backend`, `admin-app`, `rpapp-kiosk`, `rpapp-customer`, `rpapp-pickup`) pin `"pi-kiosk-shared": "^2.2.86"` matching `shared/package.json` **2.2.86**. Sibling overlay still runs when `../shared` exists. Separate-repo pin should match that. Confirm registry with `npm view pi-kiosk-shared version` at deploy time — this README does not claim a publish.
 
 **Documented cold path (monorepo):** `npm ci` / `npm install` in each app runs lifecycle hooks → `scripts/overlaySharedIfPresent.mjs` → `shared/scripts/ensureDist.mjs` when sibling `../shared` exists:
 
@@ -111,7 +111,7 @@ npm run gate:main-barrel-node-safe
 
 From `shared/`, prove the documented cold path:
 
-1. **DIAGNOSTIC** — `npm pack` registry latest (currently `2.2.82`) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`).
+1. **DIAGNOSTIC** — `npm pack` a known Node-safe registry tarball (`COLD_VERSION` in `prove-pi-kiosk-shared-cold-overlay.mjs`, currently `2.2.82`) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`). Live monorepo source is `shared/package.json` **2.2.86**.
 2. **PASS** — wipe that consumer’s `node_modules/pi-kiosk-shared`, then `npm install` with **scripts on** (no package args) so `prepare` / `postinstall` overlays during install; assert Node-safe barrel + `NODE_IMPORT_OK`.
 
 ```bash

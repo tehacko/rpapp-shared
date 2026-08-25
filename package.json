@@ -360,6 +360,7 @@
         "@types/jest": "^30.0.0",
         "@types/node": "^20.19.41",
         "@types/react": "^18.2.0",
+        "@types/react-dom": "^19.2.5",
         "@zxing/browser": "^0.1.5",
         "@zxing/library": "^0.21.3",
         "handlebars": "^4.7.9",

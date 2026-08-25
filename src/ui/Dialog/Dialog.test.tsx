@@ -167,6 +167,26 @@ describe('Dialog', () => {
     jest.useRealTimers();
   });
 
+  it('portals fixed shell to document.body outside container-type ancestors', () => {
+    render(
+      <div
+        className="rp-card-container"
+        style={{ containerType: 'inline-size' }}
+        data-testid="card-clip"
+      >
+        <Dialog open onClose={() => undefined} title="Confirm">
+          Body
+        </Dialog>
+      </div>,
+    );
+
+    const shell = screen.getByTestId('dialog');
+    expect(shell.parentElement).toBe(document.body);
+    expect(screen.getByTestId('card-clip').contains(shell)).toBe(false);
+    expect(shell.className).toContain('fixed');
+    expect(shell.className).toContain('inset-0');
+  });
+
   it('keeps background inert through exit fade and clears after unmount', async () => {
     jest.useFakeTimers();
     function Harness({ open }: { readonly open: boolean }): JSX.Element {
@@ -184,29 +204,30 @@ describe('Dialog', () => {
 
     const { rerender } = render(<Harness open={false} />);
     const page = screen.getByTestId('page-content');
-    expect(Boolean(page.inert)).toBe(false);
+    expect(page.closest('[inert]')).toBeNull();
 
     rerender(<Harness open />);
     expect(screen.getByTestId('dialog')).toBeInTheDocument();
-    expect(Boolean(page.inert)).toBe(true);
+    // Portaled shell is a body sibling of the RTL root — inert lands on an ancestor of page.
+    expect(page.closest('[inert]')).not.toBeNull();
     expect(Boolean(screen.getByTestId('dialog').inert)).toBe(false);
 
     rerender(<Harness open={false} />);
     // open=false but still mounted for exit fade — page must stay inert
     expect(screen.getByTestId('dialog')).toBeInTheDocument();
-    expect(Boolean(page.inert)).toBe(true);
+    expect(page.closest('[inert]')).not.toBeNull();
 
     await act(async () => {
       jest.advanceTimersByTime(OVERLAY_EXIT_MS - 20);
     });
     expect(screen.getByTestId('dialog')).toBeInTheDocument();
-    expect(Boolean(page.inert)).toBe(true);
+    expect(page.closest('[inert]')).not.toBeNull();
 
     await act(async () => {
       jest.advanceTimersByTime(50);
     });
     expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
-    expect(Boolean(page.inert)).toBe(false);
+    expect(page.closest('[inert]')).toBeNull();
     jest.useRealTimers();
   });
 
