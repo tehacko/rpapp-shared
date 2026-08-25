@@ -26,6 +26,11 @@ export interface UseBarcodeScannerOptions {
   onDecode: (rawValue: string) => void;
   messages: UseBarcodeScannerMessages;
   formatProfile?: BarcodeScannerFormatProfile;
+  /**
+   * G7 — fired when the tab/page backgrounds and the hook releases the camera.
+   * Parent should set `enabled` false so the CTA must be tapped again (no auto-restart).
+   */
+  onBackgroundStop?: () => void;
 }
 
 export interface UseBarcodeScannerReturn {
@@ -35,11 +40,20 @@ export interface UseBarcodeScannerReturn {
 }
 
 export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcodeScannerReturn {
-  const { enabled, videoRef, onDecode, messages, formatProfile = 'retail' } = options;
+  const {
+    enabled,
+    videoRef,
+    onDecode,
+    messages,
+    formatProfile = 'retail',
+    onBackgroundStop,
+  } = options;
 
   const [status, setStatus] = useState<ScannerStatus>('idle');
   const [engine, setEngine] = useState<ScannerEngine | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  /** Latches after background release until parent sets `enabled` false (G7 / G10). */
+  const [heldOffByBackground, setHeldOffByBackground] = useState(false);
 
   const onDecodeRef = useRef(onDecode);
   useEffect(() => {
@@ -51,12 +65,26 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     messagesRef.current = messages;
   }, [messages]);
 
+  const onBackgroundStopRef = useRef(onBackgroundStop);
+  useEffect(() => {
+    onBackgroundStopRef.current = onBackgroundStop;
+  }, [onBackgroundStop]);
+
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
+
   const stopRef = useRef<(() => void) | null>(null);
 
-  const [trackedEnabled, setTrackedEnabled] = useState(enabled);
-  if (trackedEnabled !== enabled) {
-    setTrackedEnabled(enabled);
-    if (!enabled) {
+  if (!enabled && heldOffByBackground) {
+    setHeldOffByBackground(false);
+  }
+
+  const scanningEnabled = enabled && !heldOffByBackground;
+
+  const [trackedEnabled, setTrackedEnabled] = useState(scanningEnabled);
+  if (trackedEnabled !== scanningEnabled) {
+    setTrackedEnabled(scanningEnabled);
+    if (!scanningEnabled) {
       setStatus('idle');
       setEngine(null);
       setErrorMessage(null);
@@ -70,8 +98,44 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     }
   }, []);
 
+  // G7 — release camera on background; do not auto-restart on visible.
   useEffect(() => {
-    if (!enabled) {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const releaseForBackground = (): void => {
+      stop();
+      if (!enabledRef.current) {
+        return;
+      }
+      setHeldOffByBackground(true);
+      setStatus('idle');
+      setEngine(null);
+      setErrorMessage(null);
+      onBackgroundStopRef.current?.();
+    };
+
+    const onVisibilityChange = (): void => {
+      if (document.hidden) {
+        releaseForBackground();
+      }
+    };
+
+    const onPageHide = (): void => {
+      releaseForBackground();
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('pagehide', onPageHide);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('pagehide', onPageHide);
+    };
+  }, [stop]);
+
+  useEffect(() => {
+    if (!scanningEnabled) {
       stop();
       return;
     }
@@ -239,7 +303,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
       cleanup();
       stopRef.current = null;
     };
-  }, [enabled, formatProfile, stop, videoRef]);
+  }, [scanningEnabled, formatProfile, stop, videoRef]);
 
   return { status, engine, errorMessage };
 }

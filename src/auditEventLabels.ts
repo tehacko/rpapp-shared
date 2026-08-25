@@ -370,17 +370,17 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.salesPoint.deactivated': {
     en: 'Sales point deactivated',
-    cs: 'Platební místo deaktivováno',
+    cs: 'Prodejní místo deaktivováno',
     sk: 'Platobné miesto deaktivované',
   },
   'admin.salesPoint.reactivated': {
     en: 'Sales point reactivated',
-    cs: 'Platební místo znovu aktivováno',
+    cs: 'Prodejní místo znovu aktivováno',
     sk: 'Platobné miesto znova aktivované',
   },
   'admin.salesPoint.permanently_deleted': {
     en: 'Sales point permanently deleted',
-    cs: 'Platební místo trvale smazáno',
+    cs: 'Prodejní místo trvale smazáno',
     sk: 'Platobné miesto trvalo zmazané',
   },
   'admin.tenant.deactivated': {
@@ -490,12 +490,12 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'admin.salesPoint.donation_projects.updated': {
     en: 'Sales point donation projects updated',
-    cs: 'Projekty daru na platebním místě upraveny',
+    cs: 'Projekty daru na prodejním místě upraveny',
     sk: 'Projekty daru na platobnom mieste upravené',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Sales point donation amounts updated',
-    cs: 'Částky daru na platebním místě upraveny',
+    cs: 'Částky daru na prodejním místě upraveny',
     sk: 'Čiastky daru na platobnom mieste upravené',
   },
   'admin.product.media_saved': {
@@ -750,7 +750,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   },
   'payment.cash_checkout.self_confirm': {
     en: 'sales point cash checkout self-confirmed',
-    cs: 'Hotovostní platba u platebního místa potvrzena zákazníkem',
+    cs: 'Hotovostní platba u prodejního místa potvrzena zákazníkem',
     sk: 'Hotovostná platba pri platobnom mieste potvrdená zákazníkom',
   },
   'payment.cash_shift.opened': {

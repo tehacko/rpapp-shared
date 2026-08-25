@@ -146,6 +146,8 @@ export {
   isDefaultOffRolloutBlockKey,
 } from './adminMfaEntitlement.js';
 
+export { TENANT_BRAND_KIT_BLOCK_KEY } from './tenantBrandKitEntitlement.js';
+
 export { SALES_POINT_INDIVIDUAL_SETTINGS_BLOCK_KEY } from './salesPointIndividualSettingsEntitlement.js';
 
 export {
@@ -162,6 +164,25 @@ export type {
   EvaluateNavEntitlementFromVisibleInput,
   EvaluateNavEntitlementInput,
 } from './evaluateNavEntitlement.js';
+
+export {
+  CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT,
+  CAPABILITY_ENTITLEMENT_REQUIREMENTS,
+  EXPLORE_ENTITLEMENT_ALL_OF,
+  NEVER_REQUIRED_BLOCK_KEYS,
+  PAYMENTS_HUB_NAV_ENTITLEMENT_ALL_OF,
+  capabilitiesRequiringBlock,
+  evaluateCapabilityEntitlement,
+  expandAuthoringTokens,
+  requiredBlocksForCapability,
+} from './capabilityEntitlementRequirements.js';
+
+export type {
+  CapabilityEntitlementLookup,
+  CapabilityEntitlementMatch,
+  CapabilityEntitlementRequirement,
+  EvaluateCapabilityEntitlementResult,
+} from './capabilityEntitlementRequirements.js';
 
 export {
   resolveSalesPointEntitlementCeiling,

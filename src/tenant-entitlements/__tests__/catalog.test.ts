@@ -8,20 +8,27 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 51 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(51);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
+  it('contains exactly 52 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(52);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(52);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(52);
   });
 
-  it('uses catalog version 5 after sales_point_individual_settings', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(5);
+  it('uses catalog version 6 after tenant_brand_kit', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(6);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(51);
+    expect(new Set(keysFromCatalog).size).toBe(52);
+  });
+
+  it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
+    const brandKit = getEntitlementBlockCatalogEntry('tenant_brand_kit');
+    expect(brandKit.blockClass).toBe('CONDITIONAL');
+    expect(brandKit.parentKeys).toEqual(['tenant_ops_settings']);
+    expect(brandKit.capabilityHint).toBe('account.self.manage');
   });
 
   it('includes sales_point_individual_settings as CONDITIONAL default-off under sales_point_management', () => {
@@ -62,6 +69,31 @@ describe('tenant entitlement catalog', () => {
     expect(notifications.blockClass).toBe('CONDITIONAL');
     expect(notifications.parentKeys).toEqual([]);
     expect(notifications.routeSuffix).toBe('inbox');
+  });
+
+  it('includes incident_centre_ui as CONDITIONAL default-off Události block', () => {
+    const incidentCentre = getEntitlementBlockCatalogEntry('incident_centre_ui');
+    expect(incidentCentre.blockClass).toBe('CONDITIONAL');
+    expect(incidentCentre.parentKeys).toEqual([]);
+    expect(incidentCentre.routeSuffix).toBe('success-incident-centre');
+    // G2: no capabilityHint equating outbox grants with Události
+    expect(incidentCentre.capabilityHint).toBeUndefined();
+    expect(incidentCentre.immutableDefaults).toBeUndefined();
+    expect(incidentCentre.notes).toMatch(/default OFF/i);
+    expect(incidentCentre.notes).toMatch(/Události|tab\/nav\/SIC/i);
+    expect(incidentCentre.notes).toMatch(/not an outbox grant ceiling/i);
+    expect(incidentCentre.notes).toMatch(/dev\/success-incident-centre/i);
+    expect(incidentCentre.notes).toMatch(/capability-only|capability-gated/i);
+    expect(incidentCentre.notes).toMatch(/dev\/inbox/i);
+    expect(incidentCentre.notes).toMatch(/not (tenant-grant|commercial Feature Policy)/i);
+    expect(incidentCentre.notes).toMatch(/FULL_DEMO_ALWAYS_OFF|not DEFAULT_OFF_ROLLOUT/i);
+  });
+
+  it('keeps admin_notifications inbox notes without outbox=Události claim', () => {
+    const notifications = getEntitlementBlockCatalogEntry('admin_notifications');
+    expect(notifications.capabilityHint).toBe('admin:outbox:read');
+    expect(notifications.notes).toMatch(/inbox/i);
+    expect(notifications.notes).toMatch(/Not Události|incident_centre_ui/i);
   });
 
   it('includes admin_mfa as CONDITIONAL default-off TOTP block under tenant_ops_settings', () => {

@@ -86,7 +86,12 @@ export interface TenantCommandCenterIncident {
   readonly severity: TenantCommandCenterIncidentSeverity;
   readonly title: string;
   readonly ageLabel: string;
-  readonly href: string;
+  /**
+   * Deep link into commercial Události (`/:tenant/success-incident-centre/...`).
+   * Omitted when `incident_centre_ui` is not entitled (default OFF) so operators
+   * are not sent into a dead route — platform DEV uses `/dev/success-incident-centre`.
+   */
+  readonly href?: string;
 }
 
 export interface TenantCommandCenterTopKiosk {

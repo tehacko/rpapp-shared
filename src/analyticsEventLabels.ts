@@ -224,7 +224,7 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   },
   kiosk_cash_complete: {
     en: 'Sales point cash checkout complete',
-    cs: 'Hotovostní pokladna na platebním místě dokončena',
+    cs: 'Hotovostní pokladna na prodejním místě dokončena',
     sk: 'Hotovostná pokladňa na platobnom mieste dokončená',
   },
   checkout_collect_configured: {
@@ -277,12 +277,12 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   donation_abandoned: { en: 'Donation abandoned', cs: 'Darování opuštěno', sk: 'Darovanie opustené' },
   kiosk_wakeup: {
     en: 'Sales point woken up',
-    cs: 'Platební místo probuzeno',
+    cs: 'Prodejní místo probuzeno',
     sk: 'Platobné miesto prebudené',
   },
   kiosk_timeout: {
     en: 'Sales point timed out',
-    cs: 'Platební místo — vypršení nečinnosti',
+    cs: 'Prodejní místo — vypršení nečinnosti',
     sk: 'Platobné miesto — vypršanie nečinnosti',
   },
   product_barcode_assigned: {

@@ -57,6 +57,9 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     audit_logs_admin_ui: ON,
     inventory_management: OFF,
     inventory_incidents: HARD_OFF,
+    // Commercial Události — default hardOff; platform /dev/inbox uses platform
+    // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.
+    incident_centre_ui: HARD_OFF,
     loyalty_program: OFF,
     promotions_program: OFF,
   };

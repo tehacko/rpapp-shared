@@ -111,6 +111,7 @@ describe('fulfillmentContracts contract', () => {
       currency: 'CZK',
       createdAt: '2026-01-01T00:00:00.000Z',
       pickupPointName: 'Counter',
+      tenantId: 7,
     };
     const pending: AdminPendingOrderItem = {
       id: 1,
@@ -125,6 +126,7 @@ describe('fulfillmentContracts contract', () => {
       createdAt: '2026-01-01T00:00:00.000Z',
     };
     expect(customer.collectTiming).toBe('LATER');
+    expect(customer.tenantId).toBe(7);
     expect(pending.productCollectionMode).toBe('PAY_AT_KIOSK');
   });
 });

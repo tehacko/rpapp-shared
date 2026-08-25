@@ -88,7 +88,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     sk: 'Oprávnenia administrátorov',
   },
   products: { en: 'Products', cs: 'Produkty', sk: 'Produkty' },
-  kiosks: { en: 'Sales points', cs: 'Platební místa', sk: 'Platobné miesta' },
+  kiosks: { en: 'Sales points', cs: 'Prodejní místa', sk: 'Platobné miesta' },
   inventory: { en: 'Inventory', cs: 'Sklad', sk: 'Sklad' },
   transactions: { en: 'Transactions', cs: 'Transakce', sk: 'Transakcie' },
   donationProjects: { en: 'Donation projects', cs: 'Dárkové projekty', sk: 'Darčekové projekty' },
@@ -96,12 +96,12 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   branding: { en: 'Branding', cs: 'Branding', sk: 'Branding' },
   kioskDonationAssign: {
     en: 'Sales point donation assign',
-    cs: 'Přiřazení darů na platební místo',
+    cs: 'Přiřazení darů na prodejní místo',
     sk: 'Priradenie darov na platobné miesto',
   },
   kioskDonationAmounts: {
     en: 'Sales point donation amounts',
-    cs: 'Částky darů na platebním místě',
+    cs: 'Částky darů na prodejním místě',
     sk: 'Sumy darov na platobnom mieste',
   },
   'orders.complete': {
@@ -203,7 +203,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   configPricing: { en: 'Config pricing', cs: 'Cenotvorba', sk: 'Cenotvorba' },
   pricingKioskOverride: {
     en: 'Pricing sales point override',
-    cs: 'Přepsání DPH u platebního místa',
+    cs: 'Přepsání DPH u prodejního místa',
     sk: 'Prepísanie DPH u platobného miesta',
   },
   configTenant: { en: 'Config tenant', cs: 'Nastavení organizace', sk: 'Nastavenie organizácie' },

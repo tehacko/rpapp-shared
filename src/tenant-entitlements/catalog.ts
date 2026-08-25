@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 51 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 52 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -99,11 +99,11 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   },
   {
     blockKey: 'incident_centre_ui',
-    blockClass: 'CORE_IMMUTABLE',
+    blockClass: 'CONDITIONAL',
     parentKeys: [],
     routeSuffix: 'success-incident-centre',
-    immutableDefaults: ALWAYS_ON_IMMUTABLE,
-    notes: 'DEV visibility toggle',
+    notes:
+      'Commercial tenant Události tab/nav/SIC APIs only — default OFF (FULL_DEMO_ALWAYS_OFF, not DEFAULT_OFF_ROLLOUT). Not an outbox grant ceiling. Platform /dev/success-incident-centre is capability-only (platform.successIncident.*). Platform /dev/inbox uses platform /me ALLOW of this key ∧ capability — not commercial Feature Policy',
   },
   {
     blockKey: 'payment_processing_runtime',
@@ -369,6 +369,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     notes: 'account-settings + ops-settings tab; always on (DEV policy UI locked)',
   },
   {
+    blockKey: 'tenant_brand_kit',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['tenant_ops_settings'],
+    capabilityHint: 'account.self.manage',
+    notes:
+      'Advanced brand kit: wordmark, receipt footer, apply-to receipts/emails + editable apply toggles. Default OFF — without it, square logo still auto-applies to customer PWA + admin login; receipts/emails stay off.',
+  },
+  {
     blockKey: 'admin_mfa',
     blockClass: 'CONDITIONAL',
     parentKeys: ['tenant_ops_settings'],
@@ -381,9 +389,11 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: [],
     routeSuffix: 'inbox',
+    // Inbox routes use admin:outbox:read RBAC; CapMap outbox grants are entitlementExempt
+    // (independent of this pack). Do not equate outbox grants with Události.
     capabilityHint: 'admin:outbox:read',
     notes:
-      'In-app admin inbox: header bell, account notification prefs, tenant /inbox — default OFF',
+      'In-app admin inbox: header bell, account notification prefs, tenant /inbox — default OFF. Not Události (incident_centre_ui); CapMap does not couple admin:outbox grants to this pack.',
   },
   {
     blockKey: 'bank_account_administration',

@@ -370,17 +370,17 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.salesPoint.deactivated': {
     en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
-    cs: 'Zapíše se, když je platební místo vypnuté pro zákazníky. Jeden řádek za platební místo. Platby už rozjeté se řeší zvlášť.',
+    cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',
     sk: 'Zapíše sa, keď je platobné miesto vypnuté pre zákazníkov. Jeden riadok za platobné miesto. Platby už rozbehnuté sa riešia osobitne.',
   },
   'admin.salesPoint.reactivated': {
     en: 'Recorded when a turned-off sales point is enabled again. One line per sales point.',
-    cs: 'Zapíše se, když je vypnuté platební místo znovu zapnuté. Jeden řádek za platební místo.',
+    cs: 'Zapíše se, když je vypnuté prodejní místo znovu zapnuté. Jeden řádek za prodejní místo.',
     sk: 'Zapíše sa, keď je vypnuté platobné miesto znova zapnuté. Jeden riadok za platobné miesto.',
   },
   'admin.salesPoint.permanently_deleted': {
     en: 'Recorded when a sales point is removed from the system for good. One line per sales point. Old payment and audit records stay for compliance.',
-    cs: 'Zapíše se, když je platební místo trvale odstraněno ze systému. Jeden řádek za platební místo. Staré platby a audit zůstávají kvůli evidenci.',
+    cs: 'Zapíše se, když je prodejní místo trvale odstraněno ze systému. Jeden řádek za prodejní místo. Staré platby a audit zůstávají kvůli evidenci.',
     sk: 'Zapíše sa, keď je platobné miesto trvale odstránené zo systému. Jeden riadok za platobné miesto. Staré platby a audit zostávajú kvôli evidencii.',
   },
   'admin.tenant.deactivated': {
@@ -490,12 +490,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.salesPoint.donation_projects.updated': {
     en: 'Recorded when which charity projects appear on a sales point is saved. One line per save. Project names are not all listed in the audit line.',
-    cs: 'Zapíše se při uložení toho, které dárkové projekty se na platebním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
+    cs: 'Zapíše se při uložení toho, které dárkové projekty se na prodejním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
     sk: 'Zapíše sa pri uložení toho, ktoré darčekové projekty sa na platobnom mieste zobrazujú. Jeden riadok za uloženie. Názvy všetkých projektov nie sú v riadku auditu.',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Recorded when donation amount presets linked to a sales point are updated. One line per save.',
-    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na platební místo. Jeden řádek za uložení.',
+    cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na prodejní místo. Jeden řádek za uložení.',
     sk: 'Zapíše sa pri aktualizácii prednastavených čiastok daru naviazaných na platobné miesto. Jeden riadok za uloženie.',
   },
   'admin.product.media_saved': {
@@ -515,12 +515,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.loyalty.physical_card_issued': {
     en: 'Recorded when an administrator issues a new physical loyalty card for sales point scanning. The full card payload is never stored in this log.',
-    cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na platebním místě. Plná hodnota karty se v záznamu neukládá.',
+    cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na prodejním místě. Plná hodnota karty se v záznamu neukládá.',
     sk: 'Zapíše sa, keď administrátor vydá novú fyzickú vernostnú kartu na skenovanie na platobnom mieste. Plná hodnota karty sa v zázname neukladá.',
   },
   'admin.loyalty.physical_card_revoked': {
     en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a sales point. One line per revoked card.',
-    cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na platebním místě. Jeden řádek za zneplatněnou kartu.',
+    cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na prodejním místě. Jeden řádek za zneplatněnou kartu.',
     sk: 'Zapíše sa, keď je fyzická vernostná karta zneplatnená a už ju nie je možné použiť na platobnom mieste. Jeden riadok za zneplatnenú kartu.',
   },
   'admin.promo.event.created': {
@@ -750,12 +750,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'payment.cash_checkout.self_confirm': {
     en: 'Recorded when a customer self-confirms sales point cash checkout (ADR-PICKUP-CASH).',
-    cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u platebního místa (ADR-PICKUP-CASH).',
+    cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u prodejního místa (ADR-PICKUP-CASH).',
     sk: 'Zapíše sa po vlastnom potvrdení hotovostnej platby zákazníkom pri platobnom mieste (ADR-PICKUP-CASH).',
   },
   'payment.cash_shift.opened': {
     en: 'Recorded when a cash drawer shift is opened at a sales point.',
-    cs: 'Zapíše se při otevření hotovostní směny u platebního místa.',
+    cs: 'Zapíše se při otevření hotovostní směny u prodejního místa.',
     sk: 'Zapíše sa pri otvorení hotovostnej zmeny pri platobnom mieste.',
   },
   'payment.cash_shift.closed': {
@@ -765,7 +765,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'payment.cash_drawer.open_signal': {
     en: 'Recorded when the sales point signals a physical drawer open after cash payment completion.',
-    cs: 'Zapíše se, když platební místo po dokončení hotovostní platby signalizuje otevření zásuvky.',
+    cs: 'Zapíše se, když prodejní místo po dokončení hotovostní platby signalizuje otevření zásuvky.',
     sk: 'Zapíše sa, keď platobné miesto po dokončení hotovostnej platby signalizuje otvorenie zásuvky.',
   },
   'export.analytics.explore.exported': {

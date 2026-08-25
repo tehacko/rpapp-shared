@@ -132,4 +132,15 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('inventory_incidents', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('inventory_incidents', 'DONATION_ONLY', 'BOTH')).toBe(true);
   });
+
+  it('defaults incident_centre_ui to hardOff (commercial Události; not DEFAULT_OFF_ROLLOUT)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').incident_centre_ui).toBe('hardOff');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'CUSTOMER_ONLY').incident_centre_ui).toBe(
+      'hardOff',
+    );
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'CUSTOMER_ONLY').incident_centre_ui).toBe(
+      'hardOff',
+    );
+    expect(isTenantScopeLockedBlock('incident_centre_ui', 'BOTH', 'BOTH')).toBe(false);
+  });
 });

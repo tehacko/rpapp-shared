@@ -132,7 +132,7 @@ export class KioskError extends AppError {
 export class SalesPointError extends KioskError {
   constructor(
     message: string = csSkEn(
-      'Chyba konfigurace platebního místa',
+      'Chyba konfigurace prodejního místa',
       'Chyba konfigurácie platobného miesta',
       'Sales point configuration error'
     )

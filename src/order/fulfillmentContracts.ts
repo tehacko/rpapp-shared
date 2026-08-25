@@ -124,6 +124,8 @@ export interface CustomerOrderListItem {
   readonly currency: string | null;
   readonly createdAt: string;
   readonly pickupPointName: string | null;
+  /** Owning shop id — additive G2; aligns monogram with payment-backed cards. */
+  readonly tenantId: number;
 }
 
 export interface CustomerOrderListResponse {
