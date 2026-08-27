@@ -3,8 +3,7 @@
  */
 import '@testing-library/jest-dom';
 import { describe, expect, it, jest } from '@jest/globals';
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { LocaleFlagToggle } from '../LocaleFlags/LocaleFlagToggle.js';
 import { DEFAULT_LOCALE_FLAGS } from '../LocaleFlags/localeFlagRegistry.js';
 import { SlovakFlagSvg } from '../LocaleFlags/flagSvgs.js';
@@ -15,8 +14,7 @@ describe('LocaleFlagToggle', () => {
     expect(DEFAULT_LOCALE_FLAGS.find((locale) => locale.code === 'sk')?.Flag).toBe(SlovakFlagSvg);
   });
 
-  it('renders flag buttons with accessible labels, contrast ring, and selection state', async () => {
-    const user = userEvent.setup();
+  it('renders flag buttons with accessible labels, contrast ring, and selection state', () => {
     const onSelect = jest.fn();
     const labels: Record<string, string> = {
       cs: 'Čeština',
@@ -60,7 +58,7 @@ describe('LocaleFlagToggle', () => {
 
     expect(within(slovak).getByTestId('slovak-flag-cross')).toBeInTheDocument();
 
-    await user.click(slovak);
+    fireEvent.click(slovak);
     expect(onSelect).toHaveBeenCalledWith('sk');
   });
 });

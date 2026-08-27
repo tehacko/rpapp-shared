@@ -4,7 +4,6 @@
 import '@testing-library/jest-dom';
 import { describe, expect, it } from '@jest/globals';
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { OVERLAY_EXIT_MS } from '../overlay/overlayMotion.js';
 import { Dialog } from './Dialog.js';
@@ -46,22 +45,20 @@ describe('Dialog', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('closes on overlay click when closeOnOverlayClick and not busy', async () => {
+  it('closes on overlay click when closeOnOverlayClick and not busy', () => {
     const onClose = jest.fn();
-    const user = userEvent.setup();
     render(
       <Dialog open onClose={onClose} title="Confirm">
         Body
       </Dialog>,
     );
 
-    await user.click(screen.getByTestId('dialog-overlay'));
+    fireEvent.click(screen.getByTestId('dialog-overlay'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('does not close on overlay click when busy', async () => {
+  it('does not close on overlay click when busy', () => {
     const onClose = jest.fn();
-    const user = userEvent.setup();
     render(
       <Dialog open busy onClose={onClose} title="Confirm">
         Body
@@ -70,13 +67,12 @@ describe('Dialog', () => {
 
     const overlay = screen.getByTestId('dialog-overlay');
     expect(overlay).toBeDisabled();
-    await user.click(overlay);
+    fireEvent.click(overlay);
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('does not close on overlay click when closeOnOverlayClick is false', async () => {
+  it('does not close on overlay click when closeOnOverlayClick is false', () => {
     const onClose = jest.fn();
-    const user = userEvent.setup();
     render(
       <Dialog open closeOnOverlayClick={false} onClose={onClose} title="Confirm">
         Body
@@ -85,7 +81,7 @@ describe('Dialog', () => {
 
     const overlay = screen.getByTestId('dialog-overlay');
     expect(overlay).toBeDisabled();
-    await user.click(overlay);
+    fireEvent.click(overlay);
     expect(onClose).not.toHaveBeenCalled();
   });
 

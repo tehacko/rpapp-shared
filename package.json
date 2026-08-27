@@ -256,6 +256,9 @@
             "analyticsExploreCaps": [
                 "./dist/analyticsExploreCaps.d.ts"
             ],
+            "barcode-scanner": [
+                "./dist/barcode-scanner.d.ts"
+            ],
             "crossTab": [
                 "./dist/crossTab/index.d.ts"
             ],
@@ -304,7 +307,8 @@
         }
     },
     "dependencies": {
-        "tailwind-variants": "^0.3.0"
+        "tailwind-variants": "^0.3.0",
+        "zxing-wasm": "^3.1.3"
     },
     "scripts": {
         "build": "tsc",
@@ -375,7 +379,8 @@
         "storybook": "^9.1.20",
         "ts-jest": "^29.4.11",
         "typescript": "^5.0.0",
-        "vite": "^6.4.3"
+        "vite": "^6.4.3",
+        "zxing-wasm": "^3.1.3"
     },
     "overrides": {
         "babel-plugin-istanbul": "^8.0.2",
