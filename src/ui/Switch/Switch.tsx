@@ -4,14 +4,21 @@ import { tv } from '../tvShim.js';
 const switchTrack = tv({
   base: [
     'relative inline-flex h-[1.55rem] w-[2.85rem] shrink-0 cursor-pointer rounded-full',
-    'bg-[var(--color-border,var(--color-an-border,#cbd5e1))] transition-[background-color] duration-150',
+    /* OFF: muted inactive — avoid bright slate that reads as "on" on dark surfaces. */
+    'bg-[color-mix(in_srgb,var(--color-an-text-muted,var(--color-text-secondary,#71717a))_42%,var(--color-an-surface,var(--color-surface,#fff)))]',
+    'shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-an-border,var(--color-border,#cbd5e1))_70%,transparent)]',
+    'transition-[background-color,box-shadow] duration-150',
     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
     'focus-visible:outline-[var(--color-focus-ring,var(--color-an-primary))]',
     'disabled:cursor-not-allowed disabled:opacity-55',
   ].join(' '),
   variants: {
     checked: {
-      true: 'bg-[var(--color-action-primary,var(--color-an-primary))]',
+      true: [
+        /* ON: success green — clear true/false when brand primary is monochrome. */
+        'bg-[var(--color-an-success,var(--color-success,#16a34a))]',
+        'shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-an-success,var(--color-success,#16a34a))_55%,transparent)]',
+      ].join(' '),
       false: '',
     },
   },
@@ -21,7 +28,7 @@ const switchTrack = tv({
 const switchKnob = tv({
   base: [
     'pointer-events-none absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-white',
-    'shadow-[0_1px_3px_rgba(15,23,42,0.18)] transition-transform duration-150',
+    'shadow-[0_1px_3px_rgba(15,23,42,0.45)] transition-transform duration-150',
   ].join(' '),
   variants: {
     checked: {

@@ -11,4 +11,10 @@ export {
   type BarcodeScannerFormatProfile,
   type ScannerFormatConfig,
 } from './hooks/scannerFormats.js';
-export { setZXingWasmUrl, isZXingWasmConfigured } from './hooks/zxingWasmEngine.js';
+export {
+  SCANNER_VIDEO_CONSTRAINTS,
+  SCANNER_VIDEO_CONSTRAINT_FALLBACKS,
+  openScannerMediaStream,
+  applyScannerTrackEnhancements,
+} from './hooks/scannerCameraConstraints.js';
+

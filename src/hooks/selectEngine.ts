@@ -1,10 +1,9 @@
 /**
  * Decode engines used by {@link useBarcodeScanner}:
- * - `zxing-wasm` — ZXing-C++ WASM (primary; highest sensitivity; requires configured URL)
- * - `native-detector` — Chromium BarcodeDetector (fast path when formats OK)
- * - `zxing` — pure-JS @zxing fallback when WASM/native cannot start
+ * - `zxing` — pure-JS @zxing/browser (decodeFromStream + multi-pass zoom)
+ * - `native-detector` — legacy union member; G5 no longer starts native-only
+ *   (weak path without TRY_HARDER / multi-pass). Kept for API compatibility.
  *
- * Engine selection lives only in `useBarcodeScanner` (runtime cascade).
- * There is no separate `selectBarcodeScannerEngine` helper — that was a dual SoT (G7).
+ * Engine selection lives only in `useBarcodeScanner`.
  */
-export type ScannerEngine = 'zxing-wasm' | 'native-detector' | 'zxing';
+export type ScannerEngine = 'zxing' | 'native-detector';

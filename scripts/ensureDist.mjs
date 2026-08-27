@@ -389,16 +389,16 @@ function assertConsumerOverlay(destRoot, consumer) {
         'Recovery: re-run ensureDist after closing IDE/antivirus locks on node_modules.'
     );
   }
-  assertBarcodeScannerWasmExports(path.join(destRoot, 'dist'), consumer);
+  assertBarcodeScannerExports(path.join(destRoot, 'dist'), consumer);
 }
 
 /**
- * G11 — `pi-kiosk-shared/barcode-scanner` must export setZXingWasmUrl after build/overlay.
- * Prevents silent green from hand-copying a stale registry dist into node_modules.
+ * Post-WASM-revert gate — `pi-kiosk-shared/barcode-scanner` must export useBarcodeScanner
+ * after build/overlay. Prevents silent green from hand-copying a stale registry dist.
  * @param {string} distRoot
  * @param {string} label
  */
-function assertBarcodeScannerWasmExports(distRoot, label) {
+function assertBarcodeScannerExports(distRoot, label) {
   const jsPath = path.join(distRoot, 'barcode-scanner.js');
   const dtsPath = path.join(distRoot, 'barcode-scanner.d.ts');
   for (const filePath of [jsPath, dtsPath]) {
@@ -409,12 +409,11 @@ function assertBarcodeScannerWasmExports(distRoot, label) {
       );
     }
     const source = fs.readFileSync(filePath, 'utf8');
-    if (!/\bsetZXingWasmUrl\b/.test(source)) {
+    if (!/\buseBarcodeScanner\b/.test(source)) {
       throw new Error(
-        `[ensureDist] ${label}: ${path.basename(filePath)} missing setZXingWasmUrl export. ` +
-          'Registry pi-kiosk-shared@2.2.88 tarball lacks this export — monorepo SoT is local shared/src + ensureDist. ' +
-          'Recovery: rebuild from shared/src (barcode-scanner.ts exports setZXingWasmUrl), then ensureDist overlay; ' +
-          'app-only clones need a published shared version that includes the export.'
+        `[ensureDist] ${label}: ${path.basename(filePath)} missing useBarcodeScanner export. ` +
+          'Monorepo SoT is local shared/src + ensureDist (WASM setZXingWasmUrl path removed). ' +
+          'Recovery: rebuild from shared/src (barcode-scanner.ts re-exports useBarcodeScanner), then ensureDist overlay.'
       );
     }
   }
@@ -428,7 +427,7 @@ function runEnsureDist() {
 
   const packageJsonSrc = path.join(sharedRoot, 'package.json');
   const distSrc = path.join(sharedRoot, 'dist');
-  assertBarcodeScannerWasmExports(distSrc, 'shared/dist');
+  assertBarcodeScannerExports(distSrc, 'shared/dist');
   const tokensSrc = path.join(sharedRoot, 'src', 'tokens');
   const publishedFiles = JSON.parse(fs.readFileSync(packageJsonSrc, 'utf8')).files ?? [];
   const includeTokens = publishedFiles.some(

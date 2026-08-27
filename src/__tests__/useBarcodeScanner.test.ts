@@ -1,30 +1,28 @@
 /**
  * @jest-environment jsdom
  *
+ * Primary engine: pure-JS @zxing with multi-pass digital zoom + TRY_HARDER.
  * G7 / G21 — track.stop on disable/unmount; visibility-hidden camera release.
- * G4 / §13 Allow — getUserMedia allow → status running → onDecode (hook integration, not page E2E).
- * G5 — sensitivity/reliability regression guards (reader deltas, hi-res constraints,
- *      WASM bootstrap hard-fail, consecutive hard-decode fallthrough).
- * Format profile contract preserved (shared default remains retail).
- * Primary engine is zxing-wasm (ZXing-C++); pure-JS @zxing remains fallback.
+ * G8 — BrowserMultiFormatReader constructor must receive TRY_HARDER (distinct describe).
  */
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { SCANNER_VIDEO_CONSTRAINTS } from '../hooks/scannerCameraConstraints.js';
+import { BrowserMultiFormatReader } from '@zxing/browser';
+import { DecodeHintType } from '@zxing/library';
 import { resolveScannerFormatConfig } from '../hooks/scannerFormats.js';
+import {
+  openScannerMediaStream,
+  SCANNER_VIDEO_CONSTRAINTS,
+  SCANNER_VIDEO_CONSTRAINT_FALLBACKS,
+} from '../hooks/scannerCameraConstraints.js';
 import {
   useBarcodeScanner,
   type UseBarcodeScannerMessages,
 } from '../hooks/useBarcodeScanner.js';
-import {
-  buildSensitiveReaderOptions,
-  setZXingWasmUrl,
-} from '../hooks/zxingWasmEngine.js';
 
 const trackStop = jest.fn();
 const zxingControlsStop = jest.fn();
 const getUserMedia = jest.fn();
-const prepareZXingModule = jest.fn();
-const readBarcodes = jest.fn(async () => [] as Array<{ text: string }>);
+const decodeFromCanvas = jest.fn();
 
 type ZxingDecodeCallback = (
   result: { getText: () => string } | null | undefined,
@@ -40,13 +38,15 @@ const decodeFromStream = jest.fn(
   ): Promise<{ stop: () => void }> => ({ stop: zxingControlsStop }),
 );
 
+/** Records constructor `hints` Map args for G8 TRY_HARDER assertions. */
 jest.mock('@zxing/browser', () => ({
-  BrowserMultiFormatReader: jest.fn().mockImplementation(() => ({
+  BrowserMultiFormatReader: jest.fn().mockImplementation((_hints?: Map<unknown, unknown>) => ({
     decodeFromStream: (
       stream: MediaStream,
       video: HTMLVideoElement,
       callback: ZxingDecodeCallback,
     ) => decodeFromStream(stream, video, callback),
+    decodeFromCanvas: (canvas: HTMLCanvasElement) => decodeFromCanvas(canvas),
   })),
 }));
 
@@ -64,12 +64,13 @@ jest.mock('@zxing/library', () => ({
   },
 }));
 
-jest.mock('zxing-wasm/reader', () => ({
-  prepareZXingModule: (...args: unknown[]) =>
-    (prepareZXingModule as (...a: unknown[]) => unknown)(...args),
-  readBarcodes: (...args: unknown[]) =>
-    (readBarcodes as (...a: unknown[]) => unknown)(...args),
-}));
+const BrowserMultiFormatReaderMock = BrowserMultiFormatReader as unknown as jest.Mock;
+
+function readerConstructorHintMaps(): Map<unknown, unknown>[] {
+  return BrowserMultiFormatReaderMock.mock.calls.map(
+    (call) => call[0] as Map<unknown, unknown>,
+  );
+}
 
 const messages: UseBarcodeScannerMessages = {
   permissionDenied: 'permission denied',
@@ -79,7 +80,7 @@ const messages: UseBarcodeScannerMessages = {
   runningZxing: 'zxing',
   error: 'error',
   scannerOff: 'off',
-  wasmBootstrapFailed: 'wasm bootstrap failed',
+  insecureContext: 'insecure context',
 };
 
 function createVideoRef(): { current: HTMLVideoElement } {
@@ -103,7 +104,6 @@ function installMediaDevices(): void {
   });
 }
 
-/** Canvas path needed for zxing-wasm frame decode (G4 / G5 hard-fail tests). */
 function stubCanvas2d(): jest.SpyInstance {
   const getContext = jest.fn(() => ({
     imageSmoothingEnabled: true,
@@ -139,36 +139,61 @@ describe('resolveScannerFormatConfig', () => {
   });
 });
 
-describe('buildSensitiveReaderOptions (G5)', () => {
-  it.each(['retail', 'all', 'qr-only'] as const)(
-    'includes tryDenoise:true and minLineCount:1 for %s',
-    (profile) => {
-      const options = buildSensitiveReaderOptions(profile);
-      expect(options.tryDenoise).toBe(true);
-      expect(options.minLineCount).toBe(1);
-      expect(options.downscaleThreshold).toBe(800);
-      expect(options.downscaleFactor).toBe(2);
-    },
-  );
-});
-
-describe('SCANNER_VIDEO_CONSTRAINTS (G5)', () => {
-  it('requests max practical environment camera resolution', () => {
+describe('SCANNER_VIDEO_CONSTRAINTS', () => {
+  it('requests environment camera with soft ideal resolution (no hard mins)', () => {
     expect(SCANNER_VIDEO_CONSTRAINTS).toEqual({
       facingMode: { ideal: 'environment' },
-      width: { ideal: 3840, min: 1280 },
-      height: { ideal: 2160, min: 720 },
+      width: { ideal: 1920 },
+      height: { ideal: 1080 },
       frameRate: { ideal: 30 },
     });
+    expect(SCANNER_VIDEO_CONSTRAINT_FALLBACKS).toHaveLength(4);
+    expect(SCANNER_VIDEO_CONSTRAINT_FALLBACKS[3]).toBe(true);
+  });
+});
+
+describe('openScannerMediaStream', () => {
+  it('falls back when the preferred constraints are overconstrained', async () => {
+    const stream = { getTracks: () => [], getVideoTracks: () => [] } as unknown as MediaStream;
+    const gum = jest
+      .fn()
+      .mockRejectedValueOnce(new DOMException('overconstrained', 'OverconstrainedError'))
+      .mockResolvedValueOnce(stream);
+
+    await expect(openScannerMediaStream(gum)).resolves.toBe(stream);
+    expect(gum).toHaveBeenCalledTimes(2);
+  });
+
+  it('G2: NotAllowedError on preferred continues to later rungs', async () => {
+    const stream = { getTracks: () => [], getVideoTracks: () => [] } as unknown as MediaStream;
+    const gum = jest
+      .fn()
+      .mockRejectedValueOnce(new DOMException('denied', 'NotAllowedError'))
+      .mockResolvedValueOnce(stream);
+
+    await expect(openScannerMediaStream(gum)).resolves.toBe(stream);
+    expect(gum).toHaveBeenCalledTimes(2);
+  });
+
+  it('G2: NotAllowedError on final video:true rung throws without a fifth attempt', async () => {
+    const denied = new DOMException('denied-final', 'NotAllowedError');
+    const gum = jest
+      .fn()
+      .mockRejectedValueOnce(new DOMException('denied-1', 'NotAllowedError'))
+      .mockRejectedValueOnce(new DOMException('denied-2', 'NotAllowedError'))
+      .mockRejectedValueOnce(new DOMException('denied-3', 'NotAllowedError'))
+      .mockRejectedValueOnce(denied);
+
+    await expect(openScannerMediaStream(gum)).rejects.toBe(denied);
+    expect(gum).toHaveBeenCalledTimes(4);
+    expect(gum.mock.calls[3]?.[0]).toEqual({ video: true, audio: false });
   });
 });
 
 describe('useBarcodeScanner messages contract', () => {
-  it('requires injected message keys for consumer wrappers', () => {
+  it('requires core injected message keys', () => {
     expect(messages.permissionDenied).toBe('permission denied');
     expect(messages.noCamera).toBe('no camera');
-    expect(messages.wasmBootstrapFailed).toBe('wasm bootstrap failed');
-    expect(Object.keys(messages)).toHaveLength(8);
   });
 });
 
@@ -180,11 +205,10 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     zxingControlsStop.mockClear();
     getUserMedia.mockClear();
     decodeFromStream.mockClear();
-    prepareZXingModule.mockReset();
-    // G1 — prepare may return void or a Promise; default resolves so await succeeds.
-    prepareZXingModule.mockImplementation(() => Promise.resolve(undefined));
-    readBarcodes.mockReset();
-    readBarcodes.mockResolvedValue([]);
+    decodeFromCanvas.mockClear();
+    decodeFromCanvas.mockImplementation(() => {
+      throw new Error('NotFoundException');
+    });
     decodeFromStream.mockImplementation(
       async (
         _stream: MediaStream,
@@ -193,29 +217,159 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
       ): Promise<{ stop: () => void }> => ({ stop: zxingControlsStop }),
     );
     installMediaDevices();
-    setZXingWasmUrl('/zxing_reader.wasm');
     canvasSpy = stubCanvas2d();
     Object.defineProperty(document, 'hidden', {
       configurable: true,
       get: () => false,
     });
+    Object.defineProperty(window, 'isSecureContext', {
+      configurable: true,
+      value: true,
+    });
   });
 
   afterEach(() => {
     canvasSpy.mockRestore();
+    Reflect.deleteProperty(window, 'BarcodeDetector');
   });
 
-  /**
-   * §13 Allow permission → scanner works (honest bar):
-   * mediaDevices.getUserMedia resolves → status `running` → wasm decode → onDecode.
-   * Hook integration only — not PlatformScanPage / browser permission UI E2E.
-   */
-  it('Allow getUserMedia → running → onDecode via zxing-wasm (G4 / §13)', async () => {
+  it('surfaces insecure-context recovery copy without calling getUserMedia', async () => {
+    Object.defineProperty(window, 'isSecureContext', {
+      configurable: true,
+      value: false,
+    });
+
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef: createVideoRef(),
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('error');
+    });
+    expect(result.current.errorMessage).toBe('insecure context');
+    expect(getUserMedia).not.toHaveBeenCalled();
+  });
+
+  it('G9: four-rung Overconstrained exhaustion yields status error not denied', async () => {
+    // Always-reject (not Once) so remounts cannot fall through to a success.
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() =>
+      Promise.reject(new DOMException('overconstrained-last', 'OverconstrainedError')),
+    );
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    // Stable ref — creating inside the render callback retriggers the GUM effect forever.
+    const videoRefG9 = createVideoRef();
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef: videoRefG9,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('error');
+    });
+    expect(result.current.status).not.toBe('denied');
+    expect(result.current.errorMessage).toBe('error');
+    expect(getUserMedia.mock.calls.length).toBeGreaterThanOrEqual(4);
+    expect(getUserMedia.mock.calls.some((call) => call[0]?.video === true)).toBe(true);
+  });
+
+  it('G2: NotAllowedError only on final rung yields status denied', async () => {
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() =>
+      Promise.reject(new DOMException('hard-deny', 'NotAllowedError')),
+    );
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    const videoRefG2 = createVideoRef();
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef: videoRefG2,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('denied');
+    });
+    expect(result.current.errorMessage).toBe('permission denied');
+    expect(getUserMedia.mock.calls.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('G10: secure context + NotAllowedError on every constraint ladder rung → denied + permissionDenied', async () => {
+    // G2 final: NotAllowed is retried on early rungs — reject every ladder step so
+    // the outcome is deny (never fall through to installMediaDevices success).
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() =>
+      Promise.reject(new DOMException('Permission denied', 'NotAllowedError')),
+    );
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+    Object.defineProperty(window, 'isSecureContext', {
+      configurable: true,
+      value: true,
+    });
+
+    // Stable ref — creating inside the render callback retriggers the GUM effect forever.
+    const videoRef = createVideoRef();
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('denied');
+      expect(result.current.errorMessage).toBe(messages.permissionDenied);
+    });
+    expect(result.current.errorMessage).not.toBe(messages.insecureContext);
+    // G2 ladder exhausts all rungs (StrictMode remount may double the attempt count).
+    expect(getUserMedia.mock.calls.length).toBeGreaterThanOrEqual(
+      SCANNER_VIDEO_CONSTRAINT_FALLBACKS.length,
+    );
+    expect(getUserMedia.mock.calls.some((call) => call[0]?.video === true)).toBe(true);
+  });
+
+  it('Allow getUserMedia → running → onDecode via @zxing decodeFromStream', async () => {
     const onDecode = jest.fn();
     const videoRef = createVideoRef();
     const decodedText = 'RPAPP:{"v":1,"type":"salesPoint","sig":"allow-proof"}';
 
-    readBarcodes.mockResolvedValue([{ text: decodedText }]);
+    decodeFromStream.mockImplementation(
+      async (
+        _stream: MediaStream,
+        _video: HTMLVideoElement,
+        callback: ZxingDecodeCallback,
+      ): Promise<{ stop: () => void }> => {
+        const controls = { stop: zxingControlsStop };
+        queueMicrotask(() => {
+          callback({ getText: () => decodedText }, undefined, controls);
+        });
+        return controls;
+      },
+    );
 
     const { result } = renderHook(() =>
       useBarcodeScanner({
@@ -234,13 +388,132 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
       video: SCANNER_VIDEO_CONSTRAINTS,
       audio: false,
     });
-    expect(result.current.engine).toBe('zxing-wasm');
+    expect(result.current.engine).toBe('zxing');
     expect(result.current.errorMessage).toBeNull();
-    expect(prepareZXingModule).toHaveBeenCalled();
+    expect(decodeFromStream).toHaveBeenCalled();
 
     await waitFor(() => {
       expect(onDecode).toHaveBeenCalledWith(decodedText);
     });
+  });
+
+  it('also runs multi-pass canvas decode alongside stream for distance sensitivity', async () => {
+    const onDecode = jest.fn();
+    const videoRef = createVideoRef();
+    const decodedText = 'DISTANT-CODE-128';
+
+    decodeFromStream.mockImplementation(
+      async (
+        _stream: MediaStream,
+        _video: HTMLVideoElement,
+        _callback: ZxingDecodeCallback,
+      ): Promise<{ stop: () => void }> => ({ stop: zxingControlsStop }),
+    );
+    decodeFromCanvas.mockImplementation(() => ({
+      getText: () => decodedText,
+    }));
+
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode,
+        messages,
+        formatProfile: 'retail',
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    await waitFor(() => {
+      expect(onDecode).toHaveBeenCalledWith(decodedText);
+    });
+    expect(decodeFromCanvas).toHaveBeenCalled();
+  });
+
+  it('G5: stream fail + canvas multi-pass can start → engine zxing, not native-detector', async () => {
+    const onDecode = jest.fn();
+    const videoRef = createVideoRef();
+    const decodedText = 'MULTI-PASS-ONLY';
+    const detect = jest.fn(async () => []);
+    Object.defineProperty(window, 'BarcodeDetector', {
+      configurable: true,
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({ detect })),
+    });
+
+    decodeFromStream.mockRejectedValue(new Error('decodeFromStream unavailable'));
+    decodeFromCanvas.mockImplementation(() => ({
+      getText: () => decodedText,
+    }));
+
+    const { result } = renderHook(
+      () =>
+        useBarcodeScanner({
+          enabled: true,
+          videoRef,
+          onDecode,
+          messages,
+          formatProfile: 'retail',
+        }),
+      { reactStrictMode: false },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    expect(result.current.engine).toBe('zxing');
+    expect(result.current.errorMessage).toBeNull();
+    expect(decodeFromStream).toHaveBeenCalled();
+    expect(window.BarcodeDetector).not.toHaveBeenCalled();
+    expect(detect).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(onDecode).toHaveBeenCalledWith(decodedText);
+    });
+  });
+
+  it('G5: stream and multi-pass both fail to start → error, never native-only', async () => {
+    const originalImpl = canvasSpy.getMockImplementation();
+    expect(originalImpl).toBeDefined();
+    canvasSpy.mockImplementation(((tagName: string) => {
+      if (tagName === 'canvas') {
+        throw new Error('canvas unavailable');
+      }
+      return (originalImpl as (tag: string) => HTMLElement)(tagName);
+    }) as typeof document.createElement);
+
+    const detect = jest.fn(async () => []);
+    Object.defineProperty(window, 'BarcodeDetector', {
+      configurable: true,
+      writable: true,
+      value: jest.fn().mockImplementation(() => ({ detect })),
+    });
+
+    decodeFromStream.mockRejectedValue(new Error('decodeFromStream unavailable'));
+
+    const videoRef = createVideoRef();
+    const { result } = renderHook(
+      () =>
+        useBarcodeScanner({
+          enabled: true,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+        }),
+      // Avoid Strict Mode cancel racing the hard-fail path (status stuck at starting).
+      { reactStrictMode: false },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('error');
+    });
+    expect(result.current.engine).toBeNull();
+    expect(result.current.errorMessage).toBe(messages.error);
+    expect(window.BarcodeDetector).not.toHaveBeenCalled();
+    expect(detect).not.toHaveBeenCalled();
+    expect(trackStop).toHaveBeenCalled();
   });
 
   it('stops MediaStream tracks when enabled becomes false', async () => {
@@ -259,7 +532,6 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     await waitFor(() => {
       expect(result.current.status).toBe('running');
     });
-    expect(getUserMedia).toHaveBeenCalled();
     expect(trackStop).not.toHaveBeenCalled();
 
     rerender({ enabled: false });
@@ -332,7 +604,6 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
       document.dispatchEvent(new Event('visibilitychange'));
     });
 
-    // G10/G7 — visible again must not restart while held off; parent syncs enabled=false.
     await act(async () => {
       await Promise.resolve();
     });
@@ -380,18 +651,208 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     expect(trackStop).toHaveBeenCalled();
     expect(result.current.status).toBe('idle');
   });
+
+  it('G4: null videoRef after GUM → status error, tracks stopped, errorMessage set', async () => {
+    const videoRef = { current: null as HTMLVideoElement | null };
+
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('error');
+    });
+    expect(result.current.status).not.toBe('idle');
+    expect(result.current.errorMessage).toBe(messages.error);
+    expect(trackStop).toHaveBeenCalled();
+    expect(decodeFromStream).not.toHaveBeenCalled();
+  });
+
+  it('G5: unmount while GUM pending → tracks stopped after resolve (no orphan)', async () => {
+    let resolveGum!: (stream: MediaStream) => void;
+    const pending = new Promise<MediaStream>((resolve) => {
+      resolveGum = resolve;
+    });
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() => pending);
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    // Stable ref — creating inside the render callback retriggers the GUM effect forever.
+    const videoRef = createVideoRef();
+    const { result, unmount } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(getUserMedia).toHaveBeenCalled();
+    });
+    expect(result.current.status).toBe('starting');
+
+    unmount();
+
+    const stream = {
+      getTracks: () => [{ stop: trackStop }],
+      getVideoTracks: () => [{ stop: trackStop }],
+    } as unknown as MediaStream;
+
+    await act(async () => {
+      resolveGum(stream);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(trackStop).toHaveBeenCalled();
+    expect(decodeFromStream).not.toHaveBeenCalled();
+  });
+
+  it('G5: disable while GUM pending → tracks stopped after resolve', async () => {
+    let resolveGum!: (stream: MediaStream) => void;
+    const pending = new Promise<MediaStream>((resolve) => {
+      resolveGum = resolve;
+    });
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() => pending);
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    const videoRef = createVideoRef();
+    const { result, rerender } = renderHook(
+      ({ enabled }: { enabled: boolean }) =>
+        useBarcodeScanner({
+          enabled,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+        }),
+      { initialProps: { enabled: true } },
+    );
+
+    await waitFor(() => {
+      expect(getUserMedia).toHaveBeenCalled();
+    });
+    expect(result.current.status).toBe('starting');
+
+    rerender({ enabled: false });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('idle');
+    });
+
+    const stream = {
+      getTracks: () => [{ stop: trackStop }],
+      getVideoTracks: () => [{ stop: trackStop }],
+    } as unknown as MediaStream;
+
+    await act(async () => {
+      resolveGum(stream);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(trackStop).toHaveBeenCalled();
+  });
+
+  it('G5: cancel after GUM during video.play → tracks stopped', async () => {
+    const videoRef = createVideoRef();
+    let resolvePlay!: () => void;
+    videoRef.current.play = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolvePlay = resolve;
+        }),
+    ) as unknown as HTMLVideoElement['play'];
+
+    const { result, unmount } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(videoRef.current.play).toHaveBeenCalled();
+    });
+    expect(result.current.status).toBe('starting');
+    expect(trackStop).not.toHaveBeenCalled();
+
+    unmount();
+    expect(trackStop).toHaveBeenCalled();
+
+    await act(async () => {
+      resolvePlay();
+      await Promise.resolve();
+    });
+
+    expect(decodeFromStream).not.toHaveBeenCalled();
+  });
+
+  it('G8: SecurityError → status error + policyBlocked (not denied)', async () => {
+    getUserMedia.mockReset();
+    getUserMedia.mockRejectedValue(
+      new DOMException('Permissions policy', 'SecurityError'),
+    );
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    const messagesWithPolicy: UseBarcodeScannerMessages = {
+      ...messages,
+      policyBlocked: 'policy blocked',
+    };
+
+    const videoRef = createVideoRef();
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages: messagesWithPolicy,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('error');
+    });
+    expect(result.current.status).not.toBe('denied');
+    expect(result.current.errorMessage).toBe('policy blocked');
+  });
 });
 
-describe('useBarcodeScanner WASM bootstrap hard-fail (G3 / G5)', () => {
+/**
+ * G8 — stream + multi-pass readers must be constructed with TRY_HARDER.
+ * Distinct describe so G5 edits elsewhere in this file do not collide.
+ */
+describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
+  let canvasSpy: jest.SpyInstance;
+
   beforeEach(() => {
     trackStop.mockClear();
     zxingControlsStop.mockClear();
     getUserMedia.mockClear();
     decodeFromStream.mockClear();
-    prepareZXingModule.mockReset();
-    prepareZXingModule.mockImplementation(() => Promise.resolve(undefined));
-    readBarcodes.mockReset();
-    readBarcodes.mockResolvedValue([]);
+    decodeFromCanvas.mockClear();
+    BrowserMultiFormatReaderMock.mockClear();
+    decodeFromCanvas.mockImplementation(() => {
+      throw new Error('NotFoundException');
+    });
     decodeFromStream.mockImplementation(
       async (
         _stream: MediaStream,
@@ -400,22 +861,22 @@ describe('useBarcodeScanner WASM bootstrap hard-fail (G3 / G5)', () => {
       ): Promise<{ stop: () => void }> => ({ stop: zxingControlsStop }),
     );
     installMediaDevices();
+    canvasSpy = stubCanvas2d();
     Object.defineProperty(document, 'hidden', {
       configurable: true,
       get: () => false,
     });
-    // Ensure no leftover prepared state from prior suites.
-    setZXingWasmUrl('');
+    Object.defineProperty(window, 'isSecureContext', {
+      configurable: true,
+      value: true,
+    });
   });
 
   afterEach(() => {
-    setZXingWasmUrl('/zxing_reader.wasm');
-    prepareZXingModule.mockReset();
-    prepareZXingModule.mockImplementation(() => Promise.resolve(undefined));
+    canvasSpy.mockRestore();
   });
 
-  it('missing WASM URL → error wasmBootstrapFailed; does not start native/@zxing', async () => {
-    setZXingWasmUrl('');
+  it('passes TRY_HARDER=true to every BrowserMultiFormatReader (stream + sensitive multi-pass)', async () => {
     const videoRef = createVideoRef();
 
     const { result } = renderHook(() =>
@@ -424,249 +885,48 @@ describe('useBarcodeScanner WASM bootstrap hard-fail (G3 / G5)', () => {
         videoRef,
         onDecode: jest.fn(),
         messages,
+        formatProfile: 'retail',
       }),
     );
 
     await waitFor(() => {
-      expect(result.current.status).toBe('error');
-    });
-    expect(result.current.errorMessage).toBe(messages.wasmBootstrapFailed);
-    expect(result.current.engine).toBeNull();
-    expect(prepareZXingModule).not.toHaveBeenCalled();
-    expect(decodeFromStream).not.toHaveBeenCalled();
-    expect(readBarcodes).not.toHaveBeenCalled();
-  });
-
-  it('empty setZXingWasmUrl clears config → error wasmBootstrapFailed', async () => {
-    setZXingWasmUrl('/zxing_reader.wasm');
-    setZXingWasmUrl('');
-    const videoRef = createVideoRef();
-
-    const { result } = renderHook(() =>
-      useBarcodeScanner({
-        enabled: true,
-        videoRef,
-        onDecode: jest.fn(),
-        messages,
-      }),
-    );
-
-    await waitFor(() => {
-      expect(result.current.status).toBe('error');
-    });
-    expect(result.current.errorMessage).toBe(messages.wasmBootstrapFailed);
-    expect(result.current.engine).not.toBe('zxing-wasm');
-    expect(result.current.engine).not.toBe('zxing');
-    expect(result.current.engine).not.toBe('native-detector');
-    expect(decodeFromStream).not.toHaveBeenCalled();
-  });
-
-  it('prepareZXingModule throws → error wasmBootstrapFailed; does not start @zxing', async () => {
-    setZXingWasmUrl('/zxing_reader.wasm');
-    prepareZXingModule.mockImplementation(() => {
-      throw new Error('prepare failed');
-    });
-    const videoRef = createVideoRef();
-
-    const { result } = renderHook(() =>
-      useBarcodeScanner({
-        enabled: true,
-        videoRef,
-        onDecode: jest.fn(),
-        messages,
-      }),
-    );
-
-    await waitFor(() => {
-      expect(result.current.status).toBe('error');
-    });
-    expect(result.current.errorMessage).toBe(messages.wasmBootstrapFailed);
-    expect(result.current.engine).toBeNull();
-    expect(decodeFromStream).not.toHaveBeenCalled();
-  });
-
-  it('prepareZXingModule rejects Promise (async instantiate failure) → wasmBootstrapFailed; no native/@zxing', async () => {
-    setZXingWasmUrl('/zxing_reader.wasm');
-    prepareZXingModule.mockImplementation(() =>
-      Promise.reject(new Error('async instantiate failed')),
-    );
-    const videoRef = createVideoRef();
-
-    const { result } = renderHook(() =>
-      useBarcodeScanner({
-        enabled: true,
-        videoRef,
-        onDecode: jest.fn(),
-        messages,
-      }),
-    );
-
-    await waitFor(() => {
-      expect(result.current.status).toBe('error');
-    });
-    expect(result.current.errorMessage).toBe(messages.wasmBootstrapFailed);
-    expect(result.current.engine).toBeNull();
-    expect(result.current.engine).not.toBe('zxing');
-    expect(result.current.engine).not.toBe('native-detector');
-    expect(result.current.engine).not.toBe('zxing-wasm');
-    expect(decodeFromStream).not.toHaveBeenCalled();
-    expect(readBarcodes).not.toHaveBeenCalled();
-    expect(prepareZXingModule).toHaveBeenCalledWith(
-      expect.objectContaining({ fireImmediately: true }),
-    );
-  });
-
-  it('getUserMedia uses SCANNER_VIDEO_CONSTRAINTS high-res environment', async () => {
-    setZXingWasmUrl('/zxing_reader.wasm');
-    const createElementSpy = stubCanvas2d();
-    const videoRef = createVideoRef();
-
-    try {
-      const { result } = renderHook(() =>
-        useBarcodeScanner({
-          enabled: true,
-          videoRef,
-          onDecode: jest.fn(),
-          messages,
-        }),
-      );
-
-      await waitFor(() => {
-        expect(result.current.status).toBe('running');
-      });
-      expect(getUserMedia).toHaveBeenCalledWith({
-        video: SCANNER_VIDEO_CONSTRAINTS,
-        audio: false,
-      });
-    } finally {
-      createElementSpy.mockRestore();
-    }
-  });
-});
-
-describe('useBarcodeScanner WASM hard-decode fallthrough (G4 / G5)', () => {
-  beforeEach(() => {
-    trackStop.mockClear();
-    zxingControlsStop.mockClear();
-    getUserMedia.mockClear();
-    decodeFromStream.mockClear();
-    prepareZXingModule.mockReset();
-    prepareZXingModule.mockImplementation(() => Promise.resolve(undefined));
-    readBarcodes.mockReset();
-    decodeFromStream.mockImplementation(
-      async (
-        _stream: MediaStream,
-        _video: HTMLVideoElement,
-        _callback: ZxingDecodeCallback,
-      ): Promise<{ stop: () => void }> => ({ stop: zxingControlsStop }),
-    );
-    installMediaDevices();
-    setZXingWasmUrl('/zxing_reader.wasm');
-    Object.defineProperty(document, 'hidden', {
-      configurable: true,
-      get: () => false,
-    });
-    // Force @zxing fallthrough path (no BarcodeDetector in this suite).
-    Reflect.deleteProperty(window, 'BarcodeDetector');
-  });
-
-  it('after ≥8 consecutive hard readBarcodes rejects → falls through to @zxing', async () => {
-    readBarcodes.mockRejectedValue(new Error('wasm hard decode reject'));
-    const createElementSpy = stubCanvas2d();
-    const videoRef = createVideoRef();
-
-    try {
-      const { result } = renderHook(() =>
-        useBarcodeScanner({
-          enabled: true,
-          videoRef,
-          onDecode: jest.fn(),
-          messages,
-          formatProfile: 'retail',
-        }),
-      );
-
-      await waitFor(() => {
-        expect(result.current.status).toBe('running');
-        expect(result.current.engine).toBe('zxing-wasm');
-      });
-
-      await waitFor(
-        () => {
-          expect(result.current.engine).toBe('zxing');
-        },
-        { timeout: 5000 },
-      );
-
-      expect(decodeFromStream).toHaveBeenCalled();
       expect(result.current.status).toBe('running');
-      expect(result.current.errorMessage).toBeNull();
-      expect(readBarcodes.mock.calls.length).toBeGreaterThanOrEqual(8);
-    } finally {
-      createElementSpy.mockRestore();
+    });
+
+    // Production constructs: (1) stream fallback reader (2) createSensitiveZxingReader
+    expect(BrowserMultiFormatReaderMock.mock.calls.length).toBeGreaterThanOrEqual(2);
+
+    const hintMaps = readerConstructorHintMaps();
+    expect(hintMaps.length).toBeGreaterThanOrEqual(2);
+    for (const hints of hintMaps) {
+      expect(hints).toBeInstanceOf(Map);
+      expect(hints.get(DecodeHintType.TRY_HARDER)).toBe(true);
     }
   });
 
-  /**
-   * G5 — null/empty decode resets consecutiveWasmHardFails (WASM_HARD_FAIL_BOUND = 8).
-   * Multi-pass: one hard-fail frame = first readBarcodes throw. Soft frame = enough [] for all passes.
-   */
-  it(
-    'null/empty decode between rejects resets hard-fail counter (stays on zxing-wasm)',
-    async () => {
-      let hardFailFrames = 0;
-      let softReadsRemaining = 0;
-      let completedSoftInjection = false;
+  it('stream-path reader receives TRY_HARDER on first BrowserMultiFormatReader construction', async () => {
+    const videoRef = createVideoRef();
 
-      readBarcodes.mockImplementation(async () => {
-        if (softReadsRemaining > 0) {
-          softReadsRemaining -= 1;
-          return [];
-        }
-        hardFailFrames += 1;
-        if (hardFailFrames >= 7 && !completedSoftInjection) {
-          completedSoftInjection = true;
-          hardFailFrames = 0;
-          softReadsRemaining = 24;
-          throw new Error('wasm hard decode reject (pre-soft)');
-        }
-        throw new Error(`wasm hard decode reject #${hardFailFrames}`);
-      });
-      const createElementSpy = stubCanvas2d();
-      const videoRef = createVideoRef();
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+        formatProfile: 'qr-only',
+      }),
+    );
 
-      try {
-        const { result } = renderHook(() =>
-          useBarcodeScanner({
-            enabled: true,
-            videoRef,
-            onDecode: jest.fn(),
-            messages,
-            formatProfile: 'retail',
-          }),
-        );
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    expect(decodeFromStream).toHaveBeenCalled();
 
-        await waitFor(() => {
-          expect(result.current.status).toBe('running');
-          expect(result.current.engine).toBe('zxing-wasm');
-        });
-
-        await waitFor(
-          () => {
-            expect(completedSoftInjection).toBe(true);
-            expect(hardFailFrames).toBeGreaterThanOrEqual(7);
-          },
-          { timeout: 12000 },
-        );
-
-        expect(result.current.engine).toBe('zxing-wasm');
-        expect(decodeFromStream).not.toHaveBeenCalled();
-        expect(result.current.status).toBe('running');
-        expect(result.current.errorMessage).toBeNull();
-      } finally {
-        createElementSpy.mockRestore();
-      }
-    },
-    15000,
-  );
+    const streamHints = BrowserMultiFormatReaderMock.mock.calls[0]?.[0] as Map<
+      unknown,
+      unknown
+    >;
+    expect(streamHints).toBeInstanceOf(Map);
+    expect(streamHints.get(DecodeHintType.TRY_HARDER)).toBe(true);
+  });
 });
