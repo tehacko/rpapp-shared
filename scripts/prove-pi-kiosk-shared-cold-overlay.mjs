@@ -7,8 +7,8 @@
  *   1. DIAGNOSTIC (once per run, temp only): `npm pack pi-kiosk-shared@2.2.82`
  *      → extract → report COLD_BAD markers when present; if the registry
  *      tarball is already Node-safe, log that and continue (do not fail).
- *      (COLD_VERSION is a known Node-safe diagnostic pack, not live shared/package.json 2.2.86;
- *      consumers pin ^2.2.86; overlay when ../shared exists).
+ *      (COLD_VERSION is a known Node-safe diagnostic pack, not live shared/package.json 2.2.91;
+ *      consumers pin ^2.2.91; overlay when ../shared exists).
  *      Never installs into a consumer with `--ignore-scripts`.
  *
  *   2. PASS (per consumer, SERIAL): wipe `node_modules/pi-kiosk-shared` →
@@ -49,7 +49,7 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const sharedRoot = path.resolve(scriptDir, '..');
 const repoRoot = path.resolve(sharedRoot, '..');
 const packageName = 'pi-kiosk-shared';
-/** Diagnostic pack of a known Node-safe registry tarball. Not the live monorepo version (shared/package.json 2.2.86). */
+/** Diagnostic pack of a known Node-safe registry tarball. Not the live monorepo version (shared/package.json 2.2.91). */
 const COLD_VERSION = '2.2.82';
 
 const CONSUMERS = [

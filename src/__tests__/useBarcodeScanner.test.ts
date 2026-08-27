@@ -673,6 +673,48 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     expect(decodeFromStream).not.toHaveBeenCalled();
   });
 
+  it('G4: cancel while decodeFromStream pending → zxingControlsStop + tracks stopped', async () => {
+    let resolveDecode!: (controls: { stop: () => void }) => void;
+    const pendingDecode = new Promise<{ stop: () => void }>((resolve) => {
+      resolveDecode = resolve;
+    });
+    decodeFromStream.mockImplementation(
+      (
+        _stream: MediaStream,
+        _video: HTMLVideoElement,
+        _callback: ZxingDecodeCallback,
+      ): Promise<{ stop: () => void }> => pendingDecode,
+    );
+
+    const videoRef = createVideoRef();
+    const { result, unmount } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode: jest.fn(),
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(getUserMedia).toHaveBeenCalled();
+      expect(decodeFromStream).toHaveBeenCalled();
+    });
+    expect(result.current.status).toBe('starting');
+    expect(zxingControlsStop).not.toHaveBeenCalled();
+
+    unmount();
+
+    await act(async () => {
+      resolveDecode({ stop: zxingControlsStop });
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(zxingControlsStop).toHaveBeenCalled();
+    expect(trackStop).toHaveBeenCalled();
+  });
+
   it('G5: unmount while GUM pending → tracks stopped after resolve (no orphan)', async () => {
     let resolveGum!: (stream: MediaStream) => void;
     const pending = new Promise<MediaStream>((resolve) => {

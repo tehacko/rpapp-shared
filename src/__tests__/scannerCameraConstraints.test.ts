@@ -4,11 +4,14 @@
  * G4 — continuous autofocus + optical zoom ladder after getUserMedia.
  * G9 — deepen Android constraint ladder (exact payloads + retryable names).
  * G2 — NotAllowedError continues early rungs; final `true` rung throws/denies.
+ * G1 — torch capability gating on applyScannerTrackEnhancements.
+ * G2 — max optical-zoom policy via resolvePreferredOpticalZoom (independent asserts).
  */
 import {
   applyScannerTrackEnhancements,
   openScannerMediaStream,
   resolvePreferredOpticalZoom,
+  SCANNER_OPTICAL_ZOOM_POLICY,
   SCANNER_VIDEO_CONSTRAINTS,
   SCANNER_VIDEO_CONSTRAINT_FALLBACKS,
 } from '../hooks/scannerCameraConstraints.js';
@@ -228,6 +231,139 @@ describe('applyScannerTrackEnhancements (G4)', () => {
   it('no-ops when getCapabilities is undefined', async () => {
     const applyConstraints = jest.fn().mockResolvedValue(undefined);
     const track = {
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    await applyScannerTrackEnhancements(track);
+
+    expect(applyConstraints).not.toHaveBeenCalled();
+  });
+});
+
+describe('resolvePreferredOpticalZoom (G2)', () => {
+  it('SCANNER_OPTICAL_ZOOM_POLICY is max (not a hard 2x ceiling)', () => {
+    expect(SCANNER_OPTICAL_ZOOM_POLICY).toBe('max');
+  });
+
+  it('returns capability max for (min:1, max:5) — fails if hard 2x ceiling returns', () => {
+    expect(resolvePreferredOpticalZoom(1, 5)).toBe(5);
+    expect(resolvePreferredOpticalZoom(1, 5)).not.toBe(2);
+  });
+
+  it('step-snaps down to the highest valid step at or below max', () => {
+    // max 5.05 with step 0.1 from min 1 → 1 + floor(40.5)*0.1 = 5.0
+    expect(resolvePreferredOpticalZoom(1, 5.05, 0.1)).toBe(5);
+    // Wide range: must not clamp to 2x (min+1 or 2)
+    expect(resolvePreferredOpticalZoom(1, 8, 0.5)).toBe(8);
+    expect(resolvePreferredOpticalZoom(1, 8, 0.5)).not.toBe(2);
+  });
+
+  it('returns min when max === min', () => {
+    expect(resolvePreferredOpticalZoom(1, 1)).toBe(1);
+    expect(resolvePreferredOpticalZoom(2.5, 2.5, 0.1)).toBe(2.5);
+  });
+
+  it('returns min when max < min', () => {
+    expect(resolvePreferredOpticalZoom(3, 1)).toBe(3);
+  });
+});
+
+describe('applyScannerTrackEnhancements torch (G1)', () => {
+  it('requests advanced { torch: true } when capabilities.torch === true', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      torch: true,
+    });
+    const track = {
+      getCapabilities,
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    await applyScannerTrackEnhancements(track);
+
+    expect(getCapabilities).toHaveBeenCalled();
+    expect(applyConstraints).toHaveBeenCalled();
+    const torchEntries = applyConstraints.mock.calls.flatMap((call) => {
+      const advanced = (call[0] as { advanced?: Array<{ torch?: boolean }> }).advanced ?? [];
+      return advanced.filter((entry) => entry.torch === true);
+    });
+    expect(torchEntries).toEqual([{ torch: true }]);
+    expect(applyConstraints).toHaveBeenCalledWith({
+      advanced: expect.arrayContaining([{ torch: true }]),
+    });
+  });
+
+  it('includes torch with continuous focus when both are supported', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      focusMode: ['continuous'],
+      torch: true,
+    });
+    const track = {
+      getCapabilities,
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    await applyScannerTrackEnhancements(track);
+
+    expect(applyConstraints).toHaveBeenCalledWith({
+      advanced: [{ focusMode: 'continuous' }, { torch: true }],
+    });
+  });
+
+  it('does not request torch when capabilities.torch is absent', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      focusMode: ['continuous'],
+    });
+    const track = {
+      getCapabilities,
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    await applyScannerTrackEnhancements(track);
+
+    expect(applyConstraints).toHaveBeenCalled();
+    for (const call of applyConstraints.mock.calls) {
+      const advanced = (call[0] as { advanced?: Array<{ torch?: boolean }> }).advanced ?? [];
+      expect(advanced.some((entry) => Object.prototype.hasOwnProperty.call(entry, 'torch'))).toBe(
+        false,
+      );
+    }
+  });
+
+  it('does not request torch when capabilities.torch === false', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      focusMode: ['continuous'],
+      torch: false,
+    });
+    const track = {
+      getCapabilities,
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    await applyScannerTrackEnhancements(track);
+
+    expect(applyConstraints).toHaveBeenCalled();
+    for (const call of applyConstraints.mock.calls) {
+      const advanced = (call[0] as { advanced?: Array<{ torch?: boolean }> }).advanced ?? [];
+      expect(
+        advanced.some(
+          (entry) =>
+            entry.torch === true || Object.prototype.hasOwnProperty.call(entry, 'torch'),
+        ),
+      ).toBe(false);
+    }
+  });
+
+  it('does not call applyConstraints for torch-only when torch is false', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      torch: false,
+    });
+    const track = {
+      getCapabilities,
       applyConstraints,
     } as unknown as MediaStreamTrack;
 

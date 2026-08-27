@@ -6,8 +6,8 @@
  *
  * Main barrel is Node-safe (no React UI). Runtime JS (not `.d.ts`):
  * - `tsx watch` and `node dist/server.js` both resolve `node_modules/pi-kiosk-shared`
- *   after `ensureDist.mjs` overlays this `dist` (monorepo sibling `../shared` @ 2.2.86;
- *   consumers pin ^2.2.86 matching shared/package.json — confirm registry at deploy time).
+ *   after `ensureDist.mjs` overlays this `dist` (monorepo sibling `../shared` @ 2.2.91;
+ *   consumers pin ^2.2.91 matching shared/package.json — confirm registry at deploy time).
  * React UI is `pi-kiosk-shared/ui`.
  *
  * Note: relative imports use explicit `.js` extensions so the compiled
