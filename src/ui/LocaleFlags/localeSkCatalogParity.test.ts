@@ -10,6 +10,12 @@ import { describe, expect, it } from '@jest/globals';
 
 const repoRoot = path.resolve(__dirname, '../../../..');
 
+/** Strip UTF-8 BOM so catalogs saved from Windows editors stay JSON.parse-safe. */
+function readJsonCatalog(absolutePath: string): unknown {
+  const raw = fs.readFileSync(absolutePath, 'utf8');
+  return JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
+}
+
 const CATALOGS = [
   'admin-app/src/shared/i18n/locales/en/admin.json',
   'admin-app/src/shared/i18n/locales/cs/admin.json',
@@ -29,7 +35,7 @@ describe('shell.language.sk catalog parity', () => {
   it.each(CATALOGS)('%s defines shell.language.sk', (relativePath) => {
     const absolute = path.join(repoRoot, relativePath);
     expect(fs.existsSync(absolute)).toBe(true);
-    const json = JSON.parse(fs.readFileSync(absolute, 'utf8')) as {
+    const json = readJsonCatalog(absolute) as {
       shell?: { language?: { sk?: string; cs?: string; en?: string } };
       dev?: { wizard?: { languages?: { 'sk-SK'?: string } } };
     };
@@ -45,9 +51,9 @@ describe('shell.language.sk catalog parity', () => {
       'admin-app/src/shared/i18n/locales/cs/admin.json',
       'admin-app/src/shared/i18n/locales/sk/admin.json',
     ] as const) {
-      const json = JSON.parse(
-        fs.readFileSync(path.join(repoRoot, relativePath), 'utf8')
-      ) as { dev?: { wizard?: { languages?: { 'sk-SK'?: string } } } };
+      const json = readJsonCatalog(path.join(repoRoot, relativePath)) as {
+        dev?: { wizard?: { languages?: { 'sk-SK'?: string } } };
+      };
       expect(typeof json.dev?.wizard?.languages?.['sk-SK']).toBe('string');
       expect((json.dev?.wizard?.languages?.['sk-SK'] ?? '').length).toBeGreaterThan(0);
     }
