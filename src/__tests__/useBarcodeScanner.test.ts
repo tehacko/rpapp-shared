@@ -1427,7 +1427,94 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
     jest.useRealTimers();
   });
 
-  it('G8: ZBar loop uses quickOnly on 2 of 3 ticks', async () => {
+  it('G3: zxingAssistActive clears after successful ZBar decode', async () => {
+    jest.useFakeTimers();
+    const onDecode = jest.fn();
+    const videoRef = createVideoRef();
+    decodeVideoFrameWithZbarMock.mockResolvedValue(null);
+
+    const { result } = renderHook(() =>
+      useBarcodeScanner({
+        enabled: true,
+        videoRef,
+        onDecode,
+        messages,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS);
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(result.current.zxingAssistActive).toBe(true);
+    });
+
+    decodeVideoFrameWithZbarMock.mockResolvedValueOnce('8593807360153');
+    await act(async () => {
+      jest.advanceTimersByTime(50);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(onDecode).toHaveBeenCalledWith('8593807360153');
+      expect(result.current.zxingAssistActive).toBe(false);
+    });
+
+    jest.useRealTimers();
+  });
+
+  it('G3: zxingAssistActive clears on disable and restart without stale assist UI', async () => {
+    jest.useFakeTimers();
+    const videoRef = createVideoRef();
+
+    const { result, rerender } = renderHook(
+      ({ enabled }: { enabled: boolean }) =>
+        useBarcodeScanner({
+          enabled,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+        }),
+      { initialProps: { enabled: true } },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS);
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(result.current.zxingAssistActive).toBe(true);
+    });
+
+    rerender({ enabled: false });
+
+    await waitFor(() => {
+      expect(result.current.zxingAssistActive).toBe(false);
+    });
+
+    rerender({ enabled: true });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    expect(result.current.zxingAssistActive).toBe(false);
+
+    jest.useRealTimers();
+  });
+
+  it('G8: ZBar loop uses quickOnly on 2 of 3 ticks (strict cadence)', async () => {
     jest.useFakeTimers();
     decodeVideoFrameWithZbarMock.mockResolvedValue(null);
     const videoRef = createVideoRef();
@@ -1444,7 +1531,9 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
       expect(result.current.status).toBe('running');
     });
 
-    for (let i = 0; i < 6; i += 1) {
+    decodeVideoFrameWithZbarMock.mockClear();
+
+    for (let i = 0; i < 3; i += 1) {
       await act(async () => {
         jest.advanceTimersByTime(50);
         await Promise.resolve();
@@ -1452,14 +1541,11 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
       });
     }
 
-    const quickCalls = decodeVideoFrameWithZbarMock.mock.calls.filter(
-      (call) => (call[3] as { quickOnly?: boolean } | undefined)?.quickOnly === true,
-    );
-    const fullCalls = decodeVideoFrameWithZbarMock.mock.calls.filter(
-      (call) => (call[3] as { quickOnly?: boolean } | undefined)?.quickOnly !== true,
-    );
-    expect(quickCalls.length).toBeGreaterThanOrEqual(2);
-    expect(fullCalls.length).toBeGreaterThanOrEqual(1);
+    expect(decodeVideoFrameWithZbarMock.mock.calls.length).toBeGreaterThanOrEqual(3);
+    const cadenceCalls = decodeVideoFrameWithZbarMock.mock.calls.slice(0, 3);
+    expect((cadenceCalls[0][3] as { quickOnly?: boolean })?.quickOnly).toBe(true);
+    expect((cadenceCalls[1][3] as { quickOnly?: boolean })?.quickOnly).toBe(true);
+    expect((cadenceCalls[2][3] as { quickOnly?: boolean })?.quickOnly).not.toBe(true);
 
     jest.useRealTimers();
   });
@@ -1467,6 +1553,9 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
   it('G10: @zxing stream assist failure starts multi-pass loop', async () => {
     jest.useFakeTimers();
     decodeFromStream.mockRejectedValue(new Error('decodeFromStream unavailable'));
+    decodeFromCanvas.mockImplementation(() => {
+      throw new Error('NotFoundException');
+    });
     const videoRef = createVideoRef();
     const { result } = renderHook(() =>
       useBarcodeScanner({
@@ -1481,6 +1570,8 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
       expect(result.current.status).toBe('running');
     });
 
+    decodeFromCanvas.mockClear();
+
     await act(async () => {
       jest.advanceTimersByTime(SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS);
       await Promise.resolve();
@@ -1490,7 +1581,14 @@ describe('useBarcodeScanner TRY_HARDER hints (G8)', () => {
     await waitFor(() => {
       expect(decodeFromStream).toHaveBeenCalled();
     });
-    expect(BrowserMultiFormatReader).toHaveBeenCalledTimes(2);
+
+    await act(async () => {
+      jest.advanceTimersByTime(100);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(decodeFromCanvas).toHaveBeenCalled();
 
     jest.useRealTimers();
   });

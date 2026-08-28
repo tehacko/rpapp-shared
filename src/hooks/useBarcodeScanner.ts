@@ -277,9 +277,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
 
     const cleanup = (): void => {
       clearAssistTimers();
-      if (!cancelled) {
-        setZxingAssistActive(false);
-      }
+      setZxingAssistActive(false);
       if (zxingControls !== null) {
         try {
           zxingControls.stop();
@@ -328,6 +326,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     void (async (): Promise<void> => {
       setStatus('starting');
       setErrorMessage(null);
+      setZxingAssistActive(false);
 
       if (isInsecureCameraContext()) {
         if (!cancelled) {

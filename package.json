@@ -337,7 +337,7 @@
         "check:inventory-contract-drift": "node scripts/check-inventory-contract-drift.mjs",
         "gate:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
         "check:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
-        "publish:local": "npm run build:clean && npm pack --pack-destination ../",
+        "publish:local": "npm run build:clean && npm pack --pack-destination .",
         "prepublishOnly": "npm run build:clean",
         "preversion": "npm run test -- --passWithNoTests",
         "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'",
