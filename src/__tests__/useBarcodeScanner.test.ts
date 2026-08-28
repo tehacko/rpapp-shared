@@ -391,6 +391,74 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     expect(getUserMedia.mock.calls.some((call) => call[0]?.video === true)).toBe(true);
   });
 
+  it('sessionKey bump restarts getUserMedia while enabled stays true', async () => {
+    const videoRef = createVideoRef();
+    const { result, rerender } = renderHook(
+      (props: { sessionKey: number }) =>
+        useBarcodeScanner({
+          enabled: true,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+          sessionKey: props.sessionKey,
+        }),
+      { initialProps: { sessionKey: 0 } },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    const callsAfterStart = getUserMedia.mock.calls.length;
+    trackStop.mockClear();
+
+    rerender({ sessionKey: 1 });
+
+    await waitFor(() => {
+      expect(getUserMedia.mock.calls.length).toBeGreaterThan(callsAfterStart);
+      expect(result.current.status).toBe('running');
+    });
+    expect(trackStop).toHaveBeenCalled();
+  });
+
+  it('sessionKey retry after deny invokes getUserMedia only via effect restart (G8)', async () => {
+    getUserMedia.mockReset();
+    getUserMedia.mockImplementation(() =>
+      Promise.reject(new DOMException('Permission denied', 'NotAllowedError')),
+    );
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+
+    const videoRef = createVideoRef();
+    const { result, rerender } = renderHook(
+      (props: { sessionKey: number }) =>
+        useBarcodeScanner({
+          enabled: true,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+          sessionKey: props.sessionKey,
+        }),
+      { initialProps: { sessionKey: 0 } },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('denied');
+    });
+    const callsAfterDeny = getUserMedia.mock.calls.length;
+    expect(callsAfterDeny).toBeGreaterThanOrEqual(SCANNER_VIDEO_CONSTRAINT_FALLBACKS.length);
+
+    rerender({ sessionKey: 1 });
+
+    await waitFor(() => {
+      expect(getUserMedia.mock.calls.length).toBeGreaterThan(callsAfterDeny);
+    });
+    const callsFromRetry = getUserMedia.mock.calls.length - callsAfterDeny;
+    expect(callsFromRetry).toBeLessThanOrEqual(SCANNER_VIDEO_CONSTRAINT_FALLBACKS.length);
+    expect(callsFromRetry).toBeGreaterThanOrEqual(1);
+  });
+
   it('Allow getUserMedia → running → onDecode via ZBar WASM', async () => {
     const onDecode = jest.fn();
     const videoRef = createVideoRef();

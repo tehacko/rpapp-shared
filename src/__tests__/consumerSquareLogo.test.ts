@@ -1,13 +1,20 @@
 import { describe, expect, it } from '@jest/globals';
 import {
   normalizeConsumerPublicTenantRow,
+  resolveConsumerSquareLogoForTheme,
   resolveConsumerSquareLogoUrl,
 } from '../branding/consumerSquareLogo.js';
+import { DEFAULT_LOGO_CHIP_BACKGROUND_SETTINGS } from '../branding/logoChipBackground.js';
 import {
   DEFAULT_LOGO_CHIP_RIM_COLOR_DARK,
   DEFAULT_LOGO_CHIP_RIM_COLOR_LIGHT,
   DEFAULT_LOGO_CHIP_RIM_SETTINGS,
 } from '../branding/logoChipRim.js';
+
+const DEFAULT_CHIP_SETTINGS = {
+  ...DEFAULT_LOGO_CHIP_RIM_SETTINGS,
+  ...DEFAULT_LOGO_CHIP_BACKGROUND_SETTINGS,
+};
 
 describe('resolveConsumerSquareLogoUrl', () => {
   it('returns trimmed non-empty strings', () => {
@@ -19,6 +26,44 @@ describe('resolveConsumerSquareLogoUrl', () => {
     expect(resolveConsumerSquareLogoUrl(undefined)).toBeNull();
     expect(resolveConsumerSquareLogoUrl('   ')).toBeNull();
     expect(resolveConsumerSquareLogoUrl(42)).toBeNull();
+  });
+});
+
+describe('resolveConsumerSquareLogoForTheme', () => {
+  it('light theme prefers logoUrl then logoUrlDark then null', () => {
+    expect(
+      resolveConsumerSquareLogoForTheme(
+        { logoUrl: 'https://api/logo/light', logoUrlDark: 'https://api/logo/dark' },
+        'light',
+      ),
+    ).toBe('https://api/logo/light');
+    expect(
+      resolveConsumerSquareLogoForTheme(
+        { logoUrl: null, logoUrlDark: 'https://api/logo/dark' },
+        'light',
+      ),
+    ).toBe('https://api/logo/dark');
+    expect(
+      resolveConsumerSquareLogoForTheme({ logoUrl: null, logoUrlDark: null }, 'light'),
+    ).toBeNull();
+  });
+
+  it('dark theme prefers logoUrlDark then logoUrl then null', () => {
+    expect(
+      resolveConsumerSquareLogoForTheme(
+        { logoUrl: 'https://api/logo/light', logoUrlDark: 'https://api/logo/dark' },
+        'dark',
+      ),
+    ).toBe('https://api/logo/dark');
+    expect(
+      resolveConsumerSquareLogoForTheme(
+        { logoUrl: 'https://api/logo/light', logoUrlDark: null },
+        'dark',
+      ),
+    ).toBe('https://api/logo/light');
+    expect(
+      resolveConsumerSquareLogoForTheme({ logoUrl: '   ', logoUrlDark: '   ' }, 'dark'),
+    ).toBeNull();
   });
 });
 
@@ -37,7 +82,8 @@ describe('normalizeConsumerPublicTenantRow', () => {
       code: 'acme',
       name: 'Acme',
       logoUrl: 'https://api/logo/1',
-      ...DEFAULT_LOGO_CHIP_RIM_SETTINGS,
+      logoUrlDark: null,
+      ...DEFAULT_CHIP_SETTINGS,
     });
   });
 
@@ -55,7 +101,8 @@ describe('normalizeConsumerPublicTenantRow', () => {
       code: 'beta',
       name: 'Beta',
       logoUrl: null,
-      ...DEFAULT_LOGO_CHIP_RIM_SETTINGS,
+      logoUrlDark: null,
+      ...DEFAULT_CHIP_SETTINGS,
     });
   });
 
@@ -76,10 +123,12 @@ describe('normalizeConsumerPublicTenantRow', () => {
       code: 'gamma',
       name: 'Gamma',
       logoUrl: null,
+      logoUrlDark: null,
       showLogoChipRimLight: true,
       showLogoChipRimDark: true,
       logoChipRimColorLight: '#112233',
       logoChipRimColorDark: '#aabbcc',
+      ...DEFAULT_LOGO_CHIP_BACKGROUND_SETTINGS,
     });
   });
 
@@ -100,10 +149,31 @@ describe('normalizeConsumerPublicTenantRow', () => {
       code: 'delta',
       name: 'Delta',
       logoUrl: null,
+      logoUrlDark: null,
       showLogoChipRimLight: false,
       showLogoChipRimDark: false,
       logoChipRimColorLight: DEFAULT_LOGO_CHIP_RIM_COLOR_LIGHT,
       logoChipRimColorDark: DEFAULT_LOGO_CHIP_RIM_COLOR_DARK,
+      ...DEFAULT_LOGO_CHIP_BACKGROUND_SETTINGS,
+    });
+  });
+
+  it('preserves logoUrlDark from wire', () => {
+    expect(
+      normalizeConsumerPublicTenantRow({
+        tenantId: 5,
+        code: 'epsilon',
+        name: 'Epsilon',
+        logoUrl: 'https://api/logo/light',
+        logoUrlDark: ' https://api/logo/dark ',
+      }),
+    ).toEqual({
+      tenantId: 5,
+      code: 'epsilon',
+      name: 'Epsilon',
+      logoUrl: 'https://api/logo/light',
+      logoUrlDark: 'https://api/logo/dark',
+      ...DEFAULT_CHIP_SETTINGS,
     });
   });
 

@@ -9,7 +9,7 @@ Shared types, API contracts, and error classes for the Pi Kiosk system.
 
 ## Temporary retention
 
-`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry tarball from `npm view`, or monorepo overlay of sibling `../shared` **2.2.96**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
+`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry tarball from `npm view`, or monorepo overlay of sibling `../shared` **2.2.97**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
 
 ## Installation
 
@@ -74,14 +74,14 @@ Frontends import React modules from `/ui`. The **target** main barrel (local ove
 
 ## Local monorepo overlay
 
-**Honesty (SSOT):** Live monorepo source is `shared/package.json` **2.2.96** (ZBar WASM primary). Frontend consumers in this repo pin **`file:../shared/pi-kiosk-shared-2.2.96.tgz`** in both `package.json` and lockfile roots (Strategy A — see [Consumer lock tarball bootstrap](#consumer-lock-tarball-bootstrap)). `up-backend` pins **`^2.2.96`** from npm registry. Sibling overlay via `ensureDist.mjs` still runs when `../shared` exists (preferred local dev). App-only / Railway clones cannot bare-`npm ci` with monorepo `file:` pins — see **Registry-only / Railway** below.
+**Honesty (SSOT):** Live monorepo source is `shared/package.json` **2.2.97** (ZBar WASM primary). All five consumers (`admin-app`, `rpapp-kiosk`, `rpapp-customer`, `rpapp-pickup`, `up-backend`) currently pin **`^2.2.97`** from npm registry in `package.json` and lockfiles (post-publish). Sibling overlay via `ensureDist.mjs` still runs when `../shared` exists (preferred local dev). Optional Strategy A tarball bootstrap below applies when you intentionally pin `file:../shared/pi-kiosk-shared-<version>.tgz` instead — see [Consumer lock tarball bootstrap](#consumer-lock-tarball-bootstrap).
 
-### Consumer lock tarball bootstrap (Strategy A)
+### Consumer lock tarball bootstrap (Strategy A — optional)
 
-Monorepo frontend `package.json` pins:
+When frontends use a **file tarball** pin (instead of registry `^2.2.97`):
 
 ```json
-"pi-kiosk-shared": "file:../shared/pi-kiosk-shared-2.2.96.tgz"
+"pi-kiosk-shared": "file:../shared/pi-kiosk-shared-2.2.97.tgz"
 ```
 
 The tarball is **gitignored** (`*.tgz` in repo root `.gitignore`) and is **not** in VCS. A fresh clone has no pack file until you build it:
@@ -91,7 +91,7 @@ cd shared
 npm run publish:local   # build:clean + npm pack → shared/pi-kiosk-shared-<version>.tgz
 ```
 
-**Strict `npm ci` in a consumer** (when you need lockfile-only install without relying on overlay alone):
+**Strict `npm ci` in a consumer** (file-pin layout; lockfile-only install without relying on overlay alone):
 
 1. Run `publish:local` in `shared` (step above).
 2. **Stop local dev servers** on Windows if they lock `node_modules` binaries (common `npm ci` failure).
@@ -103,13 +103,13 @@ $env:HUSKY='0'
 npm ci
 ```
 
-After repacking, refresh lock integrity if the tarball bytes changed: `npm install` in the consumer (updates `package-lock.json` `integrity` for the file tarball).
+After repacking, refresh lock integrity in **every** consumer if tarball bytes changed: `$env:HUSKY='0'; npm install pi-kiosk-shared@file:../shared/pi-kiosk-shared-<version>.tgz` (updates `package-lock.json` `integrity`).
 
-**CI without sibling `shared/` source:** pipeline must run `cd shared && npm run publish:local` before consumer `npm ci`, **or** use registry `^2.2.96` pins in `package.json`/lock for app-only clones (see Railway below).
+**CI without sibling `shared/` source (file-pin layout):** pipeline must run `cd shared && npm run publish:local` before consumer `npm ci`.
 
 **Local dev (preferred):** sibling `../shared` + `postinstall`/`prepare` overlay via `ensureDist.mjs` — tarball optional when the monorepo layout is complete and overlay runs on install.
 
-**Registry-only / Railway app-only clones:** monorepo frontend `package.json` pins **`file:../shared/pi-kiosk-shared-2.2.96.tgz`**, so **bare `npm ci` fails** on an app-only checkout (no sibling tarball path). Registry install is remapped by **`prebuildShared.mjs` on `predev` / `prebuild` hooks only** — not during `postinstall`. App-only deploys must either: (a) run build via `npm run prebuild` / `npm run build` so `prebuildShared` rewrites the dependency to registry **`^2.2.96`**, or (b) commit app-only `package.json`/lock with registry pins. Confirm with `npm view pi-kiosk-shared version` at deploy time.
+**Registry-only / Railway app-only clones:** with **registry `^2.2.97` pins** (current monorepo `package.json`/locks), bare **`npm ci` succeeds** on app-only checkouts — no sibling tarball required. If you use **monorepo `file:` tarball pins** instead, bare `npm ci` **fails** on app-only clones (missing pack file). **`prebuildShared.mjs` runs on `predev` / `prebuild` only** — npm has already finished `install`/`ci` by then, and the script does **not** rewrite `package.json` or `package-lock.json` (it side-installs `pi-kiosk-shared` into `node_modules` with `--no-save`, which does **not** make a later strict `npm ci` succeed on `file:` pins). App-only options for `file:` pins: **(a)** run `cd shared && npm run publish:local` and ensure `../shared/pi-kiosk-shared-<version>.tgz` exists on disk before consumer `npm ci` (see [Consumer lock tarball bootstrap](#consumer-lock-tarball-bootstrap)), or **(b)** commit app-only `package.json`/lock with registry pins (same as current monorepo). Confirm with `npm view pi-kiosk-shared version` at deploy time.
 
 **Documented cold path (monorepo):** `npm ci` / `npm install` in each app runs lifecycle hooks → `scripts/overlaySharedIfPresent.mjs` → `shared/scripts/ensureDist.mjs` when sibling `../shared` exists:
 
@@ -146,7 +146,7 @@ npm run gate:main-barrel-node-safe
 
 From `shared/`, prove the documented cold path:
 
-1. **DIAGNOSTIC** — `npm pack` a known Node-safe registry tarball (`COLD_VERSION` in `prove-pi-kiosk-shared-cold-overlay.mjs`, currently `2.2.82` — intentional historical diagnostic fixture, not the live pin) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`). Live monorepo source is `shared/package.json` **2.2.96**.
+1. **DIAGNOSTIC** — `npm pack` a known Node-safe registry tarball (`COLD_VERSION` in `prove-pi-kiosk-shared-cold-overlay.mjs`, currently `2.2.82` — intentional historical diagnostic fixture, not the live pin) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`). Live monorepo source is `shared/package.json` **2.2.97**.
 2. **PASS** — wipe that consumer’s `node_modules/pi-kiosk-shared`, then `npm install` with **scripts on** (no package args) so `prepare` / `postinstall` overlays during install; assert Node-safe barrel + `NODE_IMPORT_OK`.
 
 ```bash

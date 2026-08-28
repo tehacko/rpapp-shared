@@ -92,6 +92,11 @@ export interface UseBarcodeScannerOptions {
   messages: UseBarcodeScannerMessages;
   formatProfile?: BarcodeScannerFormatProfile;
   onBackgroundStop?: () => void;
+  /**
+   * Bump from a user-gesture retry handler to restart getUserMedia without
+   * toggling `enabled` (mobile Safari keeps the permission prompt in-gesture).
+   */
+  sessionKey?: number;
 }
 
 export interface UseBarcodeScannerReturn {
@@ -121,6 +126,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     messages,
     formatProfile = 'retail',
     onBackgroundStop,
+    sessionKey = 0,
   } = options;
 
   const [status, setStatus] = useState<ScannerStatus>('idle');
@@ -665,7 +671,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
       cleanup();
       stopRef.current = null;
     };
-  }, [scanningEnabled, formatProfile, stop, videoRef]);
+  }, [scanningEnabled, formatProfile, sessionKey, stop, videoRef]);
 
   return { status, engine, zxingAssistActive, errorMessage };
 }

@@ -9,10 +9,8 @@
  * always fills the four required slots (defaults when absent/invalid).
  */
 
-import {
-  normalizeLogoChipRimSettings,
-  type LogoChipRimSettings,
-} from './logoChipRim.js';
+import { normalizeLogoChipBackgroundSettings, type LogoChipBackgroundSettings } from './logoChipBackground.js';
+import { normalizeLogoChipRimSettings, type LogoChipRimSettings } from './logoChipRim.js';
 
 /** Normalize a square logo stream URL for consumer thumbs/chips; null when absent/blank. */
 export function resolveConsumerSquareLogoUrl(value: unknown): string | null {
@@ -23,12 +21,38 @@ export function resolveConsumerSquareLogoUrl(value: unknown): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-export interface ConsumerPublicTenantRow extends LogoChipRimSettings {
+export type ConsumerSquareLogoTheme = 'light' | 'dark';
+
+export interface ConsumerSquareLogoSettings {
+  readonly logoUrl: string | null;
+  readonly logoUrlDark: string | null;
+}
+
+export interface ConsumerPublicTenantRow extends LogoChipRimSettings, LogoChipBackgroundSettings {
   readonly tenantId: number;
   readonly code: string;
   readonly name: string;
   /** Square tenant logo only — never wordmark. */
   readonly logoUrl: string | null;
+  /** Optional dark-regime square logo; falls back to {@link logoUrl} when absent. */
+  readonly logoUrlDark: string | null;
+}
+
+/**
+ * Resolve the square logo URL for the active theme.
+ * Light theme: `logoUrl` → `logoUrlDark` → null.
+ * Dark theme: `logoUrlDark` → `logoUrl` → null.
+ */
+export function resolveConsumerSquareLogoForTheme(
+  settings: ConsumerSquareLogoSettings,
+  theme: ConsumerSquareLogoTheme,
+): string | null {
+  const light = resolveConsumerSquareLogoUrl(settings.logoUrl);
+  const dark = resolveConsumerSquareLogoUrl(settings.logoUrlDark);
+  if (theme === 'dark') {
+    return dark ?? light ?? null;
+  }
+  return light ?? dark ?? null;
 }
 
 /**
@@ -46,14 +70,20 @@ export function normalizeConsumerPublicTenantRow(raw: unknown): ConsumerPublicTe
     return null;
   }
   const rim = normalizeLogoChipRimSettings(row);
+  const background = normalizeLogoChipBackgroundSettings(row);
   return {
     tenantId,
     code,
     name,
     logoUrl: resolveConsumerSquareLogoUrl(row.logoUrl),
+    logoUrlDark: resolveConsumerSquareLogoUrl(row.logoUrlDark),
     showLogoChipRimLight: rim.showLogoChipRimLight,
     showLogoChipRimDark: rim.showLogoChipRimDark,
     logoChipRimColorLight: rim.logoChipRimColorLight,
     logoChipRimColorDark: rim.logoChipRimColorDark,
+    showLogoChipBackgroundLight: background.showLogoChipBackgroundLight,
+    showLogoChipBackgroundDark: background.showLogoChipBackgroundDark,
+    logoChipBackgroundColorLight: background.logoChipBackgroundColorLight,
+    logoChipBackgroundColorDark: background.logoChipBackgroundColorDark,
   };
 }

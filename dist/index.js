@@ -75,6 +75,7 @@ export * from './promo/RemovePromoCodeRequest.js';
 export * from './catalogImagePresentation.js';
 export * from './directoryMonogram.js';
 export * from './branding/consumerSquareLogo.js';
+export * from './branding/logoChipBackground.js';
 export * from './branding/logoChipRim.js';
 export * from './branding/signedMediaUrlStability.js';
 export * from './tenant/tenantPathResolution.js';
