@@ -93,10 +93,18 @@ export interface UseBarcodeScannerOptions {
   formatProfile?: BarcodeScannerFormatProfile;
   onBackgroundStop?: () => void;
   /**
-   * Bump from a user-gesture retry handler to restart getUserMedia without
-   * toggling `enabled` (mobile Safari keeps the permission prompt in-gesture).
+   * Bump to restart the scanner session without toggling `enabled`.
+   * For mobile retry, pair with {@link preAcquiredStreamRef}: the tap handler
+   * must call `getUserMedia` in-gesture and store the stream in that ref before
+   * bumping — the effect consumes the ref and skips a second GUM call.
    */
   sessionKey?: number;
+  /**
+   * Optional one-shot stream acquired in a user-gesture handler (e.g. Allow
+   * camera retry). When set before `sessionKey` bumps, the effect uses this
+   * stream instead of calling `getUserMedia` again.
+   */
+  preAcquiredStreamRef?: React.MutableRefObject<MediaStream | null>;
 }
 
 export interface UseBarcodeScannerReturn {
@@ -127,6 +135,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     formatProfile = 'retail',
     onBackgroundStop,
     sessionKey = 0,
+    preAcquiredStreamRef,
   } = options;
 
   const [status, setStatus] = useState<ScannerStatus>('idle');
@@ -152,6 +161,9 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
 
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
+
+  const preAcquiredStreamRefRef = useRef(preAcquiredStreamRef);
+  preAcquiredStreamRefRef.current = preAcquiredStreamRef;
 
   const stopRef = useRef<(() => void) | null>(null);
 
@@ -353,9 +365,17 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
       }
 
       try {
-        stream = await openScannerMediaStream(
-          navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices),
-        );
+        const handedOff = preAcquiredStreamRefRef.current?.current ?? null;
+        if (handedOff !== null) {
+          if (preAcquiredStreamRefRef.current !== undefined) {
+            preAcquiredStreamRefRef.current.current = null;
+          }
+          stream = handedOff;
+        } else {
+          stream = await openScannerMediaStream(
+            navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices),
+          );
+        }
       } catch (err) {
         if (cancelled) {
           return;

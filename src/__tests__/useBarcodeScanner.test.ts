@@ -459,6 +459,44 @@ describe('useBarcodeScanner lifecycle (G7 / G21)', () => {
     expect(callsFromRetry).toBeGreaterThanOrEqual(1);
   });
 
+  it('preAcquiredStreamRef skips getUserMedia when session restarts (pattern A)', async () => {
+    const preAcquiredStreamRef = { current: null as MediaStream | null };
+    const handedOffStream = {
+      getTracks: () => [{ stop: trackStop }],
+      getVideoTracks: () => [{ stop: trackStop }],
+    } as unknown as MediaStream;
+    preAcquiredStreamRef.current = handedOffStream;
+
+    const videoRef = createVideoRef();
+    const { result, rerender } = renderHook(
+      (props: { sessionKey: number }) =>
+        useBarcodeScanner({
+          enabled: true,
+          videoRef,
+          onDecode: jest.fn(),
+          messages,
+          sessionKey: props.sessionKey,
+          preAcquiredStreamRef,
+        }),
+      { initialProps: { sessionKey: 0 } },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    const callsAfterStart = getUserMedia.mock.calls.length;
+    trackStop.mockClear();
+    preAcquiredStreamRef.current = handedOffStream;
+
+    rerender({ sessionKey: 1 });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('running');
+    });
+    expect(getUserMedia.mock.calls.length).toBe(callsAfterStart);
+    expect(trackStop).toHaveBeenCalled();
+  });
+
   it('Allow getUserMedia → running → onDecode via ZBar WASM', async () => {
     const onDecode = jest.fn();
     const videoRef = createVideoRef();
