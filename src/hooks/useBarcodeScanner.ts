@@ -8,6 +8,7 @@ import {
   type BarcodeScannerFormatProfile,
 } from './scannerFormats.js';
 import {
+  applyScannerDistanceZoom,
   applyScannerTrackEnhancements,
   openScannerMediaStream,
 } from './scannerCameraConstraints.js';
@@ -15,8 +16,30 @@ import {
   createSensitiveZxingReader,
   decodeVideoFrameWithZxingJs,
 } from './zxingJsSensitiveDecode.js';
+import {
+  createConfiguredZbarScanner,
+  decodeVideoFrameWithZbar,
+  isZbarWasmUrlConfigured,
+} from './zbarWasmEngine.js';
 
 export type ScannerStatus = 'idle' | 'starting' | 'running' | 'denied' | 'error';
+
+/**
+ * Optical zoom on ZBar primary path (focus/torch only on open).
+ */
+export const SCANNER_DISTANCE_ASSIST_DELAY_MS = 1500;
+
+/**
+ * After ZBar is running with no decode, start @zxing stream + multi-pass in
+ * parallel (does not stop ZBar — G4 safety net for close EANs ZBar misses).
+ */
+export const SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS = SCANNER_DISTANCE_ASSIST_DELAY_MS;
+
+/**
+ * Extra wait after @zxing multi-pass starts before optical zoom on the rare
+ * legacy @zxing-only path (unused when G3 hard-fail is active).
+ */
+export const SCANNER_DISTANCE_ZOOM_DELAY_MS = 1500;
 
 export interface UseBarcodeScannerMessages {
   permissionDenied: string;
@@ -27,19 +50,16 @@ export interface UseBarcodeScannerMessages {
   error: string;
   scannerOff: string;
   /**
-   * Optional — shown when the page is not a secure context (HTTP over LAN IP).
-   * Falls back to `noCamera` when omitted.
+   * ZBar WASM URL missing or scanner boot failed — hard error (G3).
+   * Falls back to `error` when omitted.
    */
+  zbarBootstrapFailed?: string;
+  /**
+   * Shown while `engine === 'zbar-wasm'` (G10). Falls back to `runningZxing`.
+   */
+  runningZbar?: string;
   insecureContext?: string;
-  /**
-   * Optional — camera busy / hardware lock (NotReadableError / AbortError after
-   * constraint ladder exhaustion). Falls back to `error` when omitted.
-   */
   cameraInUse?: string;
-  /**
-   * Optional — secure-context / Permissions-Policy block (SecurityError).
-   * Falls back to `error` when omitted. Not treated as user permission deny.
-   */
   policyBlocked?: string;
 }
 
@@ -71,30 +91,27 @@ export interface UseBarcodeScannerOptions {
   onDecode: (rawValue: string) => void;
   messages: UseBarcodeScannerMessages;
   formatProfile?: BarcodeScannerFormatProfile;
-  /**
-   * Fired when the tab/page backgrounds and the hook releases the camera.
-   * Parent should set `enabled` false so the CTA must be tapped again (no auto-restart).
-   */
   onBackgroundStop?: () => void;
 }
 
 export interface UseBarcodeScannerReturn {
   status: ScannerStatus;
   engine: ScannerEngine | null;
+  /** True while G4 parallel @zxing stream or multi-pass assist is active (ZBar may still run). */
+  zxingAssistActive: boolean;
   errorMessage: string | null;
 }
 
-/** Multi-pass @zxing decode budget (~20–25 attempts/s). */
-const ZXING_MIN_FRAME_INTERVAL_MS = 40;
+/** ZBar + @zxing assist decode budget (~20–25 attempts/s). */
+const DECODE_MIN_FRAME_INTERVAL_MS = 40;
 
 /**
  * Live camera barcode/QR decode.
  *
- * Primary: pure-JS @zxing/browser `decodeFromStream` (former working engine)
- * plus parallel multi-pass digital zoom + TRY_HARDER for distant / small codes.
- * If stream fails but a canvas exists, multi-pass alone is the sensitive path.
- * G5: never start native BarcodeDetector alone (no TRY_HARDER / distance assist) —
- * hard-fail with recovery copy when neither @zxing path can start.
+ * Primary: ZBar WASM multi-pass (immediate) + Chromium BarcodeDetector in parallel.
+ * G3: hard-fail when WASM URL unset or ZBar boot fails — no silent @zxing fallback.
+ * G4: after {@link SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS} with no lock, @zxing assist
+ * runs in parallel without stopping ZBar.
  */
 export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcodeScannerReturn {
   const {
@@ -108,6 +125,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
 
   const [status, setStatus] = useState<ScannerStatus>('idle');
   const [engine, setEngine] = useState<ScannerEngine | null>(null);
+  const [zxingAssistActive, setZxingAssistActive] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [heldOffByBackground, setHeldOffByBackground] = useState(false);
 
@@ -143,6 +161,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     if (!scanningEnabled) {
       setStatus('idle');
       setEngine(null);
+      setZxingAssistActive(false);
       setErrorMessage(null);
     }
   }
@@ -167,6 +186,7 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
       setHeldOffByBackground(true);
       setStatus('idle');
       setEngine(null);
+      setZxingAssistActive(false);
       setErrorMessage(null);
       onBackgroundStopRef.current?.();
     };
@@ -198,9 +218,16 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     let cancelled = false;
     let stream: MediaStream | null = null;
     let zxingControls: { stop: () => void } | null = null;
-    let zxingFrameHandle: number | null = null;
+    let zbarFrameHandle: number | null = null;
+    let zxingMultiPassFrameHandle: number | null = null;
+    let nativeFrameHandle: number | null = null;
+    let distanceZoomTimer: ReturnType<typeof setTimeout> | null = null;
+    let zxingAssistTimer: ReturnType<typeof setTimeout> | null = null;
+    let gotDecode = false;
+    let zxingAssistStarted = false;
+    let zbarScanner: Awaited<ReturnType<typeof createConfiguredZbarScanner>> | null =
+      null;
     const formatConfig = resolveScannerFormatConfig(formatProfile);
-    // G5: multi-pass needs a canvas; if creation fails, hard-fail later (never native-only).
     const decodeCanvas = ((): HTMLCanvasElement | null => {
       if (typeof document === 'undefined') {
         return null;
@@ -212,7 +239,47 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
       }
     })();
 
+    const zbarBootstrapErrorMessage = (): string =>
+      messagesRef.current.zbarBootstrapFailed ?? messagesRef.current.error;
+
+    const clearAssistTimers = (): void => {
+      if (zxingAssistTimer !== null) {
+        clearTimeout(zxingAssistTimer);
+        zxingAssistTimer = null;
+      }
+      if (distanceZoomTimer !== null) {
+        clearTimeout(distanceZoomTimer);
+        distanceZoomTimer = null;
+      }
+    };
+
+    const emitDecode = (text: string): void => {
+      if (cancelled || text.length === 0) {
+        return;
+      }
+      gotDecode = true;
+      clearAssistTimers();
+      if (!cancelled) {
+        setZxingAssistActive(false);
+      }
+      onDecodeRef.current(text);
+    };
+
+    const failZbarBootstrap = (): void => {
+      if (!cancelled) {
+        setStatus('error');
+        setEngine(null);
+        setZxingAssistActive(false);
+        setErrorMessage(zbarBootstrapErrorMessage());
+      }
+      cleanup();
+    };
+
     const cleanup = (): void => {
+      clearAssistTimers();
+      if (!cancelled) {
+        setZxingAssistActive(false);
+      }
       if (zxingControls !== null) {
         try {
           zxingControls.stop();
@@ -221,9 +288,25 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
         }
         zxingControls = null;
       }
-      if (zxingFrameHandle !== null) {
-        cancelAnimationFrame(zxingFrameHandle);
-        zxingFrameHandle = null;
+      if (zbarFrameHandle !== null) {
+        cancelAnimationFrame(zbarFrameHandle);
+        zbarFrameHandle = null;
+      }
+      if (zxingMultiPassFrameHandle !== null) {
+        cancelAnimationFrame(zxingMultiPassFrameHandle);
+        zxingMultiPassFrameHandle = null;
+      }
+      if (nativeFrameHandle !== null) {
+        cancelAnimationFrame(nativeFrameHandle);
+        nativeFrameHandle = null;
+      }
+      if (zbarScanner !== null) {
+        try {
+          zbarScanner.destroy();
+        } catch {
+          // ignore teardown errors
+        }
+        zbarScanner = null;
       }
       if (stream !== null) {
         for (const track of stream.getTracks()) {
@@ -256,7 +339,6 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
         return;
       }
 
-      // Missing MediaDevices (secure context prep for G3): prefer noCamera only.
       if (typeof navigator === 'undefined' || navigator.mediaDevices === undefined) {
         if (!cancelled) {
           setStatus('error');
@@ -274,8 +356,6 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
           return;
         }
         if (isPermissionDeniedError(err)) {
-          // Android Chrome often throws NotAllowedError on plain HTTP LAN URLs;
-          // prefer the HTTPS recovery copy when the context is still insecure.
           if (isInsecureCameraContext()) {
             setStatus('error');
             setErrorMessage(
@@ -303,7 +383,6 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
         return;
       }
 
-      // G5: cancel/unmount after GUM — release before enhance/play.
       if (cancelled) {
         cleanup();
         return;
@@ -322,7 +401,6 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
 
       const video = videoRef.current;
       if (video === null) {
-        // G4: successful GUM but video element gone — surface error, release tracks.
         cleanup();
         if (!cancelled) {
           setStatus('error');
@@ -344,7 +422,100 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
         return;
       }
 
-      const startZxingStreamFallback = async (): Promise<boolean> => {
+      const startNativeParallelAssist = (): void => {
+        if (typeof window === 'undefined' || window.BarcodeDetector === undefined) {
+          return;
+        }
+        const detector = new window.BarcodeDetector({
+          formats: [...formatConfig.nativeFormats],
+        });
+        const tick = async (): Promise<void> => {
+          if (cancelled || gotDecode) {
+            return;
+          }
+          if (video.readyState >= 2) {
+            try {
+              const results = await detector.detect(video);
+              const first = results[0];
+              if (first !== undefined && first.rawValue.trim().length > 0) {
+                emitDecode(first.rawValue.trim());
+                return;
+              }
+            } catch {
+              // keep scanning
+            }
+          }
+          if (!cancelled && !gotDecode) {
+            nativeFrameHandle = requestAnimationFrame(() => {
+              void tick();
+            });
+          }
+        };
+        nativeFrameHandle = requestAnimationFrame(() => {
+          void tick();
+        });
+      };
+
+      const startZbarLoop = async (): Promise<boolean> => {
+        if (decodeCanvas === null) {
+          return false;
+        }
+        let scanner: Awaited<ReturnType<typeof createConfiguredZbarScanner>>;
+        try {
+          scanner = await createConfiguredZbarScanner(formatProfile);
+        } catch {
+          return false;
+        }
+        if (cancelled) {
+          try {
+            scanner.destroy();
+          } catch {
+            // ignore
+          }
+          return false;
+        }
+        zbarScanner = scanner;
+        let lastAttemptMs = 0;
+        let busy = false;
+        let zbarTickCount = 0;
+
+        const tick = (): void => {
+          if (cancelled || gotDecode) {
+            return;
+          }
+          const now = performance.now();
+          if (
+            !busy &&
+            video.readyState >= 2 &&
+            now - lastAttemptMs >= DECODE_MIN_FRAME_INTERVAL_MS
+          ) {
+            lastAttemptMs = now;
+            busy = true;
+            zbarTickCount += 1;
+            const quickOnly = zbarTickCount % 3 !== 0;
+            void decodeVideoFrameWithZbar(video, decodeCanvas, scanner, { quickOnly })
+              .then((text) => {
+                if (!cancelled && text !== null) {
+                  emitDecode(text);
+                }
+              })
+              .catch(() => {
+                // keep scanning
+              })
+              .finally(() => {
+                busy = false;
+              });
+          }
+          if (!cancelled && !gotDecode) {
+            zbarFrameHandle = requestAnimationFrame(tick);
+          }
+        };
+
+        zbarFrameHandle = requestAnimationFrame(tick);
+        return true;
+      };
+
+      const startZxingStreamAssist = async (): Promise<boolean> => {
         const hints = new Map();
         hints.set(DecodeHintType.POSSIBLE_FORMATS, [...formatConfig.zxingFormats]);
         hints.set(DecodeHintType.TRY_HARDER, true);
@@ -359,10 +530,18 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
                 return;
               }
               if (result !== undefined && result !== null) {
-                onDecodeRef.current(result.getText());
+                emitDecode(result.getText());
               }
             },
           );
+          if (cancelled) {
+            try {
+              zxingControls.stop();
+            } catch {
+              // ignore teardown errors
+            }
+            zxingControls = null;
+          }
           return true;
         } catch {
           return false;
@@ -377,28 +556,27 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
         try {
           reader = createSensitiveZxingReader(formatConfig.zxingFormats);
         } catch {
-          // Reader/bootstrap failure — do not pretend multi-pass started.
           return false;
         }
         let lastAttemptMs = 0;
         let busy = false;
 
         const tick = (): void => {
-          if (cancelled) {
+          if (cancelled || gotDecode) {
             return;
           }
           const now = performance.now();
           if (
             !busy &&
             video.readyState >= 2 &&
-            now - lastAttemptMs >= ZXING_MIN_FRAME_INTERVAL_MS
+            now - lastAttemptMs >= DECODE_MIN_FRAME_INTERVAL_MS
           ) {
             lastAttemptMs = now;
             busy = true;
             try {
               const text = decodeVideoFrameWithZxingJs(video, decodeCanvas, reader);
               if (!cancelled && text !== null) {
-                onDecodeRef.current(text);
+                emitDecode(text);
               }
             } catch {
               // keep scanning
@@ -406,47 +584,81 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
               busy = false;
             }
           }
-          if (!cancelled) {
-            zxingFrameHandle = requestAnimationFrame(tick);
+          if (!cancelled && !gotDecode) {
+            zxingMultiPassFrameHandle = requestAnimationFrame(tick);
           }
         };
 
-        zxingFrameHandle = requestAnimationFrame(tick);
+        zxingMultiPassFrameHandle = requestAnimationFrame(tick);
         return true;
       };
 
-      // G5 engine order (max sensitivity — never native-only):
-      // 1) @zxing decodeFromStream (+ TRY_HARDER); if OK also start multi-pass
-      // 2) Else multi-pass canvas alone (when canvas exists)
-      // 3) Else hard-fail — do not start weak native BarcodeDetector alone
-      const streamOk = await startZxingStreamFallback();
-      // G5: if cancelled after controls assigned, stop them + release stream.
+      const startZxingParallelAssist = (): void => {
+        if (zxingAssistStarted || cancelled || gotDecode) {
+          return;
+        }
+        zxingAssistStarted = true;
+        if (!cancelled) {
+          setZxingAssistActive(true);
+        }
+        void (async (): Promise<void> => {
+          const streamOk = await startZxingStreamAssist();
+          if (cancelled || gotDecode) {
+            return;
+          }
+          if (!streamOk) {
+            startZxingMultiPassLoop();
+          }
+        })();
+      };
+
+      const scheduleZbarDistanceZoom = (): void => {
+        const trackForAssist = primaryTrack;
+        if (trackForAssist === undefined) {
+          return;
+        }
+        distanceZoomTimer = setTimeout(() => {
+          distanceZoomTimer = null;
+          if (cancelled || gotDecode) {
+            return;
+          }
+          void applyScannerDistanceZoom(trackForAssist);
+        }, SCANNER_DISTANCE_ASSIST_DELAY_MS);
+      };
+
+      const scheduleZxingParallelAssist = (): void => {
+        zxingAssistTimer = setTimeout(() => {
+          zxingAssistTimer = null;
+          if (cancelled || gotDecode) {
+            return;
+          }
+          startZxingParallelAssist();
+        }, SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS);
+      };
+
+      // G3 — ZBar required; no silent @zxing boot fallback.
+      if (!isZbarWasmUrlConfigured()) {
+        failZbarBootstrap();
+        return;
+      }
+
+      const zbarOk = await startZbarLoop();
       if (cancelled) {
         cleanup();
         return;
       }
-      if (streamOk) {
-        startZxingMultiPassLoop();
-        if (!cancelled) {
-          setEngine('zxing');
-          setStatus('running');
-        }
+      if (!zbarOk) {
+        failZbarBootstrap();
         return;
       }
 
-      if (startZxingMultiPassLoop()) {
-        if (!cancelled) {
-          setEngine('zxing');
-          setStatus('running');
-        }
-        return;
-      }
-
+      startNativeParallelAssist();
+      scheduleZbarDistanceZoom();
+      scheduleZxingParallelAssist();
       if (!cancelled) {
-        setStatus('error');
-        setErrorMessage(messagesRef.current.error);
+        setEngine('zbar-wasm');
+        setStatus('running');
       }
-      cleanup();
     })();
 
     return () => {
@@ -456,5 +668,5 @@ export function useBarcodeScanner(options: UseBarcodeScannerOptions): UseBarcode
     };
   }, [scanningEnabled, formatProfile, stop, videoRef]);
 
-  return { status, engine, errorMessage };
+  return { status, engine, zxingAssistActive, errorMessage };
 }

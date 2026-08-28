@@ -18,6 +18,14 @@ export interface ScanPass {
  * CPU bound: at most 10 passes (1 full + 3 center + 1 mid-band + 4 corners + 1 tight center).
  * Do not add more regions without raising this documented ceiling (~10–12 max).
  */
+/** Full-frame only — cheap first pass (~1 crop per tick; G9 CPU bound). */
+export function buildQuickScanPass(videoWidth: number, videoHeight: number): ScanPass[] {
+  if (videoWidth < 2 || videoHeight < 2) {
+    return [];
+  }
+  return [{ sx: 0, sy: 0, sw: videoWidth, sh: videoHeight, scale: 1 }];
+}
+
 export function buildMaxSensitivityScanPasses(videoWidth: number, videoHeight: number): ScanPass[] {
   const vw = videoWidth;
   const vh = videoHeight;

@@ -4,6 +4,9 @@ export {
   type UseBarcodeScannerOptions,
   type UseBarcodeScannerReturn,
   type ScannerStatus,
+  SCANNER_DISTANCE_ASSIST_DELAY_MS,
+  SCANNER_DISTANCE_ZOOM_DELAY_MS,
+  SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS,
 } from './hooks/useBarcodeScanner.js';
 export type { ScannerEngine } from './hooks/selectEngine.js';
 export {
@@ -16,5 +19,12 @@ export {
   SCANNER_VIDEO_CONSTRAINT_FALLBACKS,
   openScannerMediaStream,
   applyScannerTrackEnhancements,
+  applyScannerDistanceZoom,
+  resolvePreferredOpticalZoom,
+  SCANNER_OPTICAL_ZOOM_POLICY,
 } from './hooks/scannerCameraConstraints.js';
+export {
+  setZbarWasmUrl,
+  isZbarWasmUrlConfigured,
+} from './hooks/zbarWasmEngine.js';
 

@@ -1,9 +1,11 @@
 /**
  * Decode engines used by {@link useBarcodeScanner}:
- * - `zxing` — pure-JS @zxing/browser (decodeFromStream + multi-pass zoom)
- * - `native-detector` — legacy union member; G5 no longer starts native-only
- *   (weak path without TRY_HARDER / multi-pass). Kept for API compatibility.
+ * - `zbar-wasm` — ZBar C/C++ WASM (primary when boot succeeds; retail EAN/UPC + QR)
+ * - `zxing` — pure-JS @zxing/browser timed parallel assist (G4) when ZBar runs but
+ *   does not decode within the assist delay; not a boot fallback
+ * - `native-detector` — Chromium BarcodeDetector parallel assist; never the sole engine
  *
+ * Boot failure (missing WASM URL / ZBar init error) → `status: 'error'`, not `@zxing`.
  * Engine selection lives only in `useBarcodeScanner`.
  */
-export type ScannerEngine = 'zxing' | 'native-detector';
+export type ScannerEngine = 'zbar-wasm' | 'zxing' | 'native-detector';

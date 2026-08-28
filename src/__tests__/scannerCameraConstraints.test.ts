@@ -8,6 +8,7 @@
  * G2 — max optical-zoom policy via resolvePreferredOpticalZoom (independent asserts).
  */
 import {
+  applyScannerDistanceZoom,
   applyScannerTrackEnhancements,
   openScannerMediaStream,
   resolvePreferredOpticalZoom,
@@ -189,7 +190,7 @@ describe('applyScannerTrackEnhancements (G4)', () => {
     });
   });
 
-  it('requests mid then max optical zoom when zoom capability allows a ladder', async () => {
+  it('applies focus without optical zoom on open (zoom is delayed distance assist)', async () => {
     const applyConstraints = jest.fn().mockResolvedValue(undefined);
     const getCapabilities = jest.fn().mockReturnValue({
       focusMode: ['continuous'],
@@ -200,12 +201,30 @@ describe('applyScannerTrackEnhancements (G4)', () => {
       applyConstraints,
     } as unknown as MediaStreamTrack;
 
-    const preferred = resolvePreferredOpticalZoom(1, 5, 0.1);
-
     await applyScannerTrackEnhancements(track);
 
+    expect(applyConstraints).toHaveBeenCalledTimes(1);
+    expect(applyConstraints).toHaveBeenCalledWith({
+      advanced: [{ focusMode: 'continuous' }],
+    });
+  });
+
+  it('applyScannerDistanceZoom requests mid then max optical zoom ladder', async () => {
+    const applyConstraints = jest.fn().mockResolvedValue(undefined);
+    const getCapabilities = jest.fn().mockReturnValue({
+      zoom: { min: 1, max: 5, step: 0.1 },
+    });
+    const track = {
+      getCapabilities,
+      applyConstraints,
+    } as unknown as MediaStreamTrack;
+
+    const preferred = resolvePreferredOpticalZoom(1, 5, 0.1);
+
+    await applyScannerDistanceZoom(track);
+
     expect(applyConstraints).toHaveBeenNthCalledWith(1, {
-      advanced: [{ focusMode: 'continuous' }, { zoom: 3 }],
+      advanced: [{ zoom: 3 }],
     });
     expect(applyConstraints).toHaveBeenNthCalledWith(2, {
       advanced: [{ zoom: preferred }],

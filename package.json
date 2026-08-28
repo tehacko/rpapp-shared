@@ -1,6 +1,6 @@
 {
     "name": "pi-kiosk-shared",
-    "version": "2.2.92",
+    "version": "2.2.95",
     "type": "module",
     "private": false,
     "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -307,6 +307,7 @@
         }
     },
     "dependencies": {
+        "@undecaf/zbar-wasm": "^0.11.0",
         "tailwind-variants": "^0.3.0"
     },
     "scripts": {

@@ -147,13 +147,11 @@ export async function openScannerMediaStream(
 }
 
 /**
- * Best-effort continuous autofocus, max optical zoom, and torch after getUserMedia.
- * Unsupported constraints are ignored so older devices still scan.
- *
- * Distance levers (G2/G4):
- * - Optical zoom targets capability max (policy SCANNER_OPTICAL_ZOOM_POLICY).
- * - When the zoom range is wide, applies a mid -> max stepped ladder.
- * - Enables torch when getCapabilities().torch is true.
+ * Best-effort continuous autofocus + torch after getUserMedia.
+ * Optical zoom is NOT applied here — max zoom on open blurs/crops close barcodes
+ * (camera shows a sharp code but @zxing never locks). The hook applies
+ * {@link applyScannerDistanceZoom} only after multi-pass has already started
+ * (second assist window), never at open and never at the first assist tick.
  */
 export async function applyScannerTrackEnhancements(track: MediaStreamTrack): Promise<void> {
   const getCapabilities = (track as FocusZoomCapableTrack).getCapabilities;
@@ -165,70 +163,78 @@ export async function applyScannerTrackEnhancements(track: MediaStreamTrack): Pr
   const hasContinuousFocus = capabilities.focusMode?.includes('continuous') === true;
   const hasTorch = capabilities.torch === true;
 
-  const zoomCap = capabilities.zoom;
-  let zoomMin = 1;
-  let zoomMax = 1;
-  let zoomStep: number | undefined;
-  let hasZoomRange = false;
-  if (zoomCap !== undefined) {
-    zoomMin = zoomCap.min ?? 1;
-    zoomMax = zoomCap.max ?? 1;
-    zoomStep = zoomCap.step;
-    hasZoomRange = zoomMax > zoomMin;
-  }
-
-  if (!hasContinuousFocus && !hasTorch && !hasZoomRange) {
+  if (!hasContinuousFocus && !hasTorch) {
     return;
   }
 
-  const preferredZoom = hasZoomRange
-    ? resolvePreferredOpticalZoom(zoomMin, zoomMax, zoomStep)
-    : undefined;
-
-  const midZoom =
-    preferredZoom !== undefined && preferredZoom > zoomMin
-      ? resolveMidOpticalZoom(zoomMin, preferredZoom, zoomStep)
-      : undefined;
-
-  const useZoomLadder =
-    midZoom !== undefined &&
-    preferredZoom !== undefined &&
-    midZoom > zoomMin &&
-    midZoom < preferredZoom;
-
-  const firstAdvanced: AdvancedTrackConstraint[] = [];
+  const advanced: AdvancedTrackConstraint[] = [];
   if (hasContinuousFocus) {
-    firstAdvanced.push({ focusMode: 'continuous' });
+    advanced.push({ focusMode: 'continuous' });
   }
   if (hasTorch) {
-    firstAdvanced.push({ torch: true });
-  }
-  if (useZoomLadder) {
-    firstAdvanced.push({ zoom: midZoom });
-  } else if (preferredZoom !== undefined && preferredZoom > zoomMin) {
-    firstAdvanced.push({ zoom: preferredZoom });
-  }
-
-  if (firstAdvanced.length === 0) {
-    return;
+    advanced.push({ torch: true });
   }
 
   try {
-    const first: FocusZoomCapableConstraints = { advanced: firstAdvanced };
-    await track.applyConstraints(first);
-
-    // Second lever: step optical zoom to max after focus/torch/mid settled.
-    if (useZoomLadder && preferredZoom !== undefined) {
-      try {
-        const second: FocusZoomCapableConstraints = {
-          advanced: [{ zoom: preferredZoom }],
-        };
-        await track.applyConstraints(second);
-      } catch {
-        // Max zoom rejected after mid - keep mid + prior enhancements.
-      }
-    }
+    const next: FocusZoomCapableConstraints = { advanced };
+    await track.applyConstraints(next);
   } catch {
-    // Device rejected advanced focus/zoom/torch - keep the stream as opened.
+    // Device rejected advanced focus/torch — keep the stream as opened.
+  }
+}
+
+/**
+ * Delayed distance lever (G2/G4): mid → max optical zoom from capabilities.
+ * Hook policy: call only after SCANNER_DISTANCE_ASSIST_DELAY_MS (multi-pass first)
+ * plus SCANNER_DISTANCE_ZOOM_DELAY_MS — never on open and never at the first
+ * assist tick, so close codes with slow AF are not forced into max zoom.
+ */
+export async function applyScannerDistanceZoom(track: MediaStreamTrack): Promise<void> {
+  const getCapabilities = (track as FocusZoomCapableTrack).getCapabilities;
+  if (getCapabilities === undefined) {
+    return;
+  }
+
+  const capabilities = getCapabilities.call(track);
+  const zoomCap = capabilities.zoom;
+  if (zoomCap === undefined) {
+    return;
+  }
+
+  const zoomMin = zoomCap.min ?? 1;
+  const zoomMax = zoomCap.max ?? 1;
+  const zoomStep = zoomCap.step;
+  if (!(zoomMax > zoomMin)) {
+    return;
+  }
+
+  const preferredZoom = resolvePreferredOpticalZoom(zoomMin, zoomMax, zoomStep);
+  if (!(preferredZoom > zoomMin)) {
+    return;
+  }
+
+  const midZoom = resolveMidOpticalZoom(zoomMin, preferredZoom, zoomStep);
+  const useZoomLadder = midZoom > zoomMin && midZoom < preferredZoom;
+
+  try {
+    if (useZoomLadder) {
+      await track.applyConstraints({
+        advanced: [{ zoom: midZoom }],
+      } as FocusZoomCapableConstraints);
+      try {
+        await track.applyConstraints({
+          advanced: [{ zoom: preferredZoom }],
+        } as FocusZoomCapableConstraints);
+      } catch {
+        // Max rejected after mid — keep mid.
+      }
+      return;
+    }
+
+    await track.applyConstraints({
+      advanced: [{ zoom: preferredZoom }],
+    } as FocusZoomCapableConstraints);
+  } catch {
+    // Zoom unsupported after open — keep current stream.
   }
 }
