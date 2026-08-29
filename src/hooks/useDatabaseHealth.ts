@@ -16,13 +16,13 @@ import {
 interface UseDatabaseHealthOptions {
   pollInterval?: number;
   maxRetries?: number;
-  retryDelay?: number;
   enabled?: boolean;
 }
 
 interface UseDatabaseHealthReturn {
   isDatabaseAvailable: boolean;
   isChecking: boolean;
+  hasResolvedInitialCheck: boolean;
   retryCount: number;
   nextRetryDelay: number;
   error: Error | null;
@@ -42,6 +42,7 @@ export function useDatabaseHealth(
   const [snapshot, setSnapshot] = useState<HealthCoordinatorSnapshot>({
     isDatabaseAvailable: true,
     isChecking: false,
+    hasResolvedInitialCheck: false,
     retryCount: 0,
     nextRetryDelay: 0,
     error: null,
@@ -62,6 +63,7 @@ export function useDatabaseHealth(
   return {
     isDatabaseAvailable: snapshot.isDatabaseAvailable,
     isChecking: snapshot.isChecking,
+    hasResolvedInitialCheck: snapshot.hasResolvedInitialCheck,
     retryCount: snapshot.retryCount,
     nextRetryDelay: snapshot.nextRetryDelay,
     error: snapshot.error,

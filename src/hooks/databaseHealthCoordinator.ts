@@ -20,6 +20,7 @@ const LOCK_STALE_MS = 15_000;
 export interface HealthCoordinatorSnapshot {
   readonly isDatabaseAvailable: boolean;
   readonly isChecking: boolean;
+  readonly hasResolvedInitialCheck: boolean;
   readonly retryCount: number;
   readonly nextRetryDelay: number;
   readonly error: Error | null;
@@ -71,6 +72,7 @@ function emptySnapshot(): HealthCoordinatorSnapshot {
   return {
     isDatabaseAvailable: true,
     isChecking: false,
+    hasResolvedInitialCheck: false,
     retryCount: 0,
     nextRetryDelay: 0,
     error: null,
@@ -128,6 +130,7 @@ function applyRemoteResult(
   patchSnapshot(state, {
     isDatabaseAvailable: available,
     isChecking: false,
+    hasResolvedInitialCheck: true,
     error: errorMessage ? new Error(errorMessage) : null,
     retryCount: available ? 0 : state.retryCount,
     nextRetryDelay: available ? 0 : state.snapshot.nextRetryDelay,
@@ -208,10 +211,13 @@ async function performHealthFetch(state: EndpointState): Promise<void> {
     });
 
     if (response.status === 429) {
+      // Product intent: 429 is transport throttling, not an outage — keep the last known
+      // isDatabaseAvailable value so the full-screen gate does not flash during backoff.
       const retryMs = parseRetryAfterMs(response) ?? state.pollIntervalMs;
       state.lastCheckAt = Date.now();
       patchSnapshot(state, {
         isChecking: false,
+        hasResolvedInitialCheck: true,
         error: new Error('Health check rate-limited; backing off'),
       });
       scheduleNextPoll(state, retryMs);
@@ -238,6 +244,7 @@ async function performHealthFetch(state: EndpointState): Promise<void> {
     patchSnapshot(state, {
       isDatabaseAvailable: true,
       isChecking: false,
+      hasResolvedInitialCheck: true,
       retryCount: 0,
       nextRetryDelay: 0,
       error: null,
@@ -264,6 +271,7 @@ async function performHealthFetch(state: EndpointState): Promise<void> {
     patchSnapshot(state, {
       isDatabaseAvailable: false,
       isChecking: false,
+      hasResolvedInitialCheck: true,
       retryCount: state.retryCount,
       nextRetryDelay: delayMs,
       error,

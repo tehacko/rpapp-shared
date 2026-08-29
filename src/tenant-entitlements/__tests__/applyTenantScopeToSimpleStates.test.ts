@@ -3,6 +3,8 @@ import {
   inferAllowedPurposesFromSimpleStates,
   inferSurfaceScopeFromSimpleStates,
   isTenantScopeLockedBlock,
+  preserveHardOffSimpleStates,
+  reinjectExplicitInactiveSimpleStates,
   stripAxisControlledSimpleStates,
 } from '../applyTenantScopeToSimpleStates.js';
 
@@ -173,5 +175,33 @@ describe('isTenantScopeLockedBlock', () => {
       'hardOff',
     );
     expect(isTenantScopeLockedBlock('incident_centre_ui', 'BOTH', 'BOTH')).toBe(false);
+  });
+});
+
+describe('reinjectExplicitInactiveSimpleStates', () => {
+  it('re-injects analytics off/hardOff after axis strip', () => {
+    const source = applyTenantScopeToSimpleStates('BOTH', 'BOTH', {
+      analytics_overview: 'hardOff',
+      analytics_explore: 'off',
+    });
+    const stripped = stripAxisControlledSimpleStates(source, {
+      allowedPurposes: 'BOTH',
+      surfaceScope: 'BOTH',
+    });
+    const reinjected = reinjectExplicitInactiveSimpleStates(stripped, source);
+    expect(reinjected.analytics_overview).toBe('hardOff');
+    expect(reinjected.analytics_explore).toBe('off');
+  });
+});
+
+describe('preserveHardOffSimpleStates', () => {
+  it('keeps analytics hardOff when implications soften to off', () => {
+    const preserved = preserveHardOffSimpleStates(
+      { analytics_overview: 'off', analytics_explore: 'off', donation: 'off' },
+      { analytics_overview: 'hardOff', analytics_explore: 'hardOff', donation: 'hardOff' },
+    );
+    expect(preserved.analytics_overview).toBe('hardOff');
+    expect(preserved.analytics_explore).toBe('hardOff');
+    expect(preserved.donation).toBe('hardOff');
   });
 });

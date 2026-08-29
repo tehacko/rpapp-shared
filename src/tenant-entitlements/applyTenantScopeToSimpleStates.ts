@@ -286,3 +286,44 @@ export function inferSurfaceScopeFromSimpleStates(
   }
   return 'BOTH';
 }
+
+/** Blocks whose explicit inactive SIMPLE values must survive axis strip + scope resolve (save/draft rebuild). */
+export const EXPLICIT_INACTIVE_REINJECT_BLOCK_KEYS = [
+  'donation',
+  'analytics_overview',
+  'analytics_explore',
+] as const satisfies readonly EntitlementBlockKey[];
+
+/**
+ * Re-applies explicit off/hardOff from source after axis-controlled keys are stripped.
+ * Mirrors donation on BOTH save path; analytics use the same contract since 2.3.1.
+ */
+export function reinjectExplicitInactiveSimpleStates(
+  scopeBase: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+  sourceStates: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+  blockKeys: readonly EntitlementBlockKey[] = EXPLICIT_INACTIVE_REINJECT_BLOCK_KEYS,
+): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
+  const result: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> = { ...scopeBase };
+  for (const blockKey of blockKeys) {
+    const explicit = sourceStates[blockKey];
+    if (explicit !== undefined && !isRuntimeActiveSimpleEntitlementState(explicit)) {
+      result[blockKey] = explicit;
+    }
+  }
+  return result;
+}
+
+/** Preserve hardOff when dependency implications soften to off (UI Tvrdé vypnutí must stick). */
+export function preserveHardOffSimpleStates(
+  implied: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+  sourceStates: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+  blockKeys: readonly EntitlementBlockKey[] = EXPLICIT_INACTIVE_REINJECT_BLOCK_KEYS,
+): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
+  let result = implied;
+  for (const blockKey of blockKeys) {
+    if (sourceStates[blockKey] === 'hardOff' && result[blockKey] === 'off') {
+      result = { ...result, [blockKey]: 'hardOff' };
+    }
+  }
+  return result;
+}

@@ -97,6 +97,8 @@ export {
   isProductCommerceAllowed,
   isRuntimeActiveSimpleEntitlementState,
   isTenantScopeLockedBlock,
+  preserveHardOffSimpleStates,
+  reinjectExplicitInactiveSimpleStates,
   stripAxisControlledSimpleStates,
 } from './applyTenantScopeToSimpleStates.js';
 

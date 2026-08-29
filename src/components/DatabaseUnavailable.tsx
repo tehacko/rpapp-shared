@@ -1,64 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/Button/Button.js';
+import { Icon } from '../ui/Icon/Icon.js';
+import { Hourglass } from '../ui/Icon/lucide.js';
+import { Loader } from '../ui/Loader/Loader.js';
 
-interface DatabaseUnavailableProps {
-  retryCount?: number;
-  maxRetries?: number;
+type ButtonSurface = 'admin' | 'kiosk' | 'customer' | 'pickup';
+
+export interface DatabaseUnavailableProps {
   nextRetryDelay?: number;
+  isChecking?: boolean;
   onRetry?: () => void;
+  /** Button styling — admin gate should pass `admin`, kiosk passes `kiosk`. */
+  surface?: ButtonSurface;
 }
 
+const HEADLINE = 'Aplikace teď není dostupná';
+
 /**
- * Database Unavailable Screen
- * Shows when the backend database is unavailable
- * Displays exponential backoff retry information
+ * Shown when the backend /health check fails (API unreachable or not ready).
+ * Copy is intentionally non-technical — end users, not operators.
  */
 export function DatabaseUnavailable({
-  retryCount = 0,
-  maxRetries = 5,
   nextRetryDelay = 0,
+  isChecking = false,
   onRetry,
+  surface = 'customer',
 }: DatabaseUnavailableProps): JSX.Element {
-  const [countdown, setCountdown] = useState<number>(Math.ceil(nextRetryDelay / 1000));
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const [remainingMs, setRemainingMs] = useState(nextRetryDelay);
 
-  // Update countdown every second
   useEffect(() => {
-    if (nextRetryDelay <= 0) return;
+    headingRef.current?.focus();
+  }, []);
 
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        const newCount = prev - 1;
-        return newCount > 0 ? newCount : 0;
-      });
-    }, 1000);
+  useEffect(() => {
+    if (nextRetryDelay <= 0) {
+      setRemainingMs(0);
+      return;
+    }
 
+    const deadline = Date.now() + nextRetryDelay;
+    const tick = (): void => {
+      setRemainingMs(Math.max(0, deadline - Date.now()));
+    };
+
+    tick();
+    const interval = setInterval(tick, 250);
     return () => clearInterval(interval);
   }, [nextRetryDelay]);
 
-  // Reset countdown when nextRetryDelay changes
-  useEffect(() => {
-    setCountdown(Math.ceil(nextRetryDelay / 1000));
-  }, [nextRetryDelay]);
+  const autoRetryScheduled = nextRetryDelay > 0;
+  const countdownSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
 
-  const formatDelay = (ms: number): string => {
-    const seconds = Math.ceil(ms / 1000);
-    const formatSeconds = (n: number): string => {
-      if (n === 1) return '1 sekundu';
-      if (n >= 2 && n <= 4) return `${n} sekundy`;
-      return `${n} sekund`;
-    };
-    if (seconds < 60) {
-      return formatSeconds(seconds);
-    }
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const minuteLabel =
-      minutes === 1 ? 'minuta' : minutes < 5 ? 'minuty' : 'minut';
-    if (remainingSeconds === 0) {
-      return `${minutes} ${minuteLabel}`;
-    }
-    return `${minutes} ${minuteLabel} ${formatSeconds(remainingSeconds)}`;
-  };
+  const bodyCopy = autoRetryScheduled
+    ? 'Obsah teď nejde načíst. Zkuste to prosím za chvíli znovu — nebo počkejte, zkusíme to obnovit automaticky.'
+    : 'Obsah teď nejde načíst. Zkuste to prosím za chvíli znovu, nebo klepněte na tlačítko níže.';
 
   return (
     <div
@@ -72,8 +68,7 @@ export function DatabaseUnavailable({
         backgroundColor: '#f5f5f5',
         textAlign: 'center',
       }}
-      role="alert"
-      aria-live="assertive"
+      data-testid="service-unavailable"
     >
       <div
         style={{
@@ -84,19 +79,33 @@ export function DatabaseUnavailable({
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
         }}
       >
-        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🗄️</div>
-        
+        <div
+          style={{
+            marginBottom: '1rem',
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#666',
+          }}
+          aria-hidden="true"
+        >
+          <Icon icon={Hourglass} size={48} strokeWidth={1.75} />
+        </div>
+
         <h1
+          ref={headingRef}
+          tabIndex={-1}
           style={{
             fontSize: '2rem',
             fontWeight: 'bold',
             marginBottom: '1rem',
             color: '#333',
+            outline: 'none',
           }}
+          role="alert"
         >
-          Databáze není dostupná
+          {HEADLINE}
         </h1>
-        
+
         <p
           style={{
             fontSize: '1.1rem',
@@ -105,40 +114,48 @@ export function DatabaseUnavailable({
             lineHeight: '1.6',
           }}
         >
-          Server se znovu připojuje k databázi s postupně delšími prodlevami mezi pokusy.
-          <br />
-          Aplikace se automaticky znovu připojí, jakmile bude databáze dostupná.
+          {bodyCopy}
         </p>
 
-        <div
-          style={{
-            backgroundColor: '#f8f9fa',
-            padding: '1.5rem',
-            borderRadius: '6px',
-            marginBottom: '2rem',
-            border: '1px solid #dee2e6',
-          }}
-        >
-          <div style={{ marginBottom: '0.5rem' }}>
-            <strong>Pokus:</strong> {retryCount} / {maxRetries}
-          </div>
-          {nextRetryDelay > 0 && (
-            <div>
-              <strong>Další pokus za:</strong>{' '}
+        {autoRetryScheduled && (
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+              backgroundColor: '#f8f9fa',
+              padding: '1.5rem',
+              borderRadius: '6px',
+              marginBottom: '2rem',
+              border: '1px solid #dee2e6',
+              fontSize: '1rem',
+              color: '#444',
+            }}
+          >
+            <span aria-hidden="true">
+              Automaticky to zkusíme znovu za{' '}
               <span style={{ color: '#007bff', fontWeight: 'bold' }}>
-                {countdown > 0 ? `${countdown} s` : 'právě teď…'}
+                {countdownSeconds > 0 ? `${countdownSeconds} s` : 'právě teď…'}
               </span>
-            </div>
-          )}
-          {retryCount > 0 && (
-            <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
-              Prodleva: {formatDelay(nextRetryDelay)}
-            </div>
-          )}
-        </div>
+            </span>
+            <span className="sr-only">
+              {countdownSeconds > 0
+                ? `Automatické opakování za ${countdownSeconds} sekund`
+                : 'Automatické opakování právě probíhá'}
+            </span>
+          </div>
+        )}
 
         {onRetry && (
-          <Button type="button" intent="primary" size="md" onClick={onRetry}>
+          <Button
+            type="button"
+            intent="primary"
+            size="md"
+            surface={surface}
+            loading={isChecking}
+            disabled={isChecking}
+            onClick={onRetry}
+          >
             Zkusit znovu
           </Button>
         )}
@@ -148,25 +165,23 @@ export function DatabaseUnavailable({
             marginTop: '2rem',
             paddingTop: '2rem',
             borderTop: '1px solid #dee2e6',
-            fontSize: '0.9rem',
-            color: '#999',
+            fontSize: '0.95rem',
+            color: '#555',
           }}
         >
-          <p style={{ margin: 0 }}>
-            Pokud problém přetrvává, zkontrolujte:
-          </p>
+          <p style={{ margin: 0, marginBottom: '0.75rem' }}>Co můžete zkusit:</p>
           <ul
             style={{
               textAlign: 'left',
               display: 'inline-block',
-              marginTop: '0.5rem',
+              margin: 0,
               paddingLeft: '1.5rem',
+              lineHeight: 1.7,
             }}
           >
-            <li>zda běží databázový server</li>
-            <li>zda je správně nastavená DATABASE_URL</li>
-            <li>zda je dostupné síťové připojení</li>
-            <li>zda firewall neblokuje připojení</li>
+            <li>Zkontrolujte, zda funguje internet</li>
+            <li>Obnovte stránku v prohlížeči</li>
+            <li>Pokud problém trvá déle než pár minut, kontaktujte provozovatele nebo podporu</li>
           </ul>
         </div>
       </div>
@@ -174,3 +189,27 @@ export function DatabaseUnavailable({
   );
 }
 
+/** Minimal boot splash while the first /health check is in flight. */
+export function ServiceHealthBootScreen({
+  label = 'Načítání…',
+}: {
+  readonly label?: string;
+}): JSX.Element {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+      }}
+      data-testid="health-check-boot"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <Loader size="lg" label={label} testId="health-check-boot-loader" />
+    </div>
+  );
+}
