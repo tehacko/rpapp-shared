@@ -416,6 +416,14 @@ function assertBarcodeScannerExports(distRoot, label) {
           'Recovery: rebuild from shared/src (barcode-scanner.ts re-exports useBarcodeScanner), then ensureDist overlay.'
       );
     }
+    for (const symbol of ['decodeBarcodeFromImageFile', 'decodeBarcodeFromVideoFrame']) {
+      if (!source.includes(symbol)) {
+        throw new Error(
+          `[ensureDist] ${label}: ${path.basename(filePath)} missing ${symbol} export. ` +
+            'Recovery: rebuild shared (decodeStillImage.ts exported from barcode-scanner.ts).'
+        );
+      }
+    }
   }
 }
 

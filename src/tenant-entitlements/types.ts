@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 52 blocks).
+ * Authoritative block list lives in catalog.ts (§6.3, 48 blocks).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -123,12 +123,8 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'realtime_device_transport',
   'customer_auth_pwa',
   'analytics',
-  'analytics_summary',
-  'analytics_detailed',
-  'mission_control',
-  'analytics_pii',
-  'customer_behavior_funnels',
-  'analytics_benchmark',
+  'analytics_overview',
+  'analytics_explore',
   'tax_management',
   'compliance_fiscal_modules',
   'comms_governance',
@@ -144,7 +140,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 6 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 7 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 export const TENANT_SURFACE_PRESET_IDS = [

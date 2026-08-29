@@ -50,8 +50,8 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     immediate_self_pickup: ON,
     scheduled_pickup: OFF,
     staff_pickup_scan: ON,
-    analytics_summary: ON,
-    mission_control: ON,
+    analytics_overview: ON,
+    analytics_explore: ON,
     comms_governance: ON,
     tenant_ops_settings: ON,
     audit_logs_admin_ui: ON,
@@ -99,8 +99,8 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'inventory_incidents',
   'loyalty_program',
   'promotions_program',
-  'analytics_summary',
-  'mission_control',
+  'analytics_overview',
+  'analytics_explore',
   'tax_management',
   'compliance_fiscal_modules',
   ...DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS,
@@ -172,8 +172,8 @@ function applyAllowedPurposesToStates(
       result.loyalty_program = OFF;
       result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;
-      result.analytics_summary = OFF;
-      result.mission_control = OFF;
+      result.analytics_overview = OFF;
+      result.analytics_explore = OFF;
       result.tax_management = OFF;
       result.compliance_fiscal_modules = OFF;
       for (const blockKey of DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS) {
@@ -182,9 +182,11 @@ function applyAllowedPurposesToStates(
       break;
     case 'BOTH':
       result.product_vending = ON;
-      result.donation = ON;
-      result.analytics_summary = ON;
-      result.mission_control = ON;
+      if (states.donation === undefined || states.donation === 'on' || states.donation === 'softOffVisible' || states.donation === 'softOffHidden') {
+        result.donation = ON;
+      }
+      result.analytics_overview = ON;
+      result.analytics_explore = ON;
       result.pickup_points = ON;
       result.inventory_management = ON;
       break;

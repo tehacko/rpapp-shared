@@ -8,6 +8,12 @@ export {
 } from './catalog.js';
 
 export {
+  CATALOG_DEFAULT_DISABLED_CORE_REQUIRED_CHILD_AXES,
+  isParentGatedCoreRequiredBlock,
+  resolveCoreRequiredPolicyAxesForBlock,
+} from './coreRequiredPolicyAxes.js';
+
+export {
   ENTITLEMENT_BLOCK_CLASSES,
   ENTITLEMENT_MUTATION_MODES,
   ENTITLEMENT_PARENT_OPERATORS,
@@ -194,3 +200,14 @@ export type {
   SalesPointPublicEntitlementBlockPosture,
   SalesPointPublicEntitlementCeiling,
 } from '../sales-point/salesPointPublicConfig.js';
+
+export {
+  RETIRED_ANALYTICS_ENTITLEMENT_BLOCK_KEYS,
+  isRetiredAnalyticsEntitlementBlockKey,
+  shouldEnableAnalyticsExploreFromLegacyPolicyRows,
+  shouldEnableAnalyticsExploreFromLegacySimpleStates,
+  shouldEnableAnalyticsOverviewFromLegacyPolicyRows,
+  shouldEnableAnalyticsOverviewFromLegacySimpleStates,
+} from './legacyAnalyticsBlockMigration.js';
+
+export type { RetiredAnalyticsEntitlementBlockKey } from './legacyAnalyticsBlockMigration.js';

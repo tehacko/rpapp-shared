@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 52 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(52);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(52);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(52);
+  it('contains exactly 48 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(48);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(48);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(48);
   });
 
-  it('uses catalog version 6 after tenant_brand_kit', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(6);
+  it('uses catalog version 7 after analytics tab simplification', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(7);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(52);
+    expect(new Set(keysFromCatalog).size).toBe(48);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -103,11 +103,22 @@ describe('tenant entitlement catalog', () => {
     expect(adminMfa.capabilityHint).toBe('account.self.manage');
   });
 
-  it('includes mission_control under analytics_detailed with MC capability hint', () => {
-    const missionControl = getEntitlementBlockCatalogEntry('mission_control');
-    expect(missionControl.parentKeys).toEqual(['analytics_detailed']);
-    expect(missionControl.adminNavSectionId).toBe('mission-control');
-    expect(missionControl.capabilityHint).toBe('analytics:mission-control:read');
+  it('includes analytics_overview and analytics_explore under analytics umbrella', () => {
+    const overview = getEntitlementBlockCatalogEntry('analytics_overview');
+    expect(overview.parentKeys).toEqual(['analytics']);
+    expect(overview.adminNavSectionId).toBe('mission-control');
+    expect(overview.capabilityHint).toBe('analytics:mission-control:read');
+
+    const explore = getEntitlementBlockCatalogEntry('analytics_explore');
+    expect(explore.parentKeys).toEqual(['analytics']);
+    expect(explore.adminNavSectionId).toBe('analytics');
+    expect(explore.capabilityHint).toBe('analytics:summary:read');
+  });
+
+  it('includes customer_auth_pwa as CORE_REQUIRED under surface_customer', () => {
+    const customerAuth = getEntitlementBlockCatalogEntry('customer_auth_pwa');
+    expect(customerAuth.blockClass).toBe('CORE_REQUIRED');
+    expect(customerAuth.parentKeys).toEqual(['surface_customer']);
   });
 
   it('includes normative loyalty, promotions, and reconciliation blocks', () => {

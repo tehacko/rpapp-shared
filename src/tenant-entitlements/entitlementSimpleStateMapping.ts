@@ -1,4 +1,8 @@
 import { TENANT_ENTITLEMENT_BLOCK_CATALOG, getEntitlementBlockCatalogEntry } from './catalog.js';
+import { areEntitlementBlockParentsSatisfied } from './catalogParentSatisfaction.js';
+import {
+  isParentGatedCoreRequiredBlock,
+} from './coreRequiredPolicyAxes.js';
 import type { EntitlementBlockAxes, EntitlementBlockClass, EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
 const CORE_REQUIRED_ON: SimpleEntitlementState = 'on';
@@ -65,6 +69,11 @@ export function simpleStatesFromPolicyAxes(
     }
     states[entry.blockKey] = axesToSimpleState(row);
   }
+  for (const entry of TENANT_ENTITLEMENT_BLOCK_CATALOG) {
+    if (isParentGatedCoreRequiredBlock(entry.blockKey)) {
+      states[entry.blockKey] = resolveSimpleStateForBlock(entry.blockKey, states);
+    }
+  }
   return states;
 }
 
@@ -77,6 +86,12 @@ export function resolveSimpleStateForBlock(
     return axesToSimpleState(entry.immutableDefaults);
   }
   if (entry.blockClass === 'CORE_REQUIRED') {
+    if (
+      entry.parentKeys.length > 0 &&
+      !areEntitlementBlockParentsSatisfied(blockKey, simpleStates)
+    ) {
+      return 'off';
+    }
     return CORE_REQUIRED_ON;
   }
   return simpleStates[blockKey] ?? 'off';

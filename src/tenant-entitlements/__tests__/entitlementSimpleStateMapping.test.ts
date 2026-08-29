@@ -102,6 +102,42 @@ describe('simpleStatesFromPolicyAxes', () => {
     expect(states.promotions_program).toBe('softOffHidden');
     expect(states.inventory_management).toBeUndefined();
   });
+
+  it('normalizes parent-gated customer_auth_pwa off when surface_customer row is inactive (KIOSK)', () => {
+    const states = simpleStatesFromPolicyAxes([
+      {
+        blockKey: 'surface_customer',
+        runtimeMode: 'DISABLED',
+        visibilityMode: 'HIDDEN',
+        mutationMode: 'READ_ONLY',
+      },
+      {
+        blockKey: 'customer_auth_pwa',
+        runtimeMode: 'ENABLED',
+        visibilityMode: 'VISIBLE',
+        mutationMode: 'ALLOW_WRITES',
+      },
+    ]);
+    expect(states.customer_auth_pwa).toBe('off');
+  });
+
+  it('normalizes parent-gated customer_auth_pwa on when surface_customer is active', () => {
+    const states = simpleStatesFromPolicyAxes([
+      {
+        blockKey: 'surface_customer',
+        runtimeMode: 'ENABLED',
+        visibilityMode: 'VISIBLE',
+        mutationMode: 'ALLOW_WRITES',
+      },
+      {
+        blockKey: 'customer_auth_pwa',
+        runtimeMode: 'DISABLED',
+        visibilityMode: 'HIDDEN',
+        mutationMode: 'BLOCK_ALL',
+      },
+    ]);
+    expect(states.customer_auth_pwa).toBe('on');
+  });
 });
 
 describe('resolveSimpleStateForBlock', () => {
@@ -113,6 +149,33 @@ describe('resolveSimpleStateForBlock', () => {
   it('forces CORE_REQUIRED to on', () => {
     expect(
       resolveSimpleStateForBlock('transactions', { transactions: 'hardOff' }),
+    ).toBe('on');
+  });
+
+  it('parent-gated CORE_REQUIRED follows scope when surface_customer is off', () => {
+    expect(
+      resolveSimpleStateForBlock('customer_auth_pwa', {
+        surface_customer: 'off',
+        customer_auth_pwa: 'off',
+      }),
+    ).toBe('off');
+  });
+
+  it('parent-gated CORE_REQUIRED forces off when surface_customer is off even if stale on', () => {
+    expect(
+      resolveSimpleStateForBlock('customer_auth_pwa', {
+        surface_customer: 'off',
+        customer_auth_pwa: 'on',
+      }),
+    ).toBe('off');
+  });
+
+  it('parent-gated CORE_REQUIRED forces on when surface_customer is active', () => {
+    expect(
+      resolveSimpleStateForBlock('customer_auth_pwa', {
+        surface_customer: 'on',
+        customer_auth_pwa: 'off',
+      }),
     ).toBe('on');
   });
 

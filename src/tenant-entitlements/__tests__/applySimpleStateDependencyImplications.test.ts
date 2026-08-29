@@ -50,31 +50,29 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.catalog_administration).toBe('on');
   });
 
-  it('MC-01 enables analytics umbrella when analytics_summary is on', () => {
+  it('enables analytics umbrella when analytics_overview is on', () => {
     const implied = applySimpleStateDependencyImplications({
-      analytics_summary: 'on',
+      analytics_overview: 'on',
     });
 
     expect(implied.analytics).toBe('on');
   });
 
-  it('MC-02 enables analytics_detailed when mission_control is on', () => {
+  it('enables analytics umbrella when analytics_explore is on', () => {
     const implied = applySimpleStateDependencyImplications({
-      mission_control: 'on',
+      analytics_explore: 'on',
     });
 
     expect(implied.analytics).toBe('on');
-    expect(implied.analytics_detailed).toBe('on');
   });
 
-  it('MC-03 does not auto-enable mission_control from analytics_summary alone', () => {
+  it('does not cross-enable overview and explore', () => {
     const implied = applySimpleStateDependencyImplications({
-      analytics_summary: 'on',
+      analytics_overview: 'on',
     });
 
     expect(implied.analytics).toBe('on');
-    expect(implied.mission_control).toBe('off');
-    expect(implied.analytics_detailed).toBeUndefined();
+    expect(implied.analytics_explore).toBeUndefined();
   });
 
   it('keeps inventory_incidents hardOff when inventory_management is hardOff', () => {

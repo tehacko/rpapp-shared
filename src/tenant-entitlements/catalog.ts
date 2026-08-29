@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 52 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 48 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -282,9 +282,10 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   },
   {
     blockKey: 'customer_auth_pwa',
-    blockClass: 'CONDITIONAL',
+    blockClass: 'CORE_REQUIRED',
     parentKeys: ['surface_customer'],
-    notes: 'Account routes',
+    notes:
+      'Customer registration, login, and account routes — mandatory when customer PWA is entitled; DEV policy UI locked On',
   },
   {
     blockKey: 'analytics',
@@ -293,46 +294,21 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     notes: 'Parent umbrella',
   },
   {
-    blockKey: 'analytics_summary',
+    blockKey: 'analytics_overview',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['analytics'],
+    adminNavSectionId: 'mission-control',
+    capabilityHint: 'analytics:mission-control:read',
+    notes: 'Přehled — Tenant Command Center / Mission Control (replaces analytics_summary + mission_control)',
+  },
+  {
+    blockKey: 'analytics_explore',
     blockClass: 'CONDITIONAL',
     parentKeys: ['analytics'],
     adminNavSectionId: 'analytics',
     capabilityHint: 'analytics:summary:read',
-    notes: 'Summary tab',
-  },
-  {
-    blockKey: 'analytics_detailed',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics'],
-    capabilityHint: 'analytics:detailed:read',
-    notes: 'Detailed analytics + event governance catalog/lookup (admin FE G3)',
-  },
-  {
-    blockKey: 'mission_control',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics_detailed'],
-    adminNavSectionId: 'mission-control',
-    capabilityHint: 'analytics:mission-control:read',
-    notes: 'Mission Control dashboard (B-P0-01); parent analytics_detailed',
-  },
-  {
-    blockKey: 'analytics_pii',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics_detailed'],
-    capabilityHint: 'analytics:pii:read',
-    notes: 'Legacy customer-explore redirect',
-  },
-  {
-    blockKey: 'customer_behavior_funnels',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics_detailed'],
-    notes: 'Ingest quarantine/replay + product funnel (admin FE G10)',
-  },
-  {
-    blockKey: 'analytics_benchmark',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics'],
-    notes: 'Absorbs analytics_benchmark_enabled flag',
+    notes:
+      'Analytika — all in-page analytics tabs; detailed/PII/benchmark/funnels gated by RBAC capabilities only',
   },
   {
     blockKey: 'tax_management',

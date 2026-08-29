@@ -293,7 +293,7 @@ describe('many-to-many (no bijection claim)', () => {
     const explore = requiredBlocksForCapability('analytics:pii:read');
     expect(explore).toEqual({
       kind: 'blocks',
-      blockKeys: ['analytics_detailed', 'analytics_pii'],
+      blockKeys: ['analytics_explore'],
       match: 'ALL',
     });
   });

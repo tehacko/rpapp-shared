@@ -4,12 +4,8 @@ import { applyPickupOperationsClusterSync } from './pickupOperationsCluster.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
 const ANALYTICS_UMBRELLA_CHILD_KEYS = [
-  'analytics_summary',
-  'analytics_detailed',
-  'analytics_benchmark',
-  'mission_control',
-  'analytics_pii',
-  'customer_behavior_funnels',
+  'analytics_overview',
+  'analytics_explore',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 function isRuntimeActiveSimpleState(state: SimpleEntitlementState | undefined): boolean {
@@ -26,16 +22,6 @@ function applyAnalyticsClusterImplications(
   );
   if (anyAnalyticsChildActive) {
     result.analytics = 'on';
-  }
-
-  if (isRuntimeActiveSimpleState(result.mission_control)) {
-    result.analytics_detailed = 'on';
-  }
-
-  if (!isRuntimeActiveSimpleState(result.analytics_detailed)) {
-    result.mission_control = 'off';
-    result.analytics_pii = 'off';
-    result.customer_behavior_funnels = 'off';
   }
 
   return result;

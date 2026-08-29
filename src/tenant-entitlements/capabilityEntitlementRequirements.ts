@@ -15,10 +15,9 @@ export const PAYMENTS_HUB_NAV_ENTITLEMENT_ALL_OF = [
   'bank_inbox_claims_api',
 ] as const satisfies readonly EntitlementBlockKey[];
 
-/** Copied EXPLORE_ENTITLEMENT_ALL_OF literals (do not import admin-app). */
+/** Advanced explore tab — Analytika entitlement only; PII is RBAC capability-gated. */
 export const EXPLORE_ENTITLEMENT_ALL_OF = [
-  'analytics_detailed',
-  'analytics_pii',
+  'analytics_explore',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 /**
@@ -806,22 +805,22 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "analytics:summary:read/manage",
     ],
     requiredBlockKeys: [
-      "analytics_summary",
+      "analytics_explore",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics
+  // Analytics — detailed views (RBAC tier inside Analytika)
   {
     authoringTokens: [
       "tenant.analyticsDetailed.*",
       "analytics:detailed:read/manage",
     ],
     requiredBlockKeys: [
-      "analytics_detailed",
+      "analytics_explore",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics — copy EXPLORE_ENTITLEMENT_ALL_OF
+  // Analytics — PII explore (entitlement + capability)
   {
     authoringTokens: [
       "tenant.analyticsPii.*",
@@ -830,24 +829,24 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     requiredBlockKeys: [...EXPLORE_ENTITLEMENT_ALL_OF],
     match: 'ALL',
   },
-  // Analytics
+  // Analytics — benchmark tab (RBAC tier inside Analytika)
   {
     authoringTokens: [
       "tenant.analyticsBenchmark.view",
       "analytics:benchmark:read",
     ],
     requiredBlockKeys: [
-      "analytics_benchmark",
+      "analytics_explore",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics
+  // Analytics — Mission Control / Přehled
   {
     authoringTokens: [
       "analytics:mission-control:read/export",
     ],
     requiredBlockKeys: [
-      "mission_control",
+      "analytics_overview",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },

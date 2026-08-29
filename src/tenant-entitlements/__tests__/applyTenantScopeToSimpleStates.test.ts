@@ -27,7 +27,8 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.product_vending).toBe('off');
     expect(states.donation).toBe('on');
     expect(states.catalog_administration).toBe('hardOff');
-    expect(states.analytics_summary).toBe('off');
+    expect(states.analytics_overview).toBe('off');
+    expect(states.analytics_explore).toBe('off');
     expect(states.pickup_points).toBe('off');
     expect(states.order_pickup_infrastructure).toBe('off');
     expect(states.immediate_self_pickup).toBe('off');
@@ -66,11 +67,26 @@ describe('applyTenantScopeToSimpleStates', () => {
 
   it('stripAxisControlledSimpleStates removes axis keys only', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY', {
-      analytics_summary: 'off',
+      analytics_overview: 'off',
+      analytics_explore: 'off',
     });
     const stripped = stripAxisControlledSimpleStates(states);
     expect(stripped.product_vending).toBeUndefined();
-    expect(stripped.analytics_summary).toBe('off');
+    expect(stripped.analytics_overview).toBe('off');
+    expect(stripped.analytics_explore).toBe('off');
+  });
+
+  it('preserves explicit donation off or hardOff on BOTH purpose (G3)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY', { donation: 'off' }).donation).toBe(
+      'off',
+    );
+    expect(
+      applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY', { donation: 'hardOff' }).donation,
+    ).toBe('hardOff');
+  });
+
+  it('defaults donation on for BOTH when not explicitly inactive', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY').donation).toBe('on');
   });
 });
 
@@ -94,7 +110,8 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('inventory_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('loyalty_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('promotions_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
-    expect(isTenantScopeLockedBlock('analytics_summary', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('analytics_overview', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('analytics_explore', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('pickup_points', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('order_pickup_infrastructure', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('immediate_self_pickup', 'DONATION_ONLY', 'BOTH')).toBe(true);

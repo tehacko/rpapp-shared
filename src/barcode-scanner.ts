@@ -7,6 +7,7 @@ export {
   SCANNER_DISTANCE_ASSIST_DELAY_MS,
   SCANNER_DISTANCE_ZOOM_DELAY_MS,
   SCANNER_ZBAR_ZXING_ASSIST_DELAY_MS,
+  SCANNER_POST_DECODE_COOLDOWN_MS,
 } from './hooks/useBarcodeScanner.js';
 export type { ScannerEngine } from './hooks/selectEngine.js';
 export {
@@ -27,4 +28,19 @@ export {
   setZbarWasmUrl,
   isZbarWasmUrlConfigured,
 } from './hooks/zbarWasmEngine.js';
+export {
+  resolveScannerPlatformProfile,
+  type ScannerPlatformProfile,
+  type ScannerPlatformProfileId,
+} from './hooks/scannerPlatformProfile.js';
+export {
+  decodeBarcodeFromImageFile,
+  decodeBarcodeFromVideoFrame,
+  preprocessStillImageData,
+  type StillDecodeResult,
+} from './hooks/decodeStillImage.js';
+export {
+  normalizeScanPayload,
+  prepareScanPayloadForEmit,
+} from './barcode/normalizeScanPayload.js';
 
