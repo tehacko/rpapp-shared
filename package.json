@@ -1,6 +1,6 @@
 {
     "name": "pi-kiosk-shared",
-    "version": "2.3.3",
+    "version": "2.3.4",
     "type": "module",
     "private": false,
     "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -338,7 +338,8 @@
         "gate:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
         "check:inventory-ops-slo-drift": "node scripts/check-inventory-ops-slo-drift.mjs",
         "publish:local": "npm run build:clean && npm pack --pack-destination .",
-        "prepublishOnly": "npm run build:clean",
+        "gate:publish-dist-declarations": "node scripts/gate-publish-dist-declarations.mjs",
+        "prepublishOnly": "npm run build:clean && npm run gate:publish-dist-declarations",
         "preversion": "npm run test -- --passWithNoTests",
         "postversion": "echo 'Version updated. Run git push && git push --tags manually if needed.'",
         "audit:deps": "npm audit --audit-level=high",
