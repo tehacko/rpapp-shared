@@ -13,13 +13,26 @@ const pkg = JSON.parse(
   readFileSync(resolve(process.cwd(), 'package.json'), 'utf8'),
 ) as { name: string; version: string };
 
+function semverAtLeast(current: string, baseline: string): boolean {
+  const parse = (value: string): [number, number, number] => {
+    const [major = 0, minor = 0, patch = 0] = value.split('.').map(Number);
+    return [major, minor, patch];
+  };
+  const [cMajor, cMinor, cPatch] = parse(current);
+  const [bMajor, bMinor, bPatch] = parse(baseline);
+  if (cMajor !== bMajor) {
+    return cMajor > bMajor;
+  }
+  if (cMinor !== bMinor) {
+    return cMinor > bMinor;
+  }
+  return cPatch >= bPatch;
+}
+
 describe('G1 compliance bridge + catalog install SoT', () => {
   it('package version is publish baseline (2.2.59+)', () => {
     expect(pkg.name).toBe('pi-kiosk-shared');
-    const [major, minor, patch] = String(pkg.version).split('.').map(Number);
-    expect(major).toBeGreaterThanOrEqual(2);
-    expect(minor).toBeGreaterThanOrEqual(2);
-    expect(patch).toBeGreaterThanOrEqual(59);
+    expect(semverAtLeast(String(pkg.version), '2.2.59')).toBe(true);
   });
 
   it('catalog capabilityHints are canonical (not legacy system:*)', () => {

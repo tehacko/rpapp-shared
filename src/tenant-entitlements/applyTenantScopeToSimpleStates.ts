@@ -185,8 +185,22 @@ function applyAllowedPurposesToStates(
       if (states.donation === undefined || states.donation === 'on' || states.donation === 'softOffVisible' || states.donation === 'softOffHidden') {
         result.donation = ON;
       }
-      result.analytics_overview = ON;
-      result.analytics_explore = ON;
+      if (
+        states.analytics_overview === undefined ||
+        states.analytics_overview === 'on' ||
+        states.analytics_overview === 'softOffVisible' ||
+        states.analytics_overview === 'softOffHidden'
+      ) {
+        result.analytics_overview = ON;
+      }
+      if (
+        states.analytics_explore === undefined ||
+        states.analytics_explore === 'on' ||
+        states.analytics_explore === 'softOffVisible' ||
+        states.analytics_explore === 'softOffHidden'
+      ) {
+        result.analytics_explore = ON;
+      }
       result.pickup_points = ON;
       result.inventory_management = ON;
       break;

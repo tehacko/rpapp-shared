@@ -1,7 +1,12 @@
 /**
  * Shared Sentry browser init for admin, kiosk, and customer PWAs.
  */
-import * as Sentry from '@sentry/react';
+import {
+  captureException as sentryCaptureException,
+  init as sentryInit,
+  setTag as sentrySetTag,
+} from '@sentry/react';
+import type { Breadcrumb, ErrorEvent } from '@sentry/core';
 import type { ErrorInfo } from 'react';
 
 import { redactClientLogMeta, redactStringSecrets } from '../clientLogRedaction.js';
@@ -26,7 +31,7 @@ export function isSentryInitialized(): boolean {
   return initialized;
 }
 
-function scrubEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
+function scrubEvent(event: ErrorEvent): ErrorEvent | null {
   if (event.message) {
     event.message = redactStringSecrets(event.message);
   }
@@ -38,7 +43,7 @@ function scrubEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
   }
   if (event.contexts) {
     event.contexts = redactClientLogMeta(event.contexts as Record<string, unknown>) as NonNullable<
-      Sentry.ErrorEvent['contexts']
+      ErrorEvent['contexts']
     >;
   }
   return event;
@@ -53,14 +58,14 @@ export function initSentry(options: InitSentryOptions): void {
     return;
   }
   try {
-    Sentry.init({
+    sentryInit({
       dsn,
       environment: options.environment ?? 'development',
       release: options.release,
       sendDefaultPii: false,
       sampleRate: 1.0,
       maxBreadcrumbs: 50,
-      beforeBreadcrumb(breadcrumb) {
+      beforeBreadcrumb(breadcrumb: Breadcrumb) {
         if (options.isProd && breadcrumb.category === 'console') {
           return null;
         }
@@ -74,7 +79,7 @@ export function initSentry(options: InitSentryOptions): void {
       },
     });
     registerSentryCorrelationTagger((corrId) => {
-      Sentry.setTag('correlationId', corrId);
+      sentrySetTag('correlationId', corrId);
     });
     initialized = true;
   } catch {
@@ -93,7 +98,7 @@ export function captureException(
     context !== undefined
       ? (redactClientLogMeta(context) as Record<string, unknown>)
       : undefined;
-  Sentry.captureException(error, extra !== undefined ? { extra } : undefined);
+  sentryCaptureException(error, extra !== undefined ? { extra } : undefined);
 }
 
 export function captureBoundaryError(error: Error, errorInfo: ErrorInfo): void {
@@ -105,7 +110,7 @@ export function captureBoundaryError(error: Error, errorInfo: ErrorInfo): void {
     rawStack !== undefined && rawStack !== null
       ? redactStringSecrets(rawStack)
       : undefined;
-  Sentry.captureException(error, {
+  sentryCaptureException(error, {
     contexts: {
       react: {
         componentStack,

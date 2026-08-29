@@ -88,6 +88,20 @@ describe('applyTenantScopeToSimpleStates', () => {
   it('defaults donation on for BOTH when not explicitly inactive', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY').donation).toBe('on');
   });
+
+  it('preserves explicit analytics off or hardOff on BOTH purpose', () => {
+    expect(
+      applyTenantScopeToSimpleStates('BOTH', 'BOTH', { analytics_overview: 'off' }).analytics_overview,
+    ).toBe('off');
+    expect(
+      applyTenantScopeToSimpleStates('BOTH', 'BOTH', { analytics_explore: 'hardOff' }).analytics_explore,
+    ).toBe('hardOff');
+  });
+
+  it('defaults analytics on for BOTH when not explicitly inactive', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').analytics_overview).toBe('on');
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').analytics_explore).toBe('on');
+  });
 });
 
 describe('isTenantScopeLockedBlock', () => {
