@@ -77,6 +77,7 @@ export * from './directoryMonogram.js';
 export * from './branding/consumerSquareLogo.js';
 export * from './branding/logoChipBackground.js';
 export * from './branding/logoChipRim.js';
+export * from './branding/logoChipMarkStyle.js';
 export * from './branding/signedMediaUrlStability.js';
 export * from './tenant/tenantPathResolution.js';
 export * from './tenant/tenantLifecycle.js';
