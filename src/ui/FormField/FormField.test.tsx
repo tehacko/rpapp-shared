@@ -31,6 +31,9 @@ describe('FormField', () => {
     const label = screen.getByText('Email');
     expect(label.className).toContain('font-semibold');
     expect(label.className).not.toContain('font-medium');
+
+    const wrapper = label.parentElement;
+    expect(wrapper?.className).toContain('form-field');
   });
 
   it('applies kiosk touch sizing with consumer tokens', () => {
