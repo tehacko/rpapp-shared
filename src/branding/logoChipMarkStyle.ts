@@ -33,6 +33,7 @@ export function buildLogoChipMarkStyle(
   if (showBackground) {
     style['--logo-chip-background'] = resolved.background.color;
     style.backgroundColor = 'var(--logo-chip-background)';
+    style.backgroundImage = 'none';
   }
   return style;
 }

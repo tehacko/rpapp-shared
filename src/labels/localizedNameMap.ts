@@ -2,6 +2,9 @@
  * Optional per-locale display-name overrides for catalog entities
  * (products, categories, etc.) that also have a universal `name`.
  *
+ * {@link LocalizedTextMap} is the same shape for universal `description` fields
+ * (e.g. SalesPoint `descriptionLocales`).
+ *
  * Distinct from {@link LocalizedLabel} (required cs/en UI copy maps).
  */
 
@@ -13,8 +16,14 @@ export type LocalizedNameMap = {
   sk?: string;
 };
 
+/** Alias for optional cs/en/sk text overrides (descriptions, etc.). Same shape as {@link LocalizedNameMap}. */
+export type LocalizedTextMap = LocalizedNameMap;
+
 /** Keys accepted on {@link LocalizedNameMap}; useful for Zod / form iteration. */
 export const LOCALIZED_NAME_MAP_KEYS = ['cs', 'en', 'sk'] as const satisfies readonly NameLocale[];
+
+/** Alias of {@link LOCALIZED_NAME_MAP_KEYS} for description / body-text locale maps. */
+export const LOCALIZED_TEXT_MAP_KEYS = LOCALIZED_NAME_MAP_KEYS;
 
 /**
  * Zod-friendly plain shape description (shared has no zod dependency).
@@ -27,6 +36,9 @@ export const NAME_LOCALES_PLAIN_SHAPE = {
   en: 'string',
   sk: 'string',
 } as const;
+
+/** Alias of {@link NAME_LOCALES_PLAIN_SHAPE} for description locale validation. */
+export const TEXT_LOCALES_PLAIN_SHAPE = NAME_LOCALES_PLAIN_SHAPE;
 
 function isNameLocale(value: string): value is NameLocale {
   return value === 'cs' || value === 'en' || value === 'sk';
@@ -108,4 +120,26 @@ export function resolveLocalizedName(
 
   const trimmed = String(override).trim();
   return trimmed.length > 0 ? trimmed : name;
+}
+
+/**
+ * Trim, drop empties, omit locale values that equal the universal description.
+ * Returns `null` when nothing remains (including null/undefined input).
+ */
+export function normalizeDescriptionLocales(
+  descriptionLocales: LocalizedTextMap | null | undefined,
+  universalDescription: string,
+): LocalizedTextMap | null {
+  return normalizeNameLocales(descriptionLocales, universalDescription);
+}
+
+/**
+ * Prefer a non-empty locale override from `descriptionLocales`; otherwise the universal `description`.
+ */
+export function resolveLocalizedDescription(
+  description: string,
+  descriptionLocales: LocalizedTextMap | null | undefined,
+  locale: NameLocale | string,
+): string {
+  return resolveLocalizedName(description, descriptionLocales, locale);
 }

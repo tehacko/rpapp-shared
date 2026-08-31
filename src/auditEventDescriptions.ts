@@ -748,6 +748,16 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se po potvrzení rizika hotovostní platby u politiky cash poskytovatele.',
     sk: 'Zapíše sa po potvrdení rizika hotovostnej platby pri politike cash poskytovateľa.',
   },
+  'payment.cash_payment.requested': {
+    en: 'Recorded when a cash payment is requested for an order at a sales point.',
+    cs: 'Zapíše se při požadavku na platbu hotově u objednávky na prodejním místě.',
+    sk: 'Zapíše sa pri požiadavke na platbu v hotovosti pri objednávke na platobnom mieste.',
+  },
+  'payment.cash_received.confirmed': {
+    en: 'Recorded when staff confirm that cash payment was received for an order.',
+    cs: 'Zapíše se po potvrzení přijetí hotovostní platby u objednávky.',
+    sk: 'Zapíše sa po potvrdení prijatia hotovostnej platby pri objednávke.',
+  },
   'payment.cash_checkout.self_confirm': {
     en: 'Recorded when a customer self-confirms sales point cash checkout (ADR-PICKUP-CASH).',
     cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u prodejního místa (ADR-PICKUP-CASH).',

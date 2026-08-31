@@ -4,11 +4,12 @@
  * Database models, API contracts, and type definitions
  * used across kiosk, admin, and backend applications.
  */
-import type { LocalizedNameMap } from './labels/localizedNameMap.js';
+import type { LocalizedNameMap, LocalizedTextMap } from './labels/localizedNameMap.js';
 export declare enum TransactionStatus {
     INITIATED = "INITIATED",
     PENDING = "PENDING",
     PROCESSING = "PROCESSING",
+    AWAITING_CASH_CONFIRMATION = "AWAITING_CASH_CONFIRMATION",
     COMPLETED = "COMPLETED",
     FAILED = "FAILED",
     CANCELLED = "CANCELLED",
@@ -125,6 +126,8 @@ export interface SalesPoint {
     nameLocales?: LocalizedNameMap | null;
     location: string;
     description?: string;
+    /** Optional per-locale description overrides; null when none stored. */
+    descriptionLocales?: LocalizedTextMap | null;
     /** WGS84 latitude; null when unset. */
     lat?: number | null;
     /** WGS84 longitude; null when unset. */

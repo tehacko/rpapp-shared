@@ -47,6 +47,7 @@ describe('buildLogoChipMarkStyle', () => {
     ).toEqual({
       '--logo-chip-background': '#f3f4f6',
       backgroundColor: 'var(--logo-chip-background)',
+      backgroundImage: 'none',
     });
   });
 });

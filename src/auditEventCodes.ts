@@ -154,6 +154,8 @@ export const AUDIT_EVENT_CODES = [
   'payment.provider_wiring.verify_failed',
   'payment.provider_wiring.invalidated',
   'payment.cash_provider.risk_ack',
+  'payment.cash_payment.requested',
+  'payment.cash_received.confirmed',
   'payment.cash_checkout.self_confirm',
   'payment.cash_shift.opened',
   'payment.cash_shift.closed',

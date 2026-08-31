@@ -10,6 +10,7 @@ export var TransactionStatus;
     TransactionStatus["INITIATED"] = "INITIATED";
     TransactionStatus["PENDING"] = "PENDING";
     TransactionStatus["PROCESSING"] = "PROCESSING";
+    TransactionStatus["AWAITING_CASH_CONFIRMATION"] = "AWAITING_CASH_CONFIRMATION";
     TransactionStatus["COMPLETED"] = "COMPLETED";
     TransactionStatus["FAILED"] = "FAILED";
     TransactionStatus["CANCELLED"] = "CANCELLED";

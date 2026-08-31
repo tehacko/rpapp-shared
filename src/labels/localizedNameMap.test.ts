@@ -1,7 +1,12 @@
 import {
+  LOCALIZED_TEXT_MAP_KEYS,
+  normalizeDescriptionLocales,
   normalizeNameLocales,
+  resolveLocalizedDescription,
   resolveLocalizedName,
+  TEXT_LOCALES_PLAIN_SHAPE,
   toNameLocale,
+  type LocalizedTextMap,
 } from './localizedNameMap.js';
 
 describe('normalizeNameLocales', () => {
@@ -61,5 +66,26 @@ describe('toNameLocale', () => {
     expect(toNameLocale('cs')).toBe('cs');
     expect(toNameLocale('sk-SK')).toBe('sk');
     expect(toNameLocale('de')).toBeNull();
+  });
+});
+
+describe('LocalizedTextMap / description locale helpers', () => {
+  it('TEXT_LOCALES_PLAIN_SHAPE and LOCALIZED_TEXT_MAP_KEYS mirror name contract', () => {
+    expect(LOCALIZED_TEXT_MAP_KEYS).toEqual(['cs', 'en', 'sk']);
+    expect(TEXT_LOCALES_PLAIN_SHAPE).toEqual({ cs: 'string', en: 'string', sk: 'string' });
+  });
+
+  it('normalizeDescriptionLocales delegates to normalizeNameLocales semantics', () => {
+    expect(normalizeDescriptionLocales({ cs: 'Popis', en: 'Description' }, 'Default')).toEqual({
+      cs: 'Popis',
+      en: 'Description',
+    });
+    expect(normalizeDescriptionLocales({ cs: 'Default' }, 'Default')).toBeNull();
+  });
+
+  it('resolveLocalizedDescription delegates to resolveLocalizedName semantics', () => {
+    const locales: LocalizedTextMap = { cs: 'Popis CS', en: 'Description EN' };
+    expect(resolveLocalizedDescription('Default', locales, 'cs')).toBe('Popis CS');
+    expect(resolveLocalizedDescription('Default', null, 'en')).toBe('Default');
   });
 });

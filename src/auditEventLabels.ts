@@ -748,10 +748,20 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Potvrzení rizika hotovostní platby',
     sk: 'Potvrdenie rizika hotovostnej platby',
   },
+  'payment.cash_payment.requested': {
+    en: 'Cash payment requested',
+    cs: 'Požadavek na platbu hotově',
+    sk: 'Požiadavka na platbu v hotovosti',
+  },
+  'payment.cash_received.confirmed': {
+    en: 'Cash payment received and confirmed',
+    cs: 'Hotovostní platba přijata a potvrzena',
+    sk: 'Hotovostná platba prijatá a potvrdená',
+  },
   'payment.cash_checkout.self_confirm': {
-    en: 'sales point cash checkout self-confirmed',
-    cs: 'Hotovostní platba u prodejního místa potvrzena zákazníkem',
-    sk: 'Hotovostná platba pri platobnom mieste potvrdená zákazníkom',
+    en: 'Sales point cash checkout self-confirmed (legacy)',
+    cs: 'Hotovostní platba u prodejního místa potvrzena zákazníkem (legacy)',
+    sk: 'Hotovostná platba pri platobnom mieste potvrdená zákazníkom (legacy)',
   },
   'payment.cash_shift.opened': {
     en: 'Cash shift opened',
