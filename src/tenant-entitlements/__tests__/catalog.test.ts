@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 48 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(48);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(48);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(48);
+  it('contains exactly 49 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(49);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(49);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(49);
   });
 
-  it('uses catalog version 7 after analytics tab simplification', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(7);
+  it('uses catalog version 8 after product_barcode_administration block', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(8);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(48);
+    expect(new Set(keysFromCatalog).size).toBe(49);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -29,6 +29,12 @@ describe('tenant entitlement catalog', () => {
     expect(brandKit.blockClass).toBe('CONDITIONAL');
     expect(brandKit.parentKeys).toEqual(['tenant_ops_settings']);
     expect(brandKit.capabilityHint).toBe('account.self.manage');
+  });
+
+  it('includes product_barcode_administration as CONDITIONAL default-off under product_vending', () => {
+    const barcode = getEntitlementBlockCatalogEntry('product_barcode_administration');
+    expect(barcode.blockClass).toBe('CONDITIONAL');
+    expect(barcode.parentKeys).toEqual(['product_vending']);
   });
 
   it('includes sales_point_individual_settings as CONDITIONAL default-off under sales_point_management', () => {

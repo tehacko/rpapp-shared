@@ -157,6 +157,7 @@ export {
 export { TENANT_BRAND_KIT_BLOCK_KEY } from './tenantBrandKitEntitlement.js';
 
 export { SALES_POINT_INDIVIDUAL_SETTINGS_BLOCK_KEY } from './salesPointIndividualSettingsEntitlement.js';
+export { PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY } from './productBarcodeAdministrationEntitlement.js';
 
 export {
   PLATFORM_DEFAULT_ALLOW_DENY_BLOCK_KEYS,

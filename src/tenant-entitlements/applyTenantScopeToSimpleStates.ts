@@ -60,6 +60,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     // Commercial Události — default hardOff; platform /dev/inbox uses platform
     // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.
     incident_centre_ui: HARD_OFF,
+    product_barcode_administration: HARD_OFF,
     loyalty_program: OFF,
     promotions_program: OFF,
   };
@@ -82,6 +83,7 @@ const DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS = [
 
 /** Product-commerce blocks locked ON whenever product vending is part of tenant allowed purposes. */
 export const TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS = [
+  'catalog_administration',
   'inventory_management',
 ] as const satisfies readonly EntitlementBlockKey[];
 
@@ -162,6 +164,7 @@ function applyAllowedPurposesToStates(
     case 'PRODUCT_ONLY':
       result.product_vending = ON;
       result.donation = OFF;
+      result.catalog_administration = ON;
       result.inventory_management = ON;
       break;
     case 'DONATION_ONLY':
@@ -202,6 +205,7 @@ function applyAllowedPurposesToStates(
         result.analytics_explore = ON;
       }
       result.pickup_points = ON;
+      result.catalog_administration = ON;
       result.inventory_management = ON;
       break;
   }

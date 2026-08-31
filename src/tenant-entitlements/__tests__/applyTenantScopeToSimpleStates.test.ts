@@ -13,6 +13,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY');
     expect(states.product_vending).toBe('on');
     expect(states.donation).toBe('off');
+    expect(states.catalog_administration).toBe('on');
     expect(states.inventory_management).toBe('on');
     expect(states.surface_kiosk).toBe('on');
     expect(states.surface_customer).toBe('off');
@@ -58,6 +59,12 @@ describe('applyTenantScopeToSimpleStates', () => {
     const states = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
     expect(inferAllowedPurposesFromSimpleStates(states)).toBe('BOTH');
     expect(inferSurfaceScopeFromSimpleStates(states)).toBe('BOTH');
+  });
+
+  it('defaults product_barcode_administration to hardOff in baseline', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').product_barcode_administration).toBe(
+      'hardOff',
+    );
   });
 
   it('defaults audit_logs_admin_ui ON in baseline (DEV Feature Policy allow/deny)', () => {
@@ -151,10 +158,22 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('inventory_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
   });
 
+  it('locks catalog when product commerce is allowed (PRODUCT_ONLY or BOTH)', () => {
+    expect(isTenantScopeLockedBlock('catalog_administration', 'BOTH', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('catalog_administration', 'PRODUCT_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('catalog_administration', 'DONATION_ONLY', 'BOTH')).toBe(true);
+  });
+
   it('forces inventory on for BOTH and PRODUCT_ONLY scopes', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').inventory_management).toBe('on');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').inventory_management).toBe('on');
     expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').inventory_management).toBe('off');
+  });
+
+  it('forces catalog on for BOTH and PRODUCT_ONLY scopes', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').catalog_administration).toBe('on');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').catalog_administration).toBe('on');
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').catalog_administration).toBe('hardOff');
   });
 
   it('defaults inventory_incidents to hardOff and keeps it independently toggleable when products are sold', () => {

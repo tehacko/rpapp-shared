@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 48 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 49 blocks (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -69,6 +69,13 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['product_vending'],
     notes:
       'DONATION_ONLY → deny reads; SIMPLE Off → allow GET; HARD_OFF BLOCK_ALL → deny reads',
+  },
+  {
+    blockKey: 'product_barcode_administration',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['product_vending'],
+    notes:
+      'Admin product barcode/QR tab + barcode APIs. Default OFF — full-demo (railway-cafe / *-max) On; min/bookstore hardOff',
   },
   {
     blockKey: 'audit_event_collection',
