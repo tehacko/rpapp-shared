@@ -658,6 +658,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích změní řádky politiky funkcí (entitlement). Jeden řádek za úspěšné uložení s metadaty revize.',
     sk: 'Zapíše sa, keď pracovníci platformy v dev nástrojoch zmenia riadky politiky funkcií (entitlement). Jeden riadok za úspešné uloženie s metadátami revízie.',
   },
+  'dev.tenant.admin_capabilities.non_entitled_stripped': {
+    en: 'Recorded when platform dev tooling strips admin capability grants that are no longer entitled for the tenant. One line per run with matched and revoked counts.',
+    cs: 'Zapíše se, když dev nástroje platformy odeberou oprávnění správcům, která už organizace nemá v rámci entitlement. Jeden řádek za běh s počty nalezených a odebraných.',
+    sk: 'Zapíše sa, keď dev nástroje platformy odstránia oprávnenia správcom, ktoré organizácia už nemá v rámci entitlement. Jeden riadok za beh s počtami nájdených a odobraných.',
+  },
   'payment.transaction.state_changed': {
     en: 'Recorded automatically when a payment moves to a new status (paid, cancelled, etc.). One line per status change. If writing the line fails, the payment still changes.',
     cs: 'Zapíše se automaticky, když platba přejde do nového stavu (zaplaceno, zrušeno atd.). Jeden řádek za změnu stavu. Když se zápis nepovede, platba se stejně změní.',

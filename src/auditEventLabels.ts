@@ -658,6 +658,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Změna politiky funkcí organizace (platforma)',
     sk: 'Zmena politiky funkcií organizácie (platforma)',
   },
+  'dev.tenant.admin_capabilities.non_entitled_stripped': {
+    en: 'Non-entitled admin capabilities stripped (platform)',
+    cs: 'Odebrání neoprávněných oprávnění správce (platforma)',
+    sk: 'Odobratie neoprávnených oprávnení správcu (platforma)',
+  },
   'payment.transaction.state_changed': {
     en: 'Payment status changed',
     cs: 'Změna stavu platby',

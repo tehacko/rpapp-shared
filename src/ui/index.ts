@@ -106,3 +106,7 @@ export {
   setBackgroundInert,
 } from './overlay/overlayFocus.js';
 export { OVERLAY_EXIT_MS } from './overlay/overlayMotion.js';
+export {
+  AppVersionCorner,
+  type AppVersionCornerProps,
+} from './AppVersionCorner/AppVersionCorner.js';

@@ -595,6 +595,13 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     surface: 'server',
     layer: 'BE',
     required: true,
+    reference: 'SwitchCustomerTenantUseCase',
+  },
+  {
+    eventName: 'tenant_switched',
+    surface: 'server',
+    layer: 'BE',
+    required: true,
     reference: 'emitRetailV7Analytics',
   },
   {
@@ -1147,6 +1154,8 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/application/use-cases/customer-account/CustomerReceiptLocalePreferenceUseCases.ts',
   LinkAccountToTransactionUseCase:
     'up-backend/src/application/use-cases/customer-auth/LinkAccountToTransactionUseCase.ts',
+  SwitchCustomerTenantUseCase:
+    'up-backend/src/application/use-cases/customer-auth/SwitchCustomerTenantUseCase.ts',
   CustomerErasureSideEffectsService:
     'up-backend/src/infrastructure/services/gdpr/CustomerErasureSideEffectsService.ts',
   ExpireCheckoutPaymentHandoffWorker:
@@ -1232,6 +1241,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'LogoutCustomerSessionUseCase',
   'PutReceiptLocalePreferenceUseCase',
   'LinkAccountToTransactionUseCase',
+  'SwitchCustomerTenantUseCase',
   'CustomerErasureSideEffectsService',
   'ExpireCheckoutPaymentHandoffWorker',
   'AdminUpdateFulfillmentStatusUseCase',

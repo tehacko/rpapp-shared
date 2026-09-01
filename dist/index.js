@@ -100,5 +100,6 @@ export * from './tenant-entitlements/index.js';
 export * from './screenState/types.js';
 export { normalizeIban } from './payment/normalizeIban.js';
 export { extractCzBankCode, isFioEligibleBankAccount, } from './payment/isFioEligibleBankAccount.js';
+export { resolveAppBuildLabel } from './utils/resolveAppBuildLabel.js';
 export { buildPaymentSurfaceReadiness, countCustomerPayableVerifiedMethods, countKioskPayableVerifiedMethods, derivePaymentSurfaceMethodVerified, isCashMethodPayableForCount, isMethodPayableForCount, } from './payment/PaymentSurfaceReadiness.js';
 //# sourceMappingURL=index.js.map

@@ -104,5 +104,6 @@ export * from './tenant-entitlements/index.js';
 export * from './screenState/types.js';
 export { normalizeIban } from './payment/normalizeIban.js';
 export { extractCzBankCode, isFioEligibleBankAccount, type FioEligibleBankAccountInput, } from './payment/isFioEligibleBankAccount.js';
+export { resolveAppBuildLabel, type ResolveAppBuildLabelOptions } from './utils/resolveAppBuildLabel.js';
 export { buildPaymentSurfaceReadiness, countCustomerPayableVerifiedMethods, countKioskPayableVerifiedMethods, derivePaymentSurfaceMethodVerified, isCashMethodPayableForCount, isMethodPayableForCount, type PaymentSurfaceMethodReadiness, type PaymentSurfaceReadiness, type PaymentSurfaceReadinessMethods, } from './payment/PaymentSurfaceReadiness.js';
 //# sourceMappingURL=index.d.ts.map
