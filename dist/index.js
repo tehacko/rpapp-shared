@@ -72,6 +72,7 @@ export * from './promo/ApplyPromoCodeRequest.js';
 export * from './promo/ApplyPromoCodeResponse.js';
 export * from './promo/resolveApplyPromoEventDisplayName.js';
 export * from './promo/RemovePromoCodeRequest.js';
+export { resolvePromotionsProgramEnabled, resolvePromotionsProgramEnabledFromCommerceConfig, } from './promo/resolvePromotionsProgramEnabled.js';
 export * from './catalogImagePresentation.js';
 export * from './directoryMonogram.js';
 export * from './branding/consumerSquareLogo.js';

@@ -36,6 +36,16 @@ export interface BottomSheetProps {
   readonly describedBy?: string;
   readonly hideHeader?: boolean;
   readonly titleId?: string;
+  /**
+   * `flush` removes default panel padding so media can bleed edge-to-edge.
+   * Safe-area bottom inset is still applied on the panel.
+   */
+  readonly contentPadding?: 'default' | 'flush';
+  /**
+   * `flex` — column flex + overflow hidden (child owns scroll regions).
+   * Default `scroll` keeps legacy overflow-auto on the panel.
+   */
+  readonly panelLayout?: 'scroll' | 'flex';
   /** Extra classes for the fixed outer container (e.g. `lg:items-center`). */
   readonly containerClassName?: string;
 }
@@ -54,6 +64,8 @@ export function BottomSheet({
   describedBy,
   hideHeader = false,
   titleId: titleIdProp,
+  contentPadding = 'default',
+  panelLayout = 'scroll',
   containerClassName,
 }: BottomSheetProps): JSX.Element | null {
   const isBusy = busy || pending;
@@ -125,6 +137,12 @@ export function BottomSheet({
   const labelledBy = title ? titleId : undefined;
   const motionState = visible ? OVERLAY_MOTION_ENTERED : OVERLAY_MOTION_EXITED;
   const backdropState = visible ? OVERLAY_BACKDROP_ENTERED : OVERLAY_BACKDROP_EXITED;
+  const isFlush = contentPadding === 'flush';
+  const paddingClass = isFlush
+    ? 'p-0 pb-[max(0px,env(safe-area-inset-bottom,0px))]'
+    : 'p-4 pb-[max(1rem,env(safe-area-inset-bottom))]';
+  const scrollLayoutClass =
+    panelLayout === 'flex' ? 'flex flex-col overflow-hidden' : 'overflow-auto';
 
   return (
     <div
@@ -160,8 +178,10 @@ export function BottomSheet({
         aria-describedby={describedBy}
         aria-busy={isBusy || undefined}
         className={[
-          'relative z-10 max-h-[85dvh] w-full overflow-auto rounded-t-2xl border border-[var(--color-border)]',
-          'bg-[var(--color-surface,var(--color-an-surface))] p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-lg',
+          'relative z-10 max-h-[85dvh] w-full rounded-t-2xl border border-[var(--color-border)]',
+          'bg-[var(--color-surface,var(--color-an-surface))] shadow-lg',
+          paddingClass,
+          scrollLayoutClass,
           OVERLAY_MOTION_TRANSITION,
           motionState,
           className,
@@ -169,8 +189,16 @@ export function BottomSheet({
           .filter(Boolean)
           .join(' ')}
         data-testid={`${testId}-content`}
+        data-content-padding={contentPadding}
+        data-panel-layout={panelLayout}
       >
-        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[var(--color-border)]" aria-hidden="true" />
+        <div
+          className={[
+            'mx-auto h-1 w-10 shrink-0 rounded-full bg-[var(--color-border)]',
+            isFlush ? 'mb-2 mt-3' : 'mb-3',
+          ].join(' ')}
+          aria-hidden="true"
+        />
         {showHeader ? (
           <header className="mb-3 flex items-start justify-between gap-2">
             <h2 id={titleId} className="m-0 pt-1 text-base font-semibold leading-tight">

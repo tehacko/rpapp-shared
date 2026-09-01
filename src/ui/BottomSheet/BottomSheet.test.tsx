@@ -258,4 +258,25 @@ describe('BottomSheet', () => {
       'sheet-desc',
     );
   });
+
+  it('flush contentPadding removes default panel padding for edge-to-edge media', () => {
+    render(
+      <BottomSheet
+        open
+        onClose={() => undefined}
+        title="Sheet"
+        contentPadding="flush"
+        panelLayout="flex"
+      >
+        <div data-testid="flush-child">Hero</div>
+      </BottomSheet>,
+    );
+
+    const content = screen.getByTestId('bottom-sheet-content');
+    expect(content).toHaveAttribute('data-content-padding', 'flush');
+    expect(content).toHaveAttribute('data-panel-layout', 'flex');
+    expect(content.className).toContain('p-0');
+    expect(content.className).not.toContain(' p-4');
+    expect(content.className).toContain('overflow-hidden');
+  });
 });

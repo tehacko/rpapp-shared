@@ -155,6 +155,11 @@
             "import": "./dist/promo/RemovePromoCodeRequest.js",
             "require": "./dist/promo/RemovePromoCodeRequest.js"
         },
+        "./promo/resolvePromotionsProgramEnabled": {
+            "types": "./dist/promo/resolvePromotionsProgramEnabled.d.ts",
+            "import": "./dist/promo/resolvePromotionsProgramEnabled.js",
+            "require": "./dist/promo/resolvePromotionsProgramEnabled.js"
+        },
         "./checkout/sessionMetadataV4": {
             "types": "./dist/checkout/sessionMetadataV4.d.ts",
             "import": "./dist/checkout/sessionMetadataV4.js",
