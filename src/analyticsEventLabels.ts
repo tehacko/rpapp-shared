@@ -225,7 +225,7 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
   kiosk_cash_complete: {
     en: 'Sales point cash checkout complete',
     cs: 'Hotovostní pokladna na prodejním místě dokončena',
-    sk: 'Hotovostná pokladňa na platobnom mieste dokončená',
+    sk: 'Hotovostná pokladňa na predajnom mieste dokončená',
   },
   checkout_collect_configured: {
     en: 'Collect-later options configured',

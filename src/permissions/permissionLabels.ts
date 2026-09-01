@@ -97,12 +97,12 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   kioskDonationAssign: {
     en: 'Sales point donation assign',
     cs: 'Přiřazení darů na prodejní místo',
-    sk: 'Priradenie darov na platobné miesto',
+    sk: 'Priradenie darov na predajné miesto',
   },
   kioskDonationAmounts: {
     en: 'Sales point donation amounts',
     cs: 'Částky darů na prodejním místě',
-    sk: 'Sumy darov na platobnom mieste',
+    sk: 'Sumy darov na predajnom mieste',
   },
   'orders.complete': {
     en: 'Orders — complete',
@@ -204,7 +204,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   pricingKioskOverride: {
     en: 'Pricing sales point override',
     cs: 'Přepsání DPH u prodejního místa',
-    sk: 'Prepísanie DPH u platobného miesta',
+    sk: 'Prepísanie DPH u predajného miesta',
   },
   configTenant: { en: 'Config tenant', cs: 'Nastavení organizace', sk: 'Nastavenie organizácie' },
 

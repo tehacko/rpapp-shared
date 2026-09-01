@@ -65,14 +65,14 @@ export class InventoryError extends AppError {
     }
 }
 export class KioskError extends AppError {
-    constructor(message = csSkEn('Chyba konfigurace kiosku', 'Chyba konfigurácie kiosku', 'Kiosk configuration error')) {
+    constructor(message = csSkEn('Chyba konfigurace prodejního místa', 'Chyba konfigurácie predajného miesta', 'Sales point configuration error')) {
         super(message, 'KIOSK_ERROR', 400);
         this.name = 'KioskError';
     }
 }
 /** Sales-point naming alias — retains `KIOSK_ERROR` code for v1 churn reduction. */
 export class SalesPointError extends KioskError {
-    constructor(message = csSkEn('Chyba konfigurace prodejního místa', 'Chyba konfigurácie platobného miesta', 'Sales point configuration error')) {
+    constructor(message = csSkEn('Chyba konfigurace prodejního místa', 'Chyba konfigurácie predajného miesta', 'Sales point configuration error')) {
         super(message);
         this.name = 'SalesPointError';
     }

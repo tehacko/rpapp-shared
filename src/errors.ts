@@ -118,9 +118,9 @@ export class InventoryError extends AppError {
 export class KioskError extends AppError {
   constructor(
     message: string = csSkEn(
-      'Chyba konfigurace kiosku',
-      'Chyba konfigurácie kiosku',
-      'Kiosk configuration error'
+      'Chyba konfigurace prodejního místa',
+      'Chyba konfigurácie predajného miesta',
+      'Sales point configuration error'
     )
   ) {
     super(message, 'KIOSK_ERROR', 400);
@@ -133,7 +133,7 @@ export class SalesPointError extends KioskError {
   constructor(
     message: string = csSkEn(
       'Chyba konfigurace prodejního místa',
-      'Chyba konfigurácie platobného miesta',
+      'Chyba konfigurácie predajného miesta',
       'Sales point configuration error'
     )
   ) {

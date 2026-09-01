@@ -491,12 +491,12 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'admin.salesPoint.donation_projects.updated': {
     en: 'Sales point donation projects updated',
     cs: 'Projekty daru na prodejním místě upraveny',
-    sk: 'Projekty daru na platobnom mieste upravené',
+    sk: 'Projekty daru na predajnom mieste upravené',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Sales point donation amounts updated',
     cs: 'Částky daru na prodejním místě upraveny',
-    sk: 'Čiastky daru na platobnom mieste upravené',
+    sk: 'Čiastky daru na predajnom mieste upravené',
   },
   'admin.product.media_saved': {
     en: 'Product gallery saved',
@@ -766,7 +766,7 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
   'payment.cash_checkout.self_confirm': {
     en: 'Sales point cash checkout self-confirmed (legacy)',
     cs: 'Hotovostní platba u prodejního místa potvrzena zákazníkem (legacy)',
-    sk: 'Hotovostná platba pri platobnom mieste potvrdená zákazníkom (legacy)',
+    sk: 'Hotovostná platba pri predajnom mieste potvrdená zákazníkom (legacy)',
   },
   'payment.cash_shift.opened': {
     en: 'Cash shift opened',

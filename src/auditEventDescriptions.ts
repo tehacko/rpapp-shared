@@ -260,8 +260,8 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'admin.product.deactivated': {
     en: 'Recorded when a product is hidden and cannot be sold on sales points until turned back on. One line per product. The product file is not erased.',
-    cs: 'Zapíše se, když je produkt skrytý a na kioscích se neprodává, dokud se znovu nezapne. Jeden řádek za produkt. Produkt se ze systému nesmaže.',
-    sk: 'Zapíše sa, keď je produkt skrytý a na kioskoch sa nepredáva, kým sa znova nezapne. Jeden riadok za produkt. Produkt sa zo systému nezmaže.',
+    cs: 'Zapíše se, když je produkt skrytý a na prodejních místech se neprodává, dokud se znovu nezapne. Jeden řádek za produkt. Produkt se ze systému nesmaže.',
+    sk: 'Zapíše sa, keď je produkt skrytý a na predajných miestach sa nepredáva, kým sa znova nezapne. Jeden riadok za produkt. Produkt sa zo systému nezmaže.',
   },
   'admin.product.reactivated': {
     en: 'Recorded when a hidden product is made available for sale again. One line per product.',
@@ -371,17 +371,17 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.salesPoint.deactivated': {
     en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
     cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',
-    sk: 'Zapíše sa, keď je platobné miesto vypnuté pre zákazníkov. Jeden riadok za platobné miesto. Platby už rozbehnuté sa riešia osobitne.',
+    sk: 'Zapíše sa, keď je predajné miesto vypnuté pre zákazníkov. Jeden riadok za predajné miesto. Platby už rozbehnuté sa riešia osobitne.',
   },
   'admin.salesPoint.reactivated': {
     en: 'Recorded when a turned-off sales point is enabled again. One line per sales point.',
     cs: 'Zapíše se, když je vypnuté prodejní místo znovu zapnuté. Jeden řádek za prodejní místo.',
-    sk: 'Zapíše sa, keď je vypnuté platobné miesto znova zapnuté. Jeden riadok za platobné miesto.',
+    sk: 'Zapíše sa, keď je vypnuté predajné miesto znova zapnuté. Jeden riadok za predajné miesto.',
   },
   'admin.salesPoint.permanently_deleted': {
     en: 'Recorded when a sales point is removed from the system for good. One line per sales point. Old payment and audit records stay for compliance.',
     cs: 'Zapíše se, když je prodejní místo trvale odstraněno ze systému. Jeden řádek za prodejní místo. Staré platby a audit zůstávají kvůli evidenci.',
-    sk: 'Zapíše sa, keď je platobné miesto trvale odstránené zo systému. Jeden riadok za platobné miesto. Staré platby a audit zostávajú kvôli evidencii.',
+    sk: 'Zapíše sa, keď je predajné miesto trvale odstránené zo systému. Jeden riadok za predajné miesto. Staré platby a audit zostávajú kvôli evidencii.',
   },
   'admin.tenant.deactivated': {
     en: 'Recorded when an entire customer organization (tenant) is soft-deactivated without legal closure. One line per soft deactivate. Customer personal data is not copied into this line.',
@@ -491,12 +491,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.salesPoint.donation_projects.updated': {
     en: 'Recorded when which charity projects appear on a sales point is saved. One line per save. Project names are not all listed in the audit line.',
     cs: 'Zapíše se při uložení toho, které dárkové projekty se na prodejním místě zobrazují. Jeden řádek za uložení. Názvy všech projektů nejsou v řádku auditu.',
-    sk: 'Zapíše sa pri uložení toho, ktoré darčekové projekty sa na platobnom mieste zobrazujú. Jeden riadok za uloženie. Názvy všetkých projektov nie sú v riadku auditu.',
+    sk: 'Zapíše sa pri uložení toho, ktoré darčekové projekty sa na predajnom mieste zobrazujú. Jeden riadok za uloženie. Názvy všetkých projektov nie sú v riadku auditu.',
   },
   'admin.salesPoint.donation_amounts.updated': {
     en: 'Recorded when donation amount presets linked to a sales point are updated. One line per save.',
     cs: 'Zapíše se při aktualizaci přednastavených částek daru navázaných na prodejní místo. Jeden řádek za uložení.',
-    sk: 'Zapíše sa pri aktualizácii prednastavených čiastok daru naviazaných na platobné miesto. Jeden riadok za uloženie.',
+    sk: 'Zapíše sa pri aktualizácii prednastavených čiastok daru naviazaných na predajné miesto. Jeden riadok za uloženie.',
   },
   'admin.product.media_saved': {
     en: 'Recorded when an admin saves a product or variant image gallery. One line per successful gallery PUT.',
@@ -516,12 +516,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'admin.loyalty.physical_card_issued': {
     en: 'Recorded when an administrator issues a new physical loyalty card for sales point scanning. The full card payload is never stored in this log.',
     cs: 'Zapíše se, když administrátor vydá novou fyzickou věrnostní kartu pro skenování na prodejním místě. Plná hodnota karty se v záznamu neukládá.',
-    sk: 'Zapíše sa, keď administrátor vydá novú fyzickú vernostnú kartu na skenovanie na platobnom mieste. Plná hodnota karty sa v zázname neukladá.',
+    sk: 'Zapíše sa, keď administrátor vydá novú fyzickú vernostnú kartu na skenovanie na predajnom mieste. Plná hodnota karty sa v zázname neukladá.',
   },
   'admin.loyalty.physical_card_revoked': {
     en: 'Recorded when a physical loyalty card is revoked and can no longer be used at a sales point. One line per revoked card.',
     cs: 'Zapíše se, když je fyzická věrnostní karta zneplatněna a nelze ji již použít na prodejním místě. Jeden řádek za zneplatněnou kartu.',
-    sk: 'Zapíše sa, keď je fyzická vernostná karta zneplatnená a už ju nie je možné použiť na platobnom mieste. Jeden riadok za zneplatnenú kartu.',
+    sk: 'Zapíše sa, keď je fyzická vernostná karta zneplatnená a už ju nie je možné použiť na predajnom mieste. Jeden riadok za zneplatnenú kartu.',
   },
   'admin.promo.event.created': {
     en: 'Recorded when an operator creates a new promo event in draft state. One line per created event.',
@@ -756,7 +756,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'payment.cash_payment.requested': {
     en: 'Recorded when a cash payment is requested for an order at a sales point.',
     cs: 'Zapíše se při požadavku na platbu hotově u objednávky na prodejním místě.',
-    sk: 'Zapíše sa pri požiadavke na platbu v hotovosti pri objednávke na platobnom mieste.',
+    sk: 'Zapíše sa pri požiadavke na platbu v hotovosti pri objednávke na predajnom mieste.',
   },
   'payment.cash_received.confirmed': {
     en: 'Recorded when staff confirm that cash payment was received for an order.',
@@ -766,12 +766,12 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'payment.cash_checkout.self_confirm': {
     en: 'Recorded when a customer self-confirms sales point cash checkout (ADR-PICKUP-CASH).',
     cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u prodejního místa (ADR-PICKUP-CASH).',
-    sk: 'Zapíše sa po vlastnom potvrdení hotovostnej platby zákazníkom pri platobnom mieste (ADR-PICKUP-CASH).',
+    sk: 'Zapíše sa po vlastnom potvrdení hotovostnej platby zákazníkom pri predajnom mieste (ADR-PICKUP-CASH).',
   },
   'payment.cash_shift.opened': {
     en: 'Recorded when a cash drawer shift is opened at a sales point.',
     cs: 'Zapíše se při otevření hotovostní směny u prodejního místa.',
-    sk: 'Zapíše sa pri otvorení hotovostnej zmeny pri platobnom mieste.',
+    sk: 'Zapíše sa pri otvorení hotovostnej zmeny pri predajnom mieste.',
   },
   'payment.cash_shift.closed': {
     en: 'Recorded when a cash drawer shift is closed with a counted closing balance.',
@@ -781,7 +781,7 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   'payment.cash_drawer.open_signal': {
     en: 'Recorded when the sales point signals a physical drawer open after cash payment completion.',
     cs: 'Zapíše se, když prodejní místo po dokončení hotovostní platby signalizuje otevření zásuvky.',
-    sk: 'Zapíše sa, keď platobné miesto po dokončení hotovostnej platby signalizuje otvorenie zásuvky.',
+    sk: 'Zapíše sa, keď predajné miesto po dokončení hotovostnej platby signalizuje otvorenie zásuvky.',
   },
   'export.analytics.explore.exported': {
     en: 'Recorded when someone downloads a spreadsheet export from customer behavior analytics. One line per successful export. The spreadsheet contents are not copied into the audit line.',
