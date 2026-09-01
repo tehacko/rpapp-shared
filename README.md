@@ -9,7 +9,7 @@ Shared types, API contracts, and error classes for the Pi Kiosk system.
 
 ## Temporary retention
 
-`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry tarball from `npm view`, or monorepo overlay of sibling `../shared` **2.3.5**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
+`up-backend` keeps production `react` / `react-dom` until cold/start paths consume a Node-safe published or overlaid main barrel. Do **not** drop those deps until that consume path is proven on the version actually installed (registry tarball from `npm view`, or monorepo overlay of sibling `../shared` **2.3.10**). Same caveat as `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`.
 
 ## Installation
 
@@ -74,7 +74,7 @@ Frontends import React modules from `/ui`. The **target** main barrel (local ove
 
 ## Local monorepo overlay
 
-**Honesty (SSOT):** Live monorepo source is `shared/package.json` **2.3.5**. All consumers pin **`^2.3.5`** in `package.json`. **Committed locks resolve the npm registry tarball** (`https://registry.npmjs.org/pi-kiosk-shared/-/pi-kiosk-shared-2.3.5.tgz` after refresh) — that is what Railway / app-only `npm ci` installs.
+**Honesty (SSOT):** Live monorepo source is `shared/package.json` **2.3.10**. Monorepo consumers pin **`file:../shared/pi-kiosk-shared-2.3.10.tgz`** (or overlay sibling `../shared`). **Registry / app-only clones** should pin **`^2.3.10`** — versions **&lt; 2.3.10** lack adaptive add-to-cart CQ rules (`.rp-add-cta--always-long`, `@container rp-add-cta` at **14rem**) in `src/tokens/responsive.css`. **Committed locks resolve the npm registry tarball** (`https://registry.npmjs.org/pi-kiosk-shared/-/pi-kiosk-shared-2.3.10.tgz` after refresh) — that is what Railway / app-only `npm ci` installs when not using monorepo overlay.
 
 **Local monorepo dev does not use committed tarballs.** When sibling `../shared` exists, `postinstall`/`prepare` → `overlaySharedIfPresent.mjs` → `ensureDist.mjs` copies `shared/dist` into each consumer's `node_modules/pi-kiosk-shared`. You work against live source; registry version in `node_modules` is overwritten on install.
 
@@ -87,18 +87,20 @@ After every `shared` version bump: `npm publish` (or your release pipeline), the
 
 Do **not** commit `file:../shared/pi-kiosk-shared-*.tgz` pins — stale registry locks (e.g. `2.3.2`) ship pre-rewrite outage UI on Railway until locks are refreshed.
 
+**Monorepo tarball refresh (local):** from `shared/`, run `npm run publish:local` to build and pack `pi-kiosk-shared-<version>.tgz`; reinstall in consumers with `npm install file:../shared/pi-kiosk-shared-<version>.tgz`.
+
 ### Distribution paths
 
 | Path | When | How rewrite reaches consumers |
 |------|------|-------------------------------|
 | **Local overlay** | Monorepo with sibling `shared/` | `npm ci` / `npm install` hooks → `ensureDist.mjs` |
-| **Registry `^2.3.5`** | Railway, app-only clones | `npm ci` → registry tarball from lockfile |
+| **Registry `^2.3.10`** | Railway, app-only clones | `npm ci` → registry tarball from lockfile (≥ 2.3.10 for adaptive-label CSS) |
 
 Verify publish contents (maintainers only):
 
 ```powershell
 cd shared; npm run build; npm pack
-tar -xOf pi-kiosk-shared-2.3.5.tgz package/dist/components/DatabaseUnavailable.js | Select-String "Aplikace"
+tar -xOf pi-kiosk-shared-2.3.10.tgz package/src/tokens/responsive.css | Select-String "rp-add-cta--always-long"
 ```
 
 **Documented cold path (monorepo):** `npm ci` / `npm install` in each app runs lifecycle hooks → `scripts/overlaySharedIfPresent.mjs` → `shared/scripts/ensureDist.mjs` when sibling `../shared` exists:
@@ -136,7 +138,7 @@ npm run gate:main-barrel-node-safe
 
 From `shared/`, prove the documented cold path:
 
-1. **DIAGNOSTIC** — `npm pack` a known Node-safe registry tarball (`COLD_VERSION` in `prove-pi-kiosk-shared-cold-overlay.mjs`, currently `2.2.82` — intentional historical diagnostic fixture, not the live pin) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`). Live monorepo source is `shared/package.json` **2.3.5**.
+1. **DIAGNOSTIC** — `npm pack` a known Node-safe registry tarball (`COLD_VERSION` in `prove-pi-kiosk-shared-cold-overlay.mjs`, currently `2.2.82` — intentional historical diagnostic fixture, not the live pin) in a temp dir and assert COLD_BAD markers (never installs into a consumer with `--ignore-scripts`). Live monorepo source is `shared/package.json` **2.3.10**.
 2. **PASS** — wipe that consumer’s `node_modules/pi-kiosk-shared`, then `npm install` with **scripts on** (no package args) so `prepare` / `postinstall` overlays during install; assert Node-safe barrel + `NODE_IMPORT_OK`.
 
 ```bash
