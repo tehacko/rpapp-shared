@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { buildLogoChipMarkStyle } from '../branding/logoChipMarkStyle.js';
+import { buildLogoChipMarkStyle, partitionLogoChipMarkStyle } from '../branding/logoChipMarkStyle.js';
 
 describe('buildLogoChipMarkStyle', () => {
   it('returns undefined when rim and background are off', () => {
@@ -48,6 +48,25 @@ describe('buildLogoChipMarkStyle', () => {
       '--logo-chip-background': '#f3f4f6',
       backgroundColor: 'var(--logo-chip-background)',
       backgroundImage: 'none',
+    });
+  });
+
+  it('partitionLogoChipMarkStyle splits rim shell from background fill', () => {
+    expect(
+      partitionLogoChipMarkStyle({
+        rim: { show: true, color: '#ffffff' },
+        background: { show: true, color: '#18181b' },
+      }),
+    ).toEqual({
+      shell: {
+        '--logo-chip-rim': '#ffffff',
+        boxShadow: '0 0 0 1px var(--logo-chip-rim)',
+      },
+      fill: {
+        '--logo-chip-background': '#18181b',
+        backgroundColor: 'var(--logo-chip-background)',
+        backgroundImage: 'none',
+      },
     });
   });
 });
