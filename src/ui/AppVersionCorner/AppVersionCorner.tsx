@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { resolveAppShellFooterBottomStyle } from '../appShellFooterLayout.js';
 
 export interface AppVersionCornerProps {
   readonly label: string;
@@ -20,14 +21,7 @@ export function AppVersionCorner({
     return null;
   }
 
-  const bottomStyle: CSSProperties =
-    bottomChromeVar !== undefined && bottomChromeVar.length > 0
-      ? {
-          bottom: `calc(max(0.25rem, env(safe-area-inset-bottom, 0px)) + var(${bottomChromeVar}, 0px))`,
-        }
-      : {
-          bottom: 'max(0.25rem, env(safe-area-inset-bottom, 0px))',
-        };
+  const bottomStyle: CSSProperties = resolveAppShellFooterBottomStyle(bottomChromeVar);
 
   return (
     <div

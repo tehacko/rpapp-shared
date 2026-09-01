@@ -110,3 +110,11 @@ export {
   AppVersionCorner,
   type AppVersionCornerProps,
 } from './AppVersionCorner/AppVersionCorner.js';
+export {
+  AppShellChromeFooter,
+  type AppShellChromeFooterProps,
+} from './AppShellChromeFooter/AppShellChromeFooter.js';
+export {
+  DEFAULT_APP_COPYRIGHT_TEXT,
+  resolveAppShellFooterBottomStyle,
+} from './appShellFooterLayout.js';
