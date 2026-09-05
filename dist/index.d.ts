@@ -56,6 +56,7 @@ export * from './clientLogRedaction.js';
 export { SHARED_SENSITIVE_META_KEYS, type SharedSensitiveMetaKey, } from './sensitiveMetaKeys.js';
 export * from './catalogImageUrl.js';
 export * from './catalogImageTelemetry.js';
+export { catalogImageFailureKey, clearCatalogImageLoadGuardForTests, isBrokenCatalogImageUrl, isCatalogImageSignatureExpired, noteCatalogImageLoadFailure, } from './catalogImageLoadGuard.js';
 export * from './buildKioskLineKey.js';
 export * from './commerce/reservedSalesPointSlugs.js';
 export * from './catalogMediaPatch.js';

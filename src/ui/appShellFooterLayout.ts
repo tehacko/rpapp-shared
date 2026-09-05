@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-export const DEFAULT_APP_COPYRIGHT_TEXT = '2026 © nakupuj.cz';
+export const DEFAULT_APP_COPYRIGHT_TEXT = '2026 © kupaber.cz';
 
 export function resolveAppShellFooterBottomStyle(bottomChromeVar?: string): CSSProperties {
   if (bottomChromeVar !== undefined && bottomChromeVar.length > 0) {

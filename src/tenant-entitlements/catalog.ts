@@ -75,7 +75,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['product_vending'],
     notes:
-      'Admin product barcode/QR tab + barcode APIs. Default OFF — full-demo (railway-cafe / *-max) On; min/bookstore hardOff',
+      'Purpose-locked ON with product_vending (PRODUCT_ONLY/BOTH); not operator-toggleable. DONATION_ONLY → HARD_OFF. Admin product barcode/QR tab + barcode APIs — not default-off',
   },
   {
     blockKey: 'audit_event_collection',

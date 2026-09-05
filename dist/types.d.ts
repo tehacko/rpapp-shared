@@ -63,6 +63,11 @@ export interface Product {
     nameLocales?: LocalizedNameMap | null;
     price: number;
     description: string;
+    /**
+     * Customer PWA path segment for product detail:
+     * `/{tenantCode}/{storeCode}/{slug}` — omit/null when API has not projected it yet.
+     */
+    slug?: string | null;
     image?: string;
     imageUrl?: string;
     thumbnailUrl?: string | null;

@@ -5,14 +5,15 @@
  * surface commercial default-off product UI (e.g. Mobilní obchod) before a tenant
  * Feature Policy bind. Full-demo seed (`buildFullDemoSimpleStates`) does **not**
  * consult this set — railway-cafe / *-max may still enable these blocks.
+ *
+ * `product_barcode_administration` is purpose-locked ON with product_vending and is
+ * intentionally absent from this list.
  */
 import type { EntitlementBlockKey } from './types.js';
-import { PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY } from './productBarcodeAdministrationEntitlement.js';
 import { SALES_POINT_INDIVIDUAL_SETTINGS_BLOCK_KEY } from './salesPointIndividualSettingsEntitlement.js';
 
 export const PLATFORM_DEFAULT_ALLOW_DENY_BLOCK_KEYS = [
   SALES_POINT_INDIVIDUAL_SETTINGS_BLOCK_KEY,
-  PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY,
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export function isPlatformDefaultAllowDenyBlockKey(blockKey: string): boolean {

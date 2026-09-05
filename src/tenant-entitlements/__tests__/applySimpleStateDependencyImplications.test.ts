@@ -9,6 +9,7 @@ describe('applySimpleStateDependencyImplications', () => {
     });
 
     expect(implied.catalog_administration).toBe('on');
+    expect(implied.product_barcode_administration).toBe('on');
   });
 
   it('V-02 enables catalog when product_vending is soft-off but runtime active', () => {
@@ -17,6 +18,7 @@ describe('applySimpleStateDependencyImplications', () => {
     });
 
     expect(implied.catalog_administration).toBe('on');
+    expect(implied.product_barcode_administration).toBe('on');
   });
 
   it('sets catalog hardOff for donation-only commerce', () => {
@@ -26,6 +28,7 @@ describe('applySimpleStateDependencyImplications', () => {
     });
 
     expect(implied.catalog_administration).toBe('hardOff');
+    expect(implied.product_barcode_administration).toBe('hardOff');
   });
 
   it('V-03 implies product_vending when inventory_management is on', () => {
@@ -36,6 +39,7 @@ describe('applySimpleStateDependencyImplications', () => {
 
     expect(implied.product_vending).toBe('on');
     expect(implied.catalog_administration).toBe('on');
+    expect(implied.product_barcode_administration).toBe('on');
     expect(implied.sales_point_management).toBe('on');
   });
 
@@ -48,6 +52,7 @@ describe('applySimpleStateDependencyImplications', () => {
 
     expect(implied.product_vending).toBe('on');
     expect(implied.catalog_administration).toBe('on');
+    expect(implied.product_barcode_administration).toBe('on');
   });
 
   it('enables analytics umbrella when analytics_overview is on', () => {

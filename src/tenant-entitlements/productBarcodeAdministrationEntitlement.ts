@@ -1,9 +1,9 @@
 /**
- * product_barcode_administration — CONDITIONAL default-off block for admin product
- * barcode/QR assign tab and barcode mutation APIs.
+ * product_barcode_administration — CONDITIONAL purpose-locked ON block for admin
+ * product barcode/QR assign tab and barcode mutation APIs whenever product_vending
+ * is active (PRODUCT_ONLY / BOTH). Not operator-toggleable; DONATION_ONLY → HARD_OFF.
  *
- * Not in DEFAULT_OFF_ROLLOUT_BLOCK_KEYS — full-demo (railway-cafe / *-max) seeds On.
- * Platform /admin/me default-allow DENYs via PLATFORM_DEFAULT_ALLOW_DENY_BLOCK_KEYS.
+ * Not in DEFAULT_OFF_ROLLOUT_BLOCK_KEYS or PLATFORM_DEFAULT_ALLOW_DENY_BLOCK_KEYS.
  */
 import type { EntitlementBlockKey } from './types.js';
 

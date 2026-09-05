@@ -62,6 +62,16 @@ export {
 } from './sensitiveMetaKeys.js';
 export * from './catalogImageUrl.js';
 export * from './catalogImageTelemetry.js';
+// Named re-exports (not `export *`): Vite's monorepo `@fs` transform was
+// dropping `export * from './catalogImageLoadGuard.js'` from the served barrel,
+// which blanked the customer PWA (`isBrokenCatalogImageUrl` missing).
+export {
+  catalogImageFailureKey,
+  clearCatalogImageLoadGuardForTests,
+  isBrokenCatalogImageUrl,
+  isCatalogImageSignatureExpired,
+  noteCatalogImageLoadFailure,
+} from './catalogImageLoadGuard.js';
 export * from './buildKioskLineKey.js';
 export * from './commerce/reservedSalesPointSlugs.js';
 export * from './catalogMediaPatch.js';

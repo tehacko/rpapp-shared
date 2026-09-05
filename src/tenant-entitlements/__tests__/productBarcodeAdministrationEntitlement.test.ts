@@ -8,14 +8,15 @@ describe('product_barcode_administration entitlement', () => {
     expect(PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY).toBe('product_barcode_administration');
   });
 
-  it('is CONDITIONAL default-off under product_vending', () => {
+  it('is CONDITIONAL purpose-locked under product_vending', () => {
     const entry = getEntitlementBlockCatalogEntry(PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY);
     expect(entry.blockClass).toBe('CONDITIONAL');
     expect(entry.parentKeys).toEqual(['product_vending']);
+    expect(entry.notes).toMatch(/purpose-locked ON/i);
   });
 
-  it('denies on platform default-allow map without DEFAULT_OFF rollout membership', () => {
-    expect(isPlatformDefaultAllowDenyBlockKey(PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY)).toBe(true);
+  it('is absent from platform default-allow DENY and DEFAULT_OFF rollout', () => {
+    expect(isPlatformDefaultAllowDenyBlockKey(PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY)).toBe(false);
     expect(isDefaultOffRolloutBlockKey(PRODUCT_BARCODE_ADMINISTRATION_BLOCK_KEY)).toBe(false);
   });
 });

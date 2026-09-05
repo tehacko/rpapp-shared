@@ -29,7 +29,8 @@ function applyAnalyticsClusterImplications(
 
 /**
  * Applies commerce-cluster implications (plan §7.2 V-02, V-03, LOY-V01) before SIMPLE → axis mapping.
- * Keeps hidden blocks (e.g. catalog_administration) consistent with visible SIMPLE toggles.
+ * Keeps hidden blocks (e.g. catalog_administration, product_barcode_administration)
+ * consistent with visible SIMPLE toggles.
  */
 export function applySimpleStateDependencyImplications(
   states: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
@@ -67,10 +68,18 @@ export function applySimpleStateDependencyImplications(
     if (catalog === undefined || catalog === 'off' || catalog === 'hardOff') {
       result.catalog_administration = 'on';
     }
+    const barcode = result.product_barcode_administration;
+    if (barcode === undefined || barcode === 'off' || barcode === 'hardOff') {
+      result.product_barcode_administration = 'on';
+    }
   } else if (donationActiveAfterImplied) {
     const catalog = result.catalog_administration;
     if (catalog === undefined || catalog === 'off') {
       result.catalog_administration = 'hardOff';
+    }
+    const barcode = result.product_barcode_administration;
+    if (barcode === undefined || barcode === 'off') {
+      result.product_barcode_administration = 'hardOff';
     }
   }
 

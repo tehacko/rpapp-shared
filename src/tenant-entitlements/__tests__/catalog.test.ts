@@ -14,8 +14,8 @@ describe('tenant entitlement catalog', () => {
     expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(49);
   });
 
-  it('uses catalog version 8 after product_barcode_administration block', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(8);
+  it('uses catalog version 9 after product_barcode_administration purpose-lock', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(9);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
@@ -31,10 +31,13 @@ describe('tenant entitlement catalog', () => {
     expect(brandKit.capabilityHint).toBe('account.self.manage');
   });
 
-  it('includes product_barcode_administration as CONDITIONAL default-off under product_vending', () => {
+  it('includes product_barcode_administration as CONDITIONAL purpose-locked under product_vending', () => {
     const barcode = getEntitlementBlockCatalogEntry('product_barcode_administration');
     expect(barcode.blockClass).toBe('CONDITIONAL');
     expect(barcode.parentKeys).toEqual(['product_vending']);
+    expect(barcode.notes).toMatch(/purpose-locked ON/i);
+    expect(barcode.notes).toMatch(/not operator-toggleable/i);
+    expect(barcode.notes).toMatch(/not default-off/i);
   });
 
   it('includes sales_point_individual_settings as CONDITIONAL default-off under sales_point_management', () => {

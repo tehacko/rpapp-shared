@@ -60,7 +60,6 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     // Commercial Události — default hardOff; platform /dev/inbox uses platform
     // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.
     incident_centre_ui: HARD_OFF,
-    product_barcode_administration: HARD_OFF,
     loyalty_program: OFF,
     promotions_program: OFF,
   };
@@ -85,6 +84,7 @@ const DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS = [
 export const TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
   'inventory_management',
+  'product_barcode_administration',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export type TenantProductPurposeLockedBlockKey =
@@ -98,6 +98,7 @@ export function isProductCommerceAllowed(allowedPurposes: TenantAllowedPurposes)
 const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
   'inventory_management',
+  'product_barcode_administration',
   'inventory_incidents',
   'loyalty_program',
   'promotions_program',
@@ -166,6 +167,7 @@ function applyAllowedPurposesToStates(
       result.donation = OFF;
       result.catalog_administration = ON;
       result.inventory_management = ON;
+      result.product_barcode_administration = ON;
       break;
     case 'DONATION_ONLY':
       result.product_vending = OFF;
@@ -175,6 +177,7 @@ function applyAllowedPurposesToStates(
       result.loyalty_program = OFF;
       result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;
+      result.product_barcode_administration = HARD_OFF;
       result.analytics_overview = OFF;
       result.analytics_explore = OFF;
       result.tax_management = OFF;
@@ -207,6 +210,7 @@ function applyAllowedPurposesToStates(
       result.pickup_points = ON;
       result.catalog_administration = ON;
       result.inventory_management = ON;
+      result.product_barcode_administration = ON;
       break;
   }
   return result;

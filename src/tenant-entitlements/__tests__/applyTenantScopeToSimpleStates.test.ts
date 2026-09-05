@@ -14,6 +14,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.product_vending).toBe('on');
     expect(states.donation).toBe('off');
     expect(states.catalog_administration).toBe('on');
+    expect(states.product_barcode_administration).toBe('on');
     expect(states.inventory_management).toBe('on');
     expect(states.surface_kiosk).toBe('on');
     expect(states.surface_customer).toBe('off');
@@ -30,6 +31,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.product_vending).toBe('off');
     expect(states.donation).toBe('on');
     expect(states.catalog_administration).toBe('hardOff');
+    expect(states.product_barcode_administration).toBe('hardOff');
     expect(states.analytics_overview).toBe('off');
     expect(states.analytics_explore).toBe('off');
     expect(states.pickup_points).toBe('off');
@@ -61,8 +63,12 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(inferSurfaceScopeFromSimpleStates(states)).toBe('BOTH');
   });
 
-  it('defaults product_barcode_administration to hardOff in baseline', () => {
-    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').product_barcode_administration).toBe(
+  it('defaults product_barcode_administration on for product purposes (purpose-locked)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').product_barcode_administration).toBe('on');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').product_barcode_administration).toBe(
+      'on',
+    );
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').product_barcode_administration).toBe(
       'hardOff',
     );
   });
@@ -142,6 +148,9 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('staff_pickup_scan', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('customer_self_collect', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('catalog_administration', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('product_barcode_administration', 'DONATION_ONLY', 'BOTH')).toBe(
+      true,
+    );
     expect(isTenantScopeLockedBlock('tax_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('compliance_fiscal_modules', 'DONATION_ONLY', 'BOTH')).toBe(true);
   });
@@ -164,6 +173,16 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('catalog_administration', 'DONATION_ONLY', 'BOTH')).toBe(true);
   });
 
+  it('locks product_barcode_administration when product commerce is allowed (PRODUCT_ONLY or BOTH)', () => {
+    expect(isTenantScopeLockedBlock('product_barcode_administration', 'BOTH', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('product_barcode_administration', 'PRODUCT_ONLY', 'BOTH')).toBe(
+      true,
+    );
+    expect(isTenantScopeLockedBlock('product_barcode_administration', 'DONATION_ONLY', 'BOTH')).toBe(
+      true,
+    );
+  });
+
   it('forces inventory on for BOTH and PRODUCT_ONLY scopes', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').inventory_management).toBe('on');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').inventory_management).toBe('on');
@@ -174,6 +193,16 @@ describe('isTenantScopeLockedBlock', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').catalog_administration).toBe('on');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').catalog_administration).toBe('on');
     expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').catalog_administration).toBe('hardOff');
+  });
+
+  it('forces product_barcode_administration on for BOTH and PRODUCT_ONLY scopes', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').product_barcode_administration).toBe('on');
+    expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH').product_barcode_administration).toBe(
+      'on',
+    );
+    expect(applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH').product_barcode_administration).toBe(
+      'hardOff',
+    );
   });
 
   it('defaults inventory_incidents to hardOff and keeps it independently toggleable when products are sold', () => {
