@@ -102,9 +102,16 @@ export interface CatalogImageFocal {
 export interface CatalogVariantSummary extends CatalogImageFocal {
   id: number;
   name: string;
+  /**
+   * Customer PWA path segment (flat Spec Lock):
+   * `/{tenantCode}/{storeCode}/{slug}` — omit/null when API has not projected it yet.
+   */
+  slug?: string | null;
   price: number;
   quantityInStock: number;
   active: boolean;
+  /** Spec Lock G4 — preferred Detail URL when product has multiple variants. */
+  isDominant?: boolean;
   barcode?: string;
   thumbnailUrl: string;
   imageUrl?: string;
