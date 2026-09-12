@@ -863,6 +863,26 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Platformová kategorie deaktivována',
     sk: 'Platformová kategória deaktivovaná',
   },
+  'admin.salesPoint.currency_acceptance_updated': {
+    en: 'Sales point currency acceptance updated',
+    cs: 'Přijímané měny na prodejním místě upraveny',
+    sk: 'Prijímané meny na predajnom mieste upravené',
+  },
+  'admin.salesPoint.payment_routes_updated': {
+    en: 'Sales point payment routes updated',
+    cs: 'Platební trasy prodejního místa upraveny',
+    sk: 'Platobné trasy predajného miesta upravené',
+  },
+  'admin.salesPoint.donation_currency_config_updated': {
+    en: 'Sales point donation currency config updated',
+    cs: 'Konfigurace měny daru na prodejním místě upravena',
+    sk: 'Konfigurácia meny daru na predajnom mieste upravená',
+  },
+  'customer.checkout.currency_selected': {
+    en: 'Checkout currency selected',
+    cs: 'Vybrána měna pokladny',
+    sk: 'Vybraná mena pokladne',
+  },
 };
 
 function buildAuditLabels(): Record<AuditEventCode, LocalizedLabel> {

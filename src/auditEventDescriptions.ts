@@ -863,4 +863,24 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když pracovníci platformy soft-deaktivují globální platformovou taxonomickou kategorii. Jeden řádek za úspěšnou deaktivaci. Preferováno před tvrdým smazáním.',
     sk: 'Zapíše sa, keď pracovníci platformy soft-deaktivujú globálnu platformovú taxonomickú kategóriu. Jeden riadok za úspešnú deaktiváciu. Preferované pred tvrdým zmazaním.',
   },
+  'admin.salesPoint.currency_acceptance_updated': {
+    en: 'Recorded when which currencies a sales point accepts are saved. One line per save.',
+    cs: 'Zapíše se při uložení toho, které měny prodejní místo přijímá. Jeden řádek za uložení.',
+    sk: 'Zapíše sa pri uložení toho, ktoré meny predajné miesto prijíma. Jeden riadok za uloženie.',
+  },
+  'admin.salesPoint.payment_routes_updated': {
+    en: 'Recorded when sales-point currency-to-bank-account payment routes are updated. One line per save.',
+    cs: 'Zapíše se při aktualizaci platebních tras měna→bankovní účet na prodejním místě. Jeden řádek za uložení.',
+    sk: 'Zapíše sa pri aktualizácii platobných trás mena→bankový účet na predajnom mieste. Jeden riadok za uloženie.',
+  },
+  'admin.salesPoint.donation_currency_config_updated': {
+    en: 'Recorded when per-currency donation amount config for a sales point is updated. One line per save.',
+    cs: 'Zapíše se při aktualizaci konfigurace částek daru podle měny na prodejním místě. Jeden řádek za uložení.',
+    sk: 'Zapíše sa pri aktualizácii konfigurácie čiastok daru podľa meny na predajnom mieste. Jeden riadok za uloženie.',
+  },
+  'customer.checkout.currency_selected': {
+    en: 'Recorded when a checkout session is created with a selected currency. One line per session create.',
+    cs: 'Zapíše se při vytvoření pokladní session s vybranou měnou. Jeden řádek za vytvoření session.',
+    sk: 'Zapíše sa pri vytvorení pokladničnej session s vybranou menou. Jeden riadok za vytvorenie session.',
+  },
 };

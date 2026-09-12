@@ -197,6 +197,14 @@ export interface SalesPointPublicPaymentSurfaceReadinessFields {
   readonly paymentSurfaceReadiness: PaymentSurfaceReadiness;
 }
 
+/** Currency acceptance fields on device public-config (MULTI picker gate). */
+export interface SalesPointPublicCurrencyFields {
+  /** SINGLE | MULTI — when MULTI and ≥2 accepted, shopper sees currency picker. */
+  readonly currencyAcceptanceMode?: 'SINGLE' | 'MULTI';
+  /** Accepted ISO codes for this sales point (subset of tenant allow-list). */
+  readonly acceptedCurrencies?: readonly string[];
+}
+
 export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
@@ -213,7 +221,8 @@ export type SalesPointPublicConfigV1 =
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &
-      SalesPointPublicPaymentSurfaceReadinessFields)
+      SalesPointPublicPaymentSurfaceReadinessFields &
+      SalesPointPublicCurrencyFields)
   | ({
       readonly configVersion: number;
       readonly salesPointOperationalMode: 'DONATION';
@@ -229,7 +238,8 @@ export type SalesPointPublicConfigV1 =
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &
-      SalesPointPublicPaymentSurfaceReadinessFields);
+      SalesPointPublicPaymentSurfaceReadinessFields &
+      SalesPointPublicCurrencyFields);
 
 /** Current contract version emitted by the backend. */
 export const SALES_POINT_PUBLIC_CONFIG_VERSION = 6;

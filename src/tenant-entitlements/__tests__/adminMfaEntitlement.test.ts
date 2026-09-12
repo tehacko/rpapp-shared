@@ -11,6 +11,7 @@ describe('adminMfaEntitlement', () => {
     expect(isEntitlementBlockKey(ADMIN_MFA_BLOCK_KEY)).toBe(true);
     expect(DEFAULT_OFF_ROLLOUT_BLOCK_KEYS).toContain(ADMIN_MFA_BLOCK_KEY);
     expect(DEFAULT_OFF_ROLLOUT_BLOCK_KEYS).toContain('tenant_brand_kit');
+    expect(DEFAULT_OFF_ROLLOUT_BLOCK_KEYS).toContain('payment_multi_currency');
     expect(isDefaultOffRolloutBlockKey('admin_mfa')).toBe(true);
     expect(isDefaultOffRolloutBlockKey('tenant_brand_kit')).toBe(true);
     expect(isDefaultOffRolloutBlockKey('admin_notifications')).toBe(false);

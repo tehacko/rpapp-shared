@@ -205,6 +205,7 @@ export {
   isFioEligibleBankAccount,
   type FioEligibleBankAccountInput,
 } from './payment/isFioEligibleBankAccount.js';
+export * from './currency/index.js';
 export { resolveAppBuildLabel, type ResolveAppBuildLabelOptions } from './utils/resolveAppBuildLabel.js';
 export {
   buildPaymentSurfaceReadiness,

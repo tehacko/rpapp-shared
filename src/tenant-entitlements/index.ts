@@ -152,6 +152,7 @@ export {
   ADMIN_MFA_BLOCK_KEY,
   DEFAULT_OFF_ROLLOUT_BLOCK_KEYS,
   isDefaultOffRolloutBlockKey,
+  PAYMENT_MULTI_CURRENCY_BLOCK_KEY,
 } from './adminMfaEntitlement.js';
 
 export { TENANT_BRAND_KIT_BLOCK_KEY } from './tenantBrandKitEntitlement.js';

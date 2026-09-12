@@ -175,6 +175,10 @@ export const AUDIT_EVENT_CODES = [
   'platform.category.created',
   'platform.category.updated',
   'platform.category.deactivated',
+  'admin.salesPoint.currency_acceptance_updated',
+  'admin.salesPoint.payment_routes_updated',
+  'admin.salesPoint.donation_currency_config_updated',
+  'customer.checkout.currency_selected',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

@@ -275,6 +275,28 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
   'admin.loyalty.physical_card_revoked': [
     { key: 'cardId', labelKey: 'compliance.audit.metadata.cardId' },
   ],
+  'admin.salesPoint.currency_acceptance_updated': [
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'currency', labelKey: 'compliance.audit.metadata.currency' },
+    { key: 'previousCurrency', labelKey: 'compliance.audit.metadata.previousCurrency' },
+  ],
+  'admin.salesPoint.payment_routes_updated': [
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'currency', labelKey: 'compliance.audit.metadata.currency' },
+    { key: 'bankAccountId', labelKey: 'compliance.audit.metadata.bankAccountId' },
+    { key: 'purpose', labelKey: 'compliance.audit.metadata.purpose' },
+    { key: 'settlementRouteId', labelKey: 'compliance.audit.metadata.settlementRouteId' },
+  ],
+  'admin.salesPoint.donation_currency_config_updated': [
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'currency', labelKey: 'compliance.audit.metadata.currency' },
+    { key: 'templateCount', labelKey: 'compliance.audit.metadata.templateCount' },
+  ],
+  'customer.checkout.currency_selected': [
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'currency', labelKey: 'compliance.audit.metadata.currency' },
+    { key: 'previousCurrency', labelKey: 'compliance.audit.metadata.previousCurrency' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

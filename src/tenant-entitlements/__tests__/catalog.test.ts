@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 49 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(49);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(49);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(49);
+  it('contains exactly 50 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(50);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(50);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
   });
 
-  it('uses catalog version 9 after product_barcode_administration purpose-lock', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(9);
+  it('uses catalog version 10 after payment_multi_currency', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(10);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(49);
+    expect(new Set(keysFromCatalog).size).toBe(50);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -71,6 +71,13 @@ describe('tenant entitlement catalog', () => {
     const paymentCash = getEntitlementBlockCatalogEntry('payment_cash');
     expect(paymentCash.blockClass).toBe('CONDITIONAL');
     expect(paymentCash.parentKeys).toEqual(['payment_rails_strategy']);
+  });
+
+  it('includes payment_multi_currency as CONDITIONAL under payment_rails_strategy', () => {
+    const multi = getEntitlementBlockCatalogEntry('payment_multi_currency');
+    expect(multi.blockClass).toBe('CONDITIONAL');
+    expect(multi.parentKeys).toEqual(['payment_rails_strategy']);
+    expect(multi.notes).toContain('EUR');
   });
 
   it('includes admin_notifications as CONDITIONAL default-off inbox block', () => {

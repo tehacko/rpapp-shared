@@ -4,6 +4,7 @@
  */
 import type { EntitlementBlockKey } from './types.js';
 import { TENANT_BRAND_KIT_BLOCK_KEY } from './tenantBrandKitEntitlement.js';
+import { PAYMENT_MULTI_CURRENCY_BLOCK_KEY } from './paymentMultiCurrencyEntitlement.js';
 
 export const ADMIN_MFA_BLOCK_KEY = 'admin_mfa' as const satisfies EntitlementBlockKey;
 
@@ -14,8 +15,11 @@ export const ADMIN_MFA_BLOCK_KEY = 'admin_mfa' as const satisfies EntitlementBlo
 export const DEFAULT_OFF_ROLLOUT_BLOCK_KEYS = [
   ADMIN_MFA_BLOCK_KEY,
   TENANT_BRAND_KIT_BLOCK_KEY,
+  PAYMENT_MULTI_CURRENCY_BLOCK_KEY,
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export function isDefaultOffRolloutBlockKey(blockKey: string): boolean {
   return (DEFAULT_OFF_ROLLOUT_BLOCK_KEYS as readonly string[]).includes(blockKey);
 }
+
+export { PAYMENT_MULTI_CURRENCY_BLOCK_KEY };

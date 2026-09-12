@@ -109,6 +109,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'promotions_program',
   'payment_rails_strategy',
   'payment_cash',
+  'payment_multi_currency',
   'payment_reconciliation',
   'payments_hub_ui',
   'stripe_integration_strategy',
@@ -141,7 +142,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 9 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 10 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 export const TENANT_SURFACE_PRESET_IDS = [

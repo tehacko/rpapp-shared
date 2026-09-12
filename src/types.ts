@@ -68,6 +68,15 @@ export interface OffboardingDecisionDTO {
   decidedAt: string;
 }
 
+/**
+ * Dual list price row (ProductPrice projection) for catalog UIs.
+ * When present, prefer the row matching checkout session currency.
+ */
+export interface CatalogProductPriceRow {
+  readonly currency: string;
+  readonly amountMajor: number;
+}
+
 // Base Product interface (global product data)
 export interface Product {
   id: number;
@@ -75,6 +84,11 @@ export interface Product {
   /** Optional per-locale display-name overrides; omit/null = use `name`. */
   nameLocales?: LocalizedNameMap | null;
   price: number;
+  /**
+   * Optional ProductPrice rows by currency. Checkout/list UIs prefer the row
+   * matching session currency via `resolveCatalogUnitPriceMajor`.
+   */
+  prices?: readonly CatalogProductPriceRow[] | null;
   description: string;
   /**
    * Customer PWA path segment for product detail:
@@ -108,6 +122,8 @@ export interface CatalogVariantSummary extends CatalogImageFocal {
    */
   slug?: string | null;
   price: number;
+  /** Optional dual list prices (ProductPrice) matching session currency. */
+  prices?: readonly CatalogProductPriceRow[] | null;
   quantityInStock: number;
   active: boolean;
   /** Spec Lock G4 — preferred Detail URL when product has multiple variants. */
@@ -183,6 +199,9 @@ export interface SalesPoint {
   defaultProductCollectionMode?: SalesPointProductCollectionMode;
   productBankAccountId?: string | null;
   donationBankAccountId?: string | null;
+  /** SINGLE | MULTI — cascade-validated against tenant allow-list + entitlement. */
+  currencyAcceptanceMode?: 'SINGLE' | 'MULTI';
+  acceptedCurrencies?: readonly string[];
   cardPresentLocationId?: string | null;
   /** Side-table SalesPointImage present (admin list enrichment). */
   hasImage?: boolean;
@@ -277,6 +296,8 @@ export interface PaymentData {
   customerEmail: string;
   qrCode: string;
   paymentId: string;
+  /** ISO 4217 from payment/session when known (W15 receipt writers). */
+  currency?: string;
   status?: TransactionStatus;
   /**
    * Post-kiosk QR handoff token (raw, opaque), included when the backend
@@ -297,6 +318,8 @@ export interface MultiProductPaymentData {
   customerEmail: string;
   qrCode: string;
   paymentId: string;
+  /** ISO 4217 from payment/session when known (W15 receipt writers). */
+  currency?: string;
   status?: TransactionStatus;
   /** See `PaymentData.postKioskHandoffToken`. */
   postKioskHandoffToken?: string;
@@ -377,6 +400,8 @@ export interface CreateQRPaymentResponseData {
   productCollectionMode?: ProductCollectionMode;
   amount: number;
   itemsCount: number;
+  /** ISO 4217 when payment/session stamped a currency. */
+  currency?: string;
   customerEmail?: string;
   receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none'; // Status of receipt email (only in idempotent responses)
   transactionStatus?: TransactionStatus; // Status of existing transaction (only in idempotent responses)
@@ -419,6 +444,8 @@ export interface GatewayCreateRequest {
   customerEmail: string;
   kioskId: number;
   idempotencyKey?: string;
+  /** Session / charge currency (ISO 4217). Additive — omit only for legacy clients. */
+  currency?: string;
   /** See `CreateQRPaymentRequest` for semantics. */
   purposeType?: TxPurposeType;
   flowType?: TxFlowType;
@@ -473,6 +500,8 @@ export interface GatewayCreateResponse {
   amount: number;
   customerEmail: string;
   kioskId: number;
+  /** ISO 4217 charge currency from create/session — additive; required for QR amount display. */
+  currency?: string;
 }
 
 export interface GatewayStatusResponse {

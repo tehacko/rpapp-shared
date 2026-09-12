@@ -193,6 +193,13 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
       'Cash channel ceiling; seeded ENABLED; Dev may DISABLED — when DISABLED cash never contributes to payReady / cash offer / cash create. Reserved (docs only, not a catalog key): payment_card_present',
   },
   {
+    blockKey: 'payment_multi_currency',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['payment_rails_strategy'],
+    notes:
+      'Allows EUR on tenant allow-list, multi-currency bank accounts, and sales-point MULTI currency acceptance.',
+  },
+  {
     blockKey: 'payment_reconciliation',
     blockClass: 'STRATEGY',
     parentKeys: ['payment_rails_strategy'],
