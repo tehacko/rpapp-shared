@@ -17,7 +17,7 @@ import {
   type LocalizedTextMap,
   type NameLocale,
 } from './localizedNameMap.js';
-import type { SalesPoint } from '../types.js';
+import type { SalesPoint, Product } from '../types.js';
 
 describe('LocalizedNameMap contract parity (G8)', () => {
   it('exposes exactly cs/en/sk keys in LOCALIZED_NAME_MAP_KEYS and PLAIN_SHAPE', () => {
@@ -78,6 +78,18 @@ describe('LocalizedNameMap contract parity (G8)', () => {
     expect(sp.descriptionLocales?.cs).toBe('Popis');
     const nameOnly: LocalizedNameMap = sp.descriptionLocales ?? {};
     expect(nameOnly.en).toBe('Description');
+  });
+
+  it('Product accepts optional descriptionLocales (LocalizedTextMap) — same contract as SalesPoint', () => {
+    const product: Pick<Product, 'description' | 'descriptionLocales'> = {
+      description: 'Universal copy',
+      descriptionLocales: { cs: 'Popis', en: 'Description' } satisfies LocalizedTextMap,
+    };
+    expect(product.descriptionLocales?.cs).toBe('Popis');
+    expect(normalizeDescriptionLocales(product.descriptionLocales, 'Universal copy')).toEqual({
+      cs: 'Popis',
+      en: 'Description',
+    });
   });
 
   it('description helpers share normalize/resolve semantics with name helpers', () => {
