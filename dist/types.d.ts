@@ -76,6 +76,8 @@ export interface Product {
      */
     prices?: readonly CatalogProductPriceRow[] | null;
     description: string;
+    /** Optional per-locale description overrides; omit/null = use `description`. */
+    descriptionLocales?: LocalizedTextMap | null;
     /**
      * Customer PWA path segment for product detail:
      * `/{tenantCode}/{storeCode}/{slug}` — omit/null when API has not projected it yet.

@@ -23,6 +23,8 @@
  * set this to themselves so parallel `npm run dev` cannot tear each other's
  * node_modules/pi-kiosk-shared/dist. Bare `node scripts/ensureDist.mjs` still
  * overlays all consumers (ops / prove / manual heal).
+ * Admin folder alias: `rpapp-admin` and `admin-app` are interchangeable; overlay
+ * every present alias and skip only when neither exists.
  *
  * replaceDir is Windows-safe: stage under os.tmpdir(), then in-place cpSync into
  * dest only (never wipe dest before new bytes). Mid-failure restores dest from
@@ -39,13 +41,27 @@ const repoRoot = path.resolve(sharedRoot, '..');
 const packageName = 'pi-kiosk-shared';
 const lockPath = path.join(sharedRoot, '.ensureDist.lock');
 
+/**
+ * Admin checkout folder differs by machine: `rpapp-admin` or `admin-app`.
+ * Either name (or both) is accepted; skip only when none of the aliases exist.
+ */
+const ADMIN_CONSUMER_ALIASES = ['rpapp-admin', 'admin-app'];
+
 const CONSUMERS = [
   'up-backend',
-  'admin-app',
+  'rpapp-admin',
   'rpapp-kiosk',
   'rpapp-customer',
   'rpapp-pickup',
 ];
+
+/** @param {string} name */
+function consumerAliasGroup(name) {
+  if (ADMIN_CONSUMER_ALIASES.includes(name)) {
+    return ADMIN_CONSUMER_ALIASES;
+  }
+  return [name];
+}
 
 /** Optional comma-separated extra consumer dirs (for local probes only). */
 const extraConsumers = (process.env.ENSURE_DIST_EXTRA_CONSUMERS ?? '')
@@ -61,6 +77,43 @@ const onlyConsumers = (process.env.ENSURE_DIST_ONLY_CONSUMERS ?? '')
   .filter(Boolean);
 const consumersToOverlay =
   onlyConsumers.length > 0 ? onlyConsumers : allConsumers;
+
+/**
+ * Expand requested names to concrete dirs with node_modules.
+ * Admin aliases count as one slot: overlay every present alias; skip once if none.
+ *
+ * @param {string[]} names
+ * @returns {{ toOverlay: string[], skipped: string[] }}
+ */
+function resolveConsumersForOverlay(names) {
+  const toOverlay = [];
+  const skipped = [];
+  const handledGroups = new Set();
+
+  for (const name of names) {
+    const group = consumerAliasGroup(name);
+    const groupKey = group.join('|');
+    if (handledGroups.has(groupKey)) {
+      continue;
+    }
+    handledGroups.add(groupKey);
+
+    const present = group.filter((dir) =>
+      fs.existsSync(path.join(repoRoot, dir, 'node_modules'))
+    );
+    if (present.length === 0) {
+      skipped.push(group.length > 1 ? group.join('|') : name);
+      continue;
+    }
+    for (const dir of present) {
+      if (!toOverlay.includes(dir)) {
+        toOverlay.push(dir);
+      }
+    }
+  }
+
+  return { toOverlay, skipped };
+}
 
 const RM_OPTS = { recursive: true, force: true, maxRetries: 15, retryDelay: 100 };
 const LOCK_WAIT_MS = 120_000;
@@ -442,15 +495,11 @@ function runEnsureDist() {
     (entry) => entry === 'src/tokens' || entry.startsWith('src/tokens/')
   );
 
-  const skippedConsumers = [];
+  const { toOverlay, skipped: skippedConsumers } =
+    resolveConsumersForOverlay(consumersToOverlay);
 
-  for (const consumer of consumersToOverlay) {
+  for (const consumer of toOverlay) {
     const nodeModules = path.join(repoRoot, consumer, 'node_modules');
-    if (!fs.existsSync(nodeModules)) {
-      skippedConsumers.push(consumer);
-      continue;
-    }
-
     const destRoot = path.join(nodeModules, packageName);
     fs.mkdirSync(destRoot, { recursive: true });
     fs.copyFileSync(packageJsonSrc, path.join(destRoot, 'package.json'));
@@ -483,10 +532,12 @@ function runEnsureDist() {
         '[ensureDist] Recovery: install deps for each skipped consumer, then re-run ensureDist.'
       );
       for (const consumer of skippedConsumers) {
-        console.error(`  cd ${consumer} && npm install`);
+        for (const dir of consumer.split('|')) {
+          console.error(`  cd ${dir} && npm install`);
+        }
       }
       console.error(
-        '  Or install all five: up-backend, admin-app, rpapp-kiosk, rpapp-customer, rpapp-pickup'
+        '  Or install all five: up-backend, rpapp-admin|admin-app, rpapp-kiosk, rpapp-customer, rpapp-pickup'
       );
       console.error(
         '[ensureDist] Opt-out (warn only): set ENSURE_DIST_ALLOW_MISSING_CONSUMERS=1'
