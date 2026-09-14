@@ -31,8 +31,13 @@ function parseAnalyticsCatalogYaml(content: string): CatalogYamlRow[] {
   return rows;
 }
 
+/** Catalog order is English A–Z; pin `en` so Czech Windows `ch` digraph does not reorder `checkout_*`. */
+function compareCatalogEventNames(a: string, b: string): number {
+  return a.localeCompare(b, 'en');
+}
+
 function expectedCatalogEventNames(): string[] {
-  return [...ANALYTICS_EVENT_NAMES].sort((a, b) => a.localeCompare(b));
+  return [...ANALYTICS_EVENT_NAMES].sort(compareCatalogEventNames);
 }
 
 describe('exportAnalyticsCatalog', () => {
@@ -63,7 +68,7 @@ describe('exportAnalyticsCatalog', () => {
   });
 
   it('is sorted alphabetically by event name', () => {
-    const sorted = [...rows].sort((a, b) => a.event.localeCompare(b.event));
+    const sorted = [...rows].sort((a, b) => compareCatalogEventNames(a.event, b.event));
     expect(rows.map((row) => row.event)).toEqual(sorted.map((row) => row.event));
   });
 });

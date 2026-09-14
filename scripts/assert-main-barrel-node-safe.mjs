@@ -5,7 +5,7 @@
  * Asserts BOTH:
  *   1. `shared/dist/index.js` (workspace build output)
  *   2. Each existing consumer install copy under
- *      `repoRoot/{up-backend,admin-app,rpapp-kiosk,rpapp-customer,rpapp-pickup}/node_modules/pi-kiosk-shared/dist/index.js`
+ *      `repoRoot/{up-backend,rpapp-admin|admin-app,rpapp-kiosk,rpapp-customer,rpapp-pickup}/node_modules/pi-kiosk-shared/dist/index.js`
  *
  * For each barrel: walks relative `from './…'` / `from "../…"` / `export … from`
  * edges under that package's `dist/`. Fails if the graph pulls in React (or the
@@ -15,8 +15,12 @@
  *
  * Missing consumer policy:
  *   - Consumer package folder missing entirely → skip that consumer
- *   - Consumer folder exists but `node_modules/pi-kiosk-shared` (or its
- *     `package.json` / `dist/index.js`) missing → FAIL
+ *   - Admin aliases `rpapp-admin` / `admin-app`: overlay/check every present alias;
+ *     skip the admin slot only when neither folder exists
+ *   - Package folder exists but `node_modules/` is absent → skip (app not installed
+ *     on this machine)
+ *   - `node_modules/` exists but `pi-kiosk-shared` (or its `package.json` /
+ *     `dist/index.js`) missing → FAIL
  *     (unless ENSURE_DIST_SKIP_MISSING_CONSUMERS=1, GATE_ALLOW_MISSING_CONSUMERS=1,
  *      or ENSURE_DIST_ALLOW_MISSING_CONSUMERS=1 — warn + continue)
  *
@@ -36,13 +40,27 @@ const sharedRoot = path.resolve(scriptDir, '..');
 const repoRoot = path.resolve(sharedRoot, '..');
 const packageName = 'pi-kiosk-shared';
 
+/** Admin checkout folder differs by machine: `rpapp-admin` or `admin-app`. */
+const ADMIN_CONSUMER_ALIASES = ['rpapp-admin', 'admin-app'];
+
 const CONSUMERS = [
   'up-backend',
-  'admin-app',
+  'rpapp-admin',
   'rpapp-kiosk',
   'rpapp-customer',
   'rpapp-pickup',
 ];
+
+/**
+ * @param {string} name
+ * @returns {string[]}
+ */
+function consumerAliasGroup(name) {
+  if (ADMIN_CONSUMER_ALIASES.includes(name)) {
+    return ADMIN_CONSUMER_ALIASES;
+  }
+  return [name];
+}
 
 const BANNED_EXACT = new Set([
   'react',
@@ -421,36 +439,55 @@ function collectConsumerTargets() {
   /** @type {string[]} */
   const missingInstalls = [];
   const skipMissing = allowMissingConsumers();
+  const handledGroups = new Set();
 
   for (const consumer of CONSUMERS) {
-    const consumerDir = path.join(repoRoot, consumer);
-    if (!existsSync(consumerDir)) {
+    const group = consumerAliasGroup(consumer);
+    const groupKey = group.join('|');
+    if (handledGroups.has(groupKey)) {
+      continue;
+    }
+    handledGroups.add(groupKey);
+
+    const presentDirs = group.filter((dir) => existsSync(path.join(repoRoot, dir)));
+    if (presentDirs.length === 0) {
       console.log(
-        `assert-main-barrel-node-safe: skip ${consumer} (package folder missing)`,
+        `assert-main-barrel-node-safe: skip ${groupKey} (package folder missing)`,
       );
       continue;
     }
 
-    const installRoot = path.join(consumerDir, 'node_modules', packageName);
-    const packageJson = path.join(installRoot, 'package.json');
-    const distIndex = path.join(installRoot, 'dist', 'index.js');
+    for (const dir of presentDirs) {
+      const consumerDir = path.join(repoRoot, dir);
+      const nodeModulesDir = path.join(consumerDir, 'node_modules');
+      if (!existsSync(nodeModulesDir)) {
+        console.log(
+          `assert-main-barrel-node-safe: skip ${dir} (node_modules absent — app not installed on this machine)`,
+        );
+        continue;
+      }
 
-    // Install present = package.json + dist/index.js (partial overlay ≠ present).
-    if (
-      !existsSync(installRoot) ||
-      !existsSync(packageJson) ||
-      !existsSync(distIndex)
-    ) {
-      missingInstalls.push(consumer);
-      continue;
+      const installRoot = path.join(nodeModulesDir, packageName);
+      const packageJson = path.join(installRoot, 'package.json');
+      const distIndex = path.join(installRoot, 'dist', 'index.js');
+
+      // Install present = package.json + dist/index.js (partial overlay ≠ present).
+      if (
+        !existsSync(installRoot) ||
+        !existsSync(packageJson) ||
+        !existsSync(distIndex)
+      ) {
+        missingInstalls.push(dir);
+        continue;
+      }
+
+      targets.push({
+        label: `${dir}/node_modules/${packageName}`,
+        distRoot: path.join(installRoot, 'dist'),
+        distIndex,
+        relBase: consumerDir,
+      });
     }
-
-    targets.push({
-      label: `${consumer}/node_modules/${packageName}`,
-      distRoot: path.join(installRoot, 'dist'),
-      distIndex,
-      relBase: consumerDir,
-    });
   }
 
   if (missingInstalls.length > 0) {
