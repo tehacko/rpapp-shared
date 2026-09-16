@@ -146,6 +146,24 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     }
   });
 
+  it('maps config:pricing:manage/read to product_vending (not tax_management) — G1 SP price /me clip', () => {
+    expect(requiredBlocksForCapability('config:pricing:manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['product_vending'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('config:pricing:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['product_vending'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('config:pricing:kiosk:override')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['tax_management'],
+      match: 'ALL',
+    });
+  });
+
   it('does not denylist CONDITIONAL incident_centre_ui (must be requirable)', () => {
     expect(NEVER_REQUIRED_BLOCK_KEYS).not.toContain('incident_centre_ui');
   });

@@ -850,12 +850,23 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Tax/config
+  // Product / SP pricing (Charge + modalOverrideKey ProductPrice) — product_vending,
+  // NOT tax_management. Prior tax_management clip hid config:pricing:manage on /admin/me
+  // for cafe tenants with tax off while CapService still granted PATCH priceCells (G1).
   {
     authoringTokens: [
       "tenant.configPricing.*",
-      "tenant.pricingKioskOverride.manage",
       "config:pricing:*",
+    ],
+    requiredBlockKeys: [
+      "product_vending",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
+  // Kiosk VAT override remains tax-gated.
+  {
+    authoringTokens: [
+      "tenant.pricingKioskOverride.manage",
       "config:pricing:kiosk:override",
     ],
     requiredBlockKeys: [
