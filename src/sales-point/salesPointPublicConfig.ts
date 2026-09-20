@@ -203,6 +203,11 @@ export interface SalesPointPublicCurrencyFields {
   readonly currencyAcceptanceMode?: 'SINGLE' | 'MULTI';
   /** Accepted ISO codes for this sales point (subset of tenant allow-list). */
   readonly acceptedCurrencies?: readonly string[];
+  /**
+   * Tenant heal preferred (defaultCurrency ⊆ allow, else runtime/CZK).
+   * Clients use when re-ensuring empty accepted on staggered deploys.
+   */
+  readonly defaultCurrency?: string;
 }
 
 export type SalesPointPublicConfigV1 =

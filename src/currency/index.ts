@@ -7,6 +7,8 @@ export const CURRENCY_CODES = ['CZK', 'EUR'] as const;
 
 export type CurrencyCode = (typeof CURRENCY_CODES)[number];
 
+export const PLATFORM_DEFAULT_CURRENCY: CurrencyCode = 'CZK';
+
 export const CURRENCY_MINOR_EXPONENT = 2 as const;
 
 export type CurrencyAcceptanceMode = 'SINGLE' | 'MULTI';
@@ -51,6 +53,37 @@ export function normalizeAcceptedCurrencies(
     out.push(trimmed);
   }
   return out;
+}
+
+/**
+ * Prefer tenant defaultCurrency if registry (+ ⊆ allow when allow non-empty); else runtime-default of allow; else PLATFORM_DEFAULT_CURRENCY.
+ */
+export function resolveHealPreferredDefault(input: {
+  readonly defaultCurrency?: string | null;
+  readonly allowedCurrencies?: readonly string[] | null;
+}): CurrencyCode {
+  const allow = normalizeAcceptedCurrencies(input.allowedCurrencies);
+  const raw = typeof input.defaultCurrency === 'string' ? input.defaultCurrency.trim().toUpperCase() : '';
+  if (isCurrencyCode(raw) && (allow.length === 0 || allow.includes(raw))) {
+    return raw;
+  }
+  return resolveRuntimeDefaultCurrency(allow) ?? PLATFORM_DEFAULT_CURRENCY;
+}
+
+/**
+ * Non-empty accepted list for public shop/checkout.
+ * Prefer SP accepted when non-empty (preferredDefault ignored — only used when accepted empty);
+ * else preferredDefault if registry; else CZK.
+ */
+export function ensureAcceptedCurrenciesForCheckout(
+  acceptedCurrencies: readonly string[] | null | undefined,
+  preferredDefault?: string | null,
+): CurrencyCode[] {
+  const accepted = normalizeAcceptedCurrencies(acceptedCurrencies);
+  if (accepted.length > 0) return accepted;
+  const pref = typeof preferredDefault === 'string' ? preferredDefault.trim().toUpperCase() : '';
+  if (isCurrencyCode(pref)) return [pref];
+  return [PLATFORM_DEFAULT_CURRENCY];
 }
 
 /**
