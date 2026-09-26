@@ -18,12 +18,27 @@ export type { CollectTiming, ProductCollectionMode };
 export const PRODUCT_COLLECTION_MODES = ['PAY_AT_KIOSK', 'PREPAY_COLLECT_LATER'] as const;
 export const COLLECT_TIMINGS = ['NOW', 'LATER'] as const;
 
-export type OrderFulfillmentStatus =
-  | 'PENDING_PAYMENT'
-  | 'PREPARING'
-  | 'READY_FOR_PICKUP'
-  | 'COLLECTED'
-  | 'CANCELED';
+/**
+ * Canonical fulfillment FSM statuses (Spec §6 / A5).
+ * `ACCEPTED` = paid, not yet preparing — **not** `PAID_QUEUED` (i18n synonym only).
+ */
+export const ORDER_FULFILLMENT_STATUSES = [
+  'PENDING_PAYMENT',
+  'ACCEPTED',
+  'PREPARING',
+  'READY_FOR_PICKUP',
+  'COLLECTED',
+  'CANCELED',
+] as const;
+
+export type OrderFulfillmentStatus = (typeof ORDER_FULFILLMENT_STATUSES)[number];
+
+export function isOrderFulfillmentStatus(value: unknown): value is OrderFulfillmentStatus {
+  return (
+    typeof value === 'string' &&
+    (ORDER_FULFILLMENT_STATUSES as readonly string[]).includes(value)
+  );
+}
 
 export type PickupScheduleType = 'ASAP' | 'SCHEDULED';
 

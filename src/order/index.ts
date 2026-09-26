@@ -1,8 +1,10 @@
 export {
   PRODUCT_COLLECTION_MODES,
   COLLECT_TIMINGS,
+  ORDER_FULFILLMENT_STATUSES,
   isProductCollectionMode,
   isCollectTiming,
+  isOrderFulfillmentStatus,
   normalizeProductCollectionMode,
   type AdminOrderCollectionMode,
   type AdminFulfillmentListItem,
