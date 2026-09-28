@@ -1,10 +1,7 @@
 import { useCallback, useRef, useState, type RefObject } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
-import {
-  fetchTurnstileConfig,
-  TurnstileConfigFetchError,
-} from '../../auth/turnstileTypes.js';
+import { fetchTurnstileConfig } from '../../auth/turnstileTypes.js';
 
 const TURNSTILE_EXECUTE_TIMEOUT_MS = 30_000;
 const TURNSTILE_WIDGET_READY_TIMEOUT_MS = 15_000;
@@ -128,22 +125,16 @@ export function useTurnstileExecute(apiBaseUrl = ''): UseTurnstileExecuteResult 
   }, [query]);
 
   const execute = useCallback(async (): Promise<string | undefined> => {
-    if (isError) {
-      const cause = query.error;
-      if (cause instanceof TurnstileConfigFetchError) {
-        throw cause;
-      }
-      throw new TurnstileConfigFetchError(
-        'Security check configuration is unavailable. Retry in a few seconds or refresh the page.',
-        { cause }
-      );
-    }
-    if (!isReady) {
+    // Still settling — callers should disable submit while `isLoading`.
+    if (!isReady && !isError) {
       throw new Error('Security check is still loading. Retry in a moment.');
     }
+    // Optional Turnstile (G4): disabled / unset / missing siteKey / config unreachable
+    // → `required===false`. BE uses IfPresent; never hard-require a token here.
     if (!required) {
       return undefined;
     }
+    // `required` implies a successful public config with a non-empty siteKey.
     await waitForWidgetReady();
     return new Promise<string>((resolve, reject) => {
       clearPending();
@@ -158,15 +149,7 @@ export function useTurnstileExecute(apiBaseUrl = ''): UseTurnstileExecuteResult 
       }, TURNSTILE_EXECUTE_TIMEOUT_MS);
       turnstileRef.current?.execute();
     });
-  }, [
-    isError,
-    isReady,
-    required,
-    query.error,
-    waitForWidgetReady,
-    clearPending,
-    resetTurnstile,
-  ]);
+  }, [isError, isReady, required, waitForWidgetReady, clearPending, resetTurnstile]);
 
   return {
     required,

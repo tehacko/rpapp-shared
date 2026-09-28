@@ -46,7 +46,9 @@ export class TurnstileConfigFetchError extends Error {
 
 /**
  * Fetches public Turnstile config. Throws {@link TurnstileConfigFetchError} on
- * network/HTTP failure so clients can fail closed (do not assume disabled).
+ * network/HTTP failure. Callers using {@link useTurnstileExecute} treat a failed
+ * probe as `required=false` (optional Turnstile / IfPresent) — they must not
+ * assume enabled without a successful response that includes a siteKey.
  */
 export async function fetchTurnstileConfig(apiBaseUrl = ''): Promise<TurnstileConfigData> {
   const trimmedBase = apiBaseUrl.replace(/\/+$/, '');

@@ -37,16 +37,9 @@ export function TurnstileExecuteWidget({
     });
   }
 
-  if (turnstile.isError) {
-    return createElement('div', {
-      className,
-      'data-testid': testId,
-      role: 'alert',
-      'data-turnstile-state': 'error',
-    });
-  }
-
-  if (!turnstile.required || turnstile.siteKey === null) {
+  // G4 / IfPresent: config unreachable or disabled → required===false; do not render an
+  // error chrome that implies Turnstile is mandatory.
+  if (turnstile.isError || !turnstile.required || turnstile.siteKey === null) {
     return null;
   }
 
