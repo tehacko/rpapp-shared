@@ -143,6 +143,14 @@ export interface SalesPointPublicConfigLocationFields {
   readonly customerShopUrl: string | null;
 }
 
+/**
+ * Wave 4 TEST economy chrome — LIVE iff set; null/omit ⇒ pre-go-live TEST.
+ * Additive nullable; not directory branding.
+ */
+export interface SalesPointPublicConfigEconomyFields {
+  readonly livePublishedAt?: string | null;
+}
+
 export interface SalesPointPublicLoyaltyCapability {
   readonly enabled: boolean;
   readonly previewRequired: false;
@@ -226,6 +234,7 @@ export type SalesPointPublicConfigV1 =
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &
+      SalesPointPublicConfigEconomyFields &
       SalesPointPublicPaymentSurfaceReadinessFields &
       SalesPointPublicCurrencyFields)
   | ({
@@ -243,6 +252,7 @@ export type SalesPointPublicConfigV1 =
       readonly entitlementCeiling?: SalesPointPublicEntitlementCeiling;
       readonly warnings?: ReadonlyArray<PublicConfigWarningCode>;
     } & SalesPointPublicConfigLocationFields &
+      SalesPointPublicConfigEconomyFields &
       SalesPointPublicPaymentSurfaceReadinessFields &
       SalesPointPublicCurrencyFields);
 

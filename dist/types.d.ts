@@ -135,8 +135,8 @@ export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
 export type ProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 export type SalesPointProductCollectionMode = ProductCollectionMode;
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
-/** Stable publish-gate codes for Obchody directory eligibility (Wave 6). */
-export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS';
+/** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
+export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS' | 'ORG_APPROVAL' | 'TENANT_LIVE';
 /** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
 export interface CustomerDirectorySalesPointEligibility {
     readonly salesPointId: number;

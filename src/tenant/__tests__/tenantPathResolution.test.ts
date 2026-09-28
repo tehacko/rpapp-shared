@@ -13,10 +13,13 @@ describe('tenantPathResolution', () => {
     expect(getTenantCodeFromPath('/acme/sign-in')).toBe('acme');
   });
 
-  it('returns null for dev/admin/api prefixes', () => {
+  it('returns null for dev/admin/api/tenants/register prefixes', () => {
     expect(getTenantCodeFromPath('/dev/login')).toBeNull();
     expect(getTenantCodeFromPath('/admin/login')).toBeNull();
     expect(getTenantCodeFromPath('/api/v1/foo')).toBeNull();
+    expect(getTenantCodeFromPath('/tenants')).toBeNull();
+    expect(getTenantCodeFromPath('/tenants/')).toBeNull();
+    expect(getTenantCodeFromPath('/register')).toBeNull();
   });
 
   it('requires tenant in path', () => {

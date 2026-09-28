@@ -6,7 +6,15 @@
  */
 
 /** First-segment path prefixes that are routes, not tenant codes. */
-export const NON_TENANT_PATH_SEGMENTS = new Set(['admin', 'dev', 'api']);
+export const NON_TENANT_PATH_SEGMENTS = new Set([
+  'admin',
+  'dev',
+  'api',
+  /** Public org picker (admin Wave 2 FR-01). */
+  'tenants',
+  /** Public self-serve tenant registration (admin Wave 2). */
+  'register',
+]);
 
 export class TenantPathResolutionError extends Error {
   constructor(message: string) {

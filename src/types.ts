@@ -158,7 +158,7 @@ export type SalesPointProductCollectionMode = ProductCollectionMode;
 
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 
-/** Stable publish-gate codes for Obchody directory eligibility (Wave 6). */
+/** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
 export type CustomerDirectoryPublishGateCode =
   | 'STRUCTURAL'
   | 'STOCK'
@@ -166,7 +166,9 @@ export type CustomerDirectoryPublishGateCode =
   | 'PRODUCT'
   | 'SALES_POINT'
   | 'BANK_METHOD'
-  | 'METHOD_READINESS';
+  | 'METHOD_READINESS'
+  | 'ORG_APPROVAL'
+  | 'TENANT_LIVE';
 
 /** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
 export interface CustomerDirectorySalesPointEligibility {
