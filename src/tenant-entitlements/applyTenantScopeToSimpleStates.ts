@@ -54,7 +54,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     analytics_explore: ON,
     comms_governance: ON,
     tenant_ops_settings: ON,
-    audit_logs_admin_ui: ON,
+    audit_logs_admin_ui: OFF,
     inventory_management: OFF,
     inventory_incidents: HARD_OFF,
     // Commercial Události — default hardOff; platform /dev/inbox uses platform

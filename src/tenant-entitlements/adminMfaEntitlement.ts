@@ -16,6 +16,7 @@ export const DEFAULT_OFF_ROLLOUT_BLOCK_KEYS = [
   ADMIN_MFA_BLOCK_KEY,
   TENANT_BRAND_KIT_BLOCK_KEY,
   PAYMENT_MULTI_CURRENCY_BLOCK_KEY,
+  'audit_logs_admin_ui',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export function isDefaultOffRolloutBlockKey(blockKey: string): boolean {

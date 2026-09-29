@@ -73,10 +73,10 @@ describe('applyTenantScopeToSimpleStates', () => {
     );
   });
 
-  it('defaults audit_logs_admin_ui ON in baseline (DEV Feature Policy allow/deny)', () => {
-    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').audit_logs_admin_ui).toBe('on');
+  it('defaults audit_logs_admin_ui OFF in baseline (enable via Feature Policy)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').audit_logs_admin_ui).toBe('off');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'CUSTOMER_ONLY').audit_logs_admin_ui).toBe(
-      'on',
+      'off',
     );
   });
 
