@@ -458,6 +458,21 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Logo organizace smazáno',
     sk: 'Logo organizácie vymazané',
   },
+  'admin.platform.logo_uploaded': {
+    en: 'Platform logo uploaded',
+    cs: 'Logo platformy nahráno',
+    sk: 'Logo platformy nahrané',
+  },
+  'admin.platform.logo_replaced': {
+    en: 'Platform logo replaced',
+    cs: 'Logo platformy nahrazeno',
+    sk: 'Logo platformy nahradené',
+  },
+  'admin.platform.logo_deleted': {
+    en: 'Platform logo deleted',
+    cs: 'Logo platformy smazáno',
+    sk: 'Logo platformy vymazané',
+  },
   'admin.salesPoint.image_uploaded': {
     en: 'Sales point image uploaded',
     cs: 'Obrázek prodejního místa nahrán',
@@ -878,10 +893,55 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Konfigurace měny daru na prodejním místě upravena',
     sk: 'Konfigurácia meny daru na predajnom mieste upravená',
   },
+  'admin.tenant.payment_multi_currency.toggled': {
+    en: 'Tenant multi-currency payment toggled',
+    cs: 'Více měn pro platby u organizace přepnuto',
+    sk: 'Viac mien pre platby u organizácie prepnuté',
+  },
   'customer.checkout.currency_selected': {
     en: 'Checkout currency selected',
     cs: 'Vybrána měna pokladny',
     sk: 'Vybraná mena pokladne',
+  },
+  'self_scan.basket.started': {
+    en: 'Self-scan basket started',
+    cs: 'Self-scan košík zahájen',
+    sk: 'Self-scan košík začatý',
+  },
+  'self_scan.basket.staff_edited': {
+    en: 'Self-scan basket staff-edited',
+    cs: 'Self-scan košík upraven personálem',
+    sk: 'Self-scan košík upravený personálom',
+  },
+  'self_scan.restricted.approved': {
+    en: 'Self-scan restricted items approved',
+    cs: 'Self-scan omezené položky schváleny',
+    sk: 'Self-scan obmedzené položky schválené',
+  },
+  'self_scan.selective.selected': {
+    en: 'Self-scan selective check selected',
+    cs: 'Self-scan selektivní kontrola vybrána',
+    sk: 'Self-scan selektívna kontrola vybraná',
+  },
+  'self_scan.selective.completed': {
+    en: 'Self-scan selective check completed',
+    cs: 'Self-scan selektivní kontrola dokončena',
+    sk: 'Self-scan selektívna kontrola dokončená',
+  },
+  'self_scan.selective.escalated': {
+    en: 'Self-scan selective check escalated',
+    cs: 'Self-scan selektivní kontrola eskalována',
+    sk: 'Self-scan selektívna kontrola eskalovaná',
+  },
+  'self_scan.basket.payment_locked': {
+    en: 'Self-scan basket payment-locked',
+    cs: 'Self-scan košík uzamčen pro platbu',
+    sk: 'Self-scan košík uzamknutý na platbu',
+  },
+  'self_scan.basket.archived': {
+    en: 'Self-scan basket archived',
+    cs: 'Self-scan košík archivován',
+    sk: 'Self-scan košík archivovaný',
   },
 };
 

@@ -94,6 +94,9 @@ export const AUDIT_EVENT_CODES = [
   'admin.tenant.logo_uploaded',
   'admin.tenant.logo_replaced',
   'admin.tenant.logo_deleted',
+  'admin.platform.logo_uploaded',
+  'admin.platform.logo_replaced',
+  'admin.platform.logo_deleted',
   'admin.salesPoint.image_uploaded',
   'admin.salesPoint.image_replaced',
   'admin.salesPoint.image_deleted',
@@ -178,7 +181,16 @@ export const AUDIT_EVENT_CODES = [
   'admin.salesPoint.currency_acceptance_updated',
   'admin.salesPoint.payment_routes_updated',
   'admin.salesPoint.donation_currency_config_updated',
+  'admin.tenant.payment_multi_currency.toggled',
   'customer.checkout.currency_selected',
+  'self_scan.basket.started',
+  'self_scan.basket.staff_edited',
+  'self_scan.restricted.approved',
+  'self_scan.selective.selected',
+  'self_scan.selective.completed',
+  'self_scan.selective.escalated',
+  'self_scan.basket.payment_locked',
+  'self_scan.basket.archived',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

@@ -458,6 +458,21 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když administrátor smaže logo organizace. Jeden řádek za smazání.',
     sk: 'Zapíše sa, keď administrátor vymaže logo organizácie. Jeden riadok za vymazanie.',
   },
+  'admin.platform.logo_uploaded': {
+    en: 'Recorded when platform staff upload a platform logo. One line per upload.',
+    cs: 'Zapíše se, když pracovníci platformy nahrají logo platformy. Jeden řádek za nahrání.',
+    sk: 'Zapíše sa, keď pracovníci platformy nahrajú logo platformy. Jeden riadok za nahranie.',
+  },
+  'admin.platform.logo_replaced': {
+    en: 'Recorded when platform staff replace a platform logo. One line per replace.',
+    cs: 'Zapíše se, když pracovníci platformy nahradí logo platformy. Jeden řádek za nahrazení.',
+    sk: 'Zapíše sa, keď pracovníci platformy nahradia logo platformy. Jeden riadok za nahradenie.',
+  },
+  'admin.platform.logo_deleted': {
+    en: 'Recorded when platform staff delete a platform logo. One line per delete.',
+    cs: 'Zapíše se, když pracovníci platformy smažou logo platformy. Jeden řádek za smazání.',
+    sk: 'Zapíše sa, keď pracovníci platformy vymažú logo platformy. Jeden riadok za vymazanie.',
+  },
   'admin.salesPoint.image_uploaded': {
     en: 'Recorded when an administrator uploads a sales point image. One line per upload.',
     cs: 'Zapíše se, když administrátor nahraje obrázek prodejního místa. Jeden řádek za nahrání.',
@@ -878,9 +893,54 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se při aktualizaci konfigurace částek daru podle měny na prodejním místě. Jeden řádek za uložení.',
     sk: 'Zapíše sa pri aktualizácii konfigurácie čiastok daru podľa meny na predajnom mieste. Jeden riadok za uloženie.',
   },
+  'admin.tenant.payment_multi_currency.toggled': {
+    en: 'Recorded when a tenant toggles the payment_multi_currency entitlement on or off. One line per toggle. Does not include ID or DOB fields.',
+    cs: 'Zapíše se, když organizace zapne nebo vypne entitlement payment_multi_currency. Jeden řádek za přepnutí. Neobsahuje ID ani datum narození.',
+    sk: 'Zapíše sa, keď organizácia zapne alebo vypne entitlement payment_multi_currency. Jeden riadok za prepnutie. Neobsahuje ID ani dátum narodenia.',
+  },
   'customer.checkout.currency_selected': {
     en: 'Recorded when a checkout session is created with a selected currency. One line per session create.',
     cs: 'Zapíše se při vytvoření pokladní session s vybranou měnou. Jeden řádek za vytvoření session.',
     sk: 'Zapíše sa pri vytvorení pokladničnej session s vybranou menou. Jeden riadok za vytvorenie session.',
+  },
+  'self_scan.basket.started': {
+    en: 'Recorded when a self-scan basket is started for a tenant sales point. Metadata is tenant/SP/basket/who/when only — never ID document or date of birth. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se při zahájení self-scan košíku na prodejním místě. Metadata jen tenant/SP/košík/kdo/kdy — nikdy doklad totožnosti ani datum narození. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri začatí self-scan košíka na predajnom mieste. Metadata len tenant/SP/košík/kto/kedy — nikdy doklad totožnosti ani dátum narodenia. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.basket.staff_edited': {
+    en: 'Recorded when pickup staff edit a live self-scan basket. Who/when/tenant/SP/basket only — no identity document fields. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se, když personál pickup upraví živý self-scan košík. Jen kdo/kdy/tenant/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa, keď personál pickup upraví živý self-scan košík. Len kto/kedy/tenant/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.restricted.approved': {
+    en: 'Recorded when staff approve restricted items on a self-scan basket (who/when only). Never stores ID document, DOB, or national ID. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se, když personál schválí omezené položky v self-scan košíku (jen kdo/kdy). Nikdy neukládá doklad, datum narození ani národní ID. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa, keď personál schváli obmedzené položky v self-scan košíku (len kto/kedy). Nikdy neukladá doklad, dátum narodenia ani národné ID. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.selective.selected': {
+    en: 'Recorded when a basket is selected for selective check. Tenant/SP/basket/who/when only. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se, když je košík vybrán k selektivní kontrole. Jen tenant/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa, keď je košík vybraný na selektívnu kontrolu. Len tenant/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.selective.completed': {
+    en: 'Recorded when a selective check completes successfully. Tenant/SP/basket/who/when/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se při úspěšném dokončení selektivní kontroly. Jen tenant/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri úspešnom dokončení selektívnej kontroly. Len tenant/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.selective.escalated': {
+    en: 'Recorded when a selective check is escalated. Tenant/SP/basket/who/when/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se při eskalaci selektivní kontroly. Jen tenant/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri eskalácii selektívnej kontroly. Len tenant/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.basket.payment_locked': {
+    en: 'Recorded when a self-scan basket is locked for payment. Tenant/SP/basket/timestamps/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se při uzamčení self-scan košíku pro platbu. Jen tenant/SP/košík/časové značky/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri uzamknutí self-scan košíka na platbu. Len tenant/SP/košík/časové značky/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'self_scan.basket.archived': {
+    en: 'Recorded when a self-scan basket is archived (worker or staff). Tenant/SP/basket/who/when only. Actor is PICKUP_STAFF or SYSTEM.',
+    cs: 'Zapíše se při archivaci self-scan košíku (worker nebo personál). Jen tenant/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri archivácii self-scan košíka (worker alebo personál). Len tenant/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
 };
