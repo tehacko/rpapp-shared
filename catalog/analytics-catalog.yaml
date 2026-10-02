@@ -320,6 +320,9 @@ events:
   - event: self_service_sla_notice_shown
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: seller_assisted_sale_completed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: session_abandoned
     catalogVersion: 1
     telemetryClass: OPERATIONAL
