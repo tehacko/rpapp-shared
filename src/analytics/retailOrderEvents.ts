@@ -28,6 +28,11 @@ export const RETAIL_ORDER_EVENTS = {
   CHECKOUT_COLLECT_CONFIGURED: 'checkout_collect_configured',
   SLUG_LEGACY_REDIRECT: 'slug_legacy_redirect',
   TENANT_SWITCHED: 'tenant_switched',
+  /**
+   * Seller-Assisted MarkPaid completion (server).
+   * Plan alias: `SELLER_ASSISTED_SALE_COMPLETED` → snake_case catalog name below.
+   */
+  SELLER_ASSISTED_SALE_COMPLETED: 'seller_assisted_sale_completed',
 } as const;
 
 export type RetailOrderEventName = (typeof RETAIL_ORDER_EVENTS)[keyof typeof RETAIL_ORDER_EVENTS];

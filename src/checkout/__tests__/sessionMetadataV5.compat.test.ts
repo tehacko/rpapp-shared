@@ -133,4 +133,22 @@ describe('sessionMetadataV5 compat (G-F2 / ADR-006)', () => {
       }),
     ).not.toThrow();
   });
+
+  it('accepts additive seller-assisted session metadata fields', () => {
+    const envelope: SessionMetadataEnvelopeV5 = {
+      version: 5,
+      sellerAssistedBasketPublicId: 'sab_public_1',
+      basketVersion: 3,
+      checkoutFlowOrigin: 'SELLER_ASSISTED_KIOSK',
+      checkoutMode: {
+        channel: 'KIOSK_FIRST',
+        selectedMode: 'PAY_NOW_SELF_SERVICE',
+        pickupHandoffMode: 'AUTO_ON_PAYMENT',
+      },
+    };
+    expect(isSessionMetadataV5(envelope)).toBe(true);
+    expect(envelope.checkoutFlowOrigin).toBe('SELLER_ASSISTED_KIOSK');
+    expect(envelope.basketVersion).toBe(3);
+    expect(() => assertSessionMetadataV5ChannelRules(envelope)).not.toThrow();
+  });
 });

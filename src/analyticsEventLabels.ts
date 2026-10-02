@@ -242,6 +242,11 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
     cs: 'Organizace přepnuta',
     sk: 'Organizácia prepnutá',
   },
+  seller_assisted_sale_completed: {
+    en: 'Seller-assisted sale completed',
+    cs: 'Prodej s asistencí prodejce dokončen',
+    sk: 'Predaj s asistenciou predajcu dokončený',
+  },
   donation_started: { en: 'Donation started', cs: 'Darování zahájeno', sk: 'Darovanie začaté' },
   donation_amount_selected: {
     en: 'Donation amount selected',

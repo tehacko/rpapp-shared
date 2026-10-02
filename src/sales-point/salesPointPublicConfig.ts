@@ -218,6 +218,17 @@ export interface SalesPointPublicCurrencyFields {
   readonly defaultCurrency?: string;
 }
 
+/**
+ * Seller-Assisted + CUSTOMER_FACING cash attestation flags on device public-config.
+ * Default omitted/false — independent of pickup `staffSellingEnabled` (G4).
+ */
+export interface SalesPointPublicSellerAssistedCommerceFields {
+  /** STAFF_OPERATED seller-assisted kiosk selling (dedicated; not pickup sell). */
+  readonly kioskSellerAssistedEnabled?: boolean;
+  /** CUSTOMER_FACING cash attestation regime when cash rail is on. */
+  readonly customerFacingCashAttestationEnabled?: boolean;
+}
+
 export type SalesPointPublicConfigV1 =
   | ({
       readonly configVersion: number;
@@ -236,7 +247,8 @@ export type SalesPointPublicConfigV1 =
     } & SalesPointPublicConfigLocationFields &
       SalesPointPublicConfigEconomyFields &
       SalesPointPublicPaymentSurfaceReadinessFields &
-      SalesPointPublicCurrencyFields)
+      SalesPointPublicCurrencyFields &
+      SalesPointPublicSellerAssistedCommerceFields)
   | ({
       readonly configVersion: number;
       readonly salesPointOperationalMode: 'DONATION';
@@ -254,7 +266,8 @@ export type SalesPointPublicConfigV1 =
     } & SalesPointPublicConfigLocationFields &
       SalesPointPublicConfigEconomyFields &
       SalesPointPublicPaymentSurfaceReadinessFields &
-      SalesPointPublicCurrencyFields);
+      SalesPointPublicCurrencyFields &
+      SalesPointPublicSellerAssistedCommerceFields);
 
 /** Current contract version emitted by the backend. */
 export const SALES_POINT_PUBLIC_CONFIG_VERSION = 6;

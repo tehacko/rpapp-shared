@@ -12,6 +12,7 @@ import type {
   SessionMetadataShopLine,
 } from './sessionMetadataV3.js';
 import type { SessionMetadataLoyaltyV4 } from './sessionMetadataV4.js';
+import type { SellerAssistedSessionMetadataFields } from '../seller-assisted/sellerAssistedContracts.js';
 
 export type PromoStackingMode = 'EXCLUSIVE' | 'STACK_PROMO_THEN_LOYALTY';
 
@@ -38,7 +39,12 @@ export interface SessionMetadataPromotionsV5 {
   readonly eventId?: string | null;
 }
 
-export interface SessionMetadataEnvelopeV5 {
+/**
+ * v5 envelope. Seller-Assisted mint fields (`sellerAssistedBasketPublicId`,
+ * `basketVersion`, `checkoutFlowOrigin`) are additive via
+ * {@link SellerAssistedSessionMetadataFields} — omit on non-SA sessions.
+ */
+export interface SessionMetadataEnvelopeV5 extends SellerAssistedSessionMetadataFields {
   version: 5;
   collect?: SessionMetadataCollect;
   checkoutMode?: SessionMetadataCheckoutMode;

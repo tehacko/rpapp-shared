@@ -478,6 +478,13 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
     reference: 'CompleteKioskCashCheckoutUseCase',
   },
   {
+    eventName: 'seller_assisted_sale_completed',
+    surface: 'server',
+    layer: 'BE',
+    required: true,
+    reference: 'MarkSellerAssistedBasketPaidUseCase',
+  },
+  {
     eventName: 'checkout_collect_configured',
     surface: 'server',
     layer: 'BE',
@@ -1190,6 +1197,8 @@ export const ANALYTICS_EMITTER_BE_REFERENCE_PATHS: Readonly<Record<string, strin
     'up-backend/src/application/use-cases/order/ReleaseFulfillmentHoldUseCase.ts',
   CompleteKioskCashCheckoutUseCase:
     'up-backend/src/application/use-cases/payment/kiosk/CompleteKioskCashCheckoutUseCase.ts',
+  MarkSellerAssistedBasketPaidUseCase:
+    'up-backend/src/application/use-cases/seller-assisted/MarkSellerAssistedBasketPaidUseCase.ts',
   CreateCustomerCheckoutSessionUseCase:
     'up-backend/src/application/use-cases/customer-checkout/CreateCustomerCheckoutSessionUseCase.ts',
   UpdateCustomerCheckoutSessionCollectUseCase:
@@ -1260,6 +1269,7 @@ const ALLOWED_BE_REFERENCES = new Set<string>([
   'HoldFulfillmentUseCase',
   'ReleaseFulfillmentHoldUseCase',
   'CompleteKioskCashCheckoutUseCase',
+  'MarkSellerAssistedBasketPaidUseCase',
   'CreateCustomerCheckoutSessionUseCase',
   'UpdateCustomerCheckoutSessionCollectUseCase',
   'IssuePhysicalCardUseCase',

@@ -30,6 +30,7 @@ export const ANALYTICS_TIER2_NO_CONSENT_EVENTS = [
   'pickup_qr_issued',
   'pickup_qr_scanned',
   'pickup_staff_mark_paid',
+  'seller_assisted_sale_completed',
   'checkout_mode_selected',
   'self_service_sla_notice_shown',
   'customer_pickup_ack_informational',

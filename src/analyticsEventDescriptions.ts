@@ -380,6 +380,11 @@ const RETAIL_DESCRIPTIONS = {
     cs: 'Počítá se, když přihlášený zákazník přepne organizaci v účtu nebo obchodu. Jednou za přepnutí.',
     sk: 'Počíta sa, keď prihlásený zákazník prepne organizáciu v účte alebo obchode. Raz za prepnutie.',
   },
+  [ANALYTICS_RETAIL_EVENTS.SELLER_ASSISTED_SALE_COMPLETED]: {
+    en: 'Counts when a seller-assisted basket transitions to PAID after an authoritative COMPLETED payment. One count per MarkPaid success (plan alias SELLER_ASSISTED_SALE_COMPLETED).',
+    cs: 'Počítá se, když košík s asistencí prodejce přejde do PAID po autorizované dokončené platbě. Jednou za úspěšné MarkPaid (alias plánu SELLER_ASSISTED_SALE_COMPLETED).',
+    sk: 'Počíta sa, keď košík s asistenciou predajcu prejde do PAID po autorizovanej dokončenej platbe. Raz za úspešné MarkPaid (alias plánu SELLER_ASSISTED_SALE_COMPLETED).',
+  },
 };
 
 const DONATION_DESCRIPTIONS: Record<

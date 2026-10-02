@@ -303,6 +303,10 @@ export interface PaymentData {
   /** ISO 4217 from payment/session when known (W15 receipt writers). */
   currency?: string;
   status?: TransactionStatus;
+  /** Bank-rail VS when allocated (FR-34 / AC-20) — display aid beside QR. */
+  variableSymbol?: string | null;
+  /** Plaintext Crockford guest access code when freshly minted (AC-20). */
+  guestAccessCode?: string | null;
   /**
    * Post-kiosk QR handoff token (raw, opaque), included when the backend
    * issued a handoff for the completed transaction. See
@@ -325,6 +329,10 @@ export interface MultiProductPaymentData {
   /** ISO 4217 from payment/session when known (W15 receipt writers). */
   currency?: string;
   status?: TransactionStatus;
+  /** Bank-rail VS when allocated (FR-34 / AC-20) — display aid beside QR. */
+  variableSymbol?: string | null;
+  /** Plaintext Crockford guest access code when freshly minted (AC-20). */
+  guestAccessCode?: string | null;
   /** See `PaymentData.postKioskHandoffToken`. */
   postKioskHandoffToken?: string;
   /** See `PaymentData.postKioskCustomerFrontendUrl`. */
@@ -409,6 +417,10 @@ export interface CreateQRPaymentResponseData {
   customerEmail?: string;
   receiptEmailStatus?: 'sent' | 'pending' | 'failed' | 'none'; // Status of receipt email (only in idempotent responses)
   transactionStatus?: TransactionStatus; // Status of existing transaction (only in idempotent responses)
+  /** Bank-rail VS when allocated (FR-34 / AC-20). */
+  variableSymbol?: string | null;
+  /** Plaintext guest access code on fresh mint only (AC-20). */
+  guestAccessCode?: string | null;
 }
 
 export interface CreateQRPaymentResponse {
@@ -506,6 +518,10 @@ export interface GatewayCreateResponse {
   kioskId: number;
   /** ISO 4217 charge currency from create/session — additive; required for QR amount display. */
   currency?: string;
+  /** Rail-visible reference when provider persists one (often VS) — AC-20. */
+  variableSymbol?: string | null;
+  /** Plaintext guest access code on fresh mint only (AC-20). */
+  guestAccessCode?: string | null;
 }
 
 export interface GatewayStatusResponse {
