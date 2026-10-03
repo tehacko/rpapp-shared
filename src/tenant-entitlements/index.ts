@@ -195,6 +195,49 @@ export type {
 } from './capabilityEntitlementRequirements.js';
 
 export {
+  NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS,
+  PARTNER_API_CAPABILITY_ID,
+  PRODUCT_CAPABILITY_BLOCK_KEYS,
+  PRODUCT_CAPABILITY_BLOCK_MAP,
+  PRODUCT_CAPABILITY_IDS,
+  entitlementBlockKeysForProductCapability,
+  getProductCapabilityBlockKeys,
+  isNeverActivateProductCapability,
+  isProductCapabilityId,
+  productCapabilityIdForEntitlementBlock,
+} from './productCapabilityMap.js';
+
+export type { ProductCapabilityId } from './productCapabilityMap.js';
+
+export {
+  PRODUCT_CAPABILITY_GRID_CELLS,
+  PRODUCT_CAPABILITY_PRODUCTION_GRID,
+  PRODUCT_CAPABILITY_SURFACES,
+  PRODUCT_CAPABILITY_TEST_MODE_GRID,
+  PRODUCT_READINESS_SURFACES,
+  collapseProductCapabilityGridCell,
+  declaredProductCapabilityReadiness,
+  evaluateProductCapabilityReadiness,
+  getDeclaredProductCapabilityGridCell,
+  getProductCapabilityReadiness,
+  isPartnerApiNeverActivate,
+  isProductCapabilityActivable,
+  normalizeProductCapabilitySurface,
+  resolveProductReadinessMode,
+  simpleEntitlementStateToProductReadiness,
+} from './productCapabilityReadiness.js';
+
+export type {
+  EvaluateProductCapabilityReadinessInput,
+  ProductCapabilityGridCell,
+  ProductCapabilityReadiness,
+  ProductCapabilityReadinessState,
+  ProductCapabilitySurface,
+  ProductReadinessMode,
+  ProductReadinessSurface,
+} from './productCapabilityReadiness.js';
+
+export {
   resolveSalesPointEntitlementCeiling,
   DEFAULT_ENTITLED_PUBLIC_POSTURE,
   ENTITLEMENT_SURFACE_DISABLED_CODE,

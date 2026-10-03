@@ -365,6 +365,11 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'archivedAt', labelKey: 'compliance.audit.metadata.archivedAt' },
     { key: 'outcome', labelKey: 'compliance.audit.metadata.outcome' },
   ],
+  'dev.tenant.context.entered': [
+    { key: 'tenantCode', labelKey: 'compliance.audit.metadata.tenantCode' },
+    { key: 'previousTenantCode', labelKey: 'compliance.audit.metadata.previousTenantCode' },
+    { key: 'source', labelKey: 'compliance.audit.metadata.source' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

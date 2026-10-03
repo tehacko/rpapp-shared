@@ -778,6 +778,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se po potvrzení přijetí hotovostní platby u objednávky.',
     sk: 'Zapíše sa po potvrdení prijatia hotovostnej platby pri objednávke.',
   },
+  'payment.cash_received.rejected': {
+    en: 'Recorded when staff reject unpaid declared cash. The transaction is cancelled with no revenue.',
+    cs: 'Zapíše se, když personál odmítne nespárovanou deklarovanou hotovost. Transakce se zruší bez tržby.',
+    sk: 'Zapíše sa, keď personál odmietne nesparovanú deklarovanú hotovosť. Transakcia sa zruší bez tržby.',
+  },
   'payment.cash_checkout.self_confirm': {
     en: 'Recorded when a customer self-confirms sales point cash checkout (ADR-PICKUP-CASH).',
     cs: 'Zapíše se po vlastním potvrzení hotovostní platby zákazníkem u prodejního místa (ADR-PICKUP-CASH).',
@@ -942,5 +947,10 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when a self-scan basket is archived (worker or staff). Tenant/SP/basket/who/when only. Actor is PICKUP_STAFF or SYSTEM.',
     cs: 'Zapíše se při archivaci self-scan košíku (worker nebo personál). Jen tenant/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
     sk: 'Zapíše sa pri archivácii self-scan košíka (worker alebo personál). Len tenant/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
+  },
+  'dev.tenant.context.entered': {
+    en: 'Recorded when an admin session rebinds into a tenant (TenantSwitcher). Hidden from tenant compliance lists. Never written on GET /admin/me.',
+    cs: 'Zapíše se, když se relace správce přepne do organizace (přepínač organizací). Skryto v tenant compliance seznamech. Nikdy se nezapisuje při GET /admin/me.',
+    sk: 'Zapíše sa, keď sa relácia správcu prepne do organizácie (prepínač organizácií). Skryté v tenant compliance zoznamoch. Nikdy sa nezapisuje pri GET /admin/me.',
   },
 };

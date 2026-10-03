@@ -778,6 +778,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Hotovostní platba přijata a potvrzena',
     sk: 'Hotovostná platba prijatá a potvrdená',
   },
+  'payment.cash_received.rejected': {
+    en: 'Cash payment rejected',
+    cs: 'Hotovostní platba odmítnuta',
+    sk: 'Hotovostná platba odmietnutá',
+  },
   'payment.cash_checkout.self_confirm': {
     en: 'Sales point cash checkout self-confirmed (legacy)',
     cs: 'Hotovostní platba u prodejního místa potvrzena zákazníkem (legacy)',
@@ -942,6 +947,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Self-scan basket archived',
     cs: 'Self-scan košík archivován',
     sk: 'Self-scan košík archivovaný',
+  },
+  'dev.tenant.context.entered': {
+    en: 'Tenant context entered',
+    cs: 'Vstup do kontextu organizace',
+    sk: 'Vstup do kontextu organizácie',
   },
 };
 

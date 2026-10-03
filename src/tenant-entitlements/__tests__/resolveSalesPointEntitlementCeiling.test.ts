@@ -5,18 +5,19 @@ import {
 } from '../../sales-point/salesPointPublicConfig.js';
 
 describe('resolveSalesPointEntitlementCeiling', () => {
-  it('returns defaults when entitlementCeiling is absent', () => {
-    const ceiling = resolveSalesPointEntitlementCeiling({ entitlementCeiling: undefined });
-
-    expect(ceiling).toEqual({
-      revision: 0,
-      surfaceKiosk: DEFAULT_ENTITLED_PUBLIC_POSTURE,
-      realtimeDeviceTransport: DEFAULT_ENTITLED_PUBLIC_POSTURE,
-      pickupMirrorMode: false,
-    });
+  it('returns null when entitlementCeiling is omitted (fail-closed, not entitled true)', () => {
+    expect(resolveSalesPointEntitlementCeiling({ entitlementCeiling: undefined })).toBeNull();
   });
 
-  it('returns provided ceiling when present', () => {
+  it('returns null when entitlementCeiling is null', () => {
+    expect(
+      resolveSalesPointEntitlementCeiling({
+        entitlementCeiling: null as never,
+      }),
+    ).toBeNull();
+  });
+
+  it('returns provided ceiling when present (HARD OFF included)', () => {
     const custom = {
       revision: 3,
       surfaceKiosk: { entitled: false, allowReads: false, allowWrites: false },

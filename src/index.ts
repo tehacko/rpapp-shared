@@ -131,6 +131,21 @@ export {
   TENANT_BANK_INBOX_MANAGE,
   TENANT_PAYMENT_CLAIMS_APPROVE,
 } from './permissions/canonicalCapabilityIds.js';
+export {
+  ROLE_TEMPLATE_CANONICAL_OPS_PAIRS,
+  ROLE_TEMPLATE_LEFTOVER_OPS_EXCLUSION,
+  TEMPLATE_DUAL_KEY_PAIRS,
+  TEMPLATE_OPS_TO_CANONICAL,
+  TEMPLATE_CANONICAL_TO_OPS,
+  ROLE_TEMPLATE_PACK_OPS_KEYS,
+  TEMPLATE_LEFTOVER_OPS_EXCLUSIONS,
+  TEMPLATE_CANONICAL_MAPPED_LEFTOVER_OPS,
+  resolveTemplateDualKeyPair,
+  isExcludedLeftoverOpsForRoleTemplates,
+  isRoleTemplatePackOpsKey,
+  expandRoleTemplatePackDualKeys,
+} from './permissions/templateDualKeyMap.js';
+export type { TemplateDualKeyPair, RoleTemplatePackOpsKey } from './permissions/templateDualKeyMap.js';
 export type { PermissionLevel } from './permissions/permissionLabels.js';
 export {
   TURNSTILE_PUBLIC_CONFIG_PATH,
@@ -200,6 +215,7 @@ export {
 export { resolvePickupHandoffModeForCheckout } from './checkout/resolvePickupHandoffModeForCheckout.js';
 export * from './barcode/index.js';
 export * from './tenant-entitlements/index.js';
+export * from './permissions/templateDualKeyMap.js';
 export * from './screenState/types.js';
 export { normalizeIban } from './payment/normalizeIban.js';
 export {

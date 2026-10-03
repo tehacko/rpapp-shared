@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 49 blocks (§6.3).
+ * Authoritative tenant entitlement block catalog — 50 blocks / catalogVersion 10 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {

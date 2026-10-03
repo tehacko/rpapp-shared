@@ -160,6 +160,7 @@ export const AUDIT_EVENT_CODES = [
   'payment.cash_provider.risk_ack',
   'payment.cash_payment.requested',
   'payment.cash_received.confirmed',
+  'payment.cash_received.rejected',
   'payment.cash_checkout.self_confirm',
   'payment.cash_shift.opened',
   'payment.cash_shift.closed',
@@ -191,6 +192,7 @@ export const AUDIT_EVENT_CODES = [
   'self_scan.selective.escalated',
   'self_scan.basket.payment_locked',
   'self_scan.basket.archived',
+  'dev.tenant.context.entered',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];
@@ -199,4 +201,21 @@ const AUDIT_EVENT_CODE_SET: ReadonlySet<string> = new Set(AUDIT_EVENT_CODES);
 
 export function isAuditEventCode(code: string): code is AuditEventCode {
   return AUDIT_EVENT_CODE_SET.has(code);
+}
+
+/**
+ * Tenant compliance hide-set (mirrors backend `DEV_PROVISIONING_EVENT_CODES`).
+ * `dev.tenant.entitlement_policy.changed` stays visible — do not add it here.
+ * Hide-set is `dev.tenant.context.entered` only.
+ */
+export const DEV_PROVISIONING_EVENT_CODES = [
+  'dev.tenant.context.entered',
+] as const satisfies ReadonlyArray<AuditEventCode>;
+
+const DEV_PROVISIONING_EVENT_CODE_SET: ReadonlySet<string> = new Set(
+  DEV_PROVISIONING_EVENT_CODES,
+);
+
+export function isDevProvisioningEventCode(code: string): boolean {
+  return DEV_PROVISIONING_EVENT_CODE_SET.has(code);
 }

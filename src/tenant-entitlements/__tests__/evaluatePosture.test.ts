@@ -107,5 +107,18 @@ describe('evaluatePosture', () => {
       allowReads: false,
       allowWrites: false,
     });
+    expect(evaluatePosture(simpleEntitlementStateToAxes('hardOff'))).not.toEqual(
+      expect.objectContaining({ hardOff: true }),
+    );
+  });
+
+  it('does not map !allowReads onto a HARD OFF field (HTTP maps simpleState hardOff separately)', () => {
+    const posture = evaluatePosture({
+      runtimeMode: 'DISABLED',
+      visibilityMode: 'HIDDEN',
+      mutationMode: 'BLOCK_ALL',
+    });
+    expect(posture.allowReads).toBe(false);
+    expect('hardOff' in posture).toBe(false);
   });
 });

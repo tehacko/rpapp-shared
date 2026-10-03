@@ -179,24 +179,21 @@ export interface SalesPointPublicEntitlementCeiling {
 /** WS/SSE disconnect reason when surface or transport block is off (§12.3). */
 export const ENTITLEMENT_SURFACE_DISABLED_CODE = 'ENTITLEMENT_SURFACE_DISABLED' as const;
 
+/** Fully entitled block — use only when a snapshot is present and entitled. Never a missing-ceiling substitute. */
 export const DEFAULT_ENTITLED_PUBLIC_POSTURE: SalesPointPublicEntitlementBlockPosture = {
   entitled: true,
   allowReads: true,
   allowWrites: true,
 };
 
+/**
+ * Read public-config entitlement ceiling. Omitted or null is fail-closed (`null`) —
+ * never substitute {@link DEFAULT_ENTITLED_PUBLIC_POSTURE} (that fail-opened kiosk ready).
+ */
 export function resolveSalesPointEntitlementCeiling(
   config: Pick<SalesPointPublicConfigV1, 'entitlementCeiling'>
-): SalesPointPublicEntitlementCeiling {
-  if (config.entitlementCeiling !== undefined) {
-    return config.entitlementCeiling;
-  }
-  return {
-    revision: 0,
-    surfaceKiosk: DEFAULT_ENTITLED_PUBLIC_POSTURE,
-    realtimeDeviceTransport: DEFAULT_ENTITLED_PUBLIC_POSTURE,
-    pickupMirrorMode: false,
-  };
+): SalesPointPublicEntitlementCeiling | null {
+  return config.entitlementCeiling ?? null;
 }
 
 export interface SalesPointPublicPaymentSurfaceReadinessFields {
