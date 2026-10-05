@@ -953,6 +953,51 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Vstup do kontextu organizace',
     sk: 'Vstup do kontextu organizácie',
   },
+  'finance.refund.attempt.created': {
+    en: 'Refund attempt created',
+    cs: 'Pokus o vrácení peněz vytvořen',
+    sk: 'Pokus o vrátenie peňazí vytvorený',
+  },
+  'finance.refund.attempt.status_changed': {
+    en: 'Refund attempt status changed',
+    cs: 'Stav pokusu o vrácení peněz změněn',
+    sk: 'Stav pokusu o vrátenie peňazí zmenený',
+  },
+  'finance.refund.sla_breached': {
+    en: 'Refund payout SLA breached',
+    cs: 'SLA výplaty vrácení peněz porušeno',
+    sk: 'SLA výplaty vrátenia peňazí porušené',
+  },
+  'finance.refund.attempt.reclassified': {
+    en: 'Refund attempt reclassified',
+    cs: 'Pokus o vrácení peněz reklasifikován',
+    sk: 'Pokus o vrátenie peňazí reklasifikovaný',
+  },
+  'finance.refund.disposition.recorded': {
+    en: 'Refund disposition recorded',
+    cs: 'Rozhodnutí o vrácení zboží zaznamenáno',
+    sk: 'Rozhodnutie o vrátení tovaru zaznamenané',
+  },
+  'ops.complaint.intake': {
+    en: 'Complaint case opened',
+    cs: 'Reklamace přijata',
+    sk: 'Reklamácia prijatá',
+  },
+  'ops.complaint.resolved': {
+    en: 'Complaint case resolved',
+    cs: 'Reklamace vyřízena',
+    sk: 'Reklamácia vybavená',
+  },
+  'ops.complaint.reclassified': {
+    en: 'Complaint case reclassified',
+    cs: 'Reklamace reklasifikována',
+    sk: 'Reklamácia reklasifikovaná',
+  },
+  'ops.complaint.reminder': {
+    en: 'Complaint deadline reminder',
+    cs: 'Připomínka termínu reklamace',
+    sk: 'Pripomienka termínu reklamácie',
+  },
 };
 
 function buildAuditLabels(): Record<AuditEventCode, LocalizedLabel> {

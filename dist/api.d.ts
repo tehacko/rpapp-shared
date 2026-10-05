@@ -39,6 +39,7 @@ export declare const API_ENDPOINTS: {
     readonly PAYMENT_GATEWAY_STATUS: "/api/payments/gateway-status/:paymentId";
     readonly PAYMENT_GATEWAY_CANCEL: "/api/payments/gateway-cancel";
     readonly PAYMENT_GATEWAY_METHODS: "/api/payments/gateway-methods";
+    readonly PAYMENT_GOPAY_NOTIFY: "/api/payments/gopay-notify";
     readonly PAYMENT_TERMINAL_CONNECTION_TOKEN: "/api/payments/terminal/connection-token";
     readonly PAYMENT_CREATE_TERMINAL: "/api/payments/terminal/create-terminal";
     readonly PAYMENT_TERMINAL_CANCEL: "/api/payments/terminal/cancel";

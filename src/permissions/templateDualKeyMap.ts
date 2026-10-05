@@ -28,6 +28,8 @@ export const ROLE_TEMPLATE_CANONICAL_OPS_PAIRS: readonly {
   { canonical: 'tenant.donationTemplates.manage', ops: 'ops:donation-templates:manage' },
   { canonical: 'tenant.kioskDonationAssign.manage', ops: 'ops:sales-points:donation:assign' },
   { canonical: 'tenant.kioskDonationAmounts.manage', ops: 'ops:sales-points:donation:amounts' },
+  { canonical: 'tenant.opsComplaints.view', ops: 'ops:complaints:read' },
+  { canonical: 'tenant.opsComplaints.intake', ops: 'ops:complaints:intake' },
 ] as const;
 
 /** Leftover ops:* — do not invent into TenantViewer/OpsManager packs. */

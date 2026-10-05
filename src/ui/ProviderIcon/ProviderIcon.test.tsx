@@ -10,6 +10,8 @@ describe('resolveProviderIconAssetId', () => {
   it('maps known provider slot ids to branded assets', () => {
     expect(resolveProviderIconAssetId('fio')).toBe('fio');
     expect(resolveProviderIconAssetId('thepay')).toBe('thepay');
+    expect(resolveProviderIconAssetId('gopay')).toBe('gopay');
+    expect(resolveProviderIconAssetId('gopay-wallet')).toBe('gopay');
     expect(resolveProviderIconAssetId('stripe')).toBe('stripe');
     expect(resolveProviderIconAssetId('stripe_eu')).toBe('stripe');
   });

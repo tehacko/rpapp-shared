@@ -953,4 +953,49 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když se relace správce přepne do organizace (přepínač organizací). Skryto v tenant compliance seznamech. Nikdy se nezapisuje při GET /admin/me.',
     sk: 'Zapíše sa, keď sa relácia správcu prepne do organizácie (prepínač organizácií). Skryté v tenant compliance zoznamoch. Nikdy sa nezapisuje pri GET /admin/me.',
   },
+  'finance.refund.attempt.created': {
+    en: 'Recorded when a refund attempt is created in PENDING. Ids, enums, and amounts only — no IBAN, email, name, or free-text description.',
+    cs: 'Zapíše se při vytvoření pokusu o vrácení peněz ve stavu PENDING. Jen id, enumerace a částky — bez IBAN, e-mailu, jména nebo volného textu.',
+    sk: 'Zapíše sa pri vytvorení pokusu o vrátenie peňazí v stave PENDING. Len id, enumerácie a sumy — bez IBAN, e-mailu, mena alebo voľného textu.',
+  },
+  'finance.refund.attempt.status_changed': {
+    en: 'Recorded when a refund attempt status changes. Ids, enums, and amounts only — no IBAN, email, name, or free-text description.',
+    cs: 'Zapíše se při změně stavu pokusu o vrácení peněz. Jen id, enumerace a částky — bez IBAN, e-mailu, jména nebo volného textu.',
+    sk: 'Zapíše sa pri zmene stavu pokusu o vrátenie peňazí. Len id, enumerácie a sumy — bez IBAN, e-mailu, mena alebo voľného textu.',
+  },
+  'finance.refund.sla_breached': {
+    en: 'Recorded when the refund payout SLA worker stamps slaBreachedAt. Ids, enums, amounts, and slaBreached only — no IBAN or customer PII.',
+    cs: 'Zapíše se, když worker SLA výplaty vrácení označí slaBreachedAt. Jen id, enumerace, částky a slaBreached — bez IBAN a osobních údajů.',
+    sk: 'Zapíše sa, keď worker SLA výplaty vrátenia označí slaBreachedAt. Len id, enumerácie, sumy a slaBreached — bez IBAN a osobných údajov.',
+  },
+  'finance.refund.attempt.reclassified': {
+    en: 'Recorded when staffReason or businessBasis on a refund attempt is reclassified. Enums and ids only — no free-text description.',
+    cs: 'Zapíše se při reklasifikaci staffReason nebo businessBasis u pokusu o vrácení. Jen enumerace a id — bez volného textu.',
+    sk: 'Zapíše sa pri reklasifikácii staffReason alebo businessBasis pri pokuse o vrátenie. Len enumerácie a id — bez voľného textu.',
+  },
+  'finance.refund.disposition.recorded': {
+    en: 'Recorded when a return disposition is stored for a refund. Ids, stock decision, and amounts only — no IBAN or customer PII.',
+    cs: 'Zapíše se při uložení rozhodnutí o vrácení zboží. Jen id, rozhodnutí o skladu a částky — bez IBAN a osobních údajů.',
+    sk: 'Zapíše sa pri uložení rozhodnutia o vrátení tovaru. Len id, rozhodnutie o sklade a sumy — bez IBAN a osobných údajov.',
+  },
+  'ops.complaint.intake': {
+    en: 'Recorded when a complaint case is opened without a money movement. Ids and taxonomy enums only — no IBAN, email, or free-text description.',
+    cs: 'Zapíše se při otevření reklamace bez pohybu peněz. Jen id a taxonomie — bez IBAN, e-mailu nebo volného textu.',
+    sk: 'Zapíše sa pri otvorení reklamácie bez pohybu peňazí. Len id a taxonómia — bez IBAN, e-mailu alebo voľného textu.',
+  },
+  'ops.complaint.resolved': {
+    en: 'Recorded when a complaint case is resolved without a money movement. Ids and outcome enums only — no IBAN or customer PII.',
+    cs: 'Zapíše se při vyřízení reklamace bez pohybu peněz. Jen id a enumerace výsledku — bez IBAN a osobních údajů.',
+    sk: 'Zapíše sa pri vybavení reklamácie bez pohybu peňazí. Len id a enumerácie výsledku — bez IBAN a osobných údajov.',
+  },
+  'ops.complaint.reclassified': {
+    en: 'Recorded when a complaint case taxonomy is reclassified. Ids and enums only — no free-text description.',
+    cs: 'Zapíše se při reklasifikaci taxonomie reklamace. Jen id a enumerace — bez volného textu.',
+    sk: 'Zapíše sa pri reklasifikácii taxonómie reklamácie. Len id a enumerácie — bez voľného textu.',
+  },
+  'ops.complaint.reminder': {
+    en: 'Recorded when the complaint deadline worker emits a reminder. Ids and deadline flags only — no IBAN or customer PII.',
+    cs: 'Zapíše se, když worker termínu reklamace odešle připomínku. Jen id a příznaky termínu — bez IBAN a osobních údajů.',
+    sk: 'Zapíše sa, keď worker termínu reklamácie odošle pripomienku. Len id a príznaky termínu — bez IBAN a osobných údajov.',
+  },
 };

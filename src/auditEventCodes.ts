@@ -193,6 +193,15 @@ export const AUDIT_EVENT_CODES = [
   'self_scan.basket.payment_locked',
   'self_scan.basket.archived',
   'dev.tenant.context.entered',
+  'finance.refund.attempt.created',
+  'finance.refund.attempt.status_changed',
+  'finance.refund.sla_breached',
+  'finance.refund.attempt.reclassified',
+  'finance.refund.disposition.recorded',
+  'ops.complaint.intake',
+  'ops.complaint.resolved',
+  'ops.complaint.reclassified',
+  'ops.complaint.reminder',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

@@ -9,10 +9,10 @@ import {
 } from './templateDualKeyMap.js';
 
 describe('templateDualKeyMap G8', () => {
-  it('pins Canonical 21 ops:* pairs', () => {
-    expect(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS).toHaveLength(21);
-    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.ops)).size).toBe(21);
-    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.canonical)).size).toBe(21);
+  it('pins Canonical 23 ops:* pairs including ops:complaints twins', () => {
+    expect(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS).toHaveLength(23);
+    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.ops)).size).toBe(23);
+    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.canonical)).size).toBe(23);
   });
 
   it('leftover exclusion is never-invent ∪ canonical-mapped leftover', () => {

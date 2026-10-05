@@ -180,6 +180,11 @@
             "import": "./dist/order/index.js",
             "require": "./dist/order/index.js"
         },
+        "./refund": {
+            "types": "./dist/refund/index.d.ts",
+            "import": "./dist/refund/index.js",
+            "require": "./dist/refund/index.js"
+        },
         "./order/fulfillmentContracts": {
             "types": "./dist/order/fulfillmentContracts.d.ts",
             "import": "./dist/order/fulfillmentContracts.js",

@@ -370,6 +370,55 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'previousTenantCode', labelKey: 'compliance.audit.metadata.previousTenantCode' },
     { key: 'source', labelKey: 'compliance.audit.metadata.source' },
   ],
+  'finance.refund.attempt.created': [
+    { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
+    { key: 'transactionId', labelKey: 'compliance.audit.metadata.transactionId' },
+    { key: 'amountMajor', labelKey: 'compliance.audit.metadata.amountMajor' },
+    { key: 'currency', labelKey: 'compliance.audit.metadata.currency' },
+    { key: 'staffReason', labelKey: 'compliance.audit.metadata.staffReason' },
+  ],
+  'finance.refund.attempt.status_changed': [
+    { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
+    { key: 'providerOutcome', labelKey: 'compliance.audit.metadata.providerOutcome' },
+    { key: 'method', labelKey: 'compliance.audit.metadata.method' },
+    { key: 'amountMajor', labelKey: 'compliance.audit.metadata.amountMajor' },
+  ],
+  'finance.refund.sla_breached': [
+    { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
+    { key: 'slaBreached', labelKey: 'compliance.audit.metadata.slaBreached' },
+    { key: 'transactionId', labelKey: 'compliance.audit.metadata.transactionId' },
+  ],
+  'finance.refund.attempt.reclassified': [
+    { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
+    { key: 'staffReason', labelKey: 'compliance.audit.metadata.staffReason' },
+    { key: 'businessBasis', labelKey: 'compliance.audit.metadata.businessBasis' },
+  ],
+  'finance.refund.disposition.recorded': [
+    { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
+    { key: 'stockDecision', labelKey: 'compliance.audit.metadata.stockDecision' },
+    { key: 'documentId', labelKey: 'compliance.audit.metadata.documentId' },
+  ],
+  'ops.complaint.intake': [
+    { key: 'caseId', labelKey: 'compliance.audit.metadata.caseId' },
+    { key: 'tenantId', labelKey: 'compliance.audit.metadata.tenantId' },
+    { key: 'salesPointId', labelKey: 'compliance.audit.metadata.salesPointId' },
+    { key: 'staffReason', labelKey: 'compliance.audit.metadata.staffReason' },
+  ],
+  'ops.complaint.resolved': [
+    { key: 'caseId', labelKey: 'compliance.audit.metadata.caseId' },
+    { key: 'staffReason', labelKey: 'compliance.audit.metadata.staffReason' },
+    { key: 'businessBasis', labelKey: 'compliance.audit.metadata.businessBasis' },
+  ],
+  'ops.complaint.reclassified': [
+    { key: 'caseId', labelKey: 'compliance.audit.metadata.caseId' },
+    { key: 'staffReason', labelKey: 'compliance.audit.metadata.staffReason' },
+    { key: 'businessBasis', labelKey: 'compliance.audit.metadata.businessBasis' },
+  ],
+  'ops.complaint.reminder': [
+    { key: 'caseId', labelKey: 'compliance.audit.metadata.caseId' },
+    { key: 'tenantId', labelKey: 'compliance.audit.metadata.tenantId' },
+    { key: 'slaBreached', labelKey: 'compliance.audit.metadata.slaBreached' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

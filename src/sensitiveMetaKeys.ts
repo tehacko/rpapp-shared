@@ -40,6 +40,8 @@ export const SHARED_SENSITIVE_META_KEYS = [
   'phoneNumber',
   'otp',
   'iban',
+  'ibanFull',
+  'ibanfull',
   'cvv',
   'cardnumber',
   'cardNumber',
