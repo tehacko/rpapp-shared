@@ -193,6 +193,8 @@ export const AUDIT_EVENT_CODES = [
   'self_scan.basket.payment_locked',
   'self_scan.basket.archived',
   'dev.tenant.context.entered',
+  'admin.bank_account.changed',
+  'dev.tenant.settings.changed',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

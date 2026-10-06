@@ -370,6 +370,15 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'previousTenantCode', labelKey: 'compliance.audit.metadata.previousTenantCode' },
     { key: 'source', labelKey: 'compliance.audit.metadata.source' },
   ],
+  'admin.bank_account.changed': [
+    { key: 'actorId', labelKey: 'compliance.audit.metadata.actorId' },
+    { key: 'action', labelKey: 'compliance.audit.metadata.action' },
+    { key: 'resourceKind', labelKey: 'compliance.audit.metadata.resourceKind' },
+  ],
+  'dev.tenant.settings.changed': [
+    { key: 'actorId', labelKey: 'compliance.audit.metadata.actorId' },
+    { key: 'scope', labelKey: 'compliance.audit.metadata.scope' },
+  ],
 };
 
 export function getAuditMetadataDisplayFields(

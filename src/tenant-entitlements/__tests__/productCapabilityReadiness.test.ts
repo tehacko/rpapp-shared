@@ -7,6 +7,7 @@ import {
   isNeverActivateProductCapability,
   productCapabilityIdForEntitlementBlock,
 } from '../productCapabilityMap.js';
+import { getEntitlementBlockCatalogEntry } from '../catalog.js';
 import {
   PRODUCT_CAPABILITY_PRODUCTION_GRID,
   PRODUCT_CAPABILITY_SURFACES,
@@ -17,6 +18,10 @@ import {
   getDeclaredProductCapabilityGridCell,
   isPartnerApiNeverActivate,
   isProductCapabilityActivable,
+  isProductCapabilityProductionEnableAllowed,
+  isEntitlementBlockProductionEnableAllowed,
+  clampSimpleStatesToProductionEnableAllowed,
+  collectDeniedProductionEnablePolicyRows,
   simpleEntitlementStateToProductReadiness,
 } from '../productCapabilityReadiness.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from '../types.js';
@@ -202,5 +207,136 @@ describe('G8 CAP grid collapse', () => {
       }),
     ).toBe(false);
     expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
+  });
+
+  it.each([
+    {
+      name: 'production PARTIAL deny',
+      capabilityId: 'CAP-01' as const,
+      surface: 'admin' as const,
+      mode: 'production' as const,
+      expected: false,
+    },
+    {
+      name: 'production TEST deny',
+      capabilityId: 'CAP-10' as const,
+      surface: 'admin' as const,
+      mode: 'production' as const,
+      expected: false,
+    },
+    {
+      name: 'production NOT_READY deny',
+      capabilityId: 'CAP-07' as const,
+      surface: 'kiosk' as const,
+      mode: 'production' as const,
+      expected: false,
+    },
+    {
+      name: 'production READY allow',
+      capabilityId: 'CAP-13' as const,
+      surface: 'kiosk' as const,
+      mode: 'production' as const,
+      expected: true,
+    },
+    {
+      name: 'test-mode TEST allow',
+      capabilityId: 'CAP-10' as const,
+      surface: 'admin' as const,
+      mode: 'test' as const,
+      expected: true,
+    },
+    {
+      name: 'test-mode PARTIAL still deny',
+      capabilityId: 'CAP-01' as const,
+      surface: 'admin' as const,
+      mode: 'test' as const,
+      expected: false,
+    },
+  ])('isProductCapabilityActivable $name', ({ capabilityId, surface, mode, expected }) => {
+    expect(isProductCapabilityActivable({ capabilityId, surface, mode })).toBe(expected);
+    expect(
+      evaluateProductCapabilityReadiness({ capabilityId, surface, mode }) === 'READY',
+    ).toBe(expected);
+  });
+});
+
+const G8_PRODUCTION_PARTIAL_CELLS = PRODUCT_CAPABILITY_IDS.flatMap((capabilityId) =>
+  PRODUCT_CAPABILITY_SURFACES.filter(
+    (surface) => PRODUCT_CAPABILITY_PRODUCTION_GRID[capabilityId][surface] === 'PARTIAL',
+  ).map((surface) => ({ capabilityId, surface })),
+);
+
+describe('G8 PARTIAL production persist ENABLE deny', () => {
+  it.each(G8_PRODUCTION_PARTIAL_CELLS)(
+    'isProductCapabilityActivable false for $capabilityId $surface PARTIAL',
+    ({ capabilityId, surface }) => {
+      expect(PRODUCT_CAPABILITY_PRODUCTION_GRID[capabilityId][surface]).toBe('PARTIAL');
+      expect(
+        isProductCapabilityActivable({
+          capabilityId,
+          surface,
+          mode: 'production',
+        }),
+      ).toBe(false);
+    },
+  );
+
+  it.each(G8_PRODUCTION_PARTIAL_CELLS)(
+    'mapped blocks cannot persist ENABLE when $capabilityId has no production READY cell ($surface PARTIAL)',
+    ({ capabilityId, surface }) => {
+      expect(surface).toBeDefined();
+      const hasReady = PRODUCT_CAPABILITY_SURFACES.some(
+        (cellSurface) => PRODUCT_CAPABILITY_PRODUCTION_GRID[capabilityId][cellSurface] === 'READY',
+      );
+      expect(isProductCapabilityProductionEnableAllowed(capabilityId)).toBe(hasReady);
+      for (const blockKey of entitlementBlockKeysForProductCapability(capabilityId)) {
+        const persistAllowed = isEntitlementBlockProductionEnableAllowed(blockKey);
+        if (hasReady) {
+          expect(persistAllowed).toBe(true);
+          continue;
+        }
+        const blockClass = getEntitlementBlockCatalogEntry(blockKey).blockClass;
+        if (blockClass === 'CORE_REQUIRED' || blockClass === 'CORE_IMMUTABLE') {
+          expect(persistAllowed).toBe(true);
+          continue;
+        }
+        expect(persistAllowed).toBe(false);
+        expect(
+          clampSimpleStatesToProductionEnableAllowed({ [blockKey]: 'on' })[blockKey],
+        ).toBe('off');
+        expect(
+          collectDeniedProductionEnablePolicyRows([
+            { blockKey, runtimeMode: 'ENABLED' },
+          ]),
+        ).toEqual([
+          expect.objectContaining({
+            blockKey,
+            runtimeMode: 'ENABLED',
+            capabilityId,
+          }),
+        ]);
+      }
+    },
+  );
+
+  it('CAP-15 and TEST/NOT_READY-only capabilities never persist ENABLE', () => {
+    expect(isProductCapabilityProductionEnableAllowed('CAP-15')).toBe(false);
+    expect(isProductCapabilityProductionEnableAllowed('CAP-10')).toBe(false);
+    expect(isEntitlementBlockProductionEnableAllowed('tenant_brand_kit')).toBe(false);
+    expect(
+      collectDeniedProductionEnablePolicyRows([
+        { blockKey: 'tenant_brand_kit', runtimeMode: 'ALWAYS_ON' },
+      ]),
+    ).toHaveLength(1);
+  });
+
+  it('READY-cell capabilities still allow persist ENABLE (CAP-01 mixed PARTIAL/READY)', () => {
+    expect(isProductCapabilityProductionEnableAllowed('CAP-01')).toBe(true);
+    expect(isEntitlementBlockProductionEnableAllowed('catalog_administration')).toBe(true);
+    expect(
+      collectDeniedProductionEnablePolicyRows([
+        { blockKey: 'catalog_administration', runtimeMode: 'ENABLED' },
+      ]),
+    ).toEqual([]);
   });
 });

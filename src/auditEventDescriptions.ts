@@ -953,4 +953,14 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když se relace správce přepne do organizace (přepínač organizací). Skryto v tenant compliance seznamech. Nikdy se nezapisuje při GET /admin/me.',
     sk: 'Zapíše sa, keď sa relácia správcu prepne do organizácie (prepínač organizácií). Skryté v tenant compliance zoznamoch. Nikdy sa nezapisuje pri GET /admin/me.',
   },
+  'admin.bank_account.changed': {
+    en: 'Recorded when a bank account, rail, attachment, or stored credential identity changes. Actor, before, and after are stored. Credential values are fingerprinted — never raw secrets.',
+    cs: 'Zapíše se při změně bankovního účtu, koleje, přílohy nebo identity uložených pověření. Ukládá se aktér, stav před a po. Hodnoty pověření se otiskují — nikdy surová tajemství.',
+    sk: 'Zapíše sa pri zmene bankového účtu, koľaje, prílohy alebo identity uložených poverení. Ukladá sa aktér, stav pred a po. Hodnoty poverení sa odtlačujú — nikdy surové tajomstvá.',
+  },
+  'dev.tenant.settings.changed': {
+    en: 'Recorded when a developer patches tenant platform defaults or integration governance. Actor plus before/after slot flags only — no secrets.',
+    cs: 'Zapíše se, když vývojář změní výchozí platformní sloty nebo governance integrací. Jen aktér a stav před/po — žádná tajemství.',
+    sk: 'Zapíše sa, keď vývojár zmení predvolené platformové sloty alebo governance integrácií. Len aktér a stav pred/po — žiadne tajomstvá.',
+  },
 };

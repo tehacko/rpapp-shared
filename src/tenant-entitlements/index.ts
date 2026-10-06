@@ -222,6 +222,10 @@ export {
   getProductCapabilityReadiness,
   isPartnerApiNeverActivate,
   isProductCapabilityActivable,
+  isProductCapabilityProductionEnableAllowed,
+  isEntitlementBlockProductionEnableAllowed,
+  clampSimpleStatesToProductionEnableAllowed,
+  collectDeniedProductionEnablePolicyRows,
   normalizeProductCapabilitySurface,
   resolveProductReadinessMode,
   simpleEntitlementStateToProductReadiness,
@@ -235,6 +239,7 @@ export type {
   ProductCapabilitySurface,
   ProductReadinessMode,
   ProductReadinessSurface,
+  ProductionEnableDeniedPolicyRow,
 } from './productCapabilityReadiness.js';
 
 export {

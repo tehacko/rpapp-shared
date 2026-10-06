@@ -8,10 +8,16 @@
  *
  * NEVER import admin-app or up-backend into this module.
  */
-import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
+import { getEntitlementBlockCatalogEntry } from './catalog.js';
+import type {
+  EntitlementBlockKey,
+  EntitlementRuntimeMode,
+  SimpleEntitlementState,
+} from './types.js';
 import {
   entitlementBlockKeysForProductCapability,
   isNeverActivateProductCapability,
+  productCapabilityIdForEntitlementBlock,
   type ProductCapabilityId,
 } from './productCapabilityMap.js';
 
@@ -361,22 +367,104 @@ export function getProductCapabilityReadiness(input: {
   });
 }
 
+/**
+ * Production-activable iff collapsed readiness is READY.
+ * PARTIAL / NOT_READY / n_a never activate. TEST activates only in explicit test mode
+ * (`mode: 'test'` or `explicitDevEnable: true`) via the same collapse as
+ * `evaluateProductCapabilityReadiness`.
+ */
 export function isProductCapabilityActivable(input: {
   readonly capabilityId: ProductCapabilityId;
   readonly surface: ProductCapabilitySurface | ProductReadinessSurface;
   readonly mode?: ProductReadinessMode;
   readonly explicitDevEnable?: boolean;
 }): boolean {
-  if (isNeverActivateProductCapability(input.capabilityId)) {
+  return evaluateProductCapabilityReadiness(input) === 'READY';
+}
+
+/**
+ * Production persist/create/editor may ENABLE a capability only when at least one
+ * G8 production cell is READY (`isProductCapabilityActivable` / mode production).
+ * PARTIAL / TEST / NOT_READY / n_a / CAP-15 never persist as ENABLE.
+ */
+export function isProductCapabilityProductionEnableAllowed(
+  capabilityId: ProductCapabilityId,
+): boolean {
+  if (isNeverActivateProductCapability(capabilityId)) {
     return false;
   }
-  const state = getProductCapabilityReadiness(input);
-  if (state === 'n_a' || state === 'NOT_READY') {
-    return false;
+  return PRODUCT_READINESS_SURFACES.some((surface) =>
+    isProductCapabilityActivable({
+      capabilityId,
+      surface,
+      mode: 'production',
+    }),
+  );
+}
+
+/** Unmapped leftover blocks stay persistable; mapped blocks follow G8 READY-only. */
+export function isEntitlementBlockProductionEnableAllowed(
+  blockKey: EntitlementBlockKey,
+): boolean {
+  const capabilityId = productCapabilityIdForEntitlementBlock(blockKey);
+  if (capabilityId === undefined) {
+    return true;
   }
-  if (state === 'TEST') {
-    const mode = input.mode ?? resolveProductReadinessMode(input.explicitDevEnable);
-    return mode === 'test';
+  const blockClass = getEntitlementBlockCatalogEntry(blockKey).blockClass;
+  if (blockClass === 'CORE_REQUIRED' || blockClass === 'CORE_IMMUTABLE') {
+    return true;
   }
-  return state === 'READY' || state === 'PARTIAL';
+  return isProductCapabilityProductionEnableAllowed(capabilityId);
+}
+
+export function clampSimpleStatesToProductionEnableAllowed(
+  states: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>,
+): Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> {
+  let changed = false;
+  const result: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>> = { ...states };
+  for (const [rawKey, state] of Object.entries(result)) {
+    const blockKey = rawKey as EntitlementBlockKey;
+    if (state !== 'on') {
+      continue;
+    }
+    if (isEntitlementBlockProductionEnableAllowed(blockKey)) {
+      continue;
+    }
+    result[blockKey] = 'off';
+    changed = true;
+  }
+  return changed ? result : states;
+}
+
+export type ProductionEnableDeniedPolicyRow = {
+  readonly blockKey: EntitlementBlockKey;
+  readonly runtimeMode: EntitlementRuntimeMode;
+  readonly capabilityId: ProductCapabilityId;
+};
+
+export function collectDeniedProductionEnablePolicyRows(
+  policies: readonly {
+    readonly blockKey: EntitlementBlockKey;
+    readonly runtimeMode: EntitlementRuntimeMode;
+  }[],
+): readonly ProductionEnableDeniedPolicyRow[] {
+  const denied: ProductionEnableDeniedPolicyRow[] = [];
+  for (const row of policies) {
+    if (row.runtimeMode !== 'ENABLED' && row.runtimeMode !== 'ALWAYS_ON') {
+      continue;
+    }
+    if (isEntitlementBlockProductionEnableAllowed(row.blockKey)) {
+      continue;
+    }
+    const capabilityId = productCapabilityIdForEntitlementBlock(row.blockKey);
+    if (capabilityId === undefined) {
+      continue;
+    }
+    denied.push({
+      blockKey: row.blockKey,
+      runtimeMode: row.runtimeMode,
+      capabilityId,
+    });
+  }
+  return denied;
 }

@@ -1,4 +1,5 @@
 import { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
+import { clampSimpleStatesToProductionEnableAllowed } from './productCapabilityReadiness.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 import type { TenantAllowedPurposes, TenantSurfaceScope } from './tenantScopeTypes.js';
 
@@ -258,7 +259,10 @@ export function applyTenantScopeToSimpleStates(
   };
   const withCommerce = applyAllowedPurposesToStates(allowedPurposes, base);
   const withSurfaces = applySurfaceScopeToStates(surfaceScope, withCommerce);
-  return applySimpleStateDependencyImplications(withSurfaces);
+  const implied = applySimpleStateDependencyImplications(withSurfaces);
+  const clamped = clampSimpleStatesToProductionEnableAllowed(implied);
+  const reImplied = applySimpleStateDependencyImplications(clamped);
+  return clampSimpleStatesToProductionEnableAllowed(reImplied);
 }
 
 export function inferAllowedPurposesFromSimpleStates(

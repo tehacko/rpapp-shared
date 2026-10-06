@@ -953,6 +953,16 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Vstup do kontextu organizace',
     sk: 'Vstup do kontextu organizácie',
   },
+  'admin.bank_account.changed': {
+    en: 'Bank account identity changed',
+    cs: 'Změna identity bankovního účtu',
+    sk: 'Zmena identity bankového účtu',
+  },
+  'dev.tenant.settings.changed': {
+    en: 'Dev tenant settings changed',
+    cs: 'Změna nastavení organizace (dev)',
+    sk: 'Zmena nastavení organizácie (dev)',
+  },
 };
 
 function buildAuditLabels(): Record<AuditEventCode, LocalizedLabel> {

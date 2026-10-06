@@ -219,6 +219,13 @@ export * from './permissions/templateDualKeyMap.js';
 export * from './screenState/types.js';
 export { normalizeIban } from './payment/normalizeIban.js';
 export {
+  buildGoodwillRefundWriteBody,
+  parseGoodwillRefundWriteBody,
+  GOODWILL_REFUND_WRITE_FORBIDDEN_KEYS,
+  type GoodwillRefundWriteBody,
+  type BuildGoodwillRefundWriteInput,
+} from './payment/goodwillRefundWriteContract.js';
+export {
   extractCzBankCode,
   isFioEligibleBankAccount,
   type FioEligibleBankAccountInput,

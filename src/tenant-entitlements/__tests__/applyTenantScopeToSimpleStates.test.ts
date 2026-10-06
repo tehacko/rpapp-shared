@@ -23,13 +23,13 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.payment_cash).toBe('on');
     expect(states.payment_reconciliation).toBe('on');
     expect(states.payments_hub_ui).toBe('on');
-    expect(states.bank_inbox_claims_api).toBe('on');
+    expect(states.bank_inbox_claims_api).toBe('off');
   });
 
   it('maps DONATION_ONLY + CUSTOMER_ONLY with donation cluster side effects', () => {
     const states = applyTenantScopeToSimpleStates('DONATION_ONLY', 'CUSTOMER_ONLY');
     expect(states.product_vending).toBe('off');
-    expect(states.donation).toBe('on');
+    expect(states.donation).toBe('off');
     expect(states.catalog_administration).toBe('hardOff');
     expect(states.product_barcode_administration).toBe('hardOff');
     expect(states.analytics_overview).toBe('off');
@@ -50,16 +50,16 @@ describe('applyTenantScopeToSimpleStates', () => {
 
   it('allows kiosk + donations only (previously impossible with bundled preset)', () => {
     const states = applyTenantScopeToSimpleStates('DONATION_ONLY', 'KIOSK_ONLY');
-    expect(states.donation).toBe('on');
+    expect(states.donation).toBe('off');
     expect(states.surface_kiosk).toBe('on');
     expect(states.surface_customer).toBe('off');
     expect(states.order_pickup_infrastructure).toBe('off');
     expect(states.staff_pickup_scan).toBe('off');
   });
 
-  it('infers scopes from axis block states', () => {
+  it('infers surfaces from axis block states (donation PARTIAL stays off so purposes infer PRODUCT_ONLY)', () => {
     const states = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
-    expect(inferAllowedPurposesFromSimpleStates(states)).toBe('BOTH');
+    expect(inferAllowedPurposesFromSimpleStates(states)).toBe('PRODUCT_ONLY');
     expect(inferSurfaceScopeFromSimpleStates(states)).toBe('BOTH');
   });
 
@@ -100,8 +100,8 @@ describe('applyTenantScopeToSimpleStates', () => {
     ).toBe('hardOff');
   });
 
-  it('defaults donation on for BOTH when not explicitly inactive', () => {
-    expect(applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY').donation).toBe('on');
+  it('defaults donation off for BOTH (G8 CAP-02 PARTIAL cannot persist ENABLE)', () => {
+    expect(applyTenantScopeToSimpleStates('BOTH', 'CUSTOMER_ONLY').donation).toBe('off');
   });
 
   it('preserves explicit analytics off or hardOff on BOTH purpose', () => {
@@ -252,4 +252,33 @@ describe('preserveHardOffSimpleStates', () => {
     expect(preserved.analytics_explore).toBe('hardOff');
     expect(preserved.donation).toBe('hardOff');
   });
+});
+
+describe('G8 PARTIAL cells stay off after applyTenantScopeToSimpleStates', () => {
+  const G8_PARTIAL_ONLY_BLOCK_KEYS = [
+    'donation',
+    'fulfillment_queue',
+    'order_pickup_infrastructure',
+    'pickup_points',
+    'staff_pickup_scan',
+    'payment_multi_currency',
+    'stripe_integration_strategy',
+    'bank_account_administration',
+    'bank_inbox_claims_api',
+    'tenant_brand_kit',
+    'permission_management_rbac',
+    'admin_mfa',
+    'admin_notifications',
+    'immediate_self_pickup',
+    'customer_self_collect',
+    'scheduled_pickup',
+  ] as const;
+
+  it.each(G8_PARTIAL_ONLY_BLOCK_KEYS)(
+    'BOTH+BOTH does not persist %s as on',
+    (blockKey) => {
+      const states = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+      expect(states[blockKey]).not.toBe('on');
+    },
+  );
 });
