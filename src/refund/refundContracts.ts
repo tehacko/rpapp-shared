@@ -120,6 +120,11 @@ export interface RefundReadDTO {
   readonly createdAt: string;
   readonly updatedAt: string;
   readonly remainingSaleMajor?: number;
+  /**
+   * Customer/guest confirmation PDF when a REFUND_CONFIRMATION doc is ready.
+   * Omitted or null for staff list rows and while the document is not ready.
+   */
+  readonly downloadUrl?: string | null;
 }
 
 /** Transaction refund list row — remaining cap is required. */

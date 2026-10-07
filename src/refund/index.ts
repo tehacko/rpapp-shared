@@ -33,3 +33,12 @@ export {
   mapRefundCustomerStatus,
   type MapRefundCustomerStatusInput,
 } from './mapRefundCustomerStatus.js';
+
+export {
+  alternativeRefundBodySchema,
+  createRefundAttemptBodySchema,
+  serializeAlternativeRefundBody,
+  serializeCreateRefundAttemptBody,
+  type AlternativeRefundBody,
+  type CreateRefundAttemptBody,
+} from './createRefundAttemptBodySchema.js';
