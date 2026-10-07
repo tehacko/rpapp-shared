@@ -184,6 +184,11 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     sk: 'Finance — vyúčtovanie',
   },
   financeRefunds: { en: 'Finance refunds', cs: 'Finance — refundace', sk: 'Finance — refundácie' },
+  'financeRefunds.alternativeMethod': {
+    en: 'Finance refunds — alternative method',
+    cs: 'Finance — refundace alternativní metodou',
+    sk: 'Finance — refundácia alternatívnou metódou',
+  },
   financeApproveSettlement: {
     en: 'Finance approve settlement',
     cs: 'Finance — schválení vyúčtování',

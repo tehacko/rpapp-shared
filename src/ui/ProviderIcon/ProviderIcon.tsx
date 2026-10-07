@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-export const PROVIDER_ICON_ASSET_IDS = ['fio', 'thepay', 'stripe', 'generic-bank'] as const;
+export const PROVIDER_ICON_ASSET_IDS = ['fio', 'thepay', 'gopay', 'stripe', 'generic-bank'] as const;
 
 export type ProviderIconAssetId = (typeof PROVIDER_ICON_ASSET_IDS)[number];
 
@@ -30,6 +30,10 @@ export function resolveProviderIconAssetId(providerId: string): ProviderIconAsse
 
   if (normalized === 'thepay') {
     return 'thepay';
+  }
+
+  if (normalized === 'gopay' || normalized.startsWith('gopay-')) {
+    return 'gopay';
   }
 
   if (normalized === 'stripe' || normalized.startsWith('stripe_') || normalized.startsWith('stripe-')) {

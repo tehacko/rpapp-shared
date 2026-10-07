@@ -48,6 +48,7 @@ export const API_ENDPOINTS = {
     PAYMENT_GATEWAY_STATUS: '/api/payments/gateway-status/:paymentId',
     PAYMENT_GATEWAY_CANCEL: '/api/payments/gateway-cancel',
     PAYMENT_GATEWAY_METHODS: '/api/payments/gateway-methods',
+    PAYMENT_GOPAY_NOTIFY: '/api/payments/gopay-notify',
     PAYMENT_TERMINAL_CONNECTION_TOKEN: '/api/payments/terminal/connection-token',
     PAYMENT_CREATE_TERMINAL: '/api/payments/terminal/create-terminal',
     PAYMENT_TERMINAL_CANCEL: '/api/payments/terminal/cancel',

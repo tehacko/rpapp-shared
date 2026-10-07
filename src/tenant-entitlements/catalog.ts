@@ -47,7 +47,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: [],
     adminNavSectionId: 'transactions',
-    notes: 'transactionRoutes',
+    notes:
+      'transactionRoutes; V1A.6 admin refunds/complaints reuse this key (no dedicated refunds block)',
   },
   {
     blockKey: 'sales_point_management',
@@ -272,7 +273,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentOperator: 'OR',
     requiredParentKeys: ['order_pickup_infrastructure'],
     notes:
-      'Pickup staff scan ops; requires order_pickup_infrastructure ∧ (pickup_points ∨ immediate_self_pickup) — ENT-PR-03 OR + infra (PICKUP_ENTITLEMENT optional surfaces)',
+      'Pickup staff scan ops; requires order_pickup_infrastructure ∧ (pickup_points ∨ immediate_self_pickup) — ENT-PR-03 OR + infra (PICKUP_ENTITLEMENT optional surfaces). V1A.6 pickup refund/complaint routes + commerce heal of refund pickupStaffCapabilities reuse this key (no dedicated refunds block)',
   },
   {
     blockKey: 'surface_kiosk',
@@ -299,7 +300,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: ['surface_customer'],
     notes:
-      'Customer registration, login, and account routes — mandatory when customer PWA is entitled; DEV policy UI locked On',
+      'Customer registration, login, and account routes — mandatory when customer PWA is entitled; DEV policy UI locked On. V1A.6 POST /customer-checkout/refund-request reuses this key (no dedicated refunds block)',
   },
   {
     blockKey: 'analytics',

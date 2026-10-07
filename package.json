@@ -1,6 +1,6 @@
 {
     "name": "pi-kiosk-shared",
-    "version": "2.3.31",
+    "version": "2.3.32",
     "type": "module",
     "private": false,
     "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
@@ -179,6 +179,11 @@
             "types": "./dist/order/index.d.ts",
             "import": "./dist/order/index.js",
             "require": "./dist/order/index.js"
+        },
+        "./refund": {
+            "types": "./dist/refund/index.d.ts",
+            "import": "./dist/refund/index.js",
+            "require": "./dist/refund/index.js"
         },
         "./order/fulfillmentContracts": {
             "types": "./dist/order/fulfillmentContracts.d.ts",
