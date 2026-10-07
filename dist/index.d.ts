@@ -60,6 +60,7 @@ export { catalogImageFailureKey, clearCatalogImageLoadGuardForTests, isBrokenCat
 export * from './buildKioskLineKey.js';
 export * from './commerce/reservedSalesPointSlugs.js';
 export * from './catalogMediaPatch.js';
+export * from './commerce/canonicalCommerceTypes.js';
 export * from './checkout/sessionMetadataV3.js';
 export * from './checkout/sessionMetadataV4.js';
 export * from './checkout/sessionMetadataV5.js';

@@ -20,6 +20,8 @@ export const ROLE_TEMPLATE_CANONICAL_OPS_PAIRS: readonly {
   { canonical: 'tenant.inventory.incidentHighImpact.review', ops: 'ops:inventory:incident_review_high_impact' },
   { canonical: 'tenant.transactions.view', ops: 'ops:transactions:read' },
   { canonical: 'tenant.transactions.manage', ops: 'ops:transactions:manage' },
+  { canonical: 'tenant.accountingExport.view', ops: 'ops:accounting-export:read' },
+  { canonical: 'tenant.accountingExport.create', ops: 'ops:accounting-export:create' },
   { canonical: 'tenant.donationProjects.view', ops: 'ops:donation-projects:read' },
   { canonical: 'tenant.donationProjects.manage', ops: 'ops:donation-projects:manage' },
   { canonical: 'tenant.branding.view', ops: 'ops:branding:read' },

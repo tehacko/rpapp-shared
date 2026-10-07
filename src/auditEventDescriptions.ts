@@ -858,6 +858,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když zákazník stáhne PDF účtenku ze svého účtu. Jeden řádek za stažení. Obsah PDF se v řádku auditu neukládá.',
     sk: 'Zapíše sa, keď zákazník stiahne PDF účtenku zo svojho účtu. Jeden riadok za stiahnutie. Obsah PDF sa v riadku auditu neukladá.',
   },
+  'receipt.document.corrective.generated': {
+    en: 'Recorded when a corrective tax document is minted for a refund of a tax invoice. One line per generated document. Includes actor, original document, refund attempt, and document number.',
+    cs: 'Zapíše se při vystavení opravného daňového dokladu k refundaci daňového dokladu. Jeden řádek za doklad. Obsahuje aktéra, původní doklad, refundaci a číslo dokladu.',
+    sk: 'Zapíše sa pri vystavení opravného daňového dokladu k refundácii daňového dokladu. Jeden riadok za doklad. Obsahuje aktéra, pôvodný doklad, refundáciu a číslo dokladu.',
+  },
   'gdpr.erasure.completed': {
     en: 'Recorded when a confirmed GDPR erasure request is finished and personal data is removed or anonymized as required. One line per completed request. The person’s email is not stored in this line.',
     cs: 'Zapíše se po dokončení potvrzené žádosti o výmaz podle GDPR a odstranění nebo anonymizaci údajů. Jeden řádek za dokončenou žádost. E-mail dotčené osoby se v řádku neukládá.',

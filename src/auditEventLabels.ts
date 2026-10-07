@@ -858,6 +858,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Účtenka stažena zákazníkem',
     sk: 'Účtenka stiahnutá zákazníkom',
   },
+  'receipt.document.corrective.generated': {
+    en: 'Corrective tax document generated',
+    cs: 'Vygenerován opravný daňový doklad',
+    sk: 'Vygenerovaný opravný daňový doklad',
+  },
   'gdpr.erasure.completed': {
     en: 'GDPR erasure completed',
     cs: 'GDPR výmaz dokončen',

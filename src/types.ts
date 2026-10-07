@@ -267,6 +267,10 @@ export interface CartItem {
   quantity: number;
   variantId?: number | null;
   variant?: { id: number; name?: string };
+  /** Frozen sale line from payment-status (G14/G39) — never live catalog. */
+  productNameSnapshot?: string;
+  unitAmountSnapshot?: number;
+  lineAmountSnapshot?: number;
 }
 
 export interface Cart {
@@ -307,6 +311,11 @@ export interface PaymentData {
   variableSymbol?: string | null;
   /** Plaintext Crockford guest access code when freshly minted (AC-20). */
   guestAccessCode?: string | null;
+  /** Frozen sale line from payment-status (G14/G39). */
+  productNameSnapshot?: string;
+  unitAmountSnapshot?: number;
+  lineAmountSnapshot?: number;
+  receiptSnapshotJson?: unknown;
   /**
    * Post-kiosk QR handoff token (raw, opaque), included when the backend
    * issued a handoff for the completed transaction. See
@@ -337,6 +346,7 @@ export interface MultiProductPaymentData {
   postKioskHandoffToken?: string;
   /** See `PaymentData.postKioskCustomerFrontendUrl`. */
   postKioskCustomerFrontendUrl?: string;
+  receiptSnapshotJson?: unknown;
 }
 
 export interface AdminProduct extends Product {
@@ -403,6 +413,7 @@ export interface CreateQRPaymentRequest {
   flowType?: TxFlowType;
   entryChannel?: TxEntryChannel;
   donationProjectCode?: string;
+  commerceOrderId?: string;
 }
 
 export interface CreateQRPaymentResponseData {
@@ -421,6 +432,7 @@ export interface CreateQRPaymentResponseData {
   variableSymbol?: string | null;
   /** Plaintext guest access code on fresh mint only (AC-20). */
   guestAccessCode?: string | null;
+  commerceOrderId?: string;
 }
 
 export interface CreateQRPaymentResponse {
@@ -469,6 +481,7 @@ export interface GatewayCreateRequest {
   donationProjectCode?: string;
   /** UI language (BCP-47 / ISO 639-1) for gateway checkout localization. */
   language?: string;
+  commerceOrderId?: string;
 }
 
 /**
@@ -522,6 +535,7 @@ export interface GatewayCreateResponse {
   variableSymbol?: string | null;
   /** Plaintext guest access code on fresh mint only (AC-20). */
   guestAccessCode?: string | null;
+  commerceOrderId?: string;
 }
 
 export interface GatewayStatusResponse {

@@ -144,6 +144,7 @@ export const AUDIT_EVENT_CODES = [
   'payment.customer.refund.requested',
   'customer_pickup_ack_informational',
   'customer.receipt.downloaded',
+  'receipt.document.corrective.generated',
   'reconciliation.transaction.refund_candidate.marked',
   'reconciliation.transaction.refund_candidate.unmarked',
   'reconciliation.bank_inbound.matched',
