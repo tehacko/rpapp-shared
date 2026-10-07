@@ -9,10 +9,18 @@ import {
 } from './templateDualKeyMap.js';
 
 describe('templateDualKeyMap G8', () => {
-  it('pins Canonical 23 ops:* pairs including ops:complaints twins', () => {
-    expect(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS).toHaveLength(23);
-    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.ops)).size).toBe(23);
-    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.canonical)).size).toBe(23);
+  it('pins Canonical 25 ops:* pairs including ops:complaints and accounting-export twins', () => {
+    expect(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS).toHaveLength(25);
+    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.ops)).size).toBe(25);
+    expect(new Set(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS.map((pair) => pair.canonical)).size).toBe(25);
+    expect(ROLE_TEMPLATE_CANONICAL_OPS_PAIRS).toEqual(
+      expect.arrayContaining([
+        { canonical: 'tenant.accountingExport.view', ops: 'ops:accounting-export:read' },
+        { canonical: 'tenant.accountingExport.create', ops: 'ops:accounting-export:create' },
+        { canonical: 'tenant.opsComplaints.view', ops: 'ops:complaints:read' },
+        { canonical: 'tenant.opsComplaints.intake', ops: 'ops:complaints:intake' },
+      ]),
+    );
   });
 
   it('leftover exclusion is never-invent ∪ canonical-mapped leftover', () => {
