@@ -370,16 +370,6 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'previousTenantCode', labelKey: 'compliance.audit.metadata.previousTenantCode' },
     { key: 'source', labelKey: 'compliance.audit.metadata.source' },
   ],
-<<<<<<< HEAD
-  'admin.bank_account.changed': [
-    { key: 'actorId', labelKey: 'compliance.audit.metadata.actorId' },
-    { key: 'action', labelKey: 'compliance.audit.metadata.action' },
-    { key: 'resourceKind', labelKey: 'compliance.audit.metadata.resourceKind' },
-  ],
-  'dev.tenant.settings.changed': [
-    { key: 'actorId', labelKey: 'compliance.audit.metadata.actorId' },
-    { key: 'scope', labelKey: 'compliance.audit.metadata.scope' },
-=======
   'finance.refund.attempt.created': [
     { key: 'attemptId', labelKey: 'compliance.audit.metadata.attemptId' },
     { key: 'transactionId', labelKey: 'compliance.audit.metadata.transactionId' },
@@ -428,7 +418,6 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'caseId', labelKey: 'compliance.audit.metadata.caseId' },
     { key: 'tenantId', labelKey: 'compliance.audit.metadata.tenantId' },
     { key: 'slaBreached', labelKey: 'compliance.audit.metadata.slaBreached' },
->>>>>>> 504c913e1c62147dc3665bf71d675324bd70afcd
   ],
 };
 

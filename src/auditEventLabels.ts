@@ -953,17 +953,6 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Vstup do kontextu organizace',
     sk: 'Vstup do kontextu organizácie',
   },
-<<<<<<< HEAD
-  'admin.bank_account.changed': {
-    en: 'Bank account identity changed',
-    cs: 'Změna identity bankovního účtu',
-    sk: 'Zmena identity bankového účtu',
-  },
-  'dev.tenant.settings.changed': {
-    en: 'Dev tenant settings changed',
-    cs: 'Změna nastavení organizace (dev)',
-    sk: 'Zmena nastavení organizácie (dev)',
-=======
   'finance.refund.attempt.created': {
     en: 'Refund attempt created',
     cs: 'Pokus o vrácení peněz vytvořen',
@@ -1008,7 +997,6 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Complaint deadline reminder',
     cs: 'Připomínka termínu reklamace',
     sk: 'Pripomienka termínu reklamácie',
->>>>>>> 504c913e1c62147dc3665bf71d675324bd70afcd
   },
 };
 
