@@ -368,6 +368,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se při úpravě nastavení retenční politiky administrátorem. Jeden řádek za úspěšné uložení politiky.',
     sk: 'Zapíše sa pri úprave nastavenia retenčnej politiky administrátorom. Jeden riadok za úspešné uloženie politiky.',
   },
+  'admin.retention.windows_updated': {
+    en: 'Recorded when Absolute retention window settings are updated by an administrator. One line per successful windows save (including dry-run audit).',
+    cs: 'Zapíše se při úpravě Absolute retenčních oken administrátorem. Jeden řádek za úspěšné uložení oken (včetně dry-run auditu).',
+    sk: 'Zapíše sa pri úprave Absolute retenčných okien administrátorom. Jeden riadok za úspešné uloženie okien (vrátane dry-run auditu).',
+  },
   'admin.salesPoint.deactivated': {
     en: 'Recorded when a sales point is turned off for customers. One line per sales point. Payments already in progress are handled separately.',
     cs: 'Zapíše se, když je prodejní místo vypnuté pro zákazníky. Jeden řádek za prodejní místo. Platby už rozjeté se řeší zvlášť.',

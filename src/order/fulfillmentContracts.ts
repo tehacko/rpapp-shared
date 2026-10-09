@@ -11,12 +11,32 @@
  * Keep field names and nullability aligned with the API responses.
  */
 import type { CollectTiming } from '../checkout/sessionMetadataV3.js';
-import type { ProductCollectionMode, TxPurposeType } from '../types.js';
+import type {
+  OrderFulfillmentMode,
+  ProductCollectionMode,
+  TxPurposeType,
+} from '../types.js';
 
-export type { CollectTiming, ProductCollectionMode };
+export type { CollectTiming, OrderFulfillmentMode, ProductCollectionMode };
 
 export const PRODUCT_COLLECTION_MODES = ['PAY_AT_KIOSK', 'PREPAY_COLLECT_LATER'] as const;
 export const COLLECT_TIMINGS = ['NOW', 'LATER'] as const;
+
+/**
+ * Fulfillment modality — orthogonal to ProductCollectionMode (BAN PCM overload).
+ * Expand-first M1: existing rows default PICKUP.
+ */
+export const ORDER_FULFILLMENT_MODES = ['PICKUP', 'SHIPPING'] as const satisfies readonly OrderFulfillmentMode[];
+
+export function isOrderFulfillmentMode(value: unknown): value is OrderFulfillmentMode {
+  return value === 'PICKUP' || value === 'SHIPPING';
+}
+
+export function normalizeOrderFulfillmentMode(
+  value: OrderFulfillmentMode | null | undefined
+): OrderFulfillmentMode {
+  return value ?? 'PICKUP';
+}
 
 /**
  * Canonical fulfillment FSM statuses (Spec §6 / A5).
@@ -29,6 +49,9 @@ export const ORDER_FULFILLMENT_STATUSES = [
   'READY_FOR_PICKUP',
   'COLLECTED',
   'CANCELED',
+  'READY_TO_SHIP',
+  'SHIPPED',
+  'DELIVERED',
 ] as const;
 
 export type OrderFulfillmentStatus = (typeof ORDER_FULFILLMENT_STATUSES)[number];

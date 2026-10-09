@@ -22,7 +22,10 @@ type ExpectedStatuses =
   | 'PREPARING'
   | 'READY_FOR_PICKUP'
   | 'COLLECTED'
-  | 'CANCELED';
+  | 'CANCELED'
+  | 'READY_TO_SHIP'
+  | 'SHIPPED'
+  | 'DELIVERED';
 
 const _statusParity: AssertEqual<OrderFulfillmentStatus, ExpectedStatuses> = true;
 
@@ -50,6 +53,9 @@ describe('fulfillmentContracts ACCEPTED status (P1 / Q3)', () => {
       'READY_FOR_PICKUP',
       'COLLECTED',
       'CANCELED',
+      'READY_TO_SHIP',
+      'SHIPPED',
+      'DELIVERED',
     ]);
     expect(ORDER_FULFILLMENT_STATUSES).toContain('ACCEPTED');
     expect(ORDER_FULFILLMENT_STATUSES as readonly string[]).not.toContain('PAID_QUEUED');

@@ -76,6 +76,7 @@ export const AUDIT_EVENT_CODES = [
   'admin.donationProject.archived',
   'admin.customerMembership.suspended',
   'admin.retention.policy_updated',
+  'admin.retention.windows_updated',
   'admin.salesPoint.deactivated',
   'admin.salesPoint.reactivated',
   'admin.salesPoint.permanently_deleted',

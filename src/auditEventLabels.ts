@@ -368,6 +368,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Retenční politika upravena',
     sk: 'Retenčná politika upravená',
   },
+  'admin.retention.windows_updated': {
+    en: 'Retention windows updated',
+    cs: 'Retenční okna upravena',
+    sk: 'Retenčné okná upravené',
+  },
   'admin.salesPoint.deactivated': {
     en: 'Sales point deactivated',
     cs: 'Prodejní místo deaktivováno',

@@ -134,6 +134,12 @@ export type SalesPointOperationalMode = 'PRODUCTS' | 'DONATION';
  */
 export type ProductCollectionMode = 'PAY_AT_KIOSK' | 'PREPAY_COLLECT_LATER';
 export type SalesPointProductCollectionMode = ProductCollectionMode;
+/**
+ * Fulfillment modality — orthogonal to {@link ProductCollectionMode}.
+ * BAN: do not overload ProductCollectionMode with SHIPPING.
+ * Expand-first M1 default PICKUP; SHIPPING paths require shippingLightEnabled.
+ */
+export type OrderFulfillmentMode = 'PICKUP' | 'SHIPPING';
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 /** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
 export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS' | 'ORG_APPROVAL' | 'TENANT_LIVE';

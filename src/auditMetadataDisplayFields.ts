@@ -174,6 +174,14 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'changedPlanIds', labelKey: 'compliance.audit.metadata.changedPlanIds' },
     { key: 'dryRun', labelKey: 'compliance.audit.metadata.dryRun' },
   ],
+  'admin.retention.windows_updated': [
+    { key: 'changedKeys', labelKey: 'compliance.audit.metadata.changedKeys' },
+    { key: 'settingsVersion', labelKey: 'compliance.audit.metadata.settingsVersion' },
+    { key: 'contentHash', labelKey: 'compliance.audit.metadata.contentHash' },
+    { key: 'ticketId', labelKey: 'compliance.audit.metadata.ticketId' },
+    { key: 'dryRun', labelKey: 'compliance.audit.metadata.dryRun' },
+    { key: 'effectiveAt', labelKey: 'compliance.audit.metadata.effectiveAt' },
+  ],
   'payment.provider_wiring.verified': [
     { key: 'providerSlotId', labelKey: 'compliance.audit.metadata.providerSlotId' },
     { key: 'bankAccountId', labelKey: 'compliance.audit.metadata.bankAccountId' },
