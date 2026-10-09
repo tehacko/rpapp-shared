@@ -211,3 +211,43 @@ export interface TenantDeprovisioningStatusResponse {
   readonly fanOutTargets: readonly TenantFanOutTargetProbe[];
   readonly checks: readonly DeprovisioningCheck[];
 }
+
+// --- GET restore-readiness / POST activate-after-restore (FI-10 / FI-18) ---
+
+/** Closed blocker-code set from TenantRestoreReadinessUseCase (FI-10). */
+export type TenantRestoreReadinessBlockerCode =
+  | 'BANK_RAIL_NOT_READY'
+  | 'CREDENTIAL_REQUIRES_REPROVISION'
+  | 'DEVICE_REQUIRES_REPROVISION'
+  | 'COMMS_CREDENTIAL_MISSING'
+  | 'INTEGRATION_CONFIG_MISSING'
+  | 'OWNER_AUTHORITY_MISSING'
+  | 'EVIDENCE_FAILED'
+  | 'UNKNOWN_PORT_ERROR';
+
+export interface TenantRestoreReadinessBlocker {
+  readonly code: TenantRestoreReadinessBlockerCode | string;
+  readonly message: string;
+  readonly remediation?: string;
+}
+
+/**
+ * GET /api/v1/admin/tenants/:id/restore-readiness `data` payload (FI-10).
+ * `pass` is the activate gate; `ready` is an optional alias some stubs may emit.
+ */
+export interface TenantRestoreReadinessResponse {
+  readonly pass: boolean;
+  readonly blockers: readonly TenantRestoreReadinessBlocker[];
+  readonly tenantId?: number;
+  /** Stub/alias — prefer `pass`. */
+  readonly ready?: boolean;
+}
+
+/** POST /api/v1/admin/tenants/:id/activate-after-restore `data` (FI-10). */
+export interface TenantActivateAfterRestoreResponse {
+  readonly tenantId?: number;
+  readonly tenantCode?: string;
+  readonly status?: string;
+  readonly activated?: boolean;
+  readonly lifecycleEpoch?: number;
+}
