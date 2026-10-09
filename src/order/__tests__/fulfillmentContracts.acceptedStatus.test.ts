@@ -77,7 +77,7 @@ describe('fulfillmentContracts ACCEPTED status (P1 / Q3)', () => {
     expect(customer.status).toBe('ACCEPTED');
     // Exhaustiveness helper — every const status is assignable
     const all: OrderFulfillmentStatus[] = [...ORDER_FULFILLMENT_STATUSES];
-    expect(all).toHaveLength(6);
+    expect(all).toHaveLength(9);
     void (null as unknown as AssertNever<Exclude<ExpectedStatuses, (typeof all)[number]>>);
   });
 });
