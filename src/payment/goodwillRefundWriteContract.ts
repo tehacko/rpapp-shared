@@ -1,8 +1,8 @@
 /**
  * Canonical goodwill / MarkRefund HTTP write body (Admin + Pickup).
  * Labels and salesPointId are server-derived — clients must not send them.
- * ALTERNATIVE_BANK is allowed through this parser so the backend domain
- * policy can return 409 (do not 400/422 at the schema).
+ * Write method SSOT: ORIGINAL | ALTERNATIVE_CASH only — ALTERNATIVE_BANK rejected here.
+ * Backend domain fail-closed for BANK remains HTTP 403 (do not change to 409).
  */
 
 export const GOODWILL_REFUND_WRITE_FORBIDDEN_KEYS = [
@@ -67,6 +67,8 @@ function optionalTrimmedString(value: unknown, max: number): string | undefined 
   return trimmed;
 }
 
+const GOODWILL_WRITE_METHODS = new Set(['ORIGINAL', 'ALTERNATIVE_CASH']);
+
 /**
  * Serialize the Admin/Pickup write body. Does not include alternative-rail pickers.
  */
@@ -79,6 +81,9 @@ export function buildGoodwillRefundWriteBody(input: BuildGoodwillRefundWriteInpu
   const reference = optionalTrimmedString(input.reference, 255);
   const refundPayoutRail = optionalTrimmedString(input.refundPayoutRail, 64);
   const method = optionalTrimmedString(input.method, 64);
+  if (method !== undefined && !GOODWILL_WRITE_METHODS.has(method)) {
+    throw new Error('INVALID_GOODWILL_REFUND_BODY');
+  }
   const sourceAttemptStatus = optionalTrimmedString(input.sourceAttemptStatus, 64);
   const customerConsentToAltMethodAt = optionalTrimmedString(input.customerConsentToAltMethodAt, 64);
   return {
@@ -97,7 +102,7 @@ export function buildGoodwillRefundWriteBody(input: BuildGoodwillRefundWriteInpu
 
 /**
  * Strict runtime parse matching backend goodwillRefundSchema field set
- * (same contract the HTTP Zod schema validates). Does not 400 ALTERNATIVE_BANK.
+ * (same contract the HTTP Zod schema validates). Rejects ALTERNATIVE_BANK.
  */
 export function parseGoodwillRefundWriteBody(input: unknown): GoodwillRefundWriteBody {
   if (input === null || typeof input !== 'object' || Array.isArray(input)) {
@@ -127,6 +132,11 @@ export function parseGoodwillRefundWriteBody(input: unknown): GoodwillRefundWrit
   }
   if (rec.personalActor !== undefined && typeof rec.personalActor !== 'boolean') {
     throw new Error('INVALID_GOODWILL_REFUND_BODY');
+  }
+  if (rec.method !== undefined) {
+    if (typeof rec.method !== 'string' || !GOODWILL_WRITE_METHODS.has(rec.method)) {
+      throw new Error('INVALID_GOODWILL_REFUND_BODY');
+    }
   }
   return buildGoodwillRefundWriteBody({
     transactionId: rec.transactionId,

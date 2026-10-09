@@ -64,4 +64,20 @@ describe('createRefundAttemptBodySchema (G19 contract)', () => {
     const parsed = alternativeRefundBodySchema.safeParse(body);
     expect(parsed.success).toBe(true);
   });
+
+  it('rejects ALTERNATIVE_BANK on create write schema', () => {
+    const result = createRefundAttemptBodySchema.safeParse({
+      ...base,
+      method: 'ALTERNATIVE_BANK',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects ALTERNATIVE_BANK on alternative write schema', () => {
+    const result = alternativeRefundBodySchema.safeParse({
+      ...base,
+      method: 'ALTERNATIVE_BANK',
+    });
+    expect(result.success).toBe(false);
+  });
 });

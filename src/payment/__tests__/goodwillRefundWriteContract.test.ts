@@ -25,10 +25,23 @@ describe('goodwillRefundWriteContract', () => {
     );
   });
 
-  it('does not reject ALTERNATIVE_BANK at the write contract (domain 409 owns fail-close)', () => {
-    expect(parseGoodwillRefundWriteBody({ transactionId: 1, method: 'ALTERNATIVE_BANK' })).toEqual({
+  it('rejects ALTERNATIVE_BANK at the goodwill write contract', () => {
+    expect(() =>
+      parseGoodwillRefundWriteBody({ transactionId: 1, method: 'ALTERNATIVE_BANK' }),
+    ).toThrow('INVALID_GOODWILL_REFUND_BODY');
+    expect(() =>
+      buildGoodwillRefundWriteBody({ transactionId: 1, method: 'ALTERNATIVE_BANK' }),
+    ).toThrow('INVALID_GOODWILL_REFUND_BODY');
+  });
+
+  it('accepts ORIGINAL / ALTERNATIVE_CASH on goodwill write contract', () => {
+    expect(parseGoodwillRefundWriteBody({ transactionId: 1, method: 'ORIGINAL' })).toEqual({
       transactionId: 1,
-      method: 'ALTERNATIVE_BANK',
+      method: 'ORIGINAL',
+    });
+    expect(parseGoodwillRefundWriteBody({ transactionId: 1, method: 'ALTERNATIVE_CASH' })).toEqual({
+      transactionId: 1,
+      method: 'ALTERNATIVE_CASH',
     });
   });
 });

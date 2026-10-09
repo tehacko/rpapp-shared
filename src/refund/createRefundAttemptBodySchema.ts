@@ -25,6 +25,7 @@ export const createRefundAttemptBodySchema = z
     amount: z.number().positive().finite(),
     currency: z.string().length(3),
     staffReason: z.enum(REFUND_STAFF_REASONS),
+    /** Write SSOT: ORIGINAL | ALTERNATIVE_CASH only — ALTERNATIVE_BANK rejected at schema. */
     method: z.enum(REFUND_METHODS).optional(),
     lines: z.array(refundLineSchema).min(1),
     note: z.string().max(2000).nullable().optional(),
@@ -40,8 +41,8 @@ export const alternativeRefundBodySchema = z
     amount: z.number().positive().finite(),
     currency: z.string().length(3),
     staffReason: z.enum(REFUND_STAFF_REASONS),
-    /** ALTERNATIVE_BANK remains in the wire enum but is fail-closed server-side (05-F05). */
-    method: z.enum(['ALTERNATIVE_CASH', 'ALTERNATIVE_BANK']),
+    /** Alternative write SSOT: ALTERNATIVE_CASH only — ALTERNATIVE_BANK rejected at schema. */
+    method: z.literal('ALTERNATIVE_CASH'),
     lines: z.array(refundLineSchema).min(1),
     note: z.string().max(2000).nullable().optional(),
     customerConsentToAltMethodAt: z.string().datetime().nullable().optional(),

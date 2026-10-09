@@ -65,9 +65,21 @@ export const REFUND_BUSINESS_BASES = [
 
 export type RefundBusinessBasis = (typeof REFUND_BUSINESS_BASES)[number];
 
-export const REFUND_METHODS = ['ORIGINAL', 'ALTERNATIVE_CASH', 'ALTERNATIVE_BANK'] as const;
+/** Production write-accepted methods (create / goodwill). Prisma may still store legacy BANK. */
+export const REFUND_METHODS = ['ORIGINAL', 'ALTERNATIVE_CASH'] as const;
 
 export type RefundMethod = (typeof REFUND_METHODS)[number];
+
+/**
+ * Historical Prisma `RefundAttemptMethod.ALTERNATIVE_BANK` — parse/read only.
+ * Not accepted on create / alternative / goodwill write Zod contracts.
+ */
+export const LEGACY_REFUND_METHODS = ['ALTERNATIVE_BANK'] as const;
+
+export type LegacyRefundMethod = (typeof LEGACY_REFUND_METHODS)[number];
+
+/** Read-wire method: production writes + historical ALTERNATIVE_BANK rows. */
+export type RefundReadMethod = RefundMethod | LegacyRefundMethod;
 
 /** HSS §6 staff selector chips (Czech) — locked, not legal labels. */
 export const REFUND_STAFF_REASON_CHIP_CS: Readonly<Record<RefundStaffReason, string>> = {
@@ -111,7 +123,7 @@ export interface RefundReadDTO {
   readonly staffReason: RefundStaffReason;
   readonly staffReasonChipCs: string;
   readonly businessBasis?: RefundBusinessBasis;
-  readonly method: RefundMethod;
+  readonly method: RefundReadMethod;
   /** Null when the wire value is missing or not a locked attempt status. */
   readonly attemptStatus: RefundAttemptStatus | null;
   readonly customerStatus: RefundCustomerStatus;
@@ -182,6 +194,13 @@ export function isRefundBusinessBasis(value: unknown): value is RefundBusinessBa
 
 export function isRefundMethod(value: unknown): value is RefundMethod {
   return typeof value === 'string' && (REFUND_METHODS as readonly string[]).includes(value);
+}
+
+/** Parse-only guard for historical `ALTERNATIVE_BANK` rows — not for create Zod. */
+export function isLegacyRefundMethod(value: unknown): value is LegacyRefundMethod {
+  return (
+    typeof value === 'string' && (LEGACY_REFUND_METHODS as readonly string[]).includes(value)
+  );
 }
 
 export function isTransactionRefundProjectionStatus(
