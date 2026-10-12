@@ -163,6 +163,13 @@ describe('G8 CAP grid collapse', () => {
         surface: 'admin_staff_ops',
         simpleStates: onStatesForCapability('CAP-01'),
       }),
+    ).toBe('READY');
+    expect(
+      evaluateProductCapabilityReadiness({
+        capabilityId: 'CAP-02',
+        surface: 'admin_staff_ops',
+        simpleStates: onStatesForCapability('CAP-02'),
+      }),
     ).toBe('NOT_READY');
   });
 
@@ -212,10 +219,17 @@ describe('G8 CAP grid collapse', () => {
   it.each([
     {
       name: 'production PARTIAL deny',
-      capabilityId: 'CAP-01' as const,
+      capabilityId: 'CAP-02' as const,
       surface: 'admin' as const,
       mode: 'production' as const,
       expected: false,
+    },
+    {
+      name: 'production CAP-01 admin READY allow',
+      capabilityId: 'CAP-01' as const,
+      surface: 'admin' as const,
+      mode: 'production' as const,
+      expected: true,
     },
     {
       name: 'production TEST deny',
@@ -246,8 +260,15 @@ describe('G8 CAP grid collapse', () => {
       expected: true,
     },
     {
-      name: 'test-mode PARTIAL still deny',
+      name: 'test-mode CAP-01 admin READY allow',
       capabilityId: 'CAP-01' as const,
+      surface: 'admin' as const,
+      mode: 'test' as const,
+      expected: true,
+    },
+    {
+      name: 'test-mode PARTIAL still deny',
+      capabilityId: 'CAP-02' as const,
       surface: 'admin' as const,
       mode: 'test' as const,
       expected: false,

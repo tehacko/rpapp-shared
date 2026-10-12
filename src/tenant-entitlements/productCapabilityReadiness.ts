@@ -70,7 +70,9 @@ export function normalizeProductCapabilitySurface(
 /** Plan G8 production 15×4. */
 export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
   'CAP-01': {
-    admin_staff_ops: 'PARTIAL',
+    // Admin catalog / products / inventory APIs are shipped — PARTIAL here
+    // false-403s ENFORCE admin reads while commercial policy ALLOW (nav shows, API denies).
+    admin_staff_ops: 'READY',
     kiosk_kiosk_device: 'READY',
     customer_mobile_shop: 'READY',
     pickup_staff_ops: 'PARTIAL',
@@ -164,7 +166,7 @@ export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
 /** Plan G8 test-mode 15×4 (`explicitDevEnable`). */
 export const PRODUCT_CAPABILITY_TEST_MODE_GRID = {
   'CAP-01': {
-    admin_staff_ops: 'PARTIAL',
+    admin_staff_ops: 'READY',
     kiosk_kiosk_device: 'READY',
     customer_mobile_shop: 'READY',
     pickup_staff_ops: 'PARTIAL',
