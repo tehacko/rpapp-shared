@@ -263,7 +263,6 @@ describe('G8 PARTIAL cells stay off after applyTenantScopeToSimpleStates', () =>
     'order_pickup_infrastructure',
     'pickup_points',
     'staff_pickup_scan',
-    'bank_account_administration',
     'bank_inbox_claims_api',
     'tenant_brand_kit',
     'permission_management_rbac',

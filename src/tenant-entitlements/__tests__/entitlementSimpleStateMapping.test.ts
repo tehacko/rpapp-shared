@@ -138,6 +138,18 @@ describe('simpleStatesFromPolicyAxes', () => {
     ]);
     expect(states.customer_auth_pwa).toBe('on');
   });
+
+  it('heals stale hardOff bank_account_administration to on (unconditional CORE_REQUIRED)', () => {
+    const states = simpleStatesFromPolicyAxes([
+      {
+        blockKey: 'bank_account_administration',
+        runtimeMode: 'DISABLED',
+        visibilityMode: 'HIDDEN',
+        mutationMode: 'BLOCK_ALL',
+      },
+    ]);
+    expect(states.bank_account_administration).toBe('on');
+  });
 });
 
 describe('resolveSimpleStateForBlock', () => {

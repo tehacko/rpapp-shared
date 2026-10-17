@@ -1,8 +1,5 @@
 import { TENANT_ENTITLEMENT_BLOCK_CATALOG, getEntitlementBlockCatalogEntry } from './catalog.js';
 import { areEntitlementBlockParentsSatisfied } from './catalogParentSatisfaction.js';
-import {
-  isParentGatedCoreRequiredBlock,
-} from './coreRequiredPolicyAxes.js';
 import type { EntitlementBlockAxes, EntitlementBlockClass, EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
 const CORE_REQUIRED_ON: SimpleEntitlementState = 'on';
@@ -69,8 +66,11 @@ export function simpleStatesFromPolicyAxes(
     }
     states[entry.blockKey] = axesToSimpleState(row);
   }
+  // CORE_REQUIRED heal (G1 banks / customer_auth_pwa): catalog class wins over stale
+  // CONDITIONAL-era policy axes. Unconditional CORE → on; parent-gated follows parents.
+  // Runtime mirror: TenantEffectivePolicyResolver applyImplicit* heals — no DB rewrite.
   for (const entry of TENANT_ENTITLEMENT_BLOCK_CATALOG) {
-    if (isParentGatedCoreRequiredBlock(entry.blockKey)) {
+    if (entry.blockClass === 'CORE_REQUIRED') {
       states[entry.blockKey] = resolveSimpleStateForBlock(entry.blockKey, states);
     }
   }

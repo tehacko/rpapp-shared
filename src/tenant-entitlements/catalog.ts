@@ -388,9 +388,11 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
   },
   {
     blockKey: 'bank_account_administration',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['payment_rails_strategy'],
-    notes: 'Bank CRUD APIs',
+    blockClass: 'CORE_REQUIRED',
+    parentKeys: [],
+    adminNavSectionId: 'bank-accounts',
+    notes:
+      'Bankovní účty admin section + bank CRUD APIs; always on (DEV policy UI locked yellow)',
   },
   {
     blockKey: 'receipt_delivery',

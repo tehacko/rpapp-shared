@@ -148,6 +148,11 @@ describe('tenant entitlement catalog', () => {
     const tenantOps = getEntitlementBlockCatalogEntry('tenant_ops_settings');
     expect(tenantOps.blockClass).toBe('CORE_REQUIRED');
 
+    const bankAdmin = getEntitlementBlockCatalogEntry('bank_account_administration');
+    expect(bankAdmin.blockClass).toBe('CORE_REQUIRED');
+    expect(bankAdmin.parentKeys).toEqual([]);
+    expect(bankAdmin.adminNavSectionId).toBe('bank-accounts');
+
     const reconciliation = getEntitlementBlockCatalogEntry('payment_reconciliation');
     expect(reconciliation.blockClass).toBe('STRATEGY');
     expect(reconciliation.defaultStrategy).toEqual({
