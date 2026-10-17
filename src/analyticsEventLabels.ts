@@ -273,6 +273,16 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
     cs: 'Volba daňového dokladu změněna',
     sk: 'Voľba daňového dokladu zmenená',
   },
+  discovery_result_selected: {
+    en: 'Discovery result selected',
+    cs: 'Vybrán výsledek vyhledávání',
+    sk: 'Vybraný výsledok vyhľadávania',
+  },
+  discovery_search_performed: {
+    en: 'Discovery search performed',
+    cs: 'Provedeno vyhledávání v katalogu',
+    sk: 'Vykonané vyhľadávanie v katalógu',
+  },
   recurring_donation_selected: {
     en: 'Recurring donation selected',
     cs: 'Opakovaný dar zvolen',

@@ -5,6 +5,7 @@
  */
 import {
   ANALYTICS_ACCOUNT_EVENTS,
+  ANALYTICS_DISCOVERY_EVENTS,
   ANALYTICS_DONATION_EVENTS,
   ANALYTICS_EVENT_NAMES,
   ANALYTICS_FUNNEL_EVENTS,
@@ -99,6 +100,20 @@ export const ANALYTICS_EMITTER_MANIFEST: readonly AnalyticsEmitterManifestCell[]
   },
   { eventName: 'checkout_started', surface: 'customer', layer: 'FE', required: true, reference: 'shopScreenHandlers' },
   { eventName: 'gift_surface_impression', surface: 'customer', layer: 'FE', required: false, reference: 'MoreMenuPanel' },
+  {
+    eventName: ANALYTICS_DISCOVERY_EVENTS.DISCOVERY_SEARCH_PERFORMED,
+    surface: 'customer',
+    layer: 'FE',
+    required: false,
+    reference: 'publicDiscoveryTelemetryClient',
+  },
+  {
+    eventName: ANALYTICS_DISCOVERY_EVENTS.DISCOVERY_RESULT_SELECTED,
+    surface: 'customer',
+    layer: 'FE',
+    required: false,
+    reference: 'publicDiscoveryTelemetryClient',
+  },
   { eventName: 'checkout_started', surface: 'kiosk', layer: 'FE', required: true, reference: 'kioskNavigationHandlers' },
   {
     eventName: 'checkout_mode_selected',
@@ -1072,6 +1087,7 @@ const ALLOWED_FE_REFERENCES = new Set<string>([
   'PostKioskDonationJourney',
   'MoreMenuPanel',
   'PwaLifecycle',
+  'publicDiscoveryTelemetryClient',
 ]);
 
 /** Repo-relative paths for CI grep wiring tests (G3). */
@@ -1121,6 +1137,8 @@ export const ANALYTICS_EMITTER_FE_REFERENCE_PATHS: Readonly<Record<string, strin
     'rpapp-customer/src/features/journeys/hooks/usePostKioskDonationJourney.ts',
   MoreMenuPanel: 'rpapp-customer/src/features/more/MorePage.tsx',
   PwaLifecycle: 'rpapp-customer/src/app/pwa/PwaLifecycle.tsx',
+  publicDiscoveryTelemetryClient:
+    'rpapp-customer/src/features/discovery/publicDiscoveryTelemetryClient.ts',
 };
 
 /** Repo-relative paths for server-layer CI grep wiring (G-P1-09 / AN-036). */

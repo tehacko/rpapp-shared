@@ -343,6 +343,26 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Odběrné místo trvale smazáno',
     sk: 'Odberné miesto trvalo zmazané',
   },
+  'admin.shippingMethod.created': {
+    en: 'Shipping method created',
+    cs: 'Způsob dopravy vytvořen',
+    sk: 'Spôsob dopravy vytvorený',
+  },
+  'admin.shippingMethod.updated': {
+    en: 'Shipping method updated',
+    cs: 'Způsob dopravy upraven',
+    sk: 'Spôsob dopravy upravený',
+  },
+  'admin.shippingMethod.deactivated': {
+    en: 'Shipping method deactivated',
+    cs: 'Způsob dopravy deaktivován',
+    sk: 'Spôsob dopravy deaktivovaný',
+  },
+  'admin.shippingMethod.reactivated': {
+    en: 'Shipping method reactivated',
+    cs: 'Způsob dopravy znovu aktivován',
+    sk: 'Spôsob dopravy znova aktivovaný',
+  },
   'admin.donationProject.deactivated': {
     en: 'Donation project deactivated',
     cs: 'Dárcovský projekt deaktivován',
@@ -1007,6 +1027,81 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Complaint deadline reminder',
     cs: 'Připomínka termínu reklamace',
     sk: 'Pripomienka termínu reklamácie',
+  },
+  'admin.product.gpsr_exemption_granted': {
+    en: 'admin · product · gpsr exemption granted',
+    cs: 'admin · product · gpsr exemption granted',
+    sk: 'admin · product · gpsr exemption granted',
+  },
+  'admin.product.gpsr_exemption_cleared': {
+    en: 'admin · product · gpsr exemption cleared',
+    cs: 'admin · product · gpsr exemption cleared',
+    sk: 'admin · product · gpsr exemption cleared',
+  },
+  'admin.legal_document.published': {
+    en: 'admin · legal document · published',
+    cs: 'admin · legal document · published',
+    sk: 'admin · legal document · published',
+  },
+  'admin.legal_document.superseded': {
+    en: 'admin · legal document · superseded',
+    cs: 'admin · legal document · superseded',
+    sk: 'admin · legal document · superseded',
+  },
+  'admin.shipping_address.support_accessed': {
+    en: 'admin · shipping address · support accessed',
+    cs: 'admin · shipping address · support accessed',
+    sk: 'admin · shipping address · support accessed',
+  },
+  'admin.tenant.closure_request_created': {
+    en: 'admin · tenant · closure request created',
+    cs: 'admin · tenant · closure request created',
+    sk: 'admin · tenant · closure request created',
+  },
+  'admin.tenant.closure_request_cancelled': {
+    en: 'admin · tenant · closure request cancelled',
+    cs: 'admin · tenant · closure request cancelled',
+    sk: 'admin · tenant · closure request cancelled',
+  },
+  'admin.bank_account.structure_changed': {
+    en: 'admin · bank account · structure changed',
+    cs: 'admin · bank account · structure changed',
+    sk: 'admin · bank account · structure changed',
+  },
+  'export.accounting.canonical.exported': {
+    en: 'export · accounting · canonical · exported',
+    cs: 'export · accounting · canonical · exported',
+    sk: 'export · accounting · canonical · exported',
+  },
+  'ops.aftersale.case.submitted': {
+    en: 'ops · aftersale · case · submitted',
+    cs: 'ops · aftersale · case · submitted',
+    sk: 'ops · aftersale · case · submitted',
+  },
+  'ops.aftersale.longer_deadline_agreed': {
+    en: 'ops · aftersale · longer deadline agreed',
+    cs: 'ops · aftersale · longer deadline agreed',
+    sk: 'ops · aftersale · longer deadline agreed',
+  },
+  'ops.shipping.selected': {
+    en: 'ops · shipping · selected',
+    cs: 'ops · shipping · selected',
+    sk: 'ops · shipping · selected',
+  },
+  'ops.shipping.ready_to_ship': {
+    en: 'ops · shipping · ready to ship',
+    cs: 'ops · shipping · ready to ship',
+    sk: 'ops · shipping · ready to ship',
+  },
+  'ops.shipping.order_shipped': {
+    en: 'ops · shipping · order shipped',
+    cs: 'ops · shipping · order shipped',
+    sk: 'ops · shipping · order shipped',
+  },
+  'ops.shipping.delivery_acknowledged': {
+    en: 'ops · shipping · delivery acknowledged',
+    cs: 'ops · shipping · delivery acknowledged',
+    sk: 'ops · shipping · delivery acknowledged',
   },
 };
 

@@ -74,6 +74,12 @@ events:
   - event: customer_pickup_ack_informational
     catalogVersion: 1
     telemetryClass: OPERATIONAL
+  - event: discovery_result_selected
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
+  - event: discovery_search_performed
+    catalogVersion: 1
+    telemetryClass: OPERATIONAL
   - event: donation_abandoned
     catalogVersion: 1
     telemetryClass: OPERATIONAL

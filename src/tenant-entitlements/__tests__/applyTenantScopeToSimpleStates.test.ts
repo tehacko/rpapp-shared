@@ -255,23 +255,20 @@ describe('preserveHardOffSimpleStates', () => {
 });
 
 describe('G8 PARTIAL cells stay off after applyTenantScopeToSimpleStates', () => {
+  // CAP-08 / CAP-14 production READY — pickup/self-collect/multi-currency/stripe blocks
+  // may persist ENABLE; keep only still-PARTIAL / NOT_READY mapped keys here.
   const G8_PARTIAL_ONLY_BLOCK_KEYS = [
     'donation',
     'fulfillment_queue',
     'order_pickup_infrastructure',
     'pickup_points',
     'staff_pickup_scan',
-    'payment_multi_currency',
-    'stripe_integration_strategy',
     'bank_account_administration',
     'bank_inbox_claims_api',
     'tenant_brand_kit',
     'permission_management_rbac',
     'admin_mfa',
     'admin_notifications',
-    'immediate_self_pickup',
-    'customer_self_collect',
-    'scheduled_pickup',
   ] as const;
 
   it.each(G8_PARTIAL_ONLY_BLOCK_KEYS)(

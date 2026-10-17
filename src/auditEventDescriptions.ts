@@ -343,6 +343,26 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když je odběrné místo trvale odstraněno z konfigurace. Jeden řádek za odběrné místo. Staré auditní a platební stopy zůstávají.',
     sk: 'Zapíše sa, keď je odberné miesto trvale odstránené z konfigurácie. Jeden riadok za odberné miesto. Staré auditné a platobné stopy zostávajú.',
   },
+  'admin.shippingMethod.created': {
+    en: 'Recorded when a shipping method is created for the tenant. One line per shipping method.',
+    cs: 'Zapíše se, když je pro tenanta vytvořen způsob dopravy. Jeden řádek za způsob dopravy.',
+    sk: 'Zapíše sa, keď je pre tenanta vytvorený spôsob dopravy. Jeden riadok za spôsob dopravy.',
+  },
+  'admin.shippingMethod.updated': {
+    en: 'Recorded when a shipping method configuration is updated. One line per shipping method.',
+    cs: 'Zapíše se, když je konfigurace způsobu dopravy upravena. Jeden řádek za způsob dopravy.',
+    sk: 'Zapíše sa, keď je konfigurácia spôsobu dopravy upravená. Jeden riadok za spôsob dopravy.',
+  },
+  'admin.shippingMethod.deactivated': {
+    en: 'Recorded when a shipping method is deactivated and no longer offered at checkout. One line per shipping method.',
+    cs: 'Zapíše se, když je způsob dopravy deaktivován a už není nabízen u pokladny. Jeden řádek za způsob dopravy.',
+    sk: 'Zapíše sa, keď je spôsob dopravy deaktivovaný a už nie je ponúkaný pri pokladni. Jeden riadok za spôsob dopravy.',
+  },
+  'admin.shippingMethod.reactivated': {
+    en: 'Recorded when a deactivated shipping method is reactivated and offered again. One line per shipping method.',
+    cs: 'Zapíše se, když je deaktivovaný způsob dopravy znovu aktivován a opět nabízen. Jeden řádek za způsob dopravy.',
+    sk: 'Zapíše sa, keď je deaktivovaný spôsob dopravy znova aktivovaný a opäť ponúkaný. Jeden riadok za spôsob dopravy.',
+  },
   'admin.donationProject.deactivated': {
     en: 'Recorded when a donation project is deactivated and hidden from active assignment. One line per project.',
     cs: 'Zapíše se, když je dárcovský projekt deaktivován a skryt z aktivního přiřazení. Jeden řádek za projekt.',
@@ -1007,5 +1027,80 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when the complaint deadline worker emits a reminder. Ids and deadline flags only — no IBAN or customer PII.',
     cs: 'Zapíše se, když worker termínu reklamace odešle připomínku. Jen id a příznaky termínu — bez IBAN a osobních údajů.',
     sk: 'Zapíše sa, keď worker termínu reklamácie odošle pripomienku. Len id a príznaky termínu — bez IBAN a osobných údajov.',
+  },
+  'admin.product.gpsr_exemption_granted': {
+    en: 'Recorded for admin · product · gpsr exemption granted.',
+    cs: 'Záznam pro admin · product · gpsr exemption granted.',
+    sk: 'Záznam pre admin · product · gpsr exemption granted.',
+  },
+  'admin.product.gpsr_exemption_cleared': {
+    en: 'Recorded for admin · product · gpsr exemption cleared.',
+    cs: 'Záznam pro admin · product · gpsr exemption cleared.',
+    sk: 'Záznam pre admin · product · gpsr exemption cleared.',
+  },
+  'admin.legal_document.published': {
+    en: 'Recorded for admin · legal document · published.',
+    cs: 'Záznam pro admin · legal document · published.',
+    sk: 'Záznam pre admin · legal document · published.',
+  },
+  'admin.legal_document.superseded': {
+    en: 'Recorded for admin · legal document · superseded.',
+    cs: 'Záznam pro admin · legal document · superseded.',
+    sk: 'Záznam pre admin · legal document · superseded.',
+  },
+  'admin.shipping_address.support_accessed': {
+    en: 'Recorded for admin · shipping address · support accessed.',
+    cs: 'Záznam pro admin · shipping address · support accessed.',
+    sk: 'Záznam pre admin · shipping address · support accessed.',
+  },
+  'admin.tenant.closure_request_created': {
+    en: 'Recorded for admin · tenant · closure request created.',
+    cs: 'Záznam pro admin · tenant · closure request created.',
+    sk: 'Záznam pre admin · tenant · closure request created.',
+  },
+  'admin.tenant.closure_request_cancelled': {
+    en: 'Recorded for admin · tenant · closure request cancelled.',
+    cs: 'Záznam pro admin · tenant · closure request cancelled.',
+    sk: 'Záznam pre admin · tenant · closure request cancelled.',
+  },
+  'admin.bank_account.structure_changed': {
+    en: 'Recorded for admin · bank account · structure changed.',
+    cs: 'Záznam pro admin · bank account · structure changed.',
+    sk: 'Záznam pre admin · bank account · structure changed.',
+  },
+  'export.accounting.canonical.exported': {
+    en: 'Recorded for export · accounting · canonical · exported.',
+    cs: 'Záznam pro export · accounting · canonical · exported.',
+    sk: 'Záznam pre export · accounting · canonical · exported.',
+  },
+  'ops.aftersale.case.submitted': {
+    en: 'Recorded for ops · aftersale · case · submitted.',
+    cs: 'Záznam pro ops · aftersale · case · submitted.',
+    sk: 'Záznam pre ops · aftersale · case · submitted.',
+  },
+  'ops.aftersale.longer_deadline_agreed': {
+    en: 'Recorded for ops · aftersale · longer deadline agreed.',
+    cs: 'Záznam pro ops · aftersale · longer deadline agreed.',
+    sk: 'Záznam pre ops · aftersale · longer deadline agreed.',
+  },
+  'ops.shipping.selected': {
+    en: 'Recorded for ops · shipping · selected.',
+    cs: 'Záznam pro ops · shipping · selected.',
+    sk: 'Záznam pre ops · shipping · selected.',
+  },
+  'ops.shipping.ready_to_ship': {
+    en: 'Recorded for ops · shipping · ready to ship.',
+    cs: 'Záznam pro ops · shipping · ready to ship.',
+    sk: 'Záznam pre ops · shipping · ready to ship.',
+  },
+  'ops.shipping.order_shipped': {
+    en: 'Recorded for ops · shipping · order shipped.',
+    cs: 'Záznam pro ops · shipping · order shipped.',
+    sk: 'Záznam pre ops · shipping · order shipped.',
+  },
+  'ops.shipping.delivery_acknowledged': {
+    en: 'Recorded for ops · shipping · delivery acknowledged.',
+    cs: 'Záznam pro ops · shipping · delivery acknowledged.',
+    sk: 'Záznam pre ops · shipping · delivery acknowledged.',
   },
 };

@@ -173,12 +173,12 @@ describe('G8 CAP grid collapse', () => {
     ).toBe('NOT_READY');
   });
 
-  it('promotes CAP-08 TEST cells to READY only in test-mode', () => {
+  it('promotes CAP-10 TEST cells to READY only in test-mode', () => {
     expect(
-      declaredProductCapabilityReadiness('CAP-08', 'kiosk_kiosk_device'),
+      declaredProductCapabilityReadiness('CAP-10', 'customer_mobile_shop'),
     ).toBe('NOT_READY');
     expect(
-      declaredProductCapabilityReadiness('CAP-08', 'kiosk_kiosk_device', {
+      declaredProductCapabilityReadiness('CAP-10', 'customer_mobile_shop', {
         explicitDevEnable: true,
       }),
     ).toBe('READY');

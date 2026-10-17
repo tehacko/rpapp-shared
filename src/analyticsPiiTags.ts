@@ -74,6 +74,20 @@ const EVENT_TAG_OVERRIDES: Partial<Record<AnalyticsEventName, AnalyticsPiiTagsBy
   pwa_update_shown: {},
   pwa_update_deferred: {},
   pwa_update_applied: {},
+  discovery_search_performed: {
+    search_request_id: 'pseudonymous',
+    result_count: 'none',
+    entity: 'none',
+    platform_category_id: 'none',
+    source: 'none',
+  },
+  discovery_result_selected: {
+    search_request_id: 'pseudonymous',
+    result_kind: 'none',
+    target_tenant_id: 'pseudonymous',
+    target_product_id: 'pseudonymous',
+    target_sales_point_id: 'pseudonymous',
+  },
 };
 
 const SERVER_SIDE_EVENTS = new Set<AnalyticsEventName>([

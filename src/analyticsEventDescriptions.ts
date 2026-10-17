@@ -1,5 +1,6 @@
 import {
   ANALYTICS_ACCOUNT_EVENTS,
+  ANALYTICS_DISCOVERY_EVENTS,
   ANALYTICS_DONATION_EVENTS,
   ANALYTICS_EVENT_NAMES,
   ANALYTICS_FUNNEL_EVENTS,
@@ -387,6 +388,22 @@ const RETAIL_DESCRIPTIONS = {
   },
 };
 
+const DISCOVERY_DESCRIPTIONS: Record<
+  (typeof ANALYTICS_DISCOVERY_EVENTS)[keyof typeof ANALYTICS_DISCOVERY_EVENTS],
+  LocalizedLabel
+> = {
+  [ANALYTICS_DISCOVERY_EVENTS.DISCOVERY_SEARCH_PERFORMED]: {
+    en: 'Counts when a platform discovery search completes successfully with stable results. One count per search request. Raw query text must never be sent.',
+    cs: 'Počítá se po úspěšném dokončení platformního vyhledávání se stabilními výsledky. Jednou za požadavek vyhledávání. Text dotazu se nikdy neodesílá.',
+    sk: 'Počíta sa po úspešnom dokončení platformného vyhľadávania so stabilnými výsledkami. Raz za požiadavku vyhľadávania. Text dopytu sa nikdy neodosiela.',
+  },
+  [ANALYTICS_DISCOVERY_EVENTS.DISCOVERY_RESULT_SELECTED]: {
+    en: 'Counts when the customer opens or acts on a discovery search result (shop, product, tenant). One count per selection tied to the search request.',
+    cs: 'Počítá se, když zákazník otevře nebo použije výsledek vyhledávání (obchod, produkt, tenant). Jednou za výběr vázaný na požadavek vyhledávání.',
+    sk: 'Počíta sa, keď zákazník otvorí alebo použije výsledok vyhľadávania (obchod, produkt, tenant). Raz za výber viazaný na požiadavku vyhľadávania.',
+  },
+};
+
 const DONATION_DESCRIPTIONS: Record<
   (typeof ANALYTICS_DONATION_EVENTS)[keyof typeof ANALYTICS_DONATION_EVENTS],
   LocalizedLabel
@@ -621,6 +638,7 @@ function buildAnalyticsEventDescriptions(): Record<AnalyticsEventName, Localized
     ...UNIVERSAL_DESCRIPTIONS,
     ...EXTENSION_DESCRIPTIONS,
     ...RETAIL_DESCRIPTIONS,
+    ...DISCOVERY_DESCRIPTIONS,
     ...DONATION_DESCRIPTIONS,
     ...KIOSK_DESCRIPTIONS,
     ...PWA_DESCRIPTIONS,

@@ -128,6 +128,15 @@ export const ANALYTICS_PWA_EVENTS = {
   PWA_UPDATE_APPLIED: 'pwa_update_applied',
 } as const;
 
+/**
+ * Platform discovery browse telemetry (public ingest — tenantId sentinel 0).
+ * Never include raw search query text in metadata (spec S-05).
+ */
+export const ANALYTICS_DISCOVERY_EVENTS = {
+  DISCOVERY_SEARCH_PERFORMED: 'discovery_search_performed',
+  DISCOVERY_RESULT_SELECTED: 'discovery_result_selected',
+} as const;
+
 export const ANALYTICS_BARCODE_OPS_EVENTS = {
   PRODUCT_BARCODE_ASSIGNED: 'product_barcode_assigned',
   PRODUCT_BARCODE_CLEARED: 'product_barcode_cleared',
@@ -177,6 +186,7 @@ export const ANALYTICS_EVENT_NAMES = [
   ...Object.values(ANALYTICS_DONATION_EVENTS),
   ...Object.values(ANALYTICS_KIOSK_EVENTS),
   ...Object.values(ANALYTICS_PWA_EVENTS),
+  ...Object.values(ANALYTICS_DISCOVERY_EVENTS),
   ...Object.values(ANALYTICS_SERVER_OPS_EVENTS),
 ] as const;
 

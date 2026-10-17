@@ -114,9 +114,11 @@ export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
     pickup_staff_ops: 'NOT_READY',
   },
   'CAP-08': {
-    admin_staff_ops: 'PARTIAL',
-    kiosk_kiosk_device: 'PARTIAL',
-    customer_mobile_shop: 'PARTIAL',
+    // Bank QR / gateway checkout + admin rail wiring ship — PARTIAL false-403s ENFORCE
+    // on `payment_rails_strategy` while tenantEntitlementPolicy blocks are ENABLED (e2e-commerce).
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
     pickup_staff_ops: 'n_a',
   },
   'CAP-09': {
@@ -150,10 +152,12 @@ export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
     pickup_staff_ops: 'READY',
   },
   'CAP-14': {
-    admin_staff_ops: 'PARTIAL',
-    kiosk_kiosk_device: 'PARTIAL',
-    customer_mobile_shop: 'PARTIAL',
-    pickup_staff_ops: 'PARTIAL',
+    // Pickup LATER / pickup-slots / self-collect ship — PARTIAL false-403s ENFORCE reads
+    // while tenantEntitlementPolicy scheduled_pickup is ENABLED (ENV-03 / e2e-commerce).
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
   },
   'CAP-15': {
     admin_staff_ops: 'NOT_READY',
@@ -244,10 +248,10 @@ export const PRODUCT_CAPABILITY_TEST_MODE_GRID = {
     pickup_staff_ops: 'READY',
   },
   'CAP-14': {
-    admin_staff_ops: 'PARTIAL',
-    kiosk_kiosk_device: 'PARTIAL',
-    customer_mobile_shop: 'PARTIAL',
-    pickup_staff_ops: 'PARTIAL',
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
   },
   'CAP-15': {
     admin_staff_ops: 'NOT_READY',
@@ -429,6 +433,8 @@ export function clampSimpleStatesToProductionEnableAllowed(
     if (state !== 'on') {
       continue;
     }
+    // CAP-02 PARTIAL: donation must clamp to off even though it is a purpose-axis key.
+    // product_vending stays on via CAP-01 READY — do not exempt the whole purpose axis.
     if (isEntitlementBlockProductionEnableAllowed(blockKey)) {
       continue;
     }
