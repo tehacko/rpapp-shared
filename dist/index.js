@@ -75,6 +75,8 @@ export * from './contracts/inventory/index.js';
 export * from './promo/promoSessionHandoff.js';
 export * from './promo/resolvePromoLoyaltyStack.js';
 export * from './promo/PromoCodeErrorCode.js';
+export * from './eet/CommerceBlockedErrorCode.js';
+export * from './eet/CommerceBlockedErrorCode.js';
 export * from './promo/ApplyPromoCodeRequest.js';
 export * from './promo/ApplyPromoCodeResponse.js';
 export * from './promo/resolveApplyPromoEventDisplayName.js';

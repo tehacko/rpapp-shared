@@ -135,6 +135,11 @@
             "import": "./dist/promo/PromoCodeErrorCode.js",
             "require": "./dist/promo/PromoCodeErrorCode.js"
         },
+        "./eet/CommerceBlockedErrorCode": {
+            "types": "./dist/eet/CommerceBlockedErrorCode.d.ts",
+            "import": "./dist/eet/CommerceBlockedErrorCode.js",
+            "require": "./dist/eet/CommerceBlockedErrorCode.js"
+        },
         "./promo/ApplyPromoCodeRequest": {
             "types": "./dist/promo/ApplyPromoCodeRequest.d.ts",
             "import": "./dist/promo/ApplyPromoCodeRequest.js",
