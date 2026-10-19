@@ -391,8 +391,9 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: [],
     adminNavSectionId: 'bank-accounts',
+    capabilityHint: 'tenant.bankAccounts.read',
     notes:
-      'Bankovní účty admin section + bank CRUD APIs; always on (DEV policy UI locked yellow)',
+      'Bankovní účty admin section + bank CRUD APIs; always on (DEV policy UI locked yellow). Nav/SAG also require tenant.bankAccounts.read (list GET parity).',
   },
   {
     blockKey: 'receipt_delivery',

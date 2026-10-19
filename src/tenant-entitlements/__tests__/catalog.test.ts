@@ -152,6 +152,7 @@ describe('tenant entitlement catalog', () => {
     expect(bankAdmin.blockClass).toBe('CORE_REQUIRED');
     expect(bankAdmin.parentKeys).toEqual([]);
     expect(bankAdmin.adminNavSectionId).toBe('bank-accounts');
+    expect(bankAdmin.capabilityHint).toBe('tenant.bankAccounts.read');
 
     const reconciliation = getEntitlementBlockCatalogEntry('payment_reconciliation');
     expect(reconciliation.blockClass).toBe('STRATEGY');

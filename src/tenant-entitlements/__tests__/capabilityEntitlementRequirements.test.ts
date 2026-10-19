@@ -164,6 +164,36 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     });
   });
 
+  it('G1: bankAccounts.* commercial path is CORE bank_account_administration (not payment_rails)', () => {
+    expect(requiredBlocksForCapability('tenant.bankAccounts.read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['bank_account_administration'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('tenant.bankAccounts.manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['bank_account_administration'],
+      match: 'ALL',
+    });
+    // paymentCredentials / config:payments stay on payment_rails — not required for banks CORE
+    expect(requiredBlocksForCapability('tenant.paymentCredentials.view')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['payment_rails_strategy'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('config:payments:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['payment_rails_strategy'],
+      match: 'ALL',
+    });
+    expect(capabilitiesRequiringBlock('bank_account_administration')).toEqual(
+      expect.arrayContaining(['tenant.bankAccounts.read', 'tenant.bankAccounts.manage']),
+    );
+    expect(capabilitiesRequiringBlock('bank_account_administration')).not.toEqual(
+      expect.arrayContaining(['tenant.paymentCredentials.view', 'config:payments:read']),
+    );
+  });
+
   it('does not denylist CONDITIONAL incident_centre_ui (must be requirable)', () => {
     expect(NEVER_REQUIRED_BLOCK_KEYS).not.toContain('incident_centre_ui');
   });
