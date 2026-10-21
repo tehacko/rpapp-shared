@@ -163,4 +163,14 @@ export interface TenantCommandCenterWire {
   readonly revenueByDay: readonly TenantCommandCenterRevenueDay[];
   /** Summary-grade: top products by revenue (empty when no product rollups). */
   readonly topProducts: readonly TenantCommandCenterTopProduct[];
+  /**
+   * When true, one or more best-effort composite sections used fallbacks.
+   * Omit when unknown; do not invent from partial client state.
+   */
+  readonly degraded?: boolean;
+  /**
+   * Stable section ids that rendered in degraded / fallback mode
+   * (admin FE degraded contract). Empty or omit when none.
+   */
+  readonly degradedSections?: readonly string[];
 }

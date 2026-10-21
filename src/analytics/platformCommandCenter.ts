@@ -157,4 +157,15 @@ export interface PlatformCommandCenterWire {
   readonly ops: PlatformCommandCenterOps;
   readonly tenants: PlatformCommandCenterTenants;
   readonly overview: PlatformCommandCenterOverview;
+  /**
+   * When true, one or more best-effort composite sections used fallbacks.
+   * Omit when unknown; do not invent from partial client state.
+   */
+  readonly degraded?: boolean;
+  /**
+   * Stable section ids with incomplete/fallback data (admin FE degraded contract).
+   * Prefer always sending `[]` from gateway when none; clients must tolerate omit.
+   * May be non-empty even when `ops.health.status === 'healthy'`.
+   */
+  readonly degradedSections?: readonly string[];
 }
