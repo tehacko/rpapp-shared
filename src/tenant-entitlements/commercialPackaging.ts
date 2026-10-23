@@ -1,7 +1,7 @@
 /**
- * Package A — commercial packaging map for current catalog (50 keys / v10).
- * Values copied verbatim from Package A FINAL §3.5 (`+` joiners → arrays).
- * Preflight evaluator only — not wired to runtime entitlement enforcement.
+ * Package A/C — commercial packaging map for current catalog (51 keys / v11).
+ * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
+ * explore GROWTH+DO_NOT_SELL. Preflight evaluator only — not wired to runtime enforce.
  */
 import {
   COMMERCIAL_PLAN_IDS,
@@ -198,16 +198,22 @@ export const COMMERCIAL_PACKAGING = {
   ),
   customer_auth_pwa: rule(['FREE'], 'ALIGNED', 'OPEN', 'základ zákaznické identity'),
   analytics: rule(
-    ['FREE', 'PRO', 'GROWTH'],
-    'REFACTOR_REQUIRED',
+    ['NON_COMMERCIAL'],
+    'ALIGNED',
+    'NOT_APPLICABLE',
+    'zastřešující umbrella — neprodejní; obchodní vrstvy na basic/overview/explore',
+  ),
+  analytics_basic: rule(
+    ['FREE'],
+    'ALIGNED',
     'OPEN',
-    'zastřešující blok nad více hodnotovými vrstvami',
+    'FREE analytics shell — basic-summary / payment-mix / freshness',
   ),
   analytics_overview: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
+    ['PRO'],
+    'ALIGNED',
     'OPEN',
-    'současný payload míchá základní data a rozhodovací hodnotu',
+    'PRO / Command Center — operational summary a rozhodovací analytika',
   ),
   analytics_explore: rule(
     ['GROWTH'],

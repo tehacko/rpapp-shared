@@ -32,6 +32,7 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.donation).toBe('off');
     expect(states.catalog_administration).toBe('hardOff');
     expect(states.product_barcode_administration).toBe('hardOff');
+    expect(states.analytics_basic).toBe('off');
     expect(states.analytics_overview).toBe('off');
     expect(states.analytics_explore).toBe('off');
     expect(states.pickup_points).toBe('off');
@@ -82,11 +83,13 @@ describe('applyTenantScopeToSimpleStates', () => {
 
   it('stripAxisControlledSimpleStates removes axis keys only', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY', {
+      analytics_basic: 'off',
       analytics_overview: 'off',
       analytics_explore: 'off',
     });
     const stripped = stripAxisControlledSimpleStates(states);
     expect(stripped.product_vending).toBeUndefined();
+    expect(stripped.analytics_basic).toBe('off');
     expect(stripped.analytics_overview).toBe('off');
     expect(stripped.analytics_explore).toBe('off');
   });
@@ -106,6 +109,9 @@ describe('applyTenantScopeToSimpleStates', () => {
 
   it('preserves explicit analytics off or hardOff on BOTH purpose', () => {
     expect(
+      applyTenantScopeToSimpleStates('BOTH', 'BOTH', { analytics_basic: 'off' }).analytics_basic,
+    ).toBe('off');
+    expect(
       applyTenantScopeToSimpleStates('BOTH', 'BOTH', { analytics_overview: 'off' }).analytics_overview,
     ).toBe('off');
     expect(
@@ -113,9 +119,11 @@ describe('applyTenantScopeToSimpleStates', () => {
     ).toBe('hardOff');
   });
 
-  it('defaults analytics on for BOTH when not explicitly inactive', () => {
-    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').analytics_overview).toBe('on');
-    expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').analytics_explore).toBe('on');
+  it('defaults analytics_basic/overview/explore on for BOTH when not explicitly inactive', () => {
+    const states = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(states.analytics_basic).toBe('on');
+    expect(states.analytics_overview).toBe('on');
+    expect(states.analytics_explore).toBe('on');
   });
 });
 
@@ -139,6 +147,7 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('inventory_management', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('loyalty_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('promotions_program', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('analytics_basic', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('analytics_overview', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('analytics_explore', 'DONATION_ONLY', 'BOTH')).toBe(true);
     expect(isTenantScopeLockedBlock('pickup_points', 'DONATION_ONLY', 'BOTH')).toBe(true);
@@ -227,8 +236,9 @@ describe('isTenantScopeLockedBlock', () => {
 });
 
 describe('reinjectExplicitInactiveSimpleStates', () => {
-  it('re-injects analytics off/hardOff after axis strip', () => {
+  it('re-injects analytics_basic/overview/explore off/hardOff after axis strip', () => {
     const source = applyTenantScopeToSimpleStates('BOTH', 'BOTH', {
+      analytics_basic: 'hardOff',
       analytics_overview: 'hardOff',
       analytics_explore: 'off',
     });
@@ -237,6 +247,7 @@ describe('reinjectExplicitInactiveSimpleStates', () => {
       surfaceScope: 'BOTH',
     });
     const reinjected = reinjectExplicitInactiveSimpleStates(stripped, source);
+    expect(reinjected.analytics_basic).toBe('hardOff');
     expect(reinjected.analytics_overview).toBe('hardOff');
     expect(reinjected.analytics_explore).toBe('off');
   });
@@ -245,9 +256,20 @@ describe('reinjectExplicitInactiveSimpleStates', () => {
 describe('preserveHardOffSimpleStates', () => {
   it('keeps analytics hardOff when implications soften to off', () => {
     const preserved = preserveHardOffSimpleStates(
-      { analytics_overview: 'off', analytics_explore: 'off', donation: 'off' },
-      { analytics_overview: 'hardOff', analytics_explore: 'hardOff', donation: 'hardOff' },
+      {
+        analytics_basic: 'off',
+        analytics_overview: 'off',
+        analytics_explore: 'off',
+        donation: 'off',
+      },
+      {
+        analytics_basic: 'hardOff',
+        analytics_overview: 'hardOff',
+        analytics_explore: 'hardOff',
+        donation: 'hardOff',
+      },
     );
+    expect(preserved.analytics_basic).toBe('hardOff');
     expect(preserved.analytics_overview).toBe('hardOff');
     expect(preserved.analytics_explore).toBe('hardOff');
     expect(preserved.donation).toBe('hardOff');

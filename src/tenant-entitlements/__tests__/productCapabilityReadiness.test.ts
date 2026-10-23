@@ -213,7 +213,7 @@ describe('G8 CAP grid collapse', () => {
         mode: 'test',
       }),
     ).toBe(false);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
   });
 
   it.each([

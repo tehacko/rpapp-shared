@@ -13,9 +13,9 @@ import {
 
 describe('commercialPackaging (Package A)', () => {
   it('maps every current entitlement block key exactly once (A-AC-01)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(50);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(50);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(51);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,8 +24,8 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 10 unchanged (A-AC-02 / A-AC-13)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(10);
+  it('keeps catalog version 11 (A-AC-02 / A-AC-13 / Package C analytics_basic)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(11);
   });
 
   it('keeps three axes separate; DO_NOT_SELL is not a placement (A-AC-03)', () => {
@@ -84,10 +84,12 @@ describe('commercialPackaging (Package A)', () => {
 
   it('encodes Spec + multi-placements without membership reinterpretation', () => {
     expect(COMMERCIAL_PACKAGING.analytics.commercialPlacements).toEqual([
-      'FREE',
-      'PRO',
-      'GROWTH',
+      'NON_COMMERCIAL',
     ] satisfies CommercialPlacementId[]);
+    expect(COMMERCIAL_PACKAGING.analytics_basic.commercialPlacements).toEqual(['FREE']);
+    expect(COMMERCIAL_PACKAGING.analytics_overview.commercialPlacements).toEqual(['PRO']);
+    expect(COMMERCIAL_PACKAGING.analytics_explore.commercialPlacements).toEqual(['GROWTH']);
+    expect(COMMERCIAL_PACKAGING.analytics_explore.sellabilityStatus).toBe('DO_NOT_SELL');
     expect(COMMERCIAL_PACKAGING.receipt_delivery.commercialPlacements).toEqual([
       'NON_COMMERCIAL',
       'GROWTH',

@@ -395,6 +395,43 @@ describe('many-to-many (no bijection claim)', () => {
     });
   });
 
+  it('Package C: basic → analytics_basic; summary → analytics_overview (not explore)', () => {
+    expect(requiredBlocksForCapability('analytics:basic:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['analytics_basic'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('analytics:basic:manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['analytics_basic'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('analytics:summary:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['analytics_overview'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('analytics:summary:manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['analytics_overview'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('analytics:detailed:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['analytics_explore'],
+      match: 'ALL',
+    });
+    expect(capabilitiesRequiringBlock('analytics_basic')).toEqual(
+      expect.arrayContaining(['analytics:basic:read', 'analytics:basic:manage']),
+    );
+    expect(capabilitiesRequiringBlock('analytics_overview')).toEqual(
+      expect.arrayContaining(['analytics:summary:read', 'analytics:summary:manage']),
+    );
+    expect(capabilitiesRequiringBlock('analytics_overview')).not.toEqual(
+      expect.arrayContaining(['analytics:detailed:read', 'analytics:pii:read']),
+    );
+  });
+
   it('does not claim one-to-one invertibility', () => {
     const forDonation = capabilitiesRequiringBlock('donation');
     const forInventory = capabilitiesRequiringBlock('inventory_management');

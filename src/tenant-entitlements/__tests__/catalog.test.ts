@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 50 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(50);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(50);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(50);
+  it('contains exactly 51 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(51);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
   });
 
-  it('uses catalog version 10 after payment_multi_currency', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(10);
+  it('uses catalog version 11 after analytics_basic', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(11);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(50);
+    expect(new Set(keysFromCatalog).size).toBe(51);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -119,16 +119,35 @@ describe('tenant entitlement catalog', () => {
     expect(adminMfa.capabilityHint).toBe('account.self.manage');
   });
 
-  it('includes analytics_overview and analytics_explore under analytics umbrella', () => {
+  it('chains analytics → basic → overview → explore with Package C metadata', () => {
+    const basic = getEntitlementBlockCatalogEntry('analytics_basic');
+    expect(basic.parentKeys).toEqual(['analytics']);
+    expect(basic.adminNavSectionId).toBe('analytics');
+    expect(basic.capabilityHint).toBe('analytics:basic:read');
+
     const overview = getEntitlementBlockCatalogEntry('analytics_overview');
-    expect(overview.parentKeys).toEqual(['analytics']);
+    expect(overview.parentKeys).toEqual(['analytics_basic']);
     expect(overview.adminNavSectionId).toBe('mission-control');
-    expect(overview.capabilityHint).toBe('analytics:mission-control:read');
+    expect(overview.capabilityHint).toBe('analytics:summary:read');
+    // C-AC-20: overview notes = PRO/Command Center + trend/AOV/refunds/breakdown/funnel
+    expect(overview.notes).toMatch(/PRO|Command Center/i);
+    expect(overview.notes).toMatch(/trend/i);
+    expect(overview.notes).toMatch(/AOV/i);
+    expect(overview.notes).toMatch(/refund/i);
+    expect(overview.notes).toMatch(/breakdown/i);
+    expect(overview.notes).toMatch(/funnel/i);
 
     const explore = getEntitlementBlockCatalogEntry('analytics_explore');
-    expect(explore.parentKeys).toEqual(['analytics']);
-    expect(explore.adminNavSectionId).toBe('analytics');
-    expect(explore.capabilityHint).toBe('analytics:summary:read');
+    expect(explore.parentKeys).toEqual(['analytics_overview']);
+    expect(explore.adminNavSectionId).toBe('customer-explore');
+    expect(explore.capabilityHint).toBe('analytics:detailed:read');
+    // C-AC-20: explore notes = advanced/expert/benchmark/cohorts/baskets/event-governance; no funnel claim
+    expect(explore.notes).toMatch(/advanced|expert/i);
+    expect(explore.notes).toMatch(/benchmark/i);
+    expect(explore.notes).toMatch(/cohort/i);
+    expect(explore.notes).toMatch(/basket/i);
+    expect(explore.notes).toMatch(/event-governance/i);
+    expect(explore.notes).not.toMatch(/funnel/i);
   });
 
   it('includes customer_auth_pwa as CORE_REQUIRED under surface_customer', () => {

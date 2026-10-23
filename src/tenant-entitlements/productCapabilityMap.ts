@@ -61,7 +61,7 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
     'pickup_points',
     'staff_pickup_scan',
   ],
-  'CAP-07': ['analytics', 'analytics_overview', 'analytics_explore'],
+  'CAP-07': ['analytics', 'analytics_basic', 'analytics_overview', 'analytics_explore'],
   'CAP-08': [
     'payment_rails_strategy',
     'payment_multi_currency',

@@ -4,6 +4,7 @@ import { applyPickupOperationsClusterSync } from './pickupOperationsCluster.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from './types.js';
 
 const ANALYTICS_UMBRELLA_CHILD_KEYS = [
+  'analytics_basic',
   'analytics_overview',
   'analytics_explore',
 ] as const satisfies readonly EntitlementBlockKey[];

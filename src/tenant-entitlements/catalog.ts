@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 50 blocks / catalogVersion 10 (§6.3).
+ * Authoritative tenant entitlement block catalog — 51 blocks / catalogVersion 11 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -309,21 +309,31 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     notes: 'Parent umbrella',
   },
   {
-    blockKey: 'analytics_overview',
+    blockKey: 'analytics_basic',
     blockClass: 'CONDITIONAL',
     parentKeys: ['analytics'],
+    adminNavSectionId: 'analytics',
+    capabilityHint: 'analytics:basic:read',
+    notes:
+      'FREE analytics shell — basic-summary / payment-mix / analytics freshness; not bound to overview or explore',
+  },
+  {
+    blockKey: 'analytics_overview',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['analytics_basic'],
     adminNavSectionId: 'mission-control',
-    capabilityHint: 'analytics:mission-control:read',
-    notes: 'Přehled — Tenant Command Center / Mission Control (replaces analytics_summary + mission_control)',
+    capabilityHint: 'analytics:summary:read',
+    notes:
+      'PRO / Command Center — trend, AOV, refunds, revenue breakdown, funnel; Mission Control + operational summary',
   },
   {
     blockKey: 'analytics_explore',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['analytics'],
-    adminNavSectionId: 'analytics',
-    capabilityHint: 'analytics:summary:read',
+    parentKeys: ['analytics_overview'],
+    adminNavSectionId: 'customer-explore',
+    capabilityHint: 'analytics:detailed:read',
     notes:
-      'Analytika — all in-page analytics tabs; detailed/PII/benchmark/funnels gated by RBAC capabilities only',
+      'GROWTH / advanced explore — expert/detailed/PII/benchmark/cohorts/baskets/event-governance',
   },
   {
     blockKey: 'tax_management',

@@ -202,6 +202,8 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "account.self.manage",
     "admin:outbox:manage",
     "admin:outbox:read",
+    "analytics:basic:manage",
+    "analytics:basic:read",
     "analytics:benchmark:read",
     "analytics:detailed:manage",
     "analytics:detailed:read",
@@ -374,6 +376,8 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "tenant.adminUserCapabilities.view",
     "tenant.adminUsers.manage",
     "tenant.adminUsers.view",
+    "tenant.analyticsBasic.manage",
+    "tenant.analyticsBasic.view",
     "tenant.analyticsBenchmark.view",
     "tenant.analyticsDetailed.manage",
     "tenant.analyticsDetailed.view",
@@ -821,18 +825,29 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics
+  // Analytics — FREE basic shell (Package C)
+  {
+    authoringTokens: [
+      "tenant.analyticsBasic.*",
+      "analytics:basic:read/manage",
+    ],
+    requiredBlockKeys: [
+      "analytics_basic",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
+  // Analytics — PRO summary / operational (Package C: overview, not explore)
   {
     authoringTokens: [
       "tenant.analyticsSummary.*",
       "analytics:summary:read/manage",
     ],
     requiredBlockKeys: [
-      "analytics_explore",
+      "analytics_overview",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics — detailed views (RBAC tier inside Analytika)
+  // Analytics — detailed views (RBAC tier inside Analytika / explore)
   {
     authoringTokens: [
       "tenant.analyticsDetailed.*",
@@ -863,7 +878,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Analytics — Mission Control / Přehled
+  // Analytics — Mission Control / Přehled (overview)
   {
     authoringTokens: [
       "analytics:mission-control:read/export",

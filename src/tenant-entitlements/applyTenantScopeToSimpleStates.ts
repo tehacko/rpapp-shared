@@ -51,6 +51,7 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     immediate_self_pickup: ON,
     scheduled_pickup: OFF,
     staff_pickup_scan: ON,
+    analytics_basic: ON,
     analytics_overview: ON,
     analytics_explore: ON,
     comms_governance: ON,
@@ -103,6 +104,7 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'inventory_incidents',
   'loyalty_program',
   'promotions_program',
+  'analytics_basic',
   'analytics_overview',
   'analytics_explore',
   'tax_management',
@@ -179,6 +181,7 @@ function applyAllowedPurposesToStates(
       result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;
       result.product_barcode_administration = HARD_OFF;
+      result.analytics_basic = OFF;
       result.analytics_overview = OFF;
       result.analytics_explore = OFF;
       result.tax_management = OFF;
@@ -191,6 +194,14 @@ function applyAllowedPurposesToStates(
       result.product_vending = ON;
       if (states.donation === undefined || states.donation === 'on' || states.donation === 'softOffVisible' || states.donation === 'softOffHidden') {
         result.donation = ON;
+      }
+      if (
+        states.analytics_basic === undefined ||
+        states.analytics_basic === 'on' ||
+        states.analytics_basic === 'softOffVisible' ||
+        states.analytics_basic === 'softOffHidden'
+      ) {
+        result.analytics_basic = ON;
       }
       if (
         states.analytics_overview === undefined ||
@@ -302,6 +313,7 @@ export function inferSurfaceScopeFromSimpleStates(
 /** Blocks whose explicit inactive SIMPLE values must survive axis strip + scope resolve (save/draft rebuild). */
 export const EXPLICIT_INACTIVE_REINJECT_BLOCK_KEYS = [
   'donation',
+  'analytics_basic',
   'analytics_overview',
   'analytics_explore',
 ] as const satisfies readonly EntitlementBlockKey[];

@@ -55,6 +55,14 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.product_barcode_administration).toBe('on');
   });
 
+  it('enables analytics umbrella when analytics_basic is on', () => {
+    const implied = applySimpleStateDependencyImplications({
+      analytics_basic: 'on',
+    });
+
+    expect(implied.analytics).toBe('on');
+  });
+
   it('enables analytics umbrella when analytics_overview is on', () => {
     const implied = applySimpleStateDependencyImplications({
       analytics_overview: 'on',
@@ -71,7 +79,17 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.analytics).toBe('on');
   });
 
-  it('does not cross-enable overview and explore', () => {
+  it('does not cross-enable overview and explore from basic alone', () => {
+    const implied = applySimpleStateDependencyImplications({
+      analytics_basic: 'on',
+    });
+
+    expect(implied.analytics).toBe('on');
+    expect(implied.analytics_overview).toBeUndefined();
+    expect(implied.analytics_explore).toBeUndefined();
+  });
+
+  it('does not cross-enable explore from overview alone', () => {
     const implied = applySimpleStateDependencyImplications({
       analytics_overview: 'on',
     });

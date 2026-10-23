@@ -159,9 +159,57 @@ describe('areEntitlementBlockParentsSatisfied', () => {
       }),
     ).toBe(true);
   });
+
+  it('Package C analytics chain: basic→analytics, overview→basic, explore→overview', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_basic', { analytics: 'off' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_basic', { analytics: 'on' }),
+    ).toBe(true);
+
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_overview', {
+        analytics: 'on',
+        analytics_basic: 'off',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_overview', {
+        analytics: 'on',
+        analytics_basic: 'on',
+      }),
+    ).toBe(true);
+
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_explore', {
+        analytics: 'on',
+        analytics_basic: 'on',
+        analytics_overview: 'off',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('analytics_explore', {
+        analytics: 'on',
+        analytics_basic: 'on',
+        analytics_overview: 'on',
+      }),
+    ).toBe(true);
+  });
 });
 
 describe('applyCatalogParentDenialImplications', () => {
+  it('cascades analytics_basic hardOff to overview and explore children', () => {
+    const implied = applyCatalogParentDenialImplications({
+      analytics: 'on',
+      analytics_basic: 'hardOff',
+      analytics_overview: 'on',
+      analytics_explore: 'on',
+    });
+    expect(implied.analytics_overview).toBe('hardOff');
+    expect(implied.analytics_explore).toBe('hardOff');
+  });
+
   it('forces inventory_incidents hardOff when inventory_management is hardOff', () => {
     const implied = applyCatalogParentDenialImplications({
       inventory_management: 'hardOff',

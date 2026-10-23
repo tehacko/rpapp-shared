@@ -1,7 +1,7 @@
 /**
  * Product-capability readiness (FR-03 / I-01).
  *
- * Catalog is 50 entitlement blocks at catalogVersion 10.
+ * Catalog is 51 entitlement blocks at catalogVersion 11.
  * SIMPLE on/softOffVisible/softOffHidden/off/hardOff collapse to READY vs NOT_READY.
  * Declared 15×4 grids are plan G8 production / test-mode (`explicitDevEnable`).
  * CAP-15 Partner API is always NOT_READY (never-activate) on every surface.
