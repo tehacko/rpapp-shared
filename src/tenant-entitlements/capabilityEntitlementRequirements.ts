@@ -721,18 +721,27 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Payments — hub chrome (same ALL_OF as reconciliation)
+  // Payments — hub chrome (same ALL_OF as reconciliation); financeView/etc stay on Hub
   {
     authoringTokens: [
       "tenant.financeView.*",
       "tenant.financeDetailed.*",
       "tenant.financePii.*",
       "tenant.financeExport.*",
-      "tenant.accountingExport.*",
-      "ops:accounting-export:read/create",
       "finance:view:*|finance:detailed:*|finance:pii:*|finance:export:*",
     ],
     requiredBlockKeys: [...PAYMENTS_HUB_NAV_ENTITLEMENT_ALL_OF],
+    match: 'ALL',
+  },
+  // Payments — accounting export ceiling is transactions (not Hub ALL_OF)
+  {
+    authoringTokens: [
+      "tenant.accountingExport.*",
+      "ops:accounting-export:read/create",
+    ],
+    requiredBlockKeys: [
+      "transactions",
+    ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
   // Payments

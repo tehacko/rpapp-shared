@@ -93,4 +93,15 @@ describe('commercialPackaging (Package A)', () => {
       'GROWTH',
     ]);
   });
+
+  it('B4: admin_mfa is NON_COMMERCIAL; FREE/PRO/GROWTH never tariff-DENY', () => {
+    const adminMfa = COMMERCIAL_PACKAGING.admin_mfa;
+    expect(adminMfa.commercialPlacements).toEqual(['NON_COMMERCIAL']);
+    expect(adminMfa.sellabilityStatus).toBe('NOT_APPLICABLE');
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      const decision = evaluateCommercialPackageDecision(plan, adminMfa);
+      expect(decision).not.toBe('DENY');
+      expect(decision).toBe('DEFER');
+    }
+  });
 });

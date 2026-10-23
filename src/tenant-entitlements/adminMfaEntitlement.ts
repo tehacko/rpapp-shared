@@ -1,6 +1,7 @@
 /**
- * admin_mfa — CONDITIONAL default-off rollout block for admin TOTP.
+ * admin_mfa — CONDITIONAL default-off security rollout/readiness block for admin TOTP.
  * Catalog key lives in types/catalog; this module exports rollout helpers.
+ * Not a commercial/tariff placement — packaging is NON_COMMERCIAL; ON/OFF is ops readiness.
  */
 import type { EntitlementBlockKey } from './types.js';
 import { TENANT_BRAND_KIT_BLOCK_KEY } from './tenantBrandKitEntitlement.js';

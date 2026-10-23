@@ -164,6 +164,55 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     });
   });
 
+  it('B2: accounting export caps require transactions; Hub finance caps stay on Hub ALL_OF', () => {
+    const exportCaps = [
+      'tenant.accountingExport.view',
+      'tenant.accountingExport.create',
+      'ops:accounting-export:read',
+      'ops:accounting-export:create',
+    ] as const;
+    for (const cap of exportCaps) {
+      expect(requiredBlocksForCapability(cap)).toEqual({
+        kind: 'blocks',
+        blockKeys: ['transactions'],
+        match: 'ALL',
+      });
+    }
+    expect(capabilitiesRequiringBlock('transactions')).toEqual(
+      expect.arrayContaining([...exportCaps]),
+    );
+
+    const hubFinanceCaps = [
+      'tenant.financeView.view',
+      'tenant.financeView.manage',
+      'tenant.financeDetailed.view',
+      'tenant.financeDetailed.manage',
+      'tenant.financePii.view',
+      'tenant.financePii.manage',
+      'tenant.financeExport.view',
+      'tenant.financeExport.manage',
+      'finance:view:read',
+      'finance:view:manage',
+      'finance:detailed:read',
+      'finance:detailed:manage',
+      'finance:pii:read',
+      'finance:pii:manage',
+      'finance:export:read',
+      'finance:export:manage',
+    ] as const;
+    const hubAllOf = {
+      kind: 'blocks' as const,
+      blockKeys: ['payments_hub_ui', 'bank_inbox_claims_api'],
+      match: 'ALL' as const,
+    };
+    for (const cap of hubFinanceCaps) {
+      expect(requiredBlocksForCapability(cap)).toEqual(hubAllOf);
+    }
+    for (const cap of exportCaps) {
+      expect(requiredBlocksForCapability(cap)).not.toEqual(hubAllOf);
+    }
+  });
+
   it('G1: bankAccounts.* commercial path is CORE bank_account_administration (not payment_rails)', () => {
     expect(requiredBlocksForCapability('tenant.bankAccounts.read')).toEqual({
       kind: 'blocks',
