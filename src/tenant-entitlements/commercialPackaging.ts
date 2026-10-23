@@ -1,7 +1,8 @@
 /**
- * Package A/C — commercial packaging map for current catalog (51 keys / v11).
+ * Package A/C/D — commercial packaging map for current catalog (54 keys / v12).
  * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
- * explore GROWTH+DO_NOT_SELL. Preflight evaluator only — not wired to runtime enforce.
+ * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
+ * Preflight evaluator only — not wired to runtime enforce.
  */
 import {
   COMMERCIAL_PLAN_IDS,
@@ -89,12 +90,8 @@ export const COMMERCIAL_PACKAGING = {
     'základní identifikace produktu',
   ),
   audit_event_collection: rule(['NON_COMMERCIAL'], 'ALIGNED', 'NOT_APPLICABLE', 'audit invariant'),
-  audit_logs_admin_ui: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
-    'OPEN',
-    'základní audit FREE + pokročilá auditní inteligence PRO',
-  ),
+  audit_logs_admin_ui: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní audit FREE'),
+  audit_intelligence: rule(['PRO'], 'ALIGNED', 'OPEN', 'pokročilá auditní inteligence PRO'),
   gdpr_consent_admin_ui: rule(
     ['NON_COMMERCIAL'],
     'ALIGNED',
@@ -121,12 +118,8 @@ export const COMMERCIAL_PACKAGING = {
     'OPEN',
     'základní darování FREE + opakované darování PRO',
   ),
-  inventory_management: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
-    'OPEN',
-    'základní sklad FREE + pokročilé operace PRO',
-  ),
+  inventory_management: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní sklad FREE'),
+  inventory_operations: rule(['PRO'], 'ALIGNED', 'OPEN', 'pokročilé skladové operace PRO'),
   inventory_incidents: rule(['PRO'], 'ALIGNED', 'OPEN', 'provozní řízení'),
   loyalty_program: rule(
     ['GROWTH'],
@@ -153,12 +146,7 @@ export const COMMERCIAL_PACKAGING = {
     'FREE / invariant integrity hotovosti',
   ),
   payment_multi_currency: rule(['GROWTH'], 'ALIGNED', 'OPEN', 'finanční komplexita'),
-  payment_reconciliation: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
-    'OPEN',
-    'základní integrita FREE + provozní řízení PRO',
-  ),
+  payment_reconciliation: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní platební integrita FREE'),
   payments_hub_ui: rule(['PRO'], 'ALIGNED', 'OPEN', 'rozhraní finančního provozu'),
   stripe_integration_strategy: rule(
     ['NON_COMMERCIAL'],
@@ -239,11 +227,12 @@ export const COMMERCIAL_PACKAGING = {
     'DO_NOT_SELL',
     'Growth/Contract; tenantem řízená správa providerů v běhu vypnutá',
   ),
+  team_management_core: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní životní cyklus týmu FREE'),
   permission_management_rbac: rule(
-    ['FREE', 'GROWTH'],
-    'REFACTOR_REQUIRED',
+    ['GROWTH'],
+    'ALIGNED',
     'OPEN',
-    'základní životní cyklus RBAC/týmu FREE + pokročilé řízení přístupů Growth',
+    'pokročilé řízení přístupů Growth',
   ),
   tenant_ops_settings: rule(
     ['FREE', 'PRO'],

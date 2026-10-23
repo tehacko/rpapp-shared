@@ -202,7 +202,14 @@ describe('G8 CAP grid collapse', () => {
       'product_barcode_administration',
       'product_vending',
       'inventory_management',
+      'inventory_operations',
       'inventory_incidents',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-12')).toEqual([
+      'team_management_core',
+      'permission_management_rbac',
+      'admin_mfa',
+      'admin_notifications',
     ]);
     expect(isProductCapabilityActivable({ capabilityId: 'CAP-15', surface: 'admin' })).toBe(false);
     expect(
@@ -213,7 +220,7 @@ describe('G8 CAP grid collapse', () => {
         mode: 'test',
       }),
     ).toBe(false);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
   });
 
   it.each([

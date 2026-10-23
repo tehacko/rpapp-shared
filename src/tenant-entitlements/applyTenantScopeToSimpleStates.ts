@@ -57,8 +57,11 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     comms_governance: ON,
     tenant_ops_settings: ON,
     audit_logs_admin_ui: OFF,
+    audit_intelligence: HARD_OFF,
     inventory_management: OFF,
+    inventory_operations: HARD_OFF,
     inventory_incidents: HARD_OFF,
+    team_management_core: OFF,
     // Commercial Události — default hardOff; platform /dev/inbox uses platform
     // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.
     incident_centre_ui: HARD_OFF,
@@ -101,6 +104,7 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'catalog_administration',
   'inventory_management',
   'product_barcode_administration',
+  'inventory_operations',
   'inventory_incidents',
   'loyalty_program',
   'promotions_program',
@@ -176,6 +180,7 @@ function applyAllowedPurposesToStates(
       result.product_vending = OFF;
       result.donation = ON;
       result.inventory_management = OFF;
+      result.inventory_operations = HARD_OFF;
       result.inventory_incidents = HARD_OFF;
       result.loyalty_program = OFF;
       result.promotions_program = OFF;

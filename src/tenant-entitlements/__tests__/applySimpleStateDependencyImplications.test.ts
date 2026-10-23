@@ -98,48 +98,56 @@ describe('applySimpleStateDependencyImplications', () => {
     expect(implied.analytics_explore).toBeUndefined();
   });
 
-  it('keeps inventory_incidents hardOff when inventory_management is hardOff', () => {
+  it('keeps inventory_incidents hardOff when inventory_operations is hardOff', () => {
     const implied = applySimpleStateDependencyImplications({
       product_vending: 'on',
-      inventory_management: 'hardOff',
+      inventory_management: 'on',
+      inventory_operations: 'hardOff',
       inventory_incidents: 'hardOff',
     });
 
     expect(implied.inventory_incidents).toBe('hardOff');
   });
 
-  it('PARENT-01 leaves inventory_incidents on when inventory_management is on', () => {
+  it('PARENT-01 leaves inventory_incidents on when inventory_operations (and management) are on', () => {
     const implied = applySimpleStateDependencyImplications({
       product_vending: 'on',
       inventory_management: 'on',
+      inventory_operations: 'on',
       inventory_incidents: 'on',
     });
 
     expect(implied.inventory_incidents).toBe('on');
+    expect(implied.inventory_operations).toBe('on');
     expect(implied.inventory_management).toBe('on');
   });
 
-  it('PARENT-01 cascade-off: parent Off/HardOff forces inventory_incidents Off/HardOff (child On does not imply parent On)', () => {
-    const parentOff = applySimpleStateDependencyImplications({
-      inventory_management: 'off',
-      inventory_incidents: 'on',
-    });
-    expect(parentOff.inventory_management).toBe('off');
-    expect(parentOff.inventory_incidents).toBe('off');
-
-    const parentHardOff = applySimpleStateDependencyImplications({
-      inventory_management: 'hardOff',
-      inventory_incidents: 'on',
-    });
-    expect(parentHardOff.inventory_management).toBe('hardOff');
-    expect(parentHardOff.inventory_incidents).toBe('hardOff');
-
-    const bothOn = applySimpleStateDependencyImplications({
+  it('PARENT-01 cascade-off: ops/management Off/HardOff forces inventory_incidents Off/HardOff (child On does not imply parent On)', () => {
+    const opsOff = applySimpleStateDependencyImplications({
       inventory_management: 'on',
+      inventory_operations: 'off',
       inventory_incidents: 'on',
     });
-    expect(bothOn.inventory_management).toBe('on');
-    expect(bothOn.inventory_incidents).toBe('on');
+    expect(opsOff.inventory_operations).toBe('off');
+    expect(opsOff.inventory_incidents).toBe('off');
+
+    const managementHardOff = applySimpleStateDependencyImplications({
+      inventory_management: 'hardOff',
+      inventory_operations: 'on',
+      inventory_incidents: 'on',
+    });
+    expect(managementHardOff.inventory_management).toBe('hardOff');
+    expect(managementHardOff.inventory_operations).toBe('hardOff');
+    expect(managementHardOff.inventory_incidents).toBe('hardOff');
+
+    const chainOn = applySimpleStateDependencyImplications({
+      inventory_management: 'on',
+      inventory_operations: 'on',
+      inventory_incidents: 'on',
+    });
+    expect(chainOn.inventory_management).toBe('on');
+    expect(chainOn.inventory_operations).toBe('on');
+    expect(chainOn.inventory_incidents).toBe('on');
   });
 
   it('PARENT-01 forces payments_hub_ui off when payment_reconciliation is hardOff', () => {

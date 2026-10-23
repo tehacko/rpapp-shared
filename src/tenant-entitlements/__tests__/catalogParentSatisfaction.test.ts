@@ -87,15 +87,58 @@ describe('areEntitlementBlockParentsSatisfied', () => {
     ).toBe(true);
   });
 
-  it('requires inventory_management for inventory_incidents', () => {
+  it('requires inventory_management for inventory_operations', () => {
     expect(
-      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'off' }),
+      areEntitlementBlockParentsSatisfied('inventory_operations', { inventory_management: 'off' }),
     ).toBe(false);
     expect(
-      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'hardOff' }),
+      areEntitlementBlockParentsSatisfied('inventory_operations', {
+        inventory_management: 'hardOff',
+      }),
     ).toBe(false);
     expect(
-      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_management: 'on' }),
+      areEntitlementBlockParentsSatisfied('inventory_operations', { inventory_management: 'on' }),
+    ).toBe(true);
+  });
+
+  it('requires inventory_operations for inventory_incidents', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_operations: 'off' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', {
+        inventory_operations: 'hardOff',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('inventory_incidents', { inventory_operations: 'on' }),
+    ).toBe(true);
+  });
+
+  it('requires audit_logs_admin_ui for audit_intelligence', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('audit_intelligence', { audit_logs_admin_ui: 'off' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('audit_intelligence', { audit_logs_admin_ui: 'on' }),
+    ).toBe(true);
+  });
+
+  it('requires team_management_core for permission_management_rbac', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('permission_management_rbac', {
+        team_management_core: 'off',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('permission_management_rbac', {
+        team_management_core: 'hardOff',
+      }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('permission_management_rbac', {
+        team_management_core: 'on',
+      }),
     ).toBe(true);
   });
 
@@ -210,13 +253,43 @@ describe('applyCatalogParentDenialImplications', () => {
     expect(implied.analytics_explore).toBe('hardOff');
   });
 
-  it('forces inventory_incidents hardOff when inventory_management is hardOff', () => {
+  it('forces inventory_operations and inventory_incidents hardOff when inventory_management is hardOff', () => {
     const implied = applyCatalogParentDenialImplications({
       inventory_management: 'hardOff',
+      inventory_operations: 'on',
+      inventory_incidents: 'on',
+    });
+
+    expect(implied.inventory_operations).toBe('hardOff');
+    expect(implied.inventory_incidents).toBe('hardOff');
+  });
+
+  it('cascades inventory_operations hardOff to inventory_incidents', () => {
+    const implied = applyCatalogParentDenialImplications({
+      inventory_management: 'on',
+      inventory_operations: 'hardOff',
       inventory_incidents: 'on',
     });
 
     expect(implied.inventory_incidents).toBe('hardOff');
+  });
+
+  it('cascades team_management_core hardOff to permission_management_rbac', () => {
+    const implied = applyCatalogParentDenialImplications({
+      team_management_core: 'hardOff',
+      permission_management_rbac: 'on',
+    });
+
+    expect(implied.permission_management_rbac).toBe('hardOff');
+  });
+
+  it('cascades audit_logs_admin_ui hardOff to audit_intelligence', () => {
+    const implied = applyCatalogParentDenialImplications({
+      audit_logs_admin_ui: 'hardOff',
+      audit_intelligence: 'on',
+    });
+
+    expect(implied.audit_intelligence).toBe('hardOff');
   });
 
   it('forces payments_hub_ui and bank_inbox_claims_api hardOff when payment_reconciliation is hardOff', () => {

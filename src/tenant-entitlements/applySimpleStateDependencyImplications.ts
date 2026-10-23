@@ -42,7 +42,7 @@ export function applySimpleStateDependencyImplications(
   const loyaltyActive = isRuntimeActiveSimpleState(result.loyalty_program);
   const promotionsActive = isRuntimeActiveSimpleState(result.promotions_program);
 
-  // inventory_incidents is a catalog child of inventory_management (PARENT-01 cascade-off).
+  // inventory_operations → inventory_incidents chain under inventory_management (PARENT-01).
   // Child On must not imply parent On — inventory_management stays purpose-locked.
   const inventoryActive = isRuntimeActiveSimpleState(result.inventory_management);
 

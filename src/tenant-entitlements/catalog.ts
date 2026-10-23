@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 51 blocks / catalogVersion 11 (§6.3).
+ * Authoritative tenant entitlement block catalog — 54 blocks / catalogVersion 12 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -98,6 +98,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     notes: 'Tenant admin Audit logs UI — DEV Feature Policy allow/deny (not CORE_IMMUTABLE)',
   },
   {
+    blockKey: 'audit_intelligence',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['audit_logs_admin_ui'],
+    capabilityHint: 'tenant.systemLogs.view',
+    notes:
+      'PRO audit intelligence — aggregates / auth-stats / KPI panels. Child of audit_logs_admin_ui; parent Off/HardOff forces child Off/HardOff. Placement ≠ runtime ON',
+  },
+  {
     blockKey: 'gdpr_consent_admin_ui',
     blockClass: 'CORE_IMMUTABLE',
     parentKeys: [],
@@ -158,13 +166,22 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     capabilityHint: 'ops:inventory:read',
   },
   {
-    blockKey: 'inventory_incidents',
+    blockKey: 'inventory_operations',
     blockClass: 'CONDITIONAL',
     parentKeys: ['inventory_management'],
+    adminNavSectionId: 'inventory-ops',
+    capabilityHint: 'ops:inventory:manage',
+    notes:
+      'PRO inventory operations — ledger, restock batches, checkup/physical count (not FREE core stock edit). Child of inventory_management; parent Off/HardOff cascades. Placement ≠ runtime ON',
+  },
+  {
+    blockKey: 'inventory_incidents',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['inventory_operations'],
     adminNavSectionId: 'inventory-incidents',
     capabilityHint: 'ops:inventory:read',
     notes:
-      'Child of inventory_management — parent must be On to enable; parent Off/HardOff forces child Off/HardOff (PARENT-01). Child On does not imply parent On. Seed: hardOff for min/bookstore; On for full-demo/max',
+      'Child of inventory_operations — parent must be On to enable; parent Off/HardOff forces child Off/HardOff (PARENT-01). Child On does not imply parent On. Seed: hardOff for min/bookstore; On for full-demo/max',
   },
   {
     blockKey: 'loyalty_program',
@@ -356,11 +373,21 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     notes: 'DEV comms-governance tab',
   },
   {
-    blockKey: 'permission_management_rbac',
+    blockKey: 'team_management_core',
     blockClass: 'CONDITIONAL',
     parentKeys: [],
     adminNavSectionId: 'capabilities',
     capabilityHint: 'users:admins:create',
+    notes:
+      'FREE team lifecycle — admin user create/list/deactivate/reactivate/owner. Parent of permission_management_rbac; Placement ≠ runtime ON',
+  },
+  {
+    blockKey: 'permission_management_rbac',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['team_management_core'],
+    capabilityHint: 'permissionsCatalog.view',
+    notes:
+      'GROWTH advanced RBAC — capability grants / permission matrix / catalog panels. Child of team_management_core; parent Off/HardOff cascades',
   },
   {
     blockKey: 'tenant_ops_settings',

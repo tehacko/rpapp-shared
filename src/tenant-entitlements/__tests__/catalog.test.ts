@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 51 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(51);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
+  it('contains exactly 54 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(54);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(54);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
   });
 
-  it('uses catalog version 11 after analytics_basic', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(11);
+  it('uses catalog version 12 after Package D ops boundaries', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(12);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(51);
+    expect(new Set(keysFromCatalog).size).toBe(54);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -46,12 +46,38 @@ describe('tenant entitlement catalog', () => {
     expect(individual.parentKeys).toEqual(['sales_point_management']);
   });
 
-  it('includes inventory_incidents as CONDITIONAL child of inventory_management', () => {
+  it('includes inventory_operations as CONDITIONAL child of inventory_management', () => {
+    const ops = getEntitlementBlockCatalogEntry('inventory_operations');
+    expect(ops.blockClass).toBe('CONDITIONAL');
+    expect(ops.parentKeys).toEqual(['inventory_management']);
+    expect(ops.adminNavSectionId).toBe('inventory-ops');
+    expect(ops.notes).toMatch(/ledger|restock|checkup/i);
+  });
+
+  it('includes inventory_incidents as CONDITIONAL child of inventory_operations', () => {
     const incidents = getEntitlementBlockCatalogEntry('inventory_incidents');
     expect(incidents.blockClass).toBe('CONDITIONAL');
-    expect(incidents.parentKeys).toEqual(['inventory_management']);
+    expect(incidents.parentKeys).toEqual(['inventory_operations']);
     expect(incidents.adminNavSectionId).toBe('inventory-incidents');
     expect(incidents.capabilityHint).toBe('ops:inventory:read');
+  });
+
+  it('includes team_management_core with capabilities nav; rbac child of team core', () => {
+    const teamCore = getEntitlementBlockCatalogEntry('team_management_core');
+    expect(teamCore.blockClass).toBe('CONDITIONAL');
+    expect(teamCore.parentKeys).toEqual([]);
+    expect(teamCore.adminNavSectionId).toBe('capabilities');
+    expect(teamCore.capabilityHint).toBe('users:admins:create');
+
+    const rbac = getEntitlementBlockCatalogEntry('permission_management_rbac');
+    expect(rbac.blockClass).toBe('CONDITIONAL');
+    expect(rbac.parentKeys).toEqual(['team_management_core']);
+  });
+
+  it('includes audit_intelligence as CONDITIONAL child of audit_logs_admin_ui', () => {
+    const intelligence = getEntitlementBlockCatalogEntry('audit_intelligence');
+    expect(intelligence.blockClass).toBe('CONDITIONAL');
+    expect(intelligence.parentKeys).toEqual(['audit_logs_admin_ui']);
   });
 
   it('gdpr_consent_admin_ui has no tenant adminNavSectionId (platform DEV UI)', () => {

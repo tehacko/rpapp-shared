@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 51 blocks).
+ * Authoritative block list lives in catalog.ts (§6.3, 54 blocks / catalogVersion 12).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -97,6 +97,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'product_barcode_administration',
   'audit_event_collection',
   'audit_logs_admin_ui',
+  'audit_intelligence',
   'gdpr_consent_admin_ui',
   'incident_centre_ui',
   'payment_processing_runtime',
@@ -104,6 +105,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'product_vending',
   'donation',
   'inventory_management',
+  'inventory_operations',
   'inventory_incidents',
   'loyalty_program',
   'promotions_program',
@@ -131,6 +133,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'tax_management',
   'compliance_fiscal_modules',
   'comms_governance',
+  'team_management_core',
   'permission_management_rbac',
   'tenant_ops_settings',
   'tenant_brand_kit',
@@ -143,7 +146,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 11 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 12 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 /** Self-serve commercial plan ladder (Package A). Organization/Enterprise is not in this enum. */

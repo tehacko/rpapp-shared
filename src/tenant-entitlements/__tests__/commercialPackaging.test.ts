@@ -12,10 +12,10 @@ import {
 } from '../index.js';
 
 describe('commercialPackaging (Package A)', () => {
-  it('maps every current entitlement block key exactly once (A-AC-01)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(51);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(51);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(51);
+  it('maps every current entitlement block key exactly once (A-AC-01 / Package D 54)', () => {
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(54);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(54);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,8 +24,51 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 11 (A-AC-02 / A-AC-13 / Package C analytics_basic)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(11);
+  it('keeps catalog version 12 (A-AC-02 / Package D ops boundaries)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(12);
+  });
+
+  it('D-AC-21: Package D split parents are ALIGNED (not REFACTOR_REQUIRED)', () => {
+    expect(COMMERCIAL_PACKAGING.inventory_management).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.inventory_operations).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.inventory_incidents).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.payment_reconciliation).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.audit_logs_admin_ui).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.audit_intelligence).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.team_management_core).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.permission_management_rbac).toMatchObject({
+      commercialPlacements: ['GROWTH'],
+      alignmentStatus: 'ALIGNED',
+    });
+  });
+
+  /** D-AC-07 — integrity/matching stays FREE; Hub is PRO (workers must not inherit Hub negate). */
+  it('D-AC-07: payment_reconciliation FREE ALLOW; payments_hub_ui PRO DENY on FREE plan', () => {
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.payment_reconciliation)).toBe(
+      'ALLOW',
+    );
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.payments_hub_ui)).toBe('DENY');
   });
 
   it('keeps three axes separate; DO_NOT_SELL is not a placement (A-AC-03)', () => {

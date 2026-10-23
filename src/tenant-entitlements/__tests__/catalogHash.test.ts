@@ -1,5 +1,5 @@
 /**
- * Shared SSOT catalog drift guard (plan I-07 / catalogHash.test.ts 51/v11).
+ * Shared SSOT catalog drift guard (plan I-07 / Package D catalogHash.test.ts 54/v12).
  *
  * Pin version + count + SHA-256 of `${catalogVersion}:${blockKeys.join(',')}`.
  * Do not list block keys here — keys come from catalog.ts. When you intentionally
@@ -16,10 +16,10 @@ import {
   getEntitlementBlockCatalogEntry,
 } from '../catalog.js';
 
-const EXPECTED_CATALOG_VERSION = 11;
-const EXPECTED_BLOCK_COUNT = 51;
+const EXPECTED_CATALOG_VERSION = 12;
+const EXPECTED_BLOCK_COUNT = 54;
 const EXPECTED_CATALOG_CONTENT_HASH =
-  '2bfa9aefccbc9c8387cc77e63a868d015621108cc70fab2cdb61d314b1751181';
+  '9aeb4497fc267d2bf95e297ba1e26ef19423dcaf2830b515a6a8ce3c5b3390d4';
 
 function computeSharedCatalogContentHash(
   catalogVersion: number,
@@ -31,18 +31,18 @@ function computeSharedCatalogContentHash(
 }
 
 describe('tenant entitlement catalog hash (shared SSOT)', () => {
-  it('pins catalog version 11', () => {
+  it('pins catalog version 12', () => {
     expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(EXPECTED_CATALOG_VERSION);
   });
 
-  it('contains exactly 51 block keys (count + unique + catalog rows)', () => {
+  it('contains exactly 54 block keys (count + unique + catalog rows)', () => {
     expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(EXPECTED_BLOCK_COUNT);
     expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(EXPECTED_BLOCK_COUNT);
     expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(EXPECTED_BLOCK_COUNT);
     expect(new Set(ENTITLEMENT_BLOCK_KEYS).size).toBe(EXPECTED_BLOCK_COUNT);
   });
 
-  it('computes a stable content hash for catalog version 11 (fails on key/order drift)', () => {
+  it('computes a stable content hash for catalog version 12 (fails on key/order drift)', () => {
     const hash = computeSharedCatalogContentHash(
       TENANT_ENTITLEMENT_CATALOG_VERSION,
       ENTITLEMENT_BLOCK_KEYS,

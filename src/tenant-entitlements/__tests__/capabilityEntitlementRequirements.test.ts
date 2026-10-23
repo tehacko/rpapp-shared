@@ -395,6 +395,66 @@ describe('many-to-many (no bijection claim)', () => {
     });
   });
 
+  it('Package D: team lifecycle → team_management_core; RBAC grants stay permission_management_rbac', () => {
+    const teamLifecycleCaps = [
+      'tenant.adminUsers.view',
+      'tenant.adminUsers.manage',
+      'users:view:read',
+      'users:view:manage',
+      'users:admins:create',
+    ] as const;
+    for (const cap of teamLifecycleCaps) {
+      expect(requiredBlocksForCapability(cap)).toEqual({
+        kind: 'blocks',
+        blockKeys: ['team_management_core'],
+        match: 'ALL',
+      });
+    }
+    expect(capabilitiesRequiringBlock('team_management_core')).toEqual(
+      expect.arrayContaining([...teamLifecycleCaps]),
+    );
+
+    expect(requiredBlocksForCapability('tenant.adminUserCapabilities.view')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['permission_management_rbac'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('permissionsCatalog.view')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['permission_management_rbac'],
+      match: 'ALL',
+    });
+  });
+
+  it('Package D: hold_floor override → inventory_operations; core inventory stays management', () => {
+    const holdFloorCaps = [
+      'tenant.orders.pickup.holdFloorOverride',
+      'hold_floor_override',
+      'ops:inventory:checkup.hold_floor_override',
+    ] as const;
+    for (const cap of holdFloorCaps) {
+      expect(requiredBlocksForCapability(cap)).toEqual({
+        kind: 'blocks',
+        blockKeys: ['inventory_operations'],
+        match: 'ALL',
+      });
+    }
+    expect(capabilitiesRequiringBlock('inventory_operations')).toEqual(
+      expect.arrayContaining([...holdFloorCaps]),
+    );
+
+    expect(requiredBlocksForCapability('ops:inventory:read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['inventory_management'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('ops:inventory:manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['inventory_management'],
+      match: 'ALL',
+    });
+  });
+
   it('Package C: basic → analytics_basic; summary → analytics_overview (not explore)', () => {
     expect(requiredBlocksForCapability('analytics:basic:read')).toEqual({
       kind: 'blocks',

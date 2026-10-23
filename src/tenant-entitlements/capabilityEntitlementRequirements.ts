@@ -468,7 +468,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
   ];
 
 const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
-  // RBAC / users
+  // Team management (admin user CRUD) — CAP-12 team_management_core
   {
     authoringTokens: [
       "tenant.adminUsers.view/manage",
@@ -477,11 +477,11 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "users:view:manage",
     ],
     requiredBlockKeys: [
-      "permission_management_rbac",
+      "team_management_core",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // RBAC / users
+  // RBAC capability grants — stay permission_management_rbac
   {
     authoringTokens: [
       "tenant.adminUserCapabilities.view/manage",
@@ -491,7 +491,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // RBAC / users
+  // RBAC permissions catalog — stay permission_management_rbac
   {
     authoringTokens: [
       "permissionsCatalog.view",
@@ -630,7 +630,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Orders
+  // Inventory operations — hold-floor override (CAP-01 inventory_operations)
   {
     authoringTokens: [
       "tenant.orders.pickup.holdFloorOverride",
@@ -638,7 +638,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "ops:inventory:checkup.hold_floor_override",
     ],
     requiredBlockKeys: [
-      "inventory_management",
+      "inventory_operations",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },

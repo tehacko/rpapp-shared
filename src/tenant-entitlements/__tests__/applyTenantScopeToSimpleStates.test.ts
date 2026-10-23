@@ -81,6 +81,31 @@ describe('applyTenantScopeToSimpleStates', () => {
     );
   });
 
+  /**
+   * Package D / D1 — new CONDITIONAL keys present in SIMPLE baseline
+   * (placement ≠ runtime ON; defaults stay off/hardOff until Feature Policy).
+   */
+  it('Package D D1: inventory_operations / audit_intelligence / team_management_core in scope baseline', () => {
+    const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(both.inventory_operations).toBe('hardOff');
+    expect(both.audit_intelligence).toBe('hardOff');
+    expect(both.team_management_core).toBe('off');
+
+    const product = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY');
+    expect(product.inventory_operations).toBe('hardOff');
+    expect(product.audit_intelligence).toBe('hardOff');
+    expect(product.team_management_core).toBe('off');
+
+    const donation = applyTenantScopeToSimpleStates('DONATION_ONLY', 'CUSTOMER_ONLY');
+    expect(donation.inventory_operations).toBe('hardOff');
+    expect(donation.audit_intelligence).toBe('hardOff');
+    expect(donation.team_management_core).toBe('off');
+    expect(isTenantScopeLockedBlock('inventory_operations', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('inventory_operations', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('audit_intelligence', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('team_management_core', 'BOTH', 'BOTH')).toBe(false);
+  });
+
   it('stripAxisControlledSimpleStates removes axis keys only', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY', {
       analytics_basic: 'off',
@@ -221,6 +246,24 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('inventory_incidents', 'BOTH', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('inventory_incidents', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('inventory_incidents', 'DONATION_ONLY', 'BOTH')).toBe(true);
+  });
+
+  it('Package D D1: inventory_operations / audit_intelligence / team_management_core scope defaults', () => {
+    const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(both.inventory_operations).toBe('hardOff');
+    expect(both.audit_intelligence).toBe('hardOff');
+    expect(both.team_management_core).toBe('off');
+
+    const productOnly = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH');
+    expect(productOnly.inventory_operations).toBe('hardOff');
+    expect(productOnly.audit_intelligence).toBe('hardOff');
+    expect(productOnly.team_management_core).toBe('off');
+
+    const donationOnly = applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH');
+    // Donation-only locks product inventory chain hardOff; team/audit intelligence stay baseline.
+    expect(donationOnly.inventory_operations).toBe('hardOff');
+    expect(donationOnly.audit_intelligence).toBe('hardOff');
+    expect(donationOnly.team_management_core).toBe('off');
   });
 
   it('defaults incident_centre_ui to hardOff (commercial Události; not DEFAULT_OFF_ROLLOUT)', () => {
