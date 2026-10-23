@@ -14,16 +14,27 @@ export {
 } from './coreRequiredPolicyAxes.js';
 
 export {
+  COMMERCIAL_ALIGNMENT_STATUSES,
+  COMMERCIAL_PACKAGE_DECISIONS,
+  COMMERCIAL_PLAN_IDS,
+  COMMERCIAL_PLACEMENT_IDS,
   ENTITLEMENT_BLOCK_CLASSES,
   ENTITLEMENT_MUTATION_MODES,
   ENTITLEMENT_PARENT_OPERATORS,
   ENTITLEMENT_RUNTIME_MODES,
   ENTITLEMENT_VISIBILITY_MODES,
   RECONCILIATION_MODES,
+  SELLABILITY_STATUSES,
   SIMPLE_ENTITLEMENT_STATES,
   TENANT_SURFACE_PRESET_IDS,
   simpleEntitlementStateToAxes,
 } from './types.js';
+
+export {
+  COMMERCIAL_PACKAGING,
+  evaluateCommercialPackageDecision,
+  getCommercialPackagingRule,
+} from './commercialPackaging.js';
 
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
@@ -114,6 +125,11 @@ export {
 } from './entitlementSimpleStateMapping.js';
 
 export type {
+  CommercialAlignmentStatus,
+  CommercialPackageDecision,
+  CommercialPackagingRule,
+  CommercialPlacementId,
+  CommercialPlanId,
   EntitlementBlockAxes,
   EntitlementBlockCatalogEntry,
   EntitlementBlockClass,
@@ -126,6 +142,7 @@ export type {
   EvaluatedEntitlementPosture,
   PaymentReconciliationStrategy,
   ReconciliationMode,
+  SellabilityStatus,
   SimpleEntitlementState,
   StripeIntegrationStrategy,
   TenantSurfacePresetId,

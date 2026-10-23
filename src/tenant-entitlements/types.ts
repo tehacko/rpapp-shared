@@ -145,6 +145,43 @@ export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 export const TENANT_ENTITLEMENT_CATALOG_VERSION = 10 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
+/** Self-serve commercial plan ladder (Package A). Organization/Enterprise is not in this enum. */
+export const COMMERCIAL_PLAN_IDS = ['FREE', 'PRO', 'GROWTH'] as const;
+export type CommercialPlanId = (typeof COMMERCIAL_PLAN_IDS)[number];
+
+/** Product placement axis — list, not single value (Package A §3.1). */
+export const COMMERCIAL_PLACEMENT_IDS = [
+  'FREE',
+  'PRO',
+  'GROWTH',
+  'NON_COMMERCIAL',
+  'SEPARATE_PRODUCT',
+] as const;
+export type CommercialPlacementId = (typeof COMMERCIAL_PLACEMENT_IDS)[number];
+
+/** Technical block alignment to a single product boundary (Package A §3.2). */
+export const COMMERCIAL_ALIGNMENT_STATUSES = ['ALIGNED', 'REFACTOR_REQUIRED'] as const;
+export type CommercialAlignmentStatus = (typeof COMMERCIAL_ALIGNMENT_STATUSES)[number];
+
+/**
+ * Sellability axis (Package A §3.3). DO_NOT_SELL is not a placement.
+ * Not a substitute for runtime readiness READY/TEST/PARTIAL/NOT READY.
+ */
+export const SELLABILITY_STATUSES = ['NOT_APPLICABLE', 'OPEN', 'DO_NOT_SELL'] as const;
+export type SellabilityStatus = (typeof SELLABILITY_STATUSES)[number];
+
+/** Three-axis commercial packaging rule for one entitlement block key. */
+export interface CommercialPackagingRule {
+  readonly commercialPlacements: readonly CommercialPlacementId[];
+  readonly alignmentStatus: CommercialAlignmentStatus;
+  readonly sellabilityStatus: SellabilityStatus;
+  readonly rationale: string;
+}
+
+/** Preflight-only commercial package decision (Package A §3.4). Never used for HTTP deny. */
+export const COMMERCIAL_PACKAGE_DECISIONS = ['ALLOW', 'DENY', 'DEFER'] as const;
+export type CommercialPackageDecision = (typeof COMMERCIAL_PACKAGE_DECISIONS)[number];
+
 export const TENANT_SURFACE_PRESET_IDS = [
   'KIOSK_ONLY',
   'CUSTOMER_ONLY',
