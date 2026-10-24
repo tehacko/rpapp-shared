@@ -1,6 +1,6 @@
 {
     "name": "pi-kiosk-shared",
-    "version": "2.3.51",
+    "version": "2.3.52",
     "type": "module",
     "private": false,
     "description": "Shared types, API contracts, and error classes for Pi Kiosk system",
