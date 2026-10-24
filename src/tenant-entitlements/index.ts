@@ -18,6 +18,7 @@ export {
   COMMERCIAL_PACKAGE_DECISIONS,
   COMMERCIAL_PLAN_IDS,
   COMMERCIAL_PLACEMENT_IDS,
+  COMMERCIAL_PROJECTION_MODES,
   ENTITLEMENT_BLOCK_CLASSES,
   ENTITLEMENT_MUTATION_MODES,
   ENTITLEMENT_PARENT_OPERATORS,
@@ -125,11 +126,14 @@ export {
 } from './entitlementSimpleStateMapping.js';
 
 export type {
+  AccessRevision,
   CommercialAlignmentStatus,
   CommercialPackageDecision,
   CommercialPackagingRule,
   CommercialPlacementId,
   CommercialPlanId,
+  CommercialProjectionMode,
+  CommercialProjectionSnapshotFields,
   EntitlementBlockAxes,
   EntitlementBlockCatalogEntry,
   EntitlementBlockClass,

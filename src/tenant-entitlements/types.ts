@@ -189,6 +189,35 @@ export interface CommercialPackagingRule {
 export const COMMERCIAL_PACKAGE_DECISIONS = ['ALLOW', 'DENY', 'DEFER'] as const;
 export type CommercialPackageDecision = (typeof COMMERCIAL_PACKAGE_DECISIONS)[number];
 
+/**
+ * Package G — commercial plan ceiling projection axis (independent of technical enforcementMode).
+ * Source/default MUST be `off`. Wire: TENANT_ENTITLEMENT_COMMERCIAL_PROJECTION_MODE.
+ */
+export const COMMERCIAL_PROJECTION_MODES = ['off', 'shadow', 'enforce'] as const;
+export type CommercialProjectionMode = (typeof COMMERCIAL_PROJECTION_MODES)[number];
+
+/**
+ * Package G §8.2 — opaque access invalidator string.
+ * Wire form: `ar1:<64 lowercase hex SHA-256>`. Clients compare as opaque string only.
+ */
+declare const AccessRevisionBrand: unique symbol;
+export type AccessRevision = string & { readonly [AccessRevisionBrand]: typeof AccessRevisionBrand };
+
+/**
+ * Package G — additive entitlement snapshot wire fields (documentation contract).
+ * - `accessRevision`: opaque `ar1:…` invalidator; plan / packaging / projection / build changes
+ *   bump this — **not** `entitlementPolicyRevision` / technical policy revision alone.
+ * - `commercialDeniedBlockKeys`: authoritative commercial DENY block keys **only when**
+ *   `commercialProjectionMode === 'enforce'`; omit or empty under off/shadow (SHADOW telemetry
+ *   is separate; never client-authoritative commercial deny under SHADOW).
+ * Evaluated decisions still come from shared `evaluateCommercialPackageDecision` (SSOT).
+ */
+export interface CommercialProjectionSnapshotFields {
+  readonly accessRevision?: AccessRevision;
+  readonly commercialDeniedBlockKeys?: readonly EntitlementBlockKey[];
+  readonly commercialProjectionMode?: CommercialProjectionMode;
+}
+
 export const TENANT_SURFACE_PRESET_IDS = [
   'KIOSK_ONLY',
   'CUSTOMER_ONLY',

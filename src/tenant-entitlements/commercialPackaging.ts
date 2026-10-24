@@ -3,7 +3,8 @@
  * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
  * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
  * Package E: donation_recurring / tenant_ops_automation / restock_alerts PRO ALIGNED.
- * Preflight evaluator only — not wired to runtime enforce.
+ * Runtime commercial projection (OFF/SHADOW/ENFORCE ceiling) is Package G — this map +
+ * `evaluateCommercialPackageDecision` remain the sole packaging SSOT (no second backend map).
  */
 import {
   COMMERCIAL_PLAN_IDS,

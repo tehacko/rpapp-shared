@@ -27,4 +27,17 @@ describe('resolveSalesPointEntitlementCeiling', () => {
 
     expect(resolveSalesPointEntitlementCeiling({ entitlementCeiling: custom })).toEqual(custom);
   });
+
+  it('preserves additive optional accessRevision on the ceiling (Package G)', () => {
+    const custom = {
+      revision: 4,
+      surfaceKiosk: DEFAULT_ENTITLED_PUBLIC_POSTURE,
+      realtimeDeviceTransport: DEFAULT_ENTITLED_PUBLIC_POSTURE,
+      pickupMirrorMode: false,
+      accessRevision:
+        'ar1:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    };
+
+    expect(resolveSalesPointEntitlementCeiling({ entitlementCeiling: custom })).toEqual(custom);
+  });
 });

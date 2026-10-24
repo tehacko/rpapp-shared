@@ -174,6 +174,13 @@ export interface SalesPointPublicEntitlementCeiling {
   readonly realtimeDeviceTransport: SalesPointPublicEntitlementBlockPosture;
   /** Sales point acts as implicit pickup point (ENT-PR-12 mirror mode). */
   readonly pickupMirrorMode: boolean;
+  /**
+   * Package G §8.2 — opaque `ar1:…` invalidator (additive).
+   * Present when the tenant entitlement snapshot emits it. Kiosk product UX
+   * does not consume this (see PACKAGE_G_EVIDENCE kiosk regression note);
+   * customer/pickup deny-cache invalidators use surface entitlement endpoints.
+   */
+  readonly accessRevision?: string;
 }
 
 /** WS/SSE disconnect reason when surface or transport block is off (§12.3). */
