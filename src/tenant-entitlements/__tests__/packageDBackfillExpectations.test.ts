@@ -23,7 +23,7 @@ import {
   getEntitlementBlockCatalogEntry,
 } from '../catalog.js';
 
-/** D0 additive targets - must exist in catalog v12 and be missing before prepare. */
+/** D0 additive targets — still present in catalog v13 (cumulative after Package E). */
 const PACKAGE_D_BACKFILL_TARGETS = [
   'inventory_operations',
   'audit_intelligence',
@@ -41,10 +41,10 @@ const PACKAGE_D_TECHNICAL_BACKFILL_DERIVATION = {
 } as const satisfies Record<(typeof PACKAGE_D_BACKFILL_TARGETS)[number], string>;
 
 describe('Package D D0 technical backfill expectations', () => {
-  it('pins catalog v12/54 so D0 targets are present as keys', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(12);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(54);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
+  it('pins catalog v13/57 so D0 targets remain present as keys (cumulative after E)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
     for (const target of PACKAGE_D_BACKFILL_TARGETS) {
       expect(ENTITLEMENT_BLOCK_KEYS).toContain(target);
     }

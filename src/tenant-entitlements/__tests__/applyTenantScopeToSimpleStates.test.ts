@@ -266,6 +266,30 @@ describe('isTenantScopeLockedBlock', () => {
     expect(donationOnly.team_management_core).toBe('off');
   });
 
+  it('Package E E1: donation_recurring / tenant_ops_automation / restock_alerts scope defaults', () => {
+    const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(both.donation_recurring).toBe('hardOff');
+    expect(both.tenant_ops_automation).toBe('hardOff');
+    expect(both.restock_alerts).toBe('hardOff');
+    expect(isTenantScopeLockedBlock('donation_recurring', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('tenant_ops_automation', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('restock_alerts', 'BOTH', 'BOTH')).toBe(false);
+
+    const productOnly = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'BOTH');
+    expect(productOnly.donation_recurring).toBe('hardOff');
+    expect(productOnly.tenant_ops_automation).toBe('hardOff');
+    expect(productOnly.restock_alerts).toBe('hardOff');
+    expect(isTenantScopeLockedBlock('donation_recurring', 'PRODUCT_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('restock_alerts', 'PRODUCT_ONLY', 'BOTH')).toBe(false);
+
+    const donationOnly = applyTenantScopeToSimpleStates('DONATION_ONLY', 'BOTH');
+    expect(donationOnly.donation_recurring).toBe('hardOff');
+    expect(donationOnly.tenant_ops_automation).toBe('hardOff');
+    expect(donationOnly.restock_alerts).toBe('hardOff');
+    expect(isTenantScopeLockedBlock('restock_alerts', 'DONATION_ONLY', 'BOTH')).toBe(true);
+    expect(isTenantScopeLockedBlock('donation_recurring', 'DONATION_ONLY', 'BOTH')).toBe(false);
+  });
+
   it('defaults incident_centre_ui to hardOff (commercial Události; not DEFAULT_OFF_ROLLOUT)', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').incident_centre_ui).toBe('hardOff');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'CUSTOMER_ONLY').incident_centre_ui).toBe(

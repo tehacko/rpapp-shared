@@ -44,6 +44,12 @@ export function applySimpleStateDependencyImplications(
 
   // inventory_operations → inventory_incidents chain under inventory_management (PARENT-01).
   // Child On must not imply parent On — inventory_management stays purpose-locked.
+  // Package E PARENT-01 (via applyCatalogParentDenialImplications at end):
+  //   donation (CONDITIONAL) → donation_recurring — Off/HardOff cascades
+  //   product_vending (CONDITIONAL) → restock_alerts — Off/HardOff cascades
+  //   tenant_ops_settings (CORE_REQUIRED) → tenant_ops_automation — parent always
+  //     treated active; catalog parentKeys document backfill source only
+  // Child On does not imply parent On.
   const inventoryActive = isRuntimeActiveSimpleState(result.inventory_management);
 
   if (inventoryActive) {

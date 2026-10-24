@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 54 blocks / catalogVersion 12 (§6.3).
+ * Authoritative tenant entitlement block catalog — 57 blocks / catalogVersion 13 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -151,11 +151,27 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     capabilityHint: 'ops:products:read',
   },
   {
+    blockKey: 'restock_alerts',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['product_vending'],
+    capabilityHint: 'ops:products:read',
+    notes:
+      'Package E — PRO AUTOMATION: new restock-alert subscription create. Child of product_vending; parent Off/HardOff cascades. Unsubscribe/one-shot delivery stay core. Auth/membership/channel/readiness are separate axes.',
+  },
+  {
     blockKey: 'donation',
     blockClass: 'CONDITIONAL',
     parentKeys: ['sales_point_management'],
     adminNavSectionId: 'donation-projects',
     capabilityHint: 'ops:donation-projects:read',
+  },
+  {
+    blockKey: 'donation_recurring',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['donation'],
+    capabilityHint: 'ops:donation-projects:read',
+    notes:
+      'Package E — PRO SECONDARY/VALIDATE: create/reactivate recurring donation automation. Child of donation; parent Off/HardOff cascades. Does not enable recurring rollout or Mode 2 readiness. Lifecycle pause/cancel/delete stay on donation core.',
   },
   {
     blockKey: 'inventory_management',
@@ -395,6 +411,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'account-settings',
     notes: 'account-settings + ops-settings tab; always on (DEV policy UI locked)',
+  },
+  {
+    blockKey: 'tenant_ops_automation',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['tenant_ops_settings'],
+    capabilityHint: 'account.self.manage',
+    notes:
+      'Package E — PRO AUTOMATION / LAUNCH CORE: positive timer intent (duration/endsAt/EOD) or mode/buffer change retaining active timer. Child of CORE_REQUIRED tenant_ops_settings (parent always runtime-active for satisfaction; catalog parentKeys document backfill source). Manual NORMAL/DELAY/PAUSE + timer clear + worker completion stay core.',
   },
   {
     blockKey: 'tenant_brand_kit',

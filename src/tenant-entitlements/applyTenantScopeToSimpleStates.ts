@@ -61,6 +61,10 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     inventory_management: OFF,
     inventory_operations: HARD_OFF,
     inventory_incidents: HARD_OFF,
+    // Package E — PRO automation children default hardOff (placement ≠ runtime ON).
+    donation_recurring: HARD_OFF,
+    tenant_ops_automation: HARD_OFF,
+    restock_alerts: HARD_OFF,
     team_management_core: OFF,
     // Commercial Události — default hardOff; platform /dev/inbox uses platform
     // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.
@@ -106,6 +110,7 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'product_barcode_administration',
   'inventory_operations',
   'inventory_incidents',
+  'restock_alerts',
   'loyalty_program',
   'promotions_program',
   'analytics_basic',
@@ -114,6 +119,11 @@ const DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS = [
   'tax_management',
   'compliance_fiscal_modules',
   ...DONATION_ONLY_PRODUCT_PICKUP_BLOCK_KEYS,
+] as const satisfies readonly EntitlementBlockKey[];
+
+/** Donation-child blocks forced hardOff when product-only (no donation purpose). */
+const PRODUCT_ONLY_DONATION_CHILD_LOCKED_BLOCK_KEYS = [
+  'donation_recurring',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 /** SIMPLE-profile blocks forced by surfaceScope (beyond axis kiosk/customer). */
@@ -138,6 +148,15 @@ export function isTenantScopeLockedBlock(
   }
   if (allowedPurposes === 'DONATION_ONLY') {
     return (DONATION_ONLY_PURPOSE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(blockKey);
+  }
+  if (allowedPurposes === 'PRODUCT_ONLY') {
+    if (
+      (PRODUCT_ONLY_DONATION_CHILD_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(
+        blockKey,
+      )
+    ) {
+      return true;
+    }
   }
   if (isProductCommerceAllowed(allowedPurposes)) {
     return (TENANT_PRODUCT_PURPOSE_LOCKED_BLOCK_KEYS as readonly EntitlementBlockKey[]).includes(
@@ -172,6 +191,7 @@ function applyAllowedPurposesToStates(
     case 'PRODUCT_ONLY':
       result.product_vending = ON;
       result.donation = OFF;
+      result.donation_recurring = HARD_OFF;
       result.catalog_administration = ON;
       result.inventory_management = ON;
       result.product_barcode_administration = ON;
@@ -182,6 +202,7 @@ function applyAllowedPurposesToStates(
       result.inventory_management = OFF;
       result.inventory_operations = HARD_OFF;
       result.inventory_incidents = HARD_OFF;
+      result.restock_alerts = HARD_OFF;
       result.loyalty_program = OFF;
       result.promotions_program = OFF;
       result.catalog_administration = HARD_OFF;

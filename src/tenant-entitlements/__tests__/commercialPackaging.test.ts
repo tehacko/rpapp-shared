@@ -12,10 +12,10 @@ import {
 } from '../index.js';
 
 describe('commercialPackaging (Package A)', () => {
-  it('maps every current entitlement block key exactly once (A-AC-01 / Package D 54)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(54);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(54);
+  it('maps every current entitlement block key exactly once (A-AC-01 / Package E 57)', () => {
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(57);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,8 +24,8 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 12 (A-AC-02 / Package D ops boundaries)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(12);
+  it('keeps catalog version 13 (Package E automation boundaries)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
   });
 
   it('D-AC-21: Package D split parents are ALIGNED (not REFACTOR_REQUIRED)', () => {
@@ -61,6 +61,27 @@ describe('commercialPackaging (Package A)', () => {
       commercialPlacements: ['GROWTH'],
       alignmentStatus: 'ALIGNED',
     });
+  });
+
+  it('Package E: donation_recurring / tenant_ops_automation / restock_alerts are PRO ALIGNED', () => {
+    expect(COMMERCIAL_PACKAGING.donation_recurring).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.tenant_ops_automation).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(COMMERCIAL_PACKAGING.restock_alerts).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+    });
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.tenant_ops_automation)).toBe(
+      'ALLOW',
+    );
   });
 
   /** D-AC-07 — integrity/matching stays FREE; Hub is PRO (workers must not inherit Hub negate). */

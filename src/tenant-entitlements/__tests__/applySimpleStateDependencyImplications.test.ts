@@ -258,4 +258,71 @@ describe('applySimpleStateDependencyImplications', () => {
 
     expect(implied.admin_mfa).toBe('off');
   });
+
+  it('Package E PARENT-01: donation Off/HardOff cascades to donation_recurring (child On does not imply parent On)', () => {
+    const donationOff = applySimpleStateDependencyImplications({
+      donation: 'off',
+      donation_recurring: 'on',
+    });
+    expect(donationOff.donation).toBe('off');
+    expect(donationOff.donation_recurring).toBe('off');
+
+    const donationHardOff = applySimpleStateDependencyImplications({
+      donation: 'hardOff',
+      donation_recurring: 'on',
+    });
+    expect(donationHardOff.donation).toBe('hardOff');
+    expect(donationHardOff.donation_recurring).toBe('hardOff');
+
+    const bothOn = applySimpleStateDependencyImplications({
+      donation: 'on',
+      donation_recurring: 'on',
+    });
+    expect(bothOn.donation).toBe('on');
+    expect(bothOn.donation_recurring).toBe('on');
+  });
+
+  it('Package E PARENT-01: product_vending Off/HardOff cascades to restock_alerts (no reverse parent promotion)', () => {
+    const vendingOff = applySimpleStateDependencyImplications({
+      product_vending: 'off',
+      restock_alerts: 'on',
+      donation: 'on',
+    });
+    expect(vendingOff.product_vending).toBe('off');
+    expect(vendingOff.restock_alerts).toBe('off');
+
+    const vendingHardOff = applySimpleStateDependencyImplications({
+      product_vending: 'hardOff',
+      restock_alerts: 'on',
+      donation: 'on',
+    });
+    expect(vendingHardOff.product_vending).toBe('hardOff');
+    expect(vendingHardOff.restock_alerts).toBe('hardOff');
+
+    const bothOn = applySimpleStateDependencyImplications({
+      product_vending: 'on',
+      restock_alerts: 'on',
+    });
+    expect(bothOn.product_vending).toBe('on');
+    expect(bothOn.restock_alerts).toBe('on');
+  });
+
+  it('Package E: tenant_ops_automation stays entitled under CORE_REQUIRED tenant_ops_settings parent', () => {
+    // CORE_REQUIRED parents are always treated as runtime-active (catalogParentSatisfaction).
+    // Catalog parentKeys still document the backfill source; SIMPLE Off of CORE_REQUIRED
+    // does not cascade-deny children (same as tenant_brand_kit / admin_mfa).
+    const bothOn = applySimpleStateDependencyImplications({
+      tenant_ops_settings: 'on',
+      tenant_ops_automation: 'on',
+    });
+    expect(bothOn.tenant_ops_settings).toBe('on');
+    expect(bothOn.tenant_ops_automation).toBe('on');
+
+    const parentHardOffInDraft = applySimpleStateDependencyImplications({
+      tenant_ops_settings: 'hardOff',
+      tenant_ops_automation: 'on',
+    });
+    expect(parentHardOffInDraft.tenant_ops_settings).toBe('hardOff');
+    expect(parentHardOffInDraft.tenant_ops_automation).toBe('on');
+  });
 });

@@ -1,7 +1,8 @@
 /**
- * Package A/C/D — commercial packaging map for current catalog (54 keys / v12).
+ * Package A/C/D/E — commercial packaging map for current catalog (57 keys / v13).
  * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
  * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
+ * Package E: donation_recurring / tenant_ops_automation / restock_alerts PRO ALIGNED.
  * Preflight evaluator only — not wired to runtime enforce.
  */
 import {
@@ -112,11 +113,23 @@ export const COMMERCIAL_PACKAGING = {
     'interní doručovací infrastruktura',
   ),
   product_vending: rule(['FREE'], 'ALIGNED', 'OPEN', 'jádro nabídky/produktu'),
+  restock_alerts: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'PRO AUTOMATION — vytvoření nové restock subscription; unsubscribe/one-shot zůstává core',
+  ),
   donation: rule(
     ['FREE', 'PRO'],
     'REFACTOR_REQUIRED',
     'OPEN',
     'základní darování FREE + opakované darování PRO',
+  ),
+  donation_recurring: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'PRO SECONDARY/VALIDATE — create/reactivate recurring; ne flipuje rollout/Mode2 readiness',
   ),
   inventory_management: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní sklad FREE'),
   inventory_operations: rule(['PRO'], 'ALIGNED', 'OPEN', 'pokročilé skladové operace PRO'),
@@ -239,6 +252,12 @@ export const COMMERCIAL_PACKAGING = {
     'REFACTOR_REQUIRED',
     'OPEN',
     'ruční provoz FREE + časovaná automatizace PRO',
+  ),
+  tenant_ops_automation: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'PRO AUTOMATION / LAUNCH CORE — timed auto-return; manuální DELAY/PAUSE zůstává FREE',
   ),
   tenant_brand_kit: rule(['PRO'], 'ALIGNED', 'OPEN', 'sekundární PRO capability'),
   admin_mfa: rule(

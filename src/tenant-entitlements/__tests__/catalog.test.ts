@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 54 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(54);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(54);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(54);
+  it('contains exactly 57 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(57);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
   });
 
-  it('uses catalog version 12 after Package D ops boundaries', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(12);
+  it('uses catalog version 13 after Package E automation boundaries', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(54);
+    expect(new Set(keysFromCatalog).size).toBe(57);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -44,6 +44,23 @@ describe('tenant entitlement catalog', () => {
     const individual = getEntitlementBlockCatalogEntry('sales_point_individual_settings');
     expect(individual.blockClass).toBe('CONDITIONAL');
     expect(individual.parentKeys).toEqual(['sales_point_management']);
+  });
+
+  it('includes Package E CONDITIONAL children near their parents', () => {
+    const restock = getEntitlementBlockCatalogEntry('restock_alerts');
+    expect(restock.blockClass).toBe('CONDITIONAL');
+    expect(restock.parentKeys).toEqual(['product_vending']);
+    expect(restock.notes).toMatch(/PRO AUTOMATION/i);
+
+    const recurring = getEntitlementBlockCatalogEntry('donation_recurring');
+    expect(recurring.blockClass).toBe('CONDITIONAL');
+    expect(recurring.parentKeys).toEqual(['donation']);
+    expect(recurring.notes).toMatch(/PRO SECONDARY|VALIDATE/i);
+
+    const opsAuto = getEntitlementBlockCatalogEntry('tenant_ops_automation');
+    expect(opsAuto.blockClass).toBe('CONDITIONAL');
+    expect(opsAuto.parentKeys).toEqual(['tenant_ops_settings']);
+    expect(opsAuto.notes).toMatch(/LAUNCH CORE|PRO AUTOMATION/i);
   });
 
   it('includes inventory_operations as CONDITIONAL child of inventory_management', () => {

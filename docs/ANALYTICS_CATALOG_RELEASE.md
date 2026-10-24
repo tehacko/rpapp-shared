@@ -8,9 +8,10 @@ Defines the release process for publishing shared analytics catalog/type updates
 
 1. Update shared analytics catalog/types in `shared/src`.
 2. Build and test shared package.
-3. Publish/version bump shared package.
-4. Update consumers (`up-backend`, `rpapp-admin`, `rpapp-kiosk`, `rpapp-customer`) to the new shared version.
+3. Publish/version bump shared package (`npm publish --access public --otp=…`).
+4. Update consumers (`up-backend`, `admin-app`, `rpapp-kiosk`, `rpapp-customer`, `rpapp-pickup`) to `^<newVersion>` and refresh locks from the **npm registry** (no monorepo `file:*.tgz` pins).
 5. Run consumer lint/type-check and targeted analytics tests.
+6. Align `BAKED_SSOT_FLOOR` / `DEFAULT_REGISTRY_TARGET` in `gateAppOnlySharedVersion.mjs` / `prebuildShared.mjs` with the new floor.
 
 ## Compatibility rules
 
@@ -22,42 +23,35 @@ Defines the release process for publishing shared analytics catalog/type updates
 - Shared build succeeds.
 - Shared tests for analytics contracts succeed.
 - Consumer packages compile against the published artifacts.
+- `npm view pi-kiosk-shared version` matches `shared/package.json`.
+- `npm run gate:shared-app-only` green on consumers.
 
 ## Related
 
 - `shared/src/analyticsEvents.ts`
 - `up-backend/src/domain/analytics/analyticsEventCatalog.ts`
 
-## C-F02 / G1 — shared `2.3.49` + app-only (2026-10-23)
+## C-F02 / G1 — shared `2.3.50` + registry (2026-10-24)
 
-### Monorepo SSOT
+### Monorepo / registry SSOT
 
 | Item | Value |
 |------|-------|
-| `shared/package.json` version | **2.3.49** |
-| Consumer pin (all five apps) | `file:../shared/pi-kiosk-shared-2.3.49.tgz` |
-| Local pack artifact | `shared/pi-kiosk-shared-2.3.49.tgz` |
+| `shared/package.json` version | **2.3.50** |
+| npm registry | **2.3.50** |
+| Consumer pin (all five apps) | `"pi-kiosk-shared": "^2.3.50"` |
+| File tarball pins | **None** (removed) |
 
-### Registry honesty
+### App-only / Railway
 
-npm registry `latest` may still be **2.3.48** until an authenticated OTP publish of **2.3.49** lands. Do **not** invent publish success.
+- Contract: `up-backend/docs/PACKAGE_C_EVIDENCE/package-c-cf02-app-only-deploy-contract.md`
+- Gate: `npm run gate:shared-app-only` fails if installed **&lt; 2.3.50**
+- Deploy guide: `up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`
 
-### App-only / Railway — no silent stale
-
-App-only and Railway clones **MUST NOT** silently install registry **2.3.48** while monorepo SSOT is **2.3.49**.
-
-- Contract SSOT: [`up-backend/docs/PACKAGE_C_EVIDENCE/package-c-cf02-app-only-deploy-contract.md`](../../up-backend/docs/PACKAGE_C_EVIDENCE/package-c-cf02-app-only-deploy-contract.md)
-- Fail-closed install path: consumer `scripts/prebuildShared.mjs` (file: without `PI_KIOSK_SHARED_REGISTRY_TAG` fails closed; default exact **2.3.49**)
-- CI/deploy gate: `scripts/gateAppOnlySharedVersion.mjs` / `npm run gate:shared-app-only` fails if installed shared **< 2.3.49**
-- Separate-repo deploy guide: [`up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md`](../../up-backend/docs/DEPLOYMENT/DEPLOY_SEPARATE_REPOS.md)
-- Separate-repo template pin: [`up-backend/docs/templates/package.json.separate-repo.example`](../../up-backend/docs/templates/package.json.separate-repo.example) — exact `"pi-kiosk-shared": "2.3.49"` until registry publish
-
-### Operator publish (path a — OTP)
+### Operator publish
 
 ```powershell
 cd shared
 npm publish --access public --otp=<authenticator-code>
-npm view pi-kiosk-shared version   # expect 2.3.49
+npm view pi-kiosk-shared version
 ```
-
-Until `npm view` shows **2.3.49**, prefer monorepo file-tarball pins or sibling `shared` / shipped tarball — not silent registry stale.

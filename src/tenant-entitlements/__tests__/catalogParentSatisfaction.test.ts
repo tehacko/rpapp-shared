@@ -292,6 +292,56 @@ describe('applyCatalogParentDenialImplications', () => {
     expect(implied.audit_intelligence).toBe('hardOff');
   });
 
+  it('Package E: cascades donation / product_vending Off|HardOff to E children', () => {
+    expect(
+      areEntitlementBlockParentsSatisfied('donation_recurring', { donation: 'off' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('donation_recurring', { donation: 'on' }),
+    ).toBe(true);
+    expect(
+      areEntitlementBlockParentsSatisfied('restock_alerts', { product_vending: 'hardOff' }),
+    ).toBe(false);
+    expect(
+      areEntitlementBlockParentsSatisfied('restock_alerts', { product_vending: 'on' }),
+    ).toBe(true);
+    // CORE_REQUIRED parent always satisfies
+    expect(
+      areEntitlementBlockParentsSatisfied('tenant_ops_automation', {
+        tenant_ops_settings: 'hardOff',
+      }),
+    ).toBe(true);
+
+    const donationCascade = applyCatalogParentDenialImplications({
+      donation: 'hardOff',
+      donation_recurring: 'on',
+    });
+    expect(donationCascade.donation).toBe('hardOff');
+    expect(donationCascade.donation_recurring).toBe('hardOff');
+
+    const restockCascade = applyCatalogParentDenialImplications({
+      product_vending: 'off',
+      restock_alerts: 'on',
+    });
+    expect(restockCascade.product_vending).toBe('off');
+    expect(restockCascade.restock_alerts).toBe('off');
+
+    // NO reverse parent promotion: child On alone must not lift parent Off/HardOff.
+    const noReverseDonation = applyCatalogParentDenialImplications({
+      donation: 'off',
+      donation_recurring: 'on',
+    });
+    expect(noReverseDonation.donation).toBe('off');
+    expect(noReverseDonation.donation_recurring).toBe('off');
+
+    const noReverseRestock = applyCatalogParentDenialImplications({
+      product_vending: 'hardOff',
+      restock_alerts: 'on',
+    });
+    expect(noReverseRestock.product_vending).toBe('hardOff');
+    expect(noReverseRestock.restock_alerts).toBe('hardOff');
+  });
+
   it('forces payments_hub_ui and bank_inbox_claims_api hardOff when payment_reconciliation is hardOff', () => {
     const implied = applyCatalogParentDenialImplications({
       payment_reconciliation: 'hardOff',
