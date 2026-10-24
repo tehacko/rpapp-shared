@@ -12,6 +12,7 @@ import {
   PRODUCT_CAPABILITY_PRODUCTION_GRID,
   PRODUCT_CAPABILITY_SURFACES,
   PRODUCT_CAPABILITY_TEST_MODE_GRID,
+  clientAccessDenyKindForProductCapabilityGridCell,
   collapseProductCapabilityGridCell,
   declaredProductCapabilityReadiness,
   evaluateProductCapabilityReadiness,
@@ -22,6 +23,7 @@ import {
   isEntitlementBlockProductionEnableAllowed,
   clampSimpleStatesToProductionEnableAllowed,
   collectDeniedProductionEnablePolicyRows,
+  resolveBlockProductCapabilityDenyKind,
   simpleEntitlementStateToProductReadiness,
 } from '../productCapabilityReadiness.js';
 import type { EntitlementBlockKey, SimpleEntitlementState } from '../types.js';
@@ -71,6 +73,47 @@ describe('simpleEntitlementStateToProductReadiness', () => {
       'off',
       'hardOff',
     ]);
+  });
+});
+
+describe('Package F readiness/TECHNICAL wire kinds (G5)', () => {
+  it('maps PARTIAL/TEST → READINESS and NOT_READY/n_a → TECHNICAL', () => {
+    expect(clientAccessDenyKindForProductCapabilityGridCell('PARTIAL')).toBe('READINESS');
+    expect(clientAccessDenyKindForProductCapabilityGridCell('TEST')).toBe('READINESS');
+    expect(clientAccessDenyKindForProductCapabilityGridCell('NOT_READY')).toBe('TECHNICAL');
+    expect(clientAccessDenyKindForProductCapabilityGridCell('n_a')).toBe('TECHNICAL');
+    expect(clientAccessDenyKindForProductCapabilityGridCell('READY')).toBe('TECHNICAL');
+  });
+
+  it('resolveBlockProductCapabilityDenyKind: PARTIAL donation → READINESS; NOT_READY analytics customer → TECHNICAL; READY → omit', () => {
+    expect(
+      resolveBlockProductCapabilityDenyKind({
+        blockKey: 'donation',
+        surface: 'customer',
+        mode: 'production',
+      }),
+    ).toBe('READINESS');
+    expect(
+      resolveBlockProductCapabilityDenyKind({
+        blockKey: 'analytics_overview',
+        surface: 'customer',
+        mode: 'production',
+      }),
+    ).toBe('TECHNICAL');
+    expect(
+      resolveBlockProductCapabilityDenyKind({
+        blockKey: 'payment_cash',
+        surface: 'customer',
+        mode: 'production',
+      }),
+    ).toBeUndefined();
+    expect(
+      resolveBlockProductCapabilityDenyKind({
+        blockKey: 'restock_alerts',
+        surface: 'customer',
+        mode: 'production',
+      }),
+    ).toBeUndefined();
   });
 });
 

@@ -232,6 +232,7 @@ export {
   PRODUCT_CAPABILITY_SURFACES,
   PRODUCT_CAPABILITY_TEST_MODE_GRID,
   PRODUCT_READINESS_SURFACES,
+  clientAccessDenyKindForProductCapabilityGridCell,
   collapseProductCapabilityGridCell,
   declaredProductCapabilityReadiness,
   evaluateProductCapabilityReadiness,
@@ -244,12 +245,14 @@ export {
   clampSimpleStatesToProductionEnableAllowed,
   collectDeniedProductionEnablePolicyRows,
   normalizeProductCapabilitySurface,
+  resolveBlockProductCapabilityDenyKind,
   resolveProductReadinessMode,
   simpleEntitlementStateToProductReadiness,
 } from './productCapabilityReadiness.js';
 
 export type {
   EvaluateProductCapabilityReadinessInput,
+  ProductCapabilityAccessDenyKind,
   ProductCapabilityGridCell,
   ProductCapabilityReadiness,
   ProductCapabilityReadinessState,
@@ -280,3 +283,18 @@ export {
 } from './legacyAnalyticsBlockMigration.js';
 
 export type { RetiredAnalyticsEntitlementBlockKey } from './legacyAnalyticsBlockMigration.js';
+
+export {
+  CLIENT_ACCESS_DENY_KINDS,
+  collectClientAccessDenyKinds,
+  isClientAccessDenyKind,
+  resolveClientAccessPresentation,
+  shouldShowCommercialUpgradeCta,
+} from './clientAccessDenyKind.js';
+
+export type {
+  ClientAccessDenyKind,
+  ClientAccessPresentationState,
+  EntitlementDenialItem,
+  ResolveClientAccessPresentationInput,
+} from './clientAccessDenyKind.js';

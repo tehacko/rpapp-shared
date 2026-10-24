@@ -389,6 +389,59 @@ export function isProductCapabilityActivable(input: {
 }
 
 /**
+ * Wire deny kind for a non-activable G8 cell (Package F / F-AC-42).
+ * PARTIAL / TEST → READINESS (product not production-ready).
+ * NOT_READY / n_a / never-activate → TECHNICAL (rollout / surface N/A).
+ */
+export type ProductCapabilityAccessDenyKind = 'READINESS' | 'TECHNICAL';
+
+export function clientAccessDenyKindForProductCapabilityGridCell(
+  cell: ProductCapabilityGridCell,
+): ProductCapabilityAccessDenyKind {
+  if (cell === 'PARTIAL' || cell === 'TEST') {
+    return 'READINESS';
+  }
+  return 'TECHNICAL';
+}
+
+/**
+ * Pre-union readiness/technical axis for an entitlement block (same signal as
+ * `isBlockReadinessDenied` in requireEntitled). Unmapped blocks → undefined
+ * (no readiness axis). Activable → undefined. Otherwise READINESS or TECHNICAL.
+ */
+export function resolveBlockProductCapabilityDenyKind(input: {
+  readonly blockKey: EntitlementBlockKey;
+  readonly surface: ProductCapabilitySurface | ProductReadinessSurface;
+  readonly mode?: ProductReadinessMode;
+  readonly explicitDevEnable?: boolean;
+}): ProductCapabilityAccessDenyKind | undefined {
+  const capabilityId = productCapabilityIdForEntitlementBlock(input.blockKey);
+  if (capabilityId === undefined) {
+    return undefined;
+  }
+  if (
+    isProductCapabilityActivable({
+      capabilityId,
+      surface: input.surface,
+      mode: input.mode,
+      explicitDevEnable: input.explicitDevEnable,
+    })
+  ) {
+    return undefined;
+  }
+  if (isNeverActivateProductCapability(capabilityId)) {
+    return 'TECHNICAL';
+  }
+  const cell = getProductCapabilityReadiness({
+    capabilityId,
+    surface: input.surface,
+    mode: input.mode,
+    explicitDevEnable: input.explicitDevEnable,
+  });
+  return clientAccessDenyKindForProductCapabilityGridCell(cell);
+}
+
+/**
  * Production persist/create/editor may ENABLE a capability only when at least one
  * G8 production cell is READY (`isProductCapabilityActivable` / mode production).
  * PARTIAL / TEST / NOT_READY / n_a / CAP-15 never persist as ENABLE.
