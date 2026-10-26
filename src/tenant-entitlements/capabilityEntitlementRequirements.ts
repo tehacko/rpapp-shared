@@ -253,6 +253,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "dev:workers:read",
     "dev:workers:resolve-refund-candidate",
     "dev:workers:run",
+    "eet.privileged_disable",
     "exceptions.complianceSensitiveAccess",
     "exceptions.crossTenantReplayExecute",
     "exceptions.refundResolve",
@@ -318,6 +319,8 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "platform.analyticsPipeline.manage",
     "platform.analyticsPipeline.view",
     "platform.auditFinalizeIncident.manage",
+    "platform.branding.manage",
+    "platform.branding.view",
     "platform.categories.manage",
     "platform.categories.view",
     "platform.complianceAudit.view",
@@ -328,6 +331,8 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "platform.hardeningMetrics.view",
     "platform.httpStorm.manage",
     "platform.httpStorm.view",
+    "platform.legalDocuments.manage",
+    "platform.legalDocuments.view",
     "platform.outbox.manage",
     "platform.outbox.view",
     "platform.outboxReplay.approvalRequestApprove",
@@ -343,6 +348,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "platform.retention.view",
     "platform.retentionWorkers.manage",
     "platform.retentionWorkers.view",
+    "platform.shippingAddress.supportView",
     "platform.successIncident.manage",
     "platform.successIncident.view",
     "platform.tenantPayments.manage",
@@ -401,6 +407,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "tenant.donationProjects.view",
     "tenant.donationTemplates.manage",
     "tenant.donationTemplates.view",
+    "tenant.eet.privilegedDisable",
     "tenant.financeApproveSettlement.manage",
     "tenant.financeDetailed.manage",
     "tenant.financeDetailed.view",
@@ -450,6 +457,8 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "tenant.products.manage",
     "tenant.products.view",
     "tenant.reconciliation.read",
+    "tenant.shippingMethods.manage",
+    "tenant.shippingMethods.read",
     "tenant.systemFeatureFlags.manage",
     "tenant.systemFeatureFlags.view",
     "tenant.systemHealth.manage",
@@ -652,11 +661,31 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
+  // Shipping Light methods — peer sales_point_management (route registry CT/PT-RBAC-365…369)
+  {
+    authoringTokens: [
+      "tenant.shippingMethods.read/manage",
+    ],
+    requiredBlockKeys: [
+      "sales_point_management",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
   // Orders
   {
     authoringTokens: [
       "tenant.pickupDevices.*",
       "pickup_devices:read/write",
+    ],
+    requiredBlockKeys: [
+      "fulfillment_queue",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
+  // Support shipping address PII (G24) — fulfillment commerce ops ceiling
+  {
+    authoringTokens: [
+      "platform.shippingAddress.supportView",
     ],
     requiredBlockKeys: [
       "fulfillment_queue",
@@ -912,6 +941,17 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
+  // EET2 break-glass (G-08) — same NON_COMMERCIAL ceiling as EET admin routes
+  {
+    authoringTokens: [
+      "tenant.eet.privilegedDisable",
+      "eet.privileged_disable",
+    ],
+    requiredBlockKeys: [
+      "compliance_fiscal_modules",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
   // Tax/config
   {
     authoringTokens: [
@@ -1017,7 +1057,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     entitlementExempt: true,
     match: 'ALL',
   },
-  // Out-of-U
+  // Out-of-U — SUPER_DEV_ONLY platform caps (global scope; route peers often PLATFORM_WORKER exempt)
   {
     authoringTokens: [
       "platform.aggregates.manage",
@@ -1027,6 +1067,8 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "platform.analyticsPipeline.manage",
       "platform.analyticsPipeline.view",
       "platform.auditFinalizeIncident.manage",
+      "platform.branding.manage",
+      "platform.branding.view",
       "platform.categories.manage",
       "platform.categories.view",
       "platform.complianceAudit.view",
@@ -1037,6 +1079,8 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "platform.hardeningMetrics.view",
       "platform.httpStorm.manage",
       "platform.httpStorm.view",
+      "platform.legalDocuments.manage",
+      "platform.legalDocuments.view",
       "platform.outbox.manage",
       "platform.outbox.view",
       "platform.outboxReplay.approvalRequestApprove",

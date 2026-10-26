@@ -17,10 +17,14 @@ import {
   declaredProductCapabilityReadiness,
   evaluateProductCapabilityReadiness,
   getDeclaredProductCapabilityGridCell,
+  getProductCapabilityReadiness,
   isPartnerApiNeverActivate,
   isProductCapabilityActivable,
   isProductCapabilityProductionEnableAllowed,
   isEntitlementBlockProductionEnableAllowed,
+  isProductCapabilityTestModeEnableAllowed,
+  isEntitlementBlockTestModeEnableAllowed,
+  mergeReadinessCell,
   clampSimpleStatesToProductionEnableAllowed,
   collectDeniedProductionEnablePolicyRows,
   resolveBlockProductCapabilityDenyKind,
@@ -409,5 +413,131 @@ describe('G8 PARTIAL production persist ENABLE deny', () => {
         { blockKey: 'catalog_administration', runtimeMode: 'ENABLED' },
       ]),
     ).toEqual([]);
+  });
+});
+
+describe('test-mode enable helpers (Wave 0 pretest Max-On)', () => {
+  it('allows CAP-10 TEST→READY under test-grid OR synonym but not production', () => {
+    expect(isProductCapabilityProductionEnableAllowed('CAP-10')).toBe(false);
+    expect(isProductCapabilityTestModeEnableAllowed('CAP-10')).toBe(true);
+    expect(isEntitlementBlockProductionEnableAllowed('tenant_brand_kit')).toBe(false);
+    expect(isEntitlementBlockTestModeEnableAllowed('tenant_brand_kit')).toBe(true);
+  });
+
+  it('rejects CAP-15 and PARTIAL-only capabilities in both modes', () => {
+    expect(isProductCapabilityTestModeEnableAllowed('CAP-15')).toBe(false);
+    expect(isProductCapabilityTestModeEnableAllowed('CAP-02')).toBe(false);
+    expect(isEntitlementBlockTestModeEnableAllowed('donation')).toBe(false);
+  });
+
+  it('keeps READY production capabilities enable-allowed in test mode', () => {
+    expect(isProductCapabilityTestModeEnableAllowed('CAP-01')).toBe(true);
+    expect(isEntitlementBlockTestModeEnableAllowed('catalog_administration')).toBe(true);
+  });
+});
+
+describe('mergeReadinessCell (platform override + CAP-15/n_a reject)', () => {
+  it('applies override onto a mutable declared cell', () => {
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-01',
+        declared: 'PARTIAL',
+        override: 'READY',
+      }),
+    ).toEqual({ ok: true, cell: 'READY' });
+  });
+
+  it('threads override into getProductCapabilityReadiness / isProductCapabilityActivable', () => {
+    // CAP-02 admin is code PARTIAL → not activable without override.
+    expect(
+      isProductCapabilityActivable({
+        capabilityId: 'CAP-02',
+        surface: 'admin',
+        mode: 'production',
+      }),
+    ).toBe(false);
+    expect(
+      getProductCapabilityReadiness({
+        capabilityId: 'CAP-02',
+        surface: 'admin',
+        mode: 'production',
+        override: 'READY',
+      }),
+    ).toBe('READY');
+    expect(
+      isProductCapabilityActivable({
+        capabilityId: 'CAP-02',
+        surface: 'admin',
+        mode: 'production',
+        override: 'READY',
+      }),
+    ).toBe(true);
+    expect(
+      isProductCapabilityProductionEnableAllowed('CAP-02', {
+        resolveOverride: (surface) => (surface === 'admin' ? 'READY' : null),
+      }),
+    ).toBe(true);
+  });
+
+  it('returns declared when override is null/undefined', () => {
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-01',
+        declared: 'READY',
+        override: null,
+      }),
+    ).toEqual({ ok: true, cell: 'READY' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-01',
+        declared: 'TEST',
+      }),
+    ).toEqual({ ok: true, cell: 'TEST' });
+  });
+
+  it('rejects CAP-15 overrides away from NOT_READY', () => {
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-15',
+        declared: 'NOT_READY',
+        override: 'READY',
+      }),
+    ).toEqual({ ok: false, reason: 'CAP_15_NEVER_ACTIVATE', cell: 'NOT_READY' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-15',
+        declared: 'NOT_READY',
+        override: 'NOT_READY',
+      }),
+    ).toEqual({ ok: true, cell: 'NOT_READY' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-15',
+        declared: 'READY',
+      }),
+    ).toEqual({ ok: true, cell: 'NOT_READY' });
+  });
+
+  it('rejects overrides of declared n_a cells', () => {
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-02',
+        declared: 'n_a',
+        override: 'READY',
+      }),
+    ).toEqual({ ok: false, reason: 'N_A_IMMUTABLE', cell: 'n_a' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-02',
+        declared: 'n_a',
+        override: 'n_a',
+      }),
+    ).toEqual({ ok: true, cell: 'n_a' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-02',
+        declared: 'n_a',
+      }),
+    ).toEqual({ ok: true, cell: 'n_a' });
   });
 });

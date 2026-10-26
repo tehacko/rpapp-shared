@@ -35,7 +35,10 @@ export {
   COMMERCIAL_PACKAGING,
   evaluateCommercialPackageDecision,
   getCommercialPackagingRule,
+  resolveCommercialEvaluationPlan,
 } from './commercialPackaging.js';
+
+export { computeSimplyVsEntMaxReadyDelta } from './simplyVsEntMaxReadyDelta.js';
 
 export { applySimpleStateDependencyImplications } from './applySimpleStateDependencyImplications.js';
 
@@ -246,6 +249,9 @@ export {
   isProductCapabilityActivable,
   isProductCapabilityProductionEnableAllowed,
   isEntitlementBlockProductionEnableAllowed,
+  isProductCapabilityTestModeEnableAllowed,
+  isEntitlementBlockTestModeEnableAllowed,
+  mergeReadinessCell,
   clampSimpleStatesToProductionEnableAllowed,
   collectDeniedProductionEnablePolicyRows,
   normalizeProductCapabilitySurface,
@@ -256,9 +262,12 @@ export {
 
 export type {
   EvaluateProductCapabilityReadinessInput,
+  MergeReadinessCellRejectReason,
+  MergeReadinessCellResult,
   ProductCapabilityAccessDenyKind,
   ProductCapabilityGridCell,
   ProductCapabilityReadiness,
+  ResolveProductCapabilityReadinessOverride,
   ProductCapabilityReadinessState,
   ProductCapabilitySurface,
   ProductReadinessMode,

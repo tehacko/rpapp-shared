@@ -28,6 +28,29 @@ function isSelfServePlacement(p: CommercialPlacementId): p is CommercialPlanId {
 }
 
 /**
+ * Enterprise commercial eval plan (Plan Visibility G2).
+ * When `enterpriseContractActive` and a self-serve plan is assigned → evaluate as **GROWTH**
+ * for ALLOW/DENY (stored label unchanged). UNASSIGNED / null / undefined never invents a plan
+ * even when Enterprise is active.
+ */
+export function resolveCommercialEvaluationPlan(
+  commercialPlan: CommercialPlanId | 'UNASSIGNED' | null | undefined,
+  enterpriseContractActive: boolean,
+): CommercialPlanId | null {
+  const assigned: CommercialPlanId | null =
+    commercialPlan === 'FREE' || commercialPlan === 'PRO' || commercialPlan === 'GROWTH'
+      ? commercialPlan
+      : null;
+  if (assigned === null) {
+    return null;
+  }
+  if (enterpriseContractActive) {
+    return 'GROWTH';
+  }
+  return assigned;
+}
+
+/**
  * Pure preflight decision (Package A §3.4).
  * DEFER for REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL.
  * ALLOW/DENY only for ALIGNED single FREE|PRO|GROWTH vs plan ladder FREE < PRO < GROWTH.

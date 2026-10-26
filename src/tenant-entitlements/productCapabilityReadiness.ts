@@ -329,11 +329,17 @@ export type EvaluateProductCapabilityReadinessInput = {
   readonly explicitDevEnable?: boolean;
   readonly mode?: ProductReadinessMode;
   readonly simpleStates?: Partial<Record<EntitlementBlockKey, SimpleEntitlementState>>;
+  /**
+   * Platform DEV readiness override (merged via `mergeReadinessCell` before collapse).
+   * Null/undefined → code-declared grid only.
+   */
+  readonly override?: ProductCapabilityGridCell | null;
 };
 
 /**
- * Declared G8 grid (production vs test-mode) AND optional SIMPLE `on` for every
- * mapped block. CAP-15 is NOT_READY even when SIMPLE is `on` and test-mode is on.
+ * Effective G8 cell (code default merged with optional platform override) AND optional
+ * SIMPLE `on` for every mapped block. CAP-15 is NOT_READY even when SIMPLE is `on`
+ * and test-mode is on.
  */
 export function evaluateProductCapabilityReadiness(
   input: EvaluateProductCapabilityReadinessInput,
@@ -341,11 +347,17 @@ export function evaluateProductCapabilityReadiness(
   if (isNeverActivateProductCapability(input.capabilityId)) {
     return 'NOT_READY';
   }
-  const declared = declaredProductCapabilityReadiness(input.capabilityId, input.surface, {
-    explicitDevEnable: input.explicitDevEnable,
+  const effectiveCell = getProductCapabilityReadiness({
+    capabilityId: input.capabilityId,
+    surface: input.surface,
     mode: input.mode,
+    explicitDevEnable: input.explicitDevEnable,
+    override: input.override,
   });
-  if (declared === 'NOT_READY') {
+  const explicitDevEnable =
+    input.explicitDevEnable === true || input.mode === 'test';
+  const collapsed = collapseProductCapabilityGridCell(effectiveCell, { explicitDevEnable });
+  if (collapsed === 'NOT_READY') {
     return 'NOT_READY';
   }
   if (input.simpleStates !== undefined && !mappedBlocksAreSimpleOn(input.capabilityId, input.simpleStates)) {
@@ -363,14 +375,22 @@ export function getProductCapabilityReadiness(input: {
   readonly surface: ProductCapabilitySurface | ProductReadinessSurface;
   readonly mode?: ProductReadinessMode;
   readonly explicitDevEnable?: boolean;
+  /** Platform DEV override — merged with declared cell via `mergeReadinessCell`. */
+  readonly override?: ProductCapabilityGridCell | null;
 }): ProductCapabilityReadinessState {
   if (isNeverActivateProductCapability(input.capabilityId)) {
     return 'NOT_READY';
   }
-  return getDeclaredProductCapabilityGridCell(input.capabilityId, input.surface, {
+  const declared = getDeclaredProductCapabilityGridCell(input.capabilityId, input.surface, {
     mode: input.mode,
     explicitDevEnable: input.explicitDevEnable,
   });
+  const merged = mergeReadinessCell({
+    capabilityId: input.capabilityId,
+    declared,
+    override: input.override,
+  });
+  return merged.cell;
 }
 
 /**
@@ -384,6 +404,8 @@ export function isProductCapabilityActivable(input: {
   readonly surface: ProductCapabilitySurface | ProductReadinessSurface;
   readonly mode?: ProductReadinessMode;
   readonly explicitDevEnable?: boolean;
+  /** Platform DEV override — merged before READY collapse. */
+  readonly override?: ProductCapabilityGridCell | null;
 }): boolean {
   return evaluateProductCapabilityReadiness(input) === 'READY';
 }
@@ -414,6 +436,8 @@ export function resolveBlockProductCapabilityDenyKind(input: {
   readonly surface: ProductCapabilitySurface | ProductReadinessSurface;
   readonly mode?: ProductReadinessMode;
   readonly explicitDevEnable?: boolean;
+  /** Platform DEV override for this capability×surface×mode. */
+  readonly override?: ProductCapabilityGridCell | null;
 }): ProductCapabilityAccessDenyKind | undefined {
   const capabilityId = productCapabilityIdForEntitlementBlock(input.blockKey);
   if (capabilityId === undefined) {
@@ -425,6 +449,7 @@ export function resolveBlockProductCapabilityDenyKind(input: {
       surface: input.surface,
       mode: input.mode,
       explicitDevEnable: input.explicitDevEnable,
+      override: input.override,
     })
   ) {
     return undefined;
@@ -437,9 +462,14 @@ export function resolveBlockProductCapabilityDenyKind(input: {
     surface: input.surface,
     mode: input.mode,
     explicitDevEnable: input.explicitDevEnable,
+    override: input.override,
   });
   return clientAccessDenyKindForProductCapabilityGridCell(cell);
 }
+
+export type ResolveProductCapabilityReadinessOverride = (
+  surface: ProductReadinessSurface,
+) => ProductCapabilityGridCell | null | undefined;
 
 /**
  * Production persist/create/editor may ENABLE a capability only when at least one
@@ -448,6 +478,9 @@ export function resolveBlockProductCapabilityDenyKind(input: {
  */
 export function isProductCapabilityProductionEnableAllowed(
   capabilityId: ProductCapabilityId,
+  options?: {
+    readonly resolveOverride?: ResolveProductCapabilityReadinessOverride;
+  },
 ): boolean {
   if (isNeverActivateProductCapability(capabilityId)) {
     return false;
@@ -457,6 +490,7 @@ export function isProductCapabilityProductionEnableAllowed(
       capabilityId,
       surface,
       mode: 'production',
+      override: options?.resolveOverride?.(surface) ?? null,
     }),
   );
 }
@@ -464,6 +498,9 @@ export function isProductCapabilityProductionEnableAllowed(
 /** Unmapped leftover blocks stay persistable; mapped blocks follow G8 READY-only. */
 export function isEntitlementBlockProductionEnableAllowed(
   blockKey: EntitlementBlockKey,
+  options?: {
+    readonly resolveOverride?: ResolveProductCapabilityReadinessOverride;
+  },
 ): boolean {
   const capabilityId = productCapabilityIdForEntitlementBlock(blockKey);
   if (capabilityId === undefined) {
@@ -473,7 +510,94 @@ export function isEntitlementBlockProductionEnableAllowed(
   if (blockClass === 'CORE_REQUIRED' || blockClass === 'CORE_IMMUTABLE') {
     return true;
   }
-  return isProductCapabilityProductionEnableAllowed(capabilityId);
+  return isProductCapabilityProductionEnableAllowed(capabilityId, options);
+}
+
+/**
+ * Test-mode / pretest Max-On enable: at least one G8 **test-grid** cell collapses to READY
+ * (READY, or TEST→READY via OR synonym `mode:'test'` + `explicitDevEnable:true`).
+ * PARTIAL / NOT_READY / n_a / CAP-15 never enable.
+ */
+export function isProductCapabilityTestModeEnableAllowed(
+  capabilityId: ProductCapabilityId,
+  options?: {
+    readonly resolveOverride?: ResolveProductCapabilityReadinessOverride;
+  },
+): boolean {
+  if (isNeverActivateProductCapability(capabilityId)) {
+    return false;
+  }
+  return PRODUCT_READINESS_SURFACES.some((surface) =>
+    isProductCapabilityActivable({
+      capabilityId,
+      surface,
+      mode: 'test',
+      explicitDevEnable: true,
+      override: options?.resolveOverride?.(surface) ?? null,
+    }),
+  );
+}
+
+/** Unmapped leftover blocks stay enable-allowed; mapped blocks follow test-grid collapse. */
+export function isEntitlementBlockTestModeEnableAllowed(
+  blockKey: EntitlementBlockKey,
+  options?: {
+    readonly resolveOverride?: ResolveProductCapabilityReadinessOverride;
+  },
+): boolean {
+  const capabilityId = productCapabilityIdForEntitlementBlock(blockKey);
+  if (capabilityId === undefined) {
+    return true;
+  }
+  const blockClass = getEntitlementBlockCatalogEntry(blockKey).blockClass;
+  if (blockClass === 'CORE_REQUIRED' || blockClass === 'CORE_IMMUTABLE') {
+    return true;
+  }
+  return isProductCapabilityTestModeEnableAllowed(capabilityId, options);
+}
+
+export type MergeReadinessCellRejectReason = 'CAP_15_NEVER_ACTIVATE' | 'N_A_IMMUTABLE';
+
+export type MergeReadinessCellResult =
+  | { readonly ok: true; readonly cell: ProductCapabilityGridCell }
+  | {
+      readonly ok: false;
+      readonly reason: MergeReadinessCellRejectReason;
+      readonly cell: ProductCapabilityGridCell;
+    };
+
+/**
+ * Merge a platform readiness override into a declared G8 cell.
+ * CAP-15 is always NOT_READY (never-activate) — any non-NOT_READY override is rejected.
+ * Declared `n_a` is surface-scoped immutable — any non-`n_a` override is rejected.
+ * When override is null/undefined, returns the declared cell (CAP-15 forced to NOT_READY).
+ */
+export function mergeReadinessCell(input: {
+  readonly capabilityId: ProductCapabilityId;
+  readonly declared: ProductCapabilityGridCell;
+  readonly override?: ProductCapabilityGridCell | null;
+}): MergeReadinessCellResult {
+  if (isNeverActivateProductCapability(input.capabilityId)) {
+    const override = input.override;
+    if (override !== undefined && override !== null && override !== 'NOT_READY') {
+      return { ok: false, reason: 'CAP_15_NEVER_ACTIVATE', cell: 'NOT_READY' };
+    }
+    return { ok: true, cell: 'NOT_READY' };
+  }
+
+  if (input.declared === 'n_a') {
+    const override = input.override;
+    if (override !== undefined && override !== null && override !== 'n_a') {
+      return { ok: false, reason: 'N_A_IMMUTABLE', cell: 'n_a' };
+    }
+    return { ok: true, cell: 'n_a' };
+  }
+
+  if (input.override === undefined || input.override === null) {
+    return { ok: true, cell: input.declared };
+  }
+
+  return { ok: true, cell: input.override };
 }
 
 export function clampSimpleStatesToProductionEnableAllowed(
