@@ -4,16 +4,16 @@ import {
   resolveCommercialEvaluationPlan,
 } from '../index.js';
 
-describe('resolveCommercialEvaluationPlan (G2 Enterprise commercial eval)', () => {
+describe('resolveCommercialEvaluationPlan (Audit A-G v1.1 Krok 0 — Ent ≠ GROWTH)', () => {
   it('returns assigned plan unchanged when Enterprise is inactive', () => {
     expect(resolveCommercialEvaluationPlan('FREE', false)).toBe('FREE');
     expect(resolveCommercialEvaluationPlan('PRO', false)).toBe('PRO');
     expect(resolveCommercialEvaluationPlan('GROWTH', false)).toBe('GROWTH');
   });
 
-  it('maps Ent + assigned plan to GROWTH for ALLOW/DENY evaluation', () => {
-    expect(resolveCommercialEvaluationPlan('FREE', true)).toBe('GROWTH');
-    expect(resolveCommercialEvaluationPlan('PRO', true)).toBe('GROWTH');
+  it('FREE+Enterprise eval=FREE; PRO+Enterprise eval=PRO; GROWTH+Enterprise=GROWTH', () => {
+    expect(resolveCommercialEvaluationPlan('FREE', true)).toBe('FREE');
+    expect(resolveCommercialEvaluationPlan('PRO', true)).toBe('PRO');
     expect(resolveCommercialEvaluationPlan('GROWTH', true)).toBe('GROWTH');
   });
 
@@ -25,20 +25,17 @@ describe('resolveCommercialEvaluationPlan (G2 Enterprise commercial eval)', () =
     expect(resolveCommercialEvaluationPlan('UNASSIGNED', false)).toBeNull();
   });
 
-  it('Ent+FREE evaluation uses GROWTH ladder (payments_hub_ui ALLOW)', () => {
+  it('Ent+FREE keeps FREE ladder (payments_hub_ui DENY)', () => {
     const evalPlan = resolveCommercialEvaluationPlan('FREE', true);
-    expect(evalPlan).toBe('GROWTH');
+    expect(evalPlan).toBe('FREE');
     expect(
       evaluateCommercialPackageDecision(evalPlan!, getCommercialPackagingRule('payments_hub_ui')),
-    ).toBe('ALLOW');
-    expect(
-      evaluateCommercialPackageDecision('FREE', getCommercialPackagingRule('payments_hub_ui')),
     ).toBe('DENY');
   });
 
-  it('DEFER paths stay DEFER under Ent->GROWTH (DO_NOT_SELL / NON_COMMERCIAL)', () => {
+  it('DEFER paths stay DEFER under Ent+PRO (DO_NOT_SELL / NON_COMMERCIAL)', () => {
     const evalPlan = resolveCommercialEvaluationPlan('PRO', true);
-    expect(evalPlan).toBe('GROWTH');
+    expect(evalPlan).toBe('PRO');
     expect(
       evaluateCommercialPackageDecision(evalPlan!, getCommercialPackagingRule('loyalty_program')),
     ).toBe('DEFER');

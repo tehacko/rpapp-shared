@@ -28,26 +28,20 @@ function isSelfServePlacement(p: CommercialPlacementId): p is CommercialPlanId {
 }
 
 /**
- * Enterprise commercial eval plan (Plan Visibility G2).
- * When `enterpriseContractActive` and a self-serve plan is assigned → evaluate as **GROWTH**
- * for ALLOW/DENY (stored label unchanged). UNASSIGNED / null / undefined never invents a plan
- * even when Enterprise is active.
+ * Commercial eval plan for ALLOW/DENY (Audit A–G v1.1 Krok 0 / HSS BR-02, BR-03, INV-02, D-008).
+ * Enterprise / Organization is a **separate** contract axis — it must **not** elevate
+ * FREE/PRO to GROWTH for standard-plan capability evaluation. Eval plan = assigned
+ * commercialPlan only. UNASSIGNED / null / undefined never invents a plan (even with Ent).
+ * `enterpriseContractActive` is retained for call-site compatibility; it does not change eval.
  */
 export function resolveCommercialEvaluationPlan(
   commercialPlan: CommercialPlanId | 'UNASSIGNED' | null | undefined,
-  enterpriseContractActive: boolean,
+  _enterpriseContractActive: boolean,
 ): CommercialPlanId | null {
-  const assigned: CommercialPlanId | null =
-    commercialPlan === 'FREE' || commercialPlan === 'PRO' || commercialPlan === 'GROWTH'
-      ? commercialPlan
-      : null;
-  if (assigned === null) {
-    return null;
+  if (commercialPlan === 'FREE' || commercialPlan === 'PRO' || commercialPlan === 'GROWTH') {
+    return commercialPlan;
   }
-  if (enterpriseContractActive) {
-    return 'GROWTH';
-  }
-  return assigned;
+  return null;
 }
 
 /**
