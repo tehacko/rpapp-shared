@@ -4,6 +4,7 @@ import {
   isCurrencyCode,
   resolveRuntimeDefaultCurrency,
   resolveHealPreferredDefault,
+  healSalesPointCurrencyWhenMultiNotEntitled,
   shouldShowCheckoutCurrencyPicker,
   normalizeAcceptedCurrencies,
   ensureAcceptedCurrenciesForCheckout,
@@ -114,6 +115,43 @@ describe('currency registry', () => {
         defaultCurrency: 'USD',
       }),
     ).toBe('CZK');
+  });
+
+  it('G2: healSalesPointCurrencyWhenMultiNotEntitled clamps to preferredDefault not accepted[0]', () => {
+    const preferred = resolveHealPreferredDefault({
+      defaultCurrency: 'EUR',
+      allowedCurrencies: ['CZK', 'EUR'],
+    });
+    expect(preferred).toBe('EUR');
+    expect(
+      healSalesPointCurrencyWhenMultiNotEntitled({
+        currencyAcceptanceMode: 'MULTI',
+        acceptedCurrencies: ['CZK', 'EUR'],
+        multiCurrencyEntitled: false,
+        preferredDefault: preferred,
+      }),
+    ).toEqual({
+      currencyAcceptanceMode: 'SINGLE',
+      acceptedCurrencies: ['EUR'],
+      clearPaymentRoutes: true,
+      healed: true,
+    });
+  });
+
+  it('G2: healSalesPointCurrencyWhenMultiNotEntitled leaves MULTI alone when entitled', () => {
+    expect(
+      healSalesPointCurrencyWhenMultiNotEntitled({
+        currencyAcceptanceMode: 'MULTI',
+        acceptedCurrencies: ['CZK', 'EUR'],
+        multiCurrencyEntitled: true,
+        preferredDefault: 'CZK',
+      }),
+    ).toEqual({
+      currencyAcceptanceMode: 'MULTI',
+      acceptedCurrencies: ['CZK', 'EUR'],
+      clearPaymentRoutes: false,
+      healed: false,
+    });
   });
 
   it('shouldShowCheckoutCurrencyPicker requires MULTI and ≥2 codes', () => {

@@ -71,6 +71,51 @@ export function resolveHealPreferredDefault(input: {
 }
 
 /**
+ * G2 — when entitlement / commercial ceiling denies MULTI, demote to SINGLE using
+ * `preferredDefault` from resolveHealPreferredDefault (tenant default) — never raw accepted[0].
+ * Callers persist mode/accepted and clear paymentRoutes when `clearPaymentRoutes` is true.
+ */
+export function healSalesPointCurrencyWhenMultiNotEntitled(input: {
+  readonly currencyAcceptanceMode: CurrencyAcceptanceMode;
+  readonly acceptedCurrencies?: readonly string[] | null;
+  readonly multiCurrencyEntitled: boolean;
+  readonly preferredDefault: CurrencyCode;
+}): {
+  readonly currencyAcceptanceMode: CurrencyAcceptanceMode;
+  readonly acceptedCurrencies: CurrencyCode[];
+  readonly clearPaymentRoutes: boolean;
+  readonly healed: boolean;
+} {
+  const accepted = normalizeAcceptedCurrencies(input.acceptedCurrencies);
+  if (input.multiCurrencyEntitled) {
+    return {
+      currencyAcceptanceMode: input.currencyAcceptanceMode,
+      acceptedCurrencies: accepted,
+      clearPaymentRoutes: false,
+      healed: false,
+    };
+  }
+
+  const demoteMulti = input.currencyAcceptanceMode === 'MULTI';
+  const clampAccepted = accepted.length > 1;
+  if (!demoteMulti && !clampAccepted) {
+    return {
+      currencyAcceptanceMode: 'SINGLE',
+      acceptedCurrencies: accepted,
+      clearPaymentRoutes: false,
+      healed: false,
+    };
+  }
+
+  return {
+    currencyAcceptanceMode: 'SINGLE',
+    acceptedCurrencies: [input.preferredDefault],
+    clearPaymentRoutes: demoteMulti,
+    healed: true,
+  };
+}
+
+/**
  * Non-empty accepted list for public shop/checkout.
  * Prefer SP accepted when non-empty (preferredDefault ignored — only used when accepted empty);
  * else preferredDefault if registry; else CZK.

@@ -96,6 +96,8 @@ export interface AdminFulfillmentListItem {
   readonly pickupPointName: string | null;
   readonly status: OrderFulfillmentStatus;
   readonly version: number;
+  /** PICKUP | SHIPPING — gates admin mark-ready vs mark-ready-to-ship. */
+  readonly fulfillmentMode: 'PICKUP' | 'SHIPPING';
   readonly pickupScheduleType: PickupScheduleType;
   readonly promisedPickupAt: string | null;
   readonly pickupWindowEndAt: string | null;

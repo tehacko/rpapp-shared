@@ -55,6 +55,8 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
   'CAP-02': ['donation'],
   'CAP-03': ['surface_customer', 'customer_auth_pwa'],
   'CAP-04': ['surface_kiosk', 'realtime_device_transport'],
+  // shipping_light is Gate 0 / DO_NOT_SELL — grant-gated via CapMap requirements only;
+  // do not map here (would false-NOT_READY CAP-05 when child defaults HARD_OFF).
   'CAP-05': ['sales_point_management', 'sales_point_individual_settings'],
   'CAP-06': [
     'fulfillment_queue',
@@ -68,6 +70,8 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
     'payment_multi_currency',
     'stripe_integration_strategy',
   ],
+  // bank_account_providers is optional GROWTH advanced (multi-account/rails) — not mapped
+  // here so CORE bank_account_administration readiness stays independent of HARD_OFF child.
   'CAP-09': ['bank_account_administration', 'bank_inbox_claims_api'],
   'CAP-10': ['tenant_brand_kit'],
   'CAP-11': ['tenant_ops_settings'],

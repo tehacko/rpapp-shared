@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 57 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(57);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
+  it('contains exactly 60 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(60);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
   });
 
-  it('uses catalog version 13 after Package E automation boundaries', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
+  it('uses catalog version 14 after SoT packaging alignment', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(57);
+    expect(new Set(keysFromCatalog).size).toBe(60);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -44,6 +44,24 @@ describe('tenant entitlement catalog', () => {
     const individual = getEntitlementBlockCatalogEntry('sales_point_individual_settings');
     expect(individual.blockClass).toBe('CONDITIONAL');
     expect(individual.parentKeys).toEqual(['sales_point_management']);
+  });
+
+  it('includes SoT v14 CONDITIONAL children shipping_light / bank_account_providers / receipt_provider_overrides', () => {
+    const shipping = getEntitlementBlockCatalogEntry('shipping_light');
+    expect(shipping.blockClass).toBe('CONDITIONAL');
+    expect(shipping.parentKeys).toEqual(['sales_point_management']);
+    expect(shipping.capabilityHint).toBe('tenant.shippingMethods.read');
+    expect(shipping.notes).toMatch(/Gate 0|G-13|DO_NOT_SELL/i);
+
+    const bankProviders = getEntitlementBlockCatalogEntry('bank_account_providers');
+    expect(bankProviders.blockClass).toBe('CONDITIONAL');
+    expect(bankProviders.parentKeys).toEqual(['bank_account_administration']);
+    expect(bankProviders.notes).toMatch(/GROWTH|multi-account|provider/i);
+
+    const receiptOverrides = getEntitlementBlockCatalogEntry('receipt_provider_overrides');
+    expect(receiptOverrides.blockClass).toBe('CONDITIONAL');
+    expect(receiptOverrides.parentKeys).toEqual(['receipt_delivery']);
+    expect(receiptOverrides.notes).toMatch(/GROWTH|override|No routes/i);
   });
 
   it('includes Package E CONDITIONAL children near their parents', () => {
@@ -244,6 +262,8 @@ describe('tenant entitlement catalog', () => {
     const receiptDelivery = getEntitlementBlockCatalogEntry('receipt_delivery');
     expect(receiptDelivery.blockClass).toBe('CONDITIONAL');
     expect(receiptDelivery.parentKeys).toEqual(['transactions']);
+    expect(receiptDelivery.notes).toMatch(/basic receipt|keep_infra|invariant/i);
+    expect(receiptDelivery.notes).toMatch(/receipt_provider_overrides/i);
   });
 
   it('guards isEntitlementBlockKey for known and unknown keys', () => {

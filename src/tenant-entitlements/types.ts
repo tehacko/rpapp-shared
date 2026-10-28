@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 57 blocks / catalogVersion 13).
+ * Authoritative block list lives in catalog.ts (§6.3, 60 blocks / catalogVersion 14).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -93,6 +93,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'transactions',
   'sales_point_management',
   'sales_point_individual_settings',
+  'shipping_light',
   'catalog_administration',
   'product_barcode_administration',
   'audit_event_collection',
@@ -143,13 +144,15 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'admin_mfa',
   'admin_notifications',
   'bank_account_administration',
+  'bank_account_providers',
   'receipt_delivery',
+  'receipt_provider_overrides',
   'bank_inbox_claims_api',
 ] as const;
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 13 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 14 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 /** Self-serve commercial plan ladder (Package A). Organization/Enterprise is not in this enum. */
@@ -171,10 +174,16 @@ export const COMMERCIAL_ALIGNMENT_STATUSES = ['ALIGNED', 'REFACTOR_REQUIRED'] as
 export type CommercialAlignmentStatus = (typeof COMMERCIAL_ALIGNMENT_STATUSES)[number];
 
 /**
- * Sellability axis (Package A §3.3). DO_NOT_SELL is not a placement.
+ * Sellability axis (Package A §3.3). DO_NOT_SELL / VALIDATE are not placements.
+ * VALIDATE = secondary packaging hold (same DEFER family as DO_NOT_SELL) until cleared.
  * Not a substitute for runtime readiness READY/TEST/PARTIAL/NOT READY.
  */
-export const SELLABILITY_STATUSES = ['NOT_APPLICABLE', 'OPEN', 'DO_NOT_SELL'] as const;
+export const SELLABILITY_STATUSES = [
+  'NOT_APPLICABLE',
+  'OPEN',
+  'DO_NOT_SELL',
+  'VALIDATE',
+] as const;
 export type SellabilityStatus = (typeof SELLABILITY_STATUSES)[number];
 
 /** Three-axis commercial packaging rule for one entitlement block key. */

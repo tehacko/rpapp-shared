@@ -29,7 +29,7 @@ import {
   evaluateCommercialPackageDecision,
 } from '../commercialPackaging.js';
 
-/** E1 additive targets - must exist in catalog v13 and be missing before prepare. */
+/** E1 additive targets - must exist in catalog v14 and be missing before prepare. */
 const PACKAGE_E_BACKFILL_TARGETS = [
   'donation_recurring',
   'tenant_ops_automation',
@@ -46,10 +46,10 @@ const PACKAGE_E_TECHNICAL_BACKFILL_DERIVATION = {
 } as const satisfies Record<(typeof PACKAGE_E_BACKFILL_TARGETS)[number], string>;
 
 describe('Package E E1 technical backfill expectations', () => {
-  it('pins catalog v13/57 so E1 targets are present as keys', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
+  it('pins catalog v14/60 so E1 targets are present as keys', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
     for (const target of PACKAGE_E_BACKFILL_TARGETS) {
       expect(ENTITLEMENT_BLOCK_KEYS).toContain(target);
     }
@@ -99,8 +99,8 @@ describe('Package E E1 technical backfill expectations', () => {
     }
   });
 
-  it('covers all 57 keys in commercialPackaging including E PRO placements', () => {
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(57);
+  it('covers all 60 keys in commercialPackaging including E PRO placements', () => {
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(60);
     expect(COMMERCIAL_PACKAGING.donation_recurring).toMatchObject({
       commercialPlacements: ['PRO'],
       alignmentStatus: 'ALIGNED',
@@ -116,27 +116,29 @@ describe('Package E E1 technical backfill expectations', () => {
   });
 
   /**
-   * E-AC-22 — commercial allow is a create/reactivate boundary only.
-   * PREPARE/backfill derivation must never treat PRO ALLOW as Mode2 /
-   * recurring rollout readiness. Packaging has no readiness axes; PRO
-   * ALLOW ≠ bank Mode2 / reconciliation enablement.
+   * E-AC-22 — commercial packaging is a create/reactivate boundary only.
+   * PREPARE/backfill derivation must never treat PRO placement / VALIDATE hold
+   * as Mode2 / recurring rollout readiness. Packaging has no readiness axes;
+   * VALIDATE DEFER ≠ bank Mode2 / reconciliation enablement.
    */
-  describe('E-AC-22: commercial allow never flips Mode2 / rollout readiness', () => {
+  describe('E-AC-22: commercial packaging never flips Mode2 / rollout readiness', () => {
     it('documents donation_recurring PRO rationale: no Mode2/rollout flip', () => {
       const rationale = COMMERCIAL_PACKAGING.donation_recurring.rationale.toLowerCase();
       expect(rationale).toMatch(/rollout|mode\s*2|mode2/);
       expect(rationale).toMatch(/ne flipuje|never|not.*(flip|enable)|no.*(flip|enable)/);
+      expect(rationale).toMatch(/secondary\/validate|validate/);
     });
 
-    it('PRO commercial ALLOW for donation_recurring does not encode readiness fields', () => {
+    it('PRO+VALIDATE DEFERs donation_recurring (no readiness fields; not ladder ALLOW)', () => {
       const rule = COMMERCIAL_PACKAGING.donation_recurring;
-      expect(evaluateCommercialPackageDecision('PRO', rule)).toBe('ALLOW');
-      expect(evaluateCommercialPackageDecision('FREE', rule)).toBe('DENY');
+      expect(evaluateCommercialPackageDecision('FREE', rule)).toBe('DEFER');
+      expect(evaluateCommercialPackageDecision('PRO', rule)).toBe('DEFER');
+      expect(evaluateCommercialPackageDecision('GROWTH', rule)).toBe('DEFER');
       // Packaging rule surface is commercial only — no Mode2 / rollout axes.
       expect(rule).toEqual({
         commercialPlacements: ['PRO'],
         alignmentStatus: 'ALIGNED',
-        sellabilityStatus: 'OPEN',
+        sellabilityStatus: 'VALIDATE',
         rationale: rule.rationale,
       });
       expect(Object.keys(rule)).not.toEqual(

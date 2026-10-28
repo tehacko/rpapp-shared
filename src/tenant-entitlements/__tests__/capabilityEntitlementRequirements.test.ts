@@ -241,6 +241,24 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     expect(capabilitiesRequiringBlock('bank_account_administration')).not.toEqual(
       expect.arrayContaining(['tenant.paymentCredentials.view', 'config:payments:read']),
     );
+    // bank_account_providers is optional GROWTH advanced — not on CORE bank CRUD path
+    expect(capabilitiesRequiringBlock('bank_account_providers')).toEqual([]);
+  });
+
+  it('G-13: shippingMethods require sales_point_management ∧ shipping_light (Gate 0)', () => {
+    expect(requiredBlocksForCapability('tenant.shippingMethods.read')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['sales_point_management', 'shipping_light'],
+      match: 'ALL',
+    });
+    expect(requiredBlocksForCapability('tenant.shippingMethods.manage')).toEqual({
+      kind: 'blocks',
+      blockKeys: ['sales_point_management', 'shipping_light'],
+      match: 'ALL',
+    });
+    expect(capabilitiesRequiringBlock('shipping_light')).toEqual(
+      expect.arrayContaining(['tenant.shippingMethods.read', 'tenant.shippingMethods.manage']),
+    );
   });
 
   it('does not denylist CONDITIONAL incident_centre_ui (must be requirable)', () => {

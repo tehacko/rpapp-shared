@@ -49,8 +49,10 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     fulfillment_queue: ON,
     pickup_points: ON,
     immediate_self_pickup: ON,
-    scheduled_pickup: OFF,
+    // All service modes allowed by default (needs wizard retired) — FREE included.
+    scheduled_pickup: ON,
     staff_pickup_scan: ON,
+    customer_self_collect: ON,
     analytics_basic: ON,
     analytics_overview: ON,
     analytics_explore: ON,
@@ -65,6 +67,10 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     donation_recurring: HARD_OFF,
     tenant_ops_automation: HARD_OFF,
     restock_alerts: HARD_OFF,
+    // SoT v14 — GROWTH/DO_NOT_SELL children default hardOff (Gate 0 / not sold yet).
+    shipping_light: HARD_OFF,
+    bank_account_providers: HARD_OFF,
+    receipt_provider_overrides: HARD_OFF,
     team_management_core: OFF,
     // Commercial Události — default hardOff; platform /dev/inbox uses platform
     // default-allow (not this baseline). Do not add to DEFAULT_OFF_ROLLOUT.

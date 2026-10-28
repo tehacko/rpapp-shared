@@ -79,6 +79,7 @@ describe('fulfillmentContracts contract', () => {
       pickupPointName: null,
       status: 'PREPARING',
       version: 1,
+      fulfillmentMode: 'PICKUP',
       pickupScheduleType: 'ASAP',
       promisedPickupAt: null,
       pickupWindowEndAt: null,

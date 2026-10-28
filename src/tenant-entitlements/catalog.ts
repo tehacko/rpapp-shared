@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 57 blocks / catalogVersion 13 (§6.3).
+ * Authoritative tenant entitlement block catalog — 60 blocks / catalogVersion 14 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -63,6 +63,14 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['sales_point_management'],
     notes:
       'Per sales-point Mobilní obchod / mobile shop channel editor on Prodejní kanály. Default OFF — full-demo (railway-cafe / *-max) On',
+  },
+  {
+    blockKey: 'shipping_light',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['sales_point_management'],
+    capabilityHint: 'tenant.shippingMethods.read',
+    notes:
+      'SoT §23.2 / G-13 — future Shipping Light; Gate 0 prod force-false; DO_NOT_SELL until Gate 0',
   },
   {
     blockKey: 'catalog_administration',
@@ -457,10 +465,25 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
       'Bankovní účty admin section + bank CRUD APIs; always on (DEV policy UI locked yellow). Nav/SAG also require tenant.bankAccounts.read (list GET parity).',
   },
   {
+    blockKey: 'bank_account_providers',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['bank_account_administration'],
+    notes:
+      'GROWTH multi-account / rails / attachments / provider complexity; basic bank CRUD stays on parent',
+  },
+  {
     blockKey: 'receipt_delivery',
     blockClass: 'CONDITIONAL',
     parentKeys: ['transactions'],
-    notes: 'Receipt provider overrides (independent of comms_governance / tenant credentials)',
+    notes:
+      'Basic receipt invariant / keep_infra; provider overrides are child receipt_provider_overrides (independent of comms_governance / tenant credentials)',
+  },
+  {
+    blockKey: 'receipt_provider_overrides',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['receipt_delivery'],
+    notes:
+      'GROWTH provider override layer; basic receipt stays NON_COMMERCIAL on parent. No routes yet.',
   },
   {
     blockKey: 'bank_inbox_claims_api',

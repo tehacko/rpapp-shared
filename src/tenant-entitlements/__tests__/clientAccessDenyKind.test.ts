@@ -26,10 +26,10 @@ const NON_UPGRADE_STATES: readonly ClientAccessPresentationState[] = [
 ];
 
 describe('clientAccessDenyKind (Package F f0-shared-deny-kind)', () => {
-  it('pins catalog v13/57 — deny kinds add no block keys', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
+  it('pins catalog v14/60 — deny kinds add no block keys', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
     expect(CLIENT_ACCESS_DENY_KINDS).toEqual([
       'COMMERCIAL',
       'READINESS',

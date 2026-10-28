@@ -1,7 +1,7 @@
 /**
  * Product-capability readiness (FR-03 / I-01).
  *
- * Catalog is 57 entitlement blocks at catalogVersion 13.
+ * Catalog is 60 entitlement blocks at catalogVersion 14.
  * SIMPLE on/softOffVisible/softOffHidden/off/hardOff collapse to READY vs NOT_READY.
  * Declared 15×4 grids are plan G8 production / test-mode (`explicitDevEnable`).
  * CAP-15 Partner API is always NOT_READY (never-activate) on every surface.
@@ -102,10 +102,12 @@ export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
     pickup_staff_ops: 'n_a',
   },
   'CAP-06': {
-    admin_staff_ops: 'PARTIAL',
+    // Pickup ops cluster (OPI / queue / points / staff scan) ships — READY so FREE
+    // default baseline keeps all service modes on after needs-wizard retirement.
+    admin_staff_ops: 'READY',
     kiosk_kiosk_device: 'n_a',
     customer_mobile_shop: 'n_a',
-    pickup_staff_ops: 'PARTIAL',
+    pickup_staff_ops: 'READY',
   },
   'CAP-07': {
     admin_staff_ops: 'READY',

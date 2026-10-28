@@ -12,10 +12,10 @@ import {
 } from '../index.js';
 
 describe('commercialPackaging (Package A)', () => {
-  it('maps every current entitlement block key exactly once (A-AC-01 / Package E 57)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(57);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(57);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(57);
+  it('maps every current entitlement block key exactly once (A-AC-01 / SoT v14/60)', () => {
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(60);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,8 +24,15 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 13 (Package E automation boundaries)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(13);
+  it('keeps catalog version 14 (SoT packaging alignment)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
+  });
+
+  it('has zero REFACTOR_REQUIRED keys (SoT v14)', () => {
+    const refactorRequired = ENTITLEMENT_BLOCK_KEYS.filter(
+      (key) => COMMERCIAL_PACKAGING[key].alignmentStatus === 'REFACTOR_REQUIRED',
+    );
+    expect(refactorRequired).toEqual([]);
   });
 
   it('D-AC-21: Package D split parents are ALIGNED (not REFACTOR_REQUIRED)', () => {
@@ -63,25 +70,49 @@ describe('commercialPackaging (Package A)', () => {
     });
   });
 
-  it('Package E: donation_recurring / tenant_ops_automation / restock_alerts are PRO ALIGNED', () => {
+  it('Package E: donation_recurring PRO+VALIDATE DEFER; automation/restock PRO OPEN', () => {
     expect(COMMERCIAL_PACKAGING.donation_recurring).toMatchObject({
       commercialPlacements: ['PRO'],
       alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'VALIDATE',
     });
     expect(COMMERCIAL_PACKAGING.tenant_ops_automation).toMatchObject({
       commercialPlacements: ['PRO'],
       alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
     });
     expect(COMMERCIAL_PACKAGING.restock_alerts).toMatchObject({
       commercialPlacements: ['PRO'],
       alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
     });
-    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
-      'DENY',
-    );
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+        'DEFER',
+      );
+    }
     expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.tenant_ops_automation)).toBe(
       'ALLOW',
     );
+  });
+
+  it('SoT v14: donation + tenant_ops_settings are FREE ALIGNED ALLOW', () => {
+    expect(COMMERCIAL_PACKAGING.donation).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    expect(COMMERCIAL_PACKAGING.tenant_ops_settings).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation)).toBe('ALLOW');
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.tenant_ops_settings)).toBe(
+        'ALLOW',
+      );
+    }
   });
 
   /** D-AC-07 — integrity/matching stays FREE; Hub is PRO (workers must not inherit Hub negate). */
@@ -92,9 +123,11 @@ describe('commercialPackaging (Package A)', () => {
     expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.payments_hub_ui)).toBe('DENY');
   });
 
-  it('keeps three axes separate; DO_NOT_SELL is not a placement (A-AC-03)', () => {
+  it('keeps three axes separate; DO_NOT_SELL/VALIDATE are not placements (A-AC-03)', () => {
     expect(COMMERCIAL_PLACEMENT_IDS).not.toContain('DO_NOT_SELL');
+    expect(COMMERCIAL_PLACEMENT_IDS).not.toContain('VALIDATE');
     expect(SELLABILITY_STATUSES).toContain('DO_NOT_SELL');
+    expect(SELLABILITY_STATUSES).toContain('VALIDATE');
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       const rule = COMMERCIAL_PACKAGING[key];
       expect(rule).toHaveProperty('commercialPlacements');
@@ -128,25 +161,124 @@ describe('commercialPackaging (Package A)', () => {
     expect(evaluateCommercialPackageDecision('GROWTH', multiCurrency)).toBe('ALLOW');
   });
 
-  it('DEFERS REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL (A-AC-05)', () => {
+  it('DEFERS NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL, VALIDATE (A-AC-05)', () => {
     for (const plan of COMMERCIAL_PLAN_IDS) {
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation)).toBe('DEFER');
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.loyalty_program)).toBe(
+        'DEFER',
+      );
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.platform_core)).toBe(
         'DEFER',
       );
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.surface_kiosk)).toBe(
         'DEFER',
       );
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.loyalty_program)).toBe(
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
         'DEFER',
       );
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+        'DEFER',
+      );
+    }
+  });
+
+  it('SoT §20 / G-13: shipping_light is SEPARATE_PRODUCT + DO_NOT_SELL (future module, not GROWTH ladder)', () => {
+    expect(COMMERCIAL_PACKAGING.shipping_light).toMatchObject({
+      commercialPlacements: ['SEPARATE_PRODUCT'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'DO_NOT_SELL',
+    });
+    expect(COMMERCIAL_PACKAGING.shipping_light.commercialPlacements).not.toContain('GROWTH');
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
+        'DEFER',
+      );
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).not.toBe(
+        'ALLOW',
+      );
+    }
+  });
+
+  it('SoT §25 SPLIT / G-14: staff_pickup_scan FREE handoff ALLOW all plans; not REFACTOR_REQUIRED', () => {
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan.alignmentStatus).not.toBe('REFACTOR_REQUIRED');
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan.rationale).toMatch(/§25 SPLIT closed/);
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan.rationale).toMatch(/scheduled_pickup PRO/);
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.staff_pickup_scan)).toBe(
+        'ALLOW',
+      );
+    }
+  });
+
+  it('SoT §23/§24/§25: scheduled_pickup PRO DENY on FREE; paid schedule not staff_pickup_scan PRO', () => {
+    expect(COMMERCIAL_PACKAGING.scheduled_pickup).toMatchObject({
+      commercialPlacements: ['PRO'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    expect(COMMERCIAL_PACKAGING.scheduled_pickup.alignmentStatus).not.toBe('REFACTOR_REQUIRED');
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.scheduled_pickup)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.scheduled_pickup)).toBe(
+      'ALLOW',
+    );
+    expect(evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.scheduled_pickup)).toBe(
+      'ALLOW',
+    );
+    // Paid scheduling/surface value is not commercially bundled into staff_pickup_scan.
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan.commercialPlacements).toEqual(['FREE']);
+    expect(COMMERCIAL_PACKAGING.staff_pickup_scan.commercialPlacements).not.toContain('PRO');
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.staff_pickup_scan)).toBe(
+      'ALLOW',
+    );
+  });
+
+  it('SoT v14: bank_account_administration FREE; bank_account_providers GROWTH', () => {
+    expect(COMMERCIAL_PACKAGING.bank_account_administration).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    expect(COMMERCIAL_PACKAGING.bank_account_providers).toMatchObject({
+      commercialPlacements: ['GROWTH'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    expect(
+      evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.bank_account_providers),
+    ).toBe('DENY');
+    expect(
+      evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.bank_account_providers),
+    ).toBe('ALLOW');
+  });
+
+  it('SoT v14: receipt_delivery NON_COMMERCIAL only; overrides GROWTH DO_NOT_SELL', () => {
+    expect(COMMERCIAL_PACKAGING.receipt_delivery.commercialPlacements).toEqual([
+      'NON_COMMERCIAL',
+    ] satisfies CommercialPlacementId[]);
+    expect(COMMERCIAL_PACKAGING.receipt_delivery.alignmentStatus).toBe('ALIGNED');
+    expect(COMMERCIAL_PACKAGING.receipt_delivery.sellabilityStatus).toBe('NOT_APPLICABLE');
+    expect(COMMERCIAL_PACKAGING.receipt_provider_overrides).toMatchObject({
+      commercialPlacements: ['GROWTH'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'DO_NOT_SELL',
+    });
+    for (const plan of COMMERCIAL_PLAN_IDS) {
       expect(
-        evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.staff_pickup_scan),
+        evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.receipt_delivery),
+      ).toBe('DEFER');
+      expect(
+        evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.receipt_provider_overrides),
       ).toBe('DEFER');
     }
   });
 
-  it('encodes Spec + multi-placements without membership reinterpretation', () => {
+  it('encodes Spec placements without membership reinterpretation', () => {
     expect(COMMERCIAL_PACKAGING.analytics.commercialPlacements).toEqual([
       'NON_COMMERCIAL',
     ] satisfies CommercialPlacementId[]);
@@ -154,10 +286,6 @@ describe('commercialPackaging (Package A)', () => {
     expect(COMMERCIAL_PACKAGING.analytics_overview.commercialPlacements).toEqual(['PRO']);
     expect(COMMERCIAL_PACKAGING.analytics_explore.commercialPlacements).toEqual(['GROWTH']);
     expect(COMMERCIAL_PACKAGING.analytics_explore.sellabilityStatus).toBe('DO_NOT_SELL');
-    expect(COMMERCIAL_PACKAGING.receipt_delivery.commercialPlacements).toEqual([
-      'NON_COMMERCIAL',
-      'GROWTH',
-    ]);
   });
 
   it('B4: admin_mfa is NON_COMMERCIAL; FREE/PRO/GROWTH never tariff-DENY', () => {

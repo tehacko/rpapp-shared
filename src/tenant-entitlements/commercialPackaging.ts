@@ -1,8 +1,13 @@
 /**
- * Package A/C/D/E — commercial packaging map for current catalog (57 keys / v13).
+ * Package A/C/D/E — commercial packaging map for current catalog (60 keys / v14).
  * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
  * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
- * Package E: donation_recurring / tenant_ops_automation / restock_alerts PRO ALIGNED.
+ * Package E: donation_recurring PRO+VALIDATE; tenant_ops_automation / restock_alerts PRO OPEN.
+ * SoT v14: donation + tenant_ops_settings FREE; scheduled_pickup PRO; payment_multi_currency
+ * GROWTH; bank_account_administration FREE + bank_account_providers GROWTH; receipt_delivery
+ * NON_COMMERCIAL + receipt_provider_overrides GROWTH DO_NOT_SELL; shipping_light
+ * SEPARATE_PRODUCT + DO_NOT_SELL (SoT §20 FUTURE MODULE / G-13 Gate 0 — outside V1A ladder).
+ * staff_pickup_scan FREE (§25 SPLIT closed vs scheduled_pickup PRO). Zero REFACTOR_REQUIRED.
  * Runtime commercial projection (OFF/SHADOW/ENFORCE ceiling) is Package G — this map +
  * `evaluateCommercialPackageDecision` remain the sole packaging SSOT (no second backend map).
  */
@@ -45,8 +50,22 @@ export function resolveCommercialEvaluationPlan(
 }
 
 /**
+ * Ladder compare FREE &lt; PRO &lt; GROWTH. Fail-closed for UNASSIGNED / null / undefined.
+ */
+export function isCommercialPlanAtLeast(
+  commercialPlan: CommercialPlanId | 'UNASSIGNED' | null | undefined,
+  minimum: CommercialPlanId,
+): boolean {
+  const plan = resolveCommercialEvaluationPlan(commercialPlan, false);
+  if (plan === null) {
+    return false;
+  }
+  return PLAN_RANK[plan] >= PLAN_RANK[minimum];
+}
+
+/**
  * Pure preflight decision (Package A §3.4).
- * DEFER for REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL.
+ * DEFER for REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL, VALIDATE.
  * ALLOW/DENY only for ALIGNED single FREE|PRO|GROWTH vs plan ladder FREE < PRO < GROWTH.
  */
 export function evaluateCommercialPackageDecision(
@@ -62,7 +81,7 @@ export function evaluateCommercialPackageDecision(
   ) {
     return 'DEFER';
   }
-  if (rule.sellabilityStatus === 'DO_NOT_SELL') {
+  if (rule.sellabilityStatus === 'DO_NOT_SELL' || rule.sellabilityStatus === 'VALIDATE') {
     return 'DEFER';
   }
   if (rule.commercialPlacements.length !== 1) {
@@ -101,6 +120,12 @@ export const COMMERCIAL_PACKAGING = {
     'NOT_APPLICABLE',
     'mechanismus zavádění/připravenosti; není tarif sám o sobě',
   ),
+  shipping_light: rule(
+    ['SEPARATE_PRODUCT'],
+    'ALIGNED',
+    'DO_NOT_SELL',
+    'SoT §20 FUTURE MODULE / G-13 Gate 0 — Basic Shipping Light outside V1A tariff ladder; DO_NOT_SELL until Gate 0 (GROWTH is advanced carrier/orchestration above this module)',
+  ),
   catalog_administration: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní katalog'),
   product_barcode_administration: rule(
     ['FREE'],
@@ -137,16 +162,11 @@ export const COMMERCIAL_PACKAGING = {
     'OPEN',
     'PRO AUTOMATION — vytvoření nové restock subscription; unsubscribe/one-shot zůstává core',
   ),
-  donation: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
-    'OPEN',
-    'základní darování FREE + opakované darování PRO',
-  ),
+  donation: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní darování FREE; recurring je child PRO'),
   donation_recurring: rule(
     ['PRO'],
     'ALIGNED',
-    'OPEN',
+    'VALIDATE',
     'PRO SECONDARY/VALIDATE — create/reactivate recurring; ne flipuje rollout/Mode2 readiness',
   ),
   inventory_management: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní sklad FREE'),
@@ -176,7 +196,12 @@ export const COMMERCIAL_PACKAGING = {
     'NOT_APPLICABLE',
     'FREE / invariant integrity hotovosti',
   ),
-  payment_multi_currency: rule(['GROWTH'], 'ALIGNED', 'OPEN', 'finanční komplexita'),
+  payment_multi_currency: rule(
+    ['GROWTH'],
+    'ALIGNED',
+    'OPEN',
+    'SoT §23 — multi-currency GROWTH+',
+  ),
   payment_reconciliation: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní platební integrita FREE'),
   payments_hub_ui: rule(['PRO'], 'ALIGNED', 'OPEN', 'rozhraní finančního provozu'),
   stripe_integration_strategy: rule(
@@ -195,12 +220,17 @@ export const COMMERCIAL_PACKAGING = {
   pickup_points: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní lokace'),
   immediate_self_pickup: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní fulfillment'),
   customer_self_collect: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní fulfillment'),
-  scheduled_pickup: rule(['PRO'], 'ALIGNED', 'OPEN', 'automatizace slotů/kapacity'),
-  staff_pickup_scan: rule(
-    ['FREE', 'SEPARATE_PRODUCT'],
-    'REFACTOR_REQUIRED',
+  scheduled_pickup: rule(
+    ['PRO'],
+    'ALIGNED',
     'OPEN',
-    'bezpečné předání FREE + širší seskupení surface/self-scan',
+    'SoT §23 + §24 LAUNCH CORE — předobjednávka / sloty PRO+',
+  ),
+  staff_pickup_scan: rule(
+    ['FREE'],
+    'ALIGNED',
+    'OPEN',
+    'SoT §25 SPLIT closed — handoff integrity FREE; time-slot/capacity value on scheduled_pickup PRO; surface/kiosk readiness separate',
   ),
   surface_kiosk: rule(
     ['SEPARATE_PRODUCT'],
@@ -266,10 +296,10 @@ export const COMMERCIAL_PACKAGING = {
     'pokročilé řízení přístupů Growth',
   ),
   tenant_ops_settings: rule(
-    ['FREE', 'PRO'],
-    'REFACTOR_REQUIRED',
+    ['FREE'],
+    'ALIGNED',
     'OPEN',
-    'ruční provoz FREE + časovaná automatizace PRO',
+    'ruční provoz FREE; timed automation je child PRO',
   ),
   tenant_ops_automation: rule(
     ['PRO'],
@@ -291,16 +321,28 @@ export const COMMERCIAL_PACKAGING = {
     'sekundární PRO capability pro řízení provozní pozornosti',
   ),
   bank_account_administration: rule(
-    ['FREE', 'GROWTH'],
-    'REFACTOR_REQUIRED',
+    ['FREE'],
+    'ALIGNED',
     'OPEN',
-    'základní nastavení FREE + komplexita více účtů/providerů Growth',
+    'základní bankovní CRUD FREE; multi-account/provider complexity je child GROWTH',
+  ),
+  bank_account_providers: rule(
+    ['GROWTH'],
+    'ALIGNED',
+    'OPEN',
+    'GROWTH multi-account / rails / attachments / provider complexity',
   ),
   receipt_delivery: rule(
-    ['NON_COMMERCIAL', 'GROWTH'],
-    'REFACTOR_REQUIRED',
-    'OPEN',
-    'základní účtenka jako invariant + override providera / řízení infrastruktury',
+    ['NON_COMMERCIAL'],
+    'ALIGNED',
+    'NOT_APPLICABLE',
+    'základní účtenka — invariant / keep_infra',
+  ),
+  receipt_provider_overrides: rule(
+    ['GROWTH'],
+    'ALIGNED',
+    'DO_NOT_SELL',
+    'peer comms_governance — GROWTH provider override; not sold yet',
   ),
   bank_inbox_claims_api: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní řešení platebních výjimek'),
 } as const satisfies Record<EntitlementBlockKey, CommercialPackagingRule>;

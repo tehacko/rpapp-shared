@@ -1,5 +1,6 @@
 import {
   applyTenantScopeToSimpleStates,
+  buildDefaultTenantScopeBaseline,
   inferAllowedPurposesFromSimpleStates,
   inferSurfaceScopeFromSimpleStates,
   isTenantScopeLockedBlock,
@@ -9,6 +10,14 @@ import {
 } from '../applyTenantScopeToSimpleStates.js';
 
 describe('applyTenantScopeToSimpleStates', () => {
+  it('G4: default baseline sets customer_self_collect ON (wizard retirement)', () => {
+    const baseline = buildDefaultTenantScopeBaseline();
+    expect(baseline.customer_self_collect).toBe('on');
+    expect(baseline.scheduled_pickup).toBe('on');
+    expect(baseline.staff_pickup_scan).toBe('on');
+    expect(baseline.immediate_self_pickup).toBe('on');
+  });
+
   it('maps PRODUCT_ONLY + KIOSK_ONLY to vending on, inventory on, and customer surface off', () => {
     const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY');
     expect(states.product_vending).toBe('on');
@@ -24,6 +33,11 @@ describe('applyTenantScopeToSimpleStates', () => {
     expect(states.payment_reconciliation).toBe('on');
     expect(states.payments_hub_ui).toBe('on');
     expect(states.bank_inbox_claims_api).toBe('off');
+    // All service modes on by default (needs wizard retired), FREE included.
+    expect(states.scheduled_pickup).toBe('on');
+    expect(states.immediate_self_pickup).toBe('on');
+    expect(states.staff_pickup_scan).toBe('on');
+    expect(states.customer_self_collect).toBe('on');
   });
 
   it('maps DONATION_ONLY + CUSTOMER_ONLY with donation cluster side effects', () => {
@@ -290,6 +304,18 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('donation_recurring', 'DONATION_ONLY', 'BOTH')).toBe(false);
   });
 
+  it('SoT v14: shipping_light / bank_account_providers / receipt_provider_overrides default hardOff', () => {
+    const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(both.shipping_light).toBe('hardOff');
+    expect(both.bank_account_providers).toBe('hardOff');
+    expect(both.receipt_provider_overrides).toBe('hardOff');
+    // Technical baseline — scheduled_pickup stays ON; commercial DENY handles FREE under ENFORCE.
+    expect(both.scheduled_pickup).toBe('on');
+    expect(isTenantScopeLockedBlock('shipping_light', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('bank_account_providers', 'BOTH', 'BOTH')).toBe(false);
+    expect(isTenantScopeLockedBlock('receipt_provider_overrides', 'BOTH', 'BOTH')).toBe(false);
+  });
+
   it('defaults incident_centre_ui to hardOff (commercial Události; not DEFAULT_OFF_ROLLOUT)', () => {
     expect(applyTenantScopeToSimpleStates('BOTH', 'BOTH').incident_centre_ui).toBe('hardOff');
     expect(applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'CUSTOMER_ONLY').incident_centre_ui).toBe(
@@ -344,14 +370,10 @@ describe('preserveHardOffSimpleStates', () => {
 });
 
 describe('G8 PARTIAL cells stay off after applyTenantScopeToSimpleStates', () => {
-  // CAP-08 / CAP-14 production READY — pickup/self-collect/multi-currency/stripe blocks
-  // may persist ENABLE; keep only still-PARTIAL / NOT_READY mapped keys here.
+  // CAP-06 / CAP-08 / CAP-14 production READY — pickup ops + self-collect may persist ON.
+  // Keep only still-PARTIAL / NOT_READY mapped keys here.
   const G8_PARTIAL_ONLY_BLOCK_KEYS = [
     'donation',
-    'fulfillment_queue',
-    'order_pickup_infrastructure',
-    'pickup_points',
-    'staff_pickup_scan',
     'bank_inbox_claims_api',
     'tenant_brand_kit',
     'permission_management_rbac',

@@ -1,7 +1,7 @@
 ﻿/**
  * Package F — structured client access deny kinds (Spec F v1.1 §3.1–§3.3).
  * Wire values for `details.entitlementDenials[].kind` and Option A `blockDenyKinds`.
- * Catalog stays v13/57 — this module adds no block keys and does not change ENFORCE.
+ * Catalog stays v14/60 — this module adds no block keys and does not change ENFORCE.
  */
 
 export const CLIENT_ACCESS_DENY_KINDS = [

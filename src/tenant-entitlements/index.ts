@@ -35,6 +35,7 @@ export {
   COMMERCIAL_PACKAGING,
   evaluateCommercialPackageDecision,
   getCommercialPackagingRule,
+  isCommercialPlanAtLeast,
   resolveCommercialEvaluationPlan,
 } from './commercialPackaging.js';
 
