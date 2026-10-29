@@ -8,7 +8,7 @@
  * NON_COMMERCIAL + receipt_provider_overrides GROWTH DO_NOT_SELL; shipping_light
  * SEPARATE_PRODUCT + DO_NOT_SELL (SoT §20 FUTURE MODULE / G-13 Gate 0 — outside V1A ladder).
  * staff_pickup_scan FREE (§25 SPLIT closed vs scheduled_pickup PRO). Zero REFACTOR_REQUIRED.
- * Runtime commercial projection (OFF/SHADOW/ENFORCE ceiling) is Package G — this map +
+ * Runtime commercial projection (always ENFORCE ceiling) is Package G — this map +
  * `evaluateCommercialPackageDecision` remain the sole packaging SSOT (no second backend map).
  */
 import {
@@ -65,8 +65,11 @@ export function isCommercialPlanAtLeast(
 
 /**
  * Pure preflight decision (Package A §3.4).
- * DEFER for REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL, VALIDATE.
- * ALLOW/DENY only for ALIGNED single FREE|PRO|GROWTH vs plan ladder FREE < PRO < GROWTH.
+ * DEFER for REFACTOR_REQUIRED, NON_COMMERCIAL, SEPARATE_PRODUCT.
+ * DO_NOT_SELL / VALIDATE: DENY when plan is below a single self-serve placement
+ * (Free+technical ALLOW must not surface Growth/Pro sellability-held placements);
+ * DEFER at/above placement (commercially held — not plan-auto ALLOW).
+ * ALLOW/DENY for ALIGNED OPEN single FREE|PRO|GROWTH vs plan ladder FREE < PRO < GROWTH.
  */
 export function evaluateCommercialPackageDecision(
   plan: CommercialPlanId,
@@ -82,6 +85,12 @@ export function evaluateCommercialPackageDecision(
     return 'DEFER';
   }
   if (rule.sellabilityStatus === 'DO_NOT_SELL' || rule.sellabilityStatus === 'VALIDATE') {
+    if (rule.commercialPlacements.length === 1) {
+      const only = rule.commercialPlacements[0];
+      if (only && isSelfServePlacement(only) && PLAN_RANK[plan] < PLAN_RANK[only]) {
+        return 'DENY';
+      }
+    }
     return 'DEFER';
   }
   if (rule.commercialPlacements.length !== 1) {

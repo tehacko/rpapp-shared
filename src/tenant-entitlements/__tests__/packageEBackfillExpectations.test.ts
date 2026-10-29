@@ -129,9 +129,10 @@ describe('Package E E1 technical backfill expectations', () => {
       expect(rationale).toMatch(/secondary\/validate|validate/);
     });
 
-    it('PRO+VALIDATE DEFERs donation_recurring (no readiness fields; not ladder ALLOW)', () => {
+    it('PRO+VALIDATE: DENY below placement (FREE); DEFER at/above PRO (no readiness; not ladder ALLOW)', () => {
       const rule = COMMERCIAL_PACKAGING.donation_recurring;
-      expect(evaluateCommercialPackageDecision('FREE', rule)).toBe('DEFER');
+      // G12: VALIDATE below placement → DENY; at/above → DEFER hold.
+      expect(evaluateCommercialPackageDecision('FREE', rule)).toBe('DENY');
       expect(evaluateCommercialPackageDecision('PRO', rule)).toBe('DEFER');
       expect(evaluateCommercialPackageDecision('GROWTH', rule)).toBe('DEFER');
       // Packaging rule surface is commercial only — no Mode2 / rollout axes.

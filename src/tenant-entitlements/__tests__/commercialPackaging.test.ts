@@ -86,11 +86,16 @@ describe('commercialPackaging (Package A)', () => {
       alignmentStatus: 'ALIGNED',
       sellabilityStatus: 'OPEN',
     });
-    for (const plan of COMMERCIAL_PLAN_IDS) {
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation_recurring)).toBe(
-        'DEFER',
-      );
-    }
+    // G12: VALIDATE below placement → DENY (Free); at/above → DEFER hold.
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DEFER',
+    );
+    expect(evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DEFER',
+    );
     expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.tenant_ops_automation)).toBe(
       'ALLOW',
     );
@@ -161,11 +166,8 @@ describe('commercialPackaging (Package A)', () => {
     expect(evaluateCommercialPackageDecision('GROWTH', multiCurrency)).toBe('ALLOW');
   });
 
-  it('DEFERS NON_COMMERCIAL, SEPARATE_PRODUCT, DO_NOT_SELL, VALIDATE (A-AC-05)', () => {
+  it('DEFERS NON_COMMERCIAL / SEPARATE_PRODUCT; sellability holds DENY below placement (A-AC-05 / G12)', () => {
     for (const plan of COMMERCIAL_PLAN_IDS) {
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.loyalty_program)).toBe(
-        'DEFER',
-      );
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.platform_core)).toBe(
         'DEFER',
       );
@@ -175,10 +177,27 @@ describe('commercialPackaging (Package A)', () => {
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
         'DEFER',
       );
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.donation_recurring)).toBe(
-        'DEFER',
-      );
     }
+    // GROWTH + DO_NOT_SELL: DENY under Free/Pro so technical ALLOW cannot surface Growth holds.
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.loyalty_program)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.loyalty_program)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.loyalty_program)).toBe(
+      'DEFER',
+    );
+    // PRO + VALIDATE: DENY under Free; DEFER at/above PRO.
+    expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DENY',
+    );
+    expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DEFER',
+    );
+    expect(evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.donation_recurring)).toBe(
+      'DEFER',
+    );
   });
 
   it('SoT §20 / G-13: shipping_light is SEPARATE_PRODUCT + DO_NOT_SELL (future module, not GROWTH ladder)', () => {
@@ -272,10 +291,17 @@ describe('commercialPackaging (Package A)', () => {
       expect(
         evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.receipt_delivery),
       ).toBe('DEFER');
-      expect(
-        evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.receipt_provider_overrides),
-      ).toBe('DEFER');
     }
+    // GROWTH + DO_NOT_SELL: DENY under Free/Pro; DEFER at GROWTH (G12).
+    expect(
+      evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.receipt_provider_overrides),
+    ).toBe('DENY');
+    expect(
+      evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING.receipt_provider_overrides),
+    ).toBe('DENY');
+    expect(
+      evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING.receipt_provider_overrides),
+    ).toBe('DEFER');
   });
 
   it('encodes Spec placements without membership reinterpretation', () => {

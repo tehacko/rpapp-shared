@@ -33,12 +33,13 @@ describe('resolveCommercialEvaluationPlan (Audit A-G v1.1 Krok 0 — Ent ≠ GRO
     ).toBe('DENY');
   });
 
-  it('DEFER paths stay DEFER under Ent+PRO (DO_NOT_SELL / NON_COMMERCIAL)', () => {
+  it('Ent+PRO: loyalty_program DENY below GROWTH (G12); NON_COMMERCIAL stays DEFER', () => {
     const evalPlan = resolveCommercialEvaluationPlan('PRO', true);
     expect(evalPlan).toBe('PRO');
+    // G12: GROWTH + DO_NOT_SELL → DENY under Free/Pro; DEFER only at GROWTH.
     expect(
       evaluateCommercialPackageDecision(evalPlan!, getCommercialPackagingRule('loyalty_program')),
-    ).toBe('DEFER');
+    ).toBe('DENY');
     expect(
       evaluateCommercialPackageDecision(evalPlan!, getCommercialPackagingRule('platform_core')),
     ).toBe('DEFER');
