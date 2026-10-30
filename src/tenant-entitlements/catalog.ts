@@ -40,7 +40,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_IMMUTABLE',
     parentKeys: [],
     immutableDefaults: ALWAYS_ON_IMMUTABLE,
-    notes: 'DEV catalog GET/PUT; cross_tenant_dev exempt',
+    notes:
+      'CORE_IMMUTABLE UI marker; DEV Feature Policy GET/PUT are PLATFORM_MANAGE exempt (not EVALUATE — READ_ONLY would 403 writes)',
   },
   {
     blockKey: 'transactions',
