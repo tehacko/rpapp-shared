@@ -3,8 +3,10 @@ import {
   NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS,
   PRODUCT_CAPABILITY_BLOCK_MAP,
   PRODUCT_CAPABILITY_IDS,
+  PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN,
   entitlementBlockKeysForProductCapability,
   isNeverActivateProductCapability,
+  productCapabilityDisplayForEntitlementBlock,
   productCapabilityIdForEntitlementBlock,
 } from '../productCapabilityMap.js';
 import { getEntitlementBlockCatalogEntry } from '../catalog.js';
@@ -45,9 +47,9 @@ function onStatesForCapability(
 }
 
 describe('productCapabilityMap', () => {
-  it('maps CAP-01..CAP-14 onto live ENTITLEMENT_BLOCK_KEYS and CAP-15 to empty', () => {
+  it('maps CAP-01..CAP-14/16..18 onto live ENTITLEMENT_BLOCK_KEYS and CAP-15 to empty', () => {
     const allowed = new Set<string>(ENTITLEMENT_BLOCK_KEYS);
-    expect(PRODUCT_CAPABILITY_IDS).toHaveLength(15);
+    expect(PRODUCT_CAPABILITY_IDS).toHaveLength(18);
     expect(entitlementBlockKeysForProductCapability('CAP-15')).toEqual([]);
     expect(isNeverActivateProductCapability('CAP-15')).toBe(true);
     expect(isPartnerApiNeverActivate('CAP-15')).toBe(true);
@@ -58,6 +60,28 @@ describe('productCapabilityMap', () => {
       for (const blockKey of blockKeys) {
         expect(allowed.has(blockKey)).toBe(true);
         expect(productCapabilityIdForEntitlementBlock(blockKey)).toBe(capabilityId);
+      }
+    }
+  });
+
+  it('attributes every catalog block (mapped, readiness-excluded child, or unattributed)', () => {
+    for (const blockKey of ENTITLEMENT_BLOCK_KEYS) {
+      const attribution = productCapabilityDisplayForEntitlementBlock(blockKey);
+      const excludedParent =
+        PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN[
+          blockKey as keyof typeof PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN
+        ];
+      if (excludedParent !== undefined) {
+        expect(attribution).toEqual({
+          kind: 'readiness_excluded_child',
+          parentCapabilityId: excludedParent,
+        });
+        expect(productCapabilityIdForEntitlementBlock(blockKey)).toBeUndefined();
+        continue;
+      }
+      expect(attribution.kind).toBe('mapped');
+      if (attribution.kind === 'mapped') {
+        expect(productCapabilityIdForEntitlementBlock(blockKey)).toBe(attribution.capabilityId);
       }
     }
   });
@@ -137,7 +161,7 @@ describe('G8 CAP grid collapse', () => {
     );
   });
 
-  it('covers production 15×4 declared cells including CAP-15 NOT_READY all columns', () => {
+  it('covers production 18×4 declared cells including CAP-15 NOT_READY all columns', () => {
     for (const capabilityId of PRODUCT_CAPABILITY_IDS) {
       for (const surface of PRODUCT_CAPABILITY_SURFACES) {
         const cell = getDeclaredProductCapabilityGridCell(capabilityId, surface);
@@ -153,7 +177,7 @@ describe('G8 CAP grid collapse', () => {
     }
   });
 
-  it('covers test-mode 15×4 including CAP-15 NOT_READY all columns', () => {
+  it('covers test-mode 18×4 including CAP-15 NOT_READY all columns', () => {
     for (const capabilityId of PRODUCT_CAPABILITY_IDS) {
       for (const surface of PRODUCT_CAPABILITY_SURFACES) {
         const cell = getDeclaredProductCapabilityGridCell(capabilityId, surface, {
@@ -251,6 +275,36 @@ describe('G8 CAP grid collapse', () => {
       'inventory_management',
       'inventory_operations',
       'inventory_incidents',
+      'restock_alerts',
+      'loyalty_program',
+      'promotions_program',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-02')).toEqual([
+      'donation',
+      'donation_recurring',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-08')).toEqual([
+      'payment_rails_strategy',
+      'payment_multi_currency',
+      'stripe_integration_strategy',
+      'payment_reconciliation',
+      'payments_hub_ui',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-11')).toEqual([
+      'tenant_ops_settings',
+      'tenant_ops_automation',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-16')).toEqual([
+      'platform_core',
+      'dev_entitlement_policy_editor',
+      'transactions',
+      'payment_processing_runtime',
+      'outbox_runtime',
+    ]);
+    expect(entitlementBlockKeysForProductCapability('CAP-17')).toContain('audit_event_collection');
+    expect(entitlementBlockKeysForProductCapability('CAP-18')).toEqual([
+      'receipt_delivery',
+      'receipt_provider_overrides',
     ]);
     expect(entitlementBlockKeysForProductCapability('CAP-12')).toEqual([
       'team_management_core',

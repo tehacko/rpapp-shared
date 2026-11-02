@@ -165,6 +165,9 @@ export type OrderFulfillmentMode = 'PICKUP' | 'SHIPPING';
 
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 
+/** Explicit public storefront presence — sole storefront signal (never infer from null geo). */
+export type SalesPointCustomerPresence = 'STOREFRONT' | 'ONLINE_ONLY';
+
 /** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
 export type CustomerDirectoryPublishGateCode =
   | 'STRUCTURAL'
@@ -202,6 +205,8 @@ export interface SalesPoint {
   lat?: number | null;
   /** WGS84 longitude; null when unset. */
   lng?: number | null;
+  /** Required-on-read public storefront presence (sole storefront signal). */
+  customerPresence: SalesPointCustomerPresence;
   isActive: boolean;
   defaultVatRate?: number | null;
   lastHeartbeat?: string | null;

@@ -3,8 +3,10 @@
  *
  * Catalog is 60 entitlement blocks at catalogVersion 14.
  * SIMPLE on/softOffVisible/softOffHidden/off/hardOff collapse to READY vs NOT_READY.
- * Declared 15×4 grids are plan G8 production / test-mode (`explicitDevEnable`).
+ * Declared 18×4 grids are plan G8 production / test-mode (`explicitDevEnable`).
  * CAP-15 Partner API is always NOT_READY (never-activate) on every surface.
+ * CAP-16..CAP-18 (foundation / trust / receipts) default READY so attribution does not
+ * introduce false G8 denials for previously unmapped leftovers.
  *
  * NEVER import admin-app or up-backend into this module.
  */
@@ -67,7 +69,7 @@ export function normalizeProductCapabilitySurface(
   return surface;
 }
 
-/** Plan G8 production 15×4. */
+/** Plan G8 production 18×4. */
 export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
   'CAP-01': {
     // Admin catalog / products / inventory APIs are shipped — PARTIAL here
@@ -167,9 +169,27 @@ export const PRODUCT_CAPABILITY_PRODUCTION_GRID = {
     customer_mobile_shop: 'NOT_READY',
     pickup_staff_ops: 'NOT_READY',
   },
+  'CAP-16': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
+  },
+  'CAP-17': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
+  },
+  'CAP-18': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
+  },
 } as const satisfies Record<ProductCapabilityId, ProductCapabilityGridRow>;
 
-/** Plan G8 test-mode 15×4 (`explicitDevEnable`). */
+/** Plan G8 test-mode 18×4 (`explicitDevEnable`). */
 export const PRODUCT_CAPABILITY_TEST_MODE_GRID = {
   'CAP-01': {
     admin_staff_ops: 'READY',
@@ -260,6 +280,24 @@ export const PRODUCT_CAPABILITY_TEST_MODE_GRID = {
     kiosk_kiosk_device: 'NOT_READY',
     customer_mobile_shop: 'NOT_READY',
     pickup_staff_ops: 'NOT_READY',
+  },
+  'CAP-16': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
+  },
+  'CAP-17': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
+  },
+  'CAP-18': {
+    admin_staff_ops: 'READY',
+    kiosk_kiosk_device: 'READY',
+    customer_mobile_shop: 'READY',
+    pickup_staff_ops: 'READY',
   },
 } as const satisfies Record<ProductCapabilityId, ProductCapabilityGridRow>;
 

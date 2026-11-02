@@ -661,8 +661,8 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Shipping Light methods — sales_point_management ∧ shipping_light (Gate 0 / G-13;
-  // route registry CT/PT-RBAC-365…369). shipping_light defaults HARD_OFF / DO_NOT_SELL.
+  // Shipping Light / delivery modality — sales_point_management ∧ shipping_light
+  // (route registry CT/PT-RBAC-365…369). Commercially FREE+OPEN; SIMPLE default ON.
   {
     authoringTokens: [
       "tenant.shippingMethods.read/manage",

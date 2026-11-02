@@ -71,7 +71,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['sales_point_management'],
     capabilityHint: 'tenant.shippingMethods.read',
     notes:
-      'SoT §23.2 / G-13 — future Shipping Light; Gate 0 prod force-false; DO_NOT_SELL until Gate 0',
+      'Shipping Light / delivery modality — commercially FREE+OPEN; resolve-time heal for non-Enterprise ALLOW plans; SHIPPING_LIGHT_ENABLED default ON',
   },
   {
     blockKey: 'catalog_administration',

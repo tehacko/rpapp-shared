@@ -51,7 +51,9 @@ describe('tenant entitlement catalog', () => {
     expect(shipping.blockClass).toBe('CONDITIONAL');
     expect(shipping.parentKeys).toEqual(['sales_point_management']);
     expect(shipping.capabilityHint).toBe('tenant.shippingMethods.read');
-    expect(shipping.notes).toMatch(/Gate 0|G-13|DO_NOT_SELL/i);
+    expect(shipping.notes).toMatch(/FREE\+OPEN/i);
+    expect(shipping.notes).toMatch(/SHIPPING_LIGHT_ENABLED default ON/i);
+    expect(shipping.notes).not.toMatch(/Gate\s*0|G-13|DO_NOT_SELL/i);
 
     const bankProviders = getEntitlementBlockCatalogEntry('bank_account_providers');
     expect(bankProviders.blockClass).toBe('CONDITIONAL');

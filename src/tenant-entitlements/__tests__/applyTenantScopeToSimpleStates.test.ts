@@ -304,9 +304,9 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('donation_recurring', 'DONATION_ONLY', 'BOTH')).toBe(false);
   });
 
-  it('SoT v14: shipping_light / bank_account_providers / receipt_provider_overrides default hardOff', () => {
+  it('shipping_light defaults ON (FREE keep-on); bank_account_providers / receipt_provider_overrides stay hardOff', () => {
     const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
-    expect(both.shipping_light).toBe('hardOff');
+    expect(both.shipping_light).toBe('on');
     expect(both.bank_account_providers).toBe('hardOff');
     expect(both.receipt_provider_overrides).toBe('hardOff');
     // Technical baseline — scheduled_pickup stays ON; commercial DENY handles FREE under ENFORCE.

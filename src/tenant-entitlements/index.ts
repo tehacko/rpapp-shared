@@ -225,14 +225,20 @@ export {
   PRODUCT_CAPABILITY_BLOCK_KEYS,
   PRODUCT_CAPABILITY_BLOCK_MAP,
   PRODUCT_CAPABILITY_IDS,
+  PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN,
   entitlementBlockKeysForProductCapability,
   getProductCapabilityBlockKeys,
   isNeverActivateProductCapability,
   isProductCapabilityId,
+  productCapabilityDisplayForEntitlementBlock,
   productCapabilityIdForEntitlementBlock,
+  readinessExcludedParentCapabilityIdForEntitlementBlock,
 } from './productCapabilityMap.js';
 
-export type { ProductCapabilityId } from './productCapabilityMap.js';
+export type {
+  ProductCapabilityDisplayAttribution,
+  ProductCapabilityId,
+} from './productCapabilityMap.js';
 
 export {
   PRODUCT_CAPABILITY_GRID_CELLS,

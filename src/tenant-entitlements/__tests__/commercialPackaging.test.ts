@@ -174,9 +174,6 @@ describe('commercialPackaging (Package A)', () => {
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.surface_kiosk)).toBe(
         'DEFER',
       );
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
-        'DEFER',
-      );
     }
     // GROWTH + DO_NOT_SELL: DENY under Free/Pro so technical ALLOW cannot surface Growth holds.
     expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING.loyalty_program)).toBe(
@@ -200,18 +197,16 @@ describe('commercialPackaging (Package A)', () => {
     );
   });
 
-  it('SoT §20 / G-13: shipping_light is SEPARATE_PRODUCT + DO_NOT_SELL (future module, not GROWTH ladder)', () => {
+  it('shipping_light is FREE + OPEN (commercially available on Free; not SEPARATE_PRODUCT)', () => {
     expect(COMMERCIAL_PACKAGING.shipping_light).toMatchObject({
-      commercialPlacements: ['SEPARATE_PRODUCT'],
+      commercialPlacements: ['FREE'],
       alignmentStatus: 'ALIGNED',
-      sellabilityStatus: 'DO_NOT_SELL',
+      sellabilityStatus: 'OPEN',
     });
+    expect(COMMERCIAL_PACKAGING.shipping_light.commercialPlacements).not.toContain('SEPARATE_PRODUCT');
     expect(COMMERCIAL_PACKAGING.shipping_light.commercialPlacements).not.toContain('GROWTH');
     for (const plan of COMMERCIAL_PLAN_IDS) {
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
-        'DEFER',
-      );
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).not.toBe(
         'ALLOW',
       );
     }

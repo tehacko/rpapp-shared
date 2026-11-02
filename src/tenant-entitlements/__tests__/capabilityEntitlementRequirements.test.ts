@@ -245,7 +245,7 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     expect(capabilitiesRequiringBlock('bank_account_providers')).toEqual([]);
   });
 
-  it('G-13: shippingMethods require sales_point_management ∧ shipping_light (Gate 0)', () => {
+  it('G-13: shippingMethods require sales_point_management ∧ shipping_light (FREE+OPEN CapMap AND)', () => {
     expect(requiredBlocksForCapability('tenant.shippingMethods.read')).toEqual({
       kind: 'blocks',
       blockKeys: ['sales_point_management', 'shipping_light'],

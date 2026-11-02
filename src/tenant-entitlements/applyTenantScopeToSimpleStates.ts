@@ -67,8 +67,8 @@ export function buildDefaultTenantScopeBaseline(): Partial<Record<EntitlementBlo
     donation_recurring: HARD_OFF,
     tenant_ops_automation: HARD_OFF,
     restock_alerts: HARD_OFF,
-    // SoT v14 — GROWTH/DO_NOT_SELL children default hardOff (Gate 0 / not sold yet).
-    shipping_light: HARD_OFF,
+    // shipping_light FREE keep-on (commercially OPEN on Free); GROWTH advanced children stay hardOff.
+    shipping_light: ON,
     bank_account_providers: HARD_OFF,
     receipt_provider_overrides: HARD_OFF,
     team_management_core: OFF,

@@ -6,7 +6,7 @@
  * SoT v14: donation + tenant_ops_settings FREE; scheduled_pickup PRO; payment_multi_currency
  * GROWTH; bank_account_administration FREE + bank_account_providers GROWTH; receipt_delivery
  * NON_COMMERCIAL + receipt_provider_overrides GROWTH DO_NOT_SELL; shipping_light
- * SEPARATE_PRODUCT + DO_NOT_SELL (SoT §20 FUTURE MODULE / G-13 Gate 0 — outside V1A ladder).
+ * FREE + OPEN (product: commercially available on Free; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON).
  * staff_pickup_scan FREE (§25 SPLIT closed vs scheduled_pickup PRO). Zero REFACTOR_REQUIRED.
  * Runtime commercial projection (always ENFORCE ceiling) is Package G — this map +
  * `evaluateCommercialPackageDecision` remain the sole packaging SSOT (no second backend map).
@@ -130,10 +130,10 @@ export const COMMERCIAL_PACKAGING = {
     'mechanismus zavádění/připravenosti; není tarif sám o sobě',
   ),
   shipping_light: rule(
-    ['SEPARATE_PRODUCT'],
+    ['FREE'],
     'ALIGNED',
-    'DO_NOT_SELL',
-    'SoT §20 FUTURE MODULE / G-13 Gate 0 — Basic Shipping Light outside V1A tariff ladder; DO_NOT_SELL until Gate 0 (GROWTH is advanced carrier/orchestration above this module)',
+    'OPEN',
+    'Shipping Light / delivery modality — FREE+OPEN (commercially available on Free; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON, no prod FORCE-FALSE)',
   ),
   catalog_administration: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní katalog'),
   product_barcode_administration: rule(
