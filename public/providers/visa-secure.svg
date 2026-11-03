@@ -1,0 +1,13 @@
+<!--
+  RPAPP_PAYMENT_MARK_PLACEHOLDER
+  Source: Visa Secure Brand Standards (Sept 2025)
+  https://corporate.visa.com/content/dam/VCOM/corporate/about-visa/documents/visa-secure-brand-standards-sept2025.pdf
+  Merchant signage: https://www.merchantsignage.visa.com/brandguidelines
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72" role="img" aria-label="Visa Secure">
+  <title>Visa Secure</title>
+  <rect width="120" height="72" rx="8" fill="#1A1F71"/>
+  <path fill="#fff" d="M60 14c-12 8-22 10-28 11v18c0 14 12 22 28 27 16-5 28-13 28-27V25c-6-1-16-3-28-11z"/>
+  <path fill="#1A1F71" d="M54 42.5l-7-7 3.2-3.2 3.8 3.8 11.6-11.6 3.2 3.2L54 42.5z"/>
+  <text x="60" y="64" text-anchor="middle" fill="#F7B600" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700">VISA SECURE</text>
+</svg>

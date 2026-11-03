@@ -1,0 +1,14 @@
+<!--
+  RPAPP_PAYMENT_MARK_PLACEHOLDER
+  Source (dated): Mastercard Identity Check Program Guide — 19 Nov 2019 Appendix B
+  https://static.developer.mastercard.com/content/identity-check/uploads/files/mastercardidentitycheckprogram.pdf
+  Artwork package: Brand Center Other Marks
+  https://www.mastercard.com/brandcenter/us/en/artwork/other-marks.html
+  Identity Check Symbol = Mastercard Symbol (circles WITHOUT wordmark). SecureCode retired.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Mastercard Identity Check">
+  <title>Mastercard Identity Check</title>
+  <circle cx="36" cy="48" r="28" fill="#EB001B"/>
+  <circle cx="60" cy="48" r="28" fill="#F79E1B"/>
+  <path fill="#FF5F00" d="M48 26.1a28 28 0 0 1 0 43.8 28 28 0 0 1 0-43.8z"/>
+</svg>

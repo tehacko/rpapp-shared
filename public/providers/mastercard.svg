@@ -1,0 +1,13 @@
+<!--
+  RPAPP_PAYMENT_MARK_PLACEHOLDER
+  Source: Mastercard Brand Mark — Brand Center Download Artwork
+  https://www.mastercard.com/brandcenter/us/en/download-artwork.html
+  Overlapping circles geometry for merchant equal-prominence display.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 96" role="img" aria-label="Mastercard">
+  <title>Mastercard</title>
+  <rect width="152" height="96" rx="10" fill="#000000"/>
+  <circle cx="60" cy="48" r="28" fill="#EB001B"/>
+  <circle cx="92" cy="48" r="28" fill="#F79E1B"/>
+  <path fill="#FF5F00" d="M76 26.1a28 28 0 0 1 0 43.8 28 28 0 0 1 0-43.8z"/>
+</svg>

@@ -940,13 +940,13 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'self_scan.basket.started': {
     en: 'Recorded when a self-scan basket is started for a business partner sales point. Metadata is business partner/SP/basket/who/when only — never ID document or date of birth. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se při zahájení self-scan košíku na prodejním místě. Metadata jen obchodní partner/SP/košík/kdo/kdy — nikdy doklad totožnosti ani datum narození. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa pri začatí self-scan košíka na predajnom mieste. Metadata len obchodný partner/SP/košík/kto/kedy — nikdy doklad totožnosti ani dátum narodenia. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se při zahájení self-scan košíku na prodejním místě. Metadata jen partner/SP/košík/kdo/kdy — nikdy doklad totožnosti ani datum narození. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri začatí self-scan košíka na predajnom mieste. Metadata len partner/SP/košík/kto/kedy — nikdy doklad totožnosti ani dátum narodenia. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.basket.staff_edited': {
     en: 'Recorded when pickup staff edit a live self-scan basket. Who/when/business partner/SP/basket only — no identity document fields. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se, když personál pickup upraví živý self-scan košík. Jen kdo/kdy/obchodní partner/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa, keď personál pickup upraví živý self-scan košík. Len kto/kedy/obchodný partner/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se, když personál pickup upraví živý self-scan košík. Jen kdo/kdy/partner/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa, keď personál pickup upraví živý self-scan košík. Len kto/kedy/partner/SP/košík — bez polí dokladu totožnosti. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.restricted.approved': {
     en: 'Recorded when staff approve restricted items on a self-scan basket (who/when only). Never stores ID document, DOB, or national ID. Actor is PICKUP_STAFF or SYSTEM.',
@@ -955,28 +955,28 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
   },
   'self_scan.selective.selected': {
     en: 'Recorded when a basket is selected for selective check. Business partner/SP/basket/who/when only. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se, když je košík vybrán k selektivní kontrole. Jen obchodní partner/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa, keď je košík vybraný na selektívnu kontrolu. Len obchodný partner/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se, když je košík vybrán k selektivní kontrole. Jen partner/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa, keď je košík vybraný na selektívnu kontrolu. Len partner/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.selective.completed': {
     en: 'Recorded when a selective check completes successfully. Business partner/SP/basket/who/when/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se při úspěšném dokončení selektivní kontroly. Jen obchodní partner/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa pri úspešnom dokončení selektívnej kontroly. Len obchodný partner/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se při úspěšném dokončení selektivní kontroly. Jen partner/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri úspešnom dokončení selektívnej kontroly. Len partner/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.selective.escalated': {
     en: 'Recorded when a selective check is escalated. Business partner/SP/basket/who/when/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se při eskalaci selektivní kontroly. Jen obchodní partner/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa pri eskalácii selektívnej kontroly. Len obchodný partner/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se při eskalaci selektivní kontroly. Jen partner/SP/košík/kdo/kdy/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri eskalácii selektívnej kontroly. Len partner/SP/košík/kto/kedy/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.basket.payment_locked': {
     en: 'Recorded when a self-scan basket is locked for payment. Business partner/SP/basket/timestamps/outcome only. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se při uzamčení self-scan košíku pro platbu. Jen obchodní partner/SP/košík/časové značky/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa pri uzamknutí self-scan košíka na platbu. Len obchodný partner/SP/košík/časové značky/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se při uzamčení self-scan košíku pro platbu. Jen partner/SP/košík/časové značky/výsledek. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri uzamknutí self-scan košíka na platbu. Len partner/SP/košík/časové značky/výsledok. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'self_scan.basket.archived': {
     en: 'Recorded when a self-scan basket is archived (worker or staff). Business partner/SP/basket/who/when only. Actor is PICKUP_STAFF or SYSTEM.',
-    cs: 'Zapíše se při archivaci self-scan košíku (worker nebo personál). Jen obchodní partner/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
-    sk: 'Zapíše sa pri archivácii self-scan košíka (worker alebo personál). Len obchodný partner/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
+    cs: 'Zapíše se při archivaci self-scan košíku (worker nebo personál). Jen partner/SP/košík/kdo/kdy. Aktér je PICKUP_STAFF nebo SYSTEM.',
+    sk: 'Zapíše sa pri archivácii self-scan košíka (worker alebo personál). Len partner/SP/košík/kto/kedy. Aktér je PICKUP_STAFF alebo SYSTEM.',
   },
   'dev.tenant.context.entered': {
     en: 'Recorded when an admin session rebinds into a business partner (partner switcher UI). Hidden from business partner compliance lists. Never written on GET /admin/me.',
