@@ -86,7 +86,7 @@ export const REFUND_STAFF_REASON_CHIP_CS: Readonly<Record<RefundStaffReason, str
   CUSTOMER_CANCEL_RETURN: 'Zákazník ruší / vrací bez tvrzení o vadě',
   DISTANCE_WITHDRAWAL: 'Odstoupení od online nákupu',
   DEFECTIVE_COMPLAINT: 'Zboží / služba má vadu nebo problém',
-  MERCHANT_NON_FULFILMENT: 'Tenant nemůže dodat',
+  MERCHANT_NON_FULFILMENT: 'Obchodní partner nemůže dodat',
   PAYMENT_ORDER_CORRECTION: 'Chyba platby / ceny / množství',
   NO_SHOW: 'Nevyzvednuto / no-show',
   GOODWILL: 'Goodwill / výjimka',

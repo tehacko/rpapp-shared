@@ -53,7 +53,7 @@ export function requireTenantCodeFromPath(pathname?: string): string {
   const code = getTenantCodeFromPath(path);
   if (!code) {
     throw new TenantPathResolutionError(
-      `Tenant code missing from URL path "${path}". Use /{tenantCode}/... (e.g. /railway-cafe/admin or /railway-cafe/1).`,
+      `Business partner code missing from URL path "${path}". Use /{businessPartnerCode}/... (e.g. /railway-cafe/admin or /railway-cafe/1).`,
     );
   }
   return code;
@@ -63,7 +63,9 @@ export function requireTenantCodeFromPath(pathname?: string): string {
 export function coerceRouteTenantCode(tenantCode: string | undefined): string {
   const trimmed = tenantCode?.trim();
   if (!trimmed) {
-    throw new TenantPathResolutionError('Missing :tenant route parameter');
+    throw new TenantPathResolutionError(
+      'Missing business partner code in the route. Open a /{businessPartnerCode}/… URL and retry.',
+    );
   }
   return trimmed;
 }
@@ -75,7 +77,7 @@ export function isDevDashboardApiEndpoint(endpoint: string): boolean {
 export function withTenantInApiPath(endpoint: string, tenantCode: string): string {
   const trimmed = tenantCode.trim();
   if (!trimmed) {
-    throw new TenantPathResolutionError('Tenant code is required for API path');
+    throw new TenantPathResolutionError('Business partner code is required for API path');
   }
   if (!endpoint.startsWith('/api/')) {
     return endpoint;

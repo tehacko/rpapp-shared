@@ -238,9 +238,9 @@ const ANALYTICS_LABEL_OVERRIDES: Record<AnalyticsEventName, LocalizedLabel> = {
     sk: 'Presmerovanie starej URL obchodu',
   },
   tenant_switched: {
-    en: 'Tenant switched',
-    cs: 'Organizace přepnuta',
-    sk: 'Organizácia prepnutá',
+    en: 'Business partner switched',
+    cs: 'Obchodní partner přepnut',
+    sk: 'Obchodný partner prepnutý',
   },
   seller_assisted_sale_completed: {
     en: 'Seller-assisted sale completed',

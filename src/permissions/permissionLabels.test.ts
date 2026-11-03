@@ -30,9 +30,9 @@ describe('permissionLabels', () => {
   });
 
   it('resolves known domain labels', () => {
-    expect(getPermissionDomainLabel('tenant', 'en')).toBe('Tenant operations');
-    expect(getPermissionDomainLabel('tenant', 'cs')).toBe('Provoz organizace');
-    expect(getPermissionDomainLabel('tenant', 'sk')).toBe('Prevádzka organizácie');
+    expect(getPermissionDomainLabel('tenant', 'en')).toBe('Business partner operations');
+    expect(getPermissionDomainLabel('tenant', 'cs')).toBe('Provoz obchodního partnera');
+    expect(getPermissionDomainLabel('tenant', 'sk')).toBe('Prevádzka obchodného partnera');
   });
 
   it('resolves known resource titles in EN, CS, and SK', () => {

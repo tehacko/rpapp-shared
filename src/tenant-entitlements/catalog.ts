@@ -71,7 +71,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['sales_point_management'],
     capabilityHint: 'tenant.shippingMethods.read',
     notes:
-      'Shipping Light / delivery modality — commercially FREE+OPEN; resolve-time heal for non-Enterprise ALLOW plans; SHIPPING_LIGHT_ENABLED default ON',
+      'Shipping Light / Dodací politika — FREE+OPEN default ON; resolve heal (UNASSIGNED→FREE; Ent softOff/missing→ON; Ent hardOff sticks); SHIPPING_LIGHT_ENABLED default ON',
   },
   {
     blockKey: 'catalog_administration',
@@ -104,7 +104,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'audit-logs',
     capabilityHint: 'tenant.systemLogs.view',
-    notes: 'Tenant admin Audit logs UI — DEV Feature Policy allow/deny (not CORE_IMMUTABLE)',
+    notes: 'Business partner admin Audit logs UI — DEV Feature Policy allow/deny (not CORE_IMMUTABLE)',
   },
   {
     blockKey: 'audit_intelligence',
@@ -128,7 +128,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     routeSuffix: 'success-incident-centre',
     notes:
-      'Commercial tenant Události tab/nav/SIC APIs only — default OFF (FULL_DEMO_ALWAYS_OFF, not DEFAULT_OFF_ROLLOUT). Not an outbox grant ceiling. Platform /dev/success-incident-centre is capability-only (platform.successIncident.*). Platform /dev/inbox uses platform /me ALLOW of this key ∧ capability — not commercial Feature Policy',
+      'Commercial business partner Události tab/nav/SIC APIs only — default OFF (FULL_DEMO_ALWAYS_OFF, not DEFAULT_OFF_ROLLOUT). Not an outbox grant ceiling. Platform /dev/success-incident-centre is capability-only (platform.successIncident.*). Platform /dev/inbox uses platform /me ALLOW of this key ∧ capability — not commercial Feature Policy',
   },
   {
     blockKey: 'payment_processing_runtime',
@@ -240,7 +240,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['payment_rails_strategy'],
     notes:
-      'Allows EUR on tenant allow-list, multi-currency bank accounts, and sales-point MULTI currency acceptance.',
+      'Allows EUR on business partner allow-list, multi-currency bank accounts, and sales-point MULTI currency acceptance.',
   },
   {
     blockKey: 'payment_reconciliation',
@@ -443,7 +443,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['tenant_ops_settings'],
     capabilityHint: 'account.self.manage',
     notes:
-      'Admin TOTP authenticator enroll/login/step-up. Default OFF (rollout flag) — enable per tenant. Email OTP is never used for admin.',
+      'Admin TOTP authenticator enroll/login/step-up. Default OFF (rollout flag) — enable per business partner. Email OTP is never used for admin.',
   },
   {
     blockKey: 'admin_notifications',

@@ -133,7 +133,7 @@ export const COMMERCIAL_PACKAGING = {
     ['FREE'],
     'ALIGNED',
     'OPEN',
-    'Shipping Light / delivery modality — FREE+OPEN (commercially available on Free; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON, no prod FORCE-FALSE)',
+    'Shipping Light / Dodací politika — FREE+OPEN default ON for all business partners; resolve heal (UNASSIGNED→FREE); Enterprise hardOff only to disable; SHIPPING_LIGHT_ENABLED default ON',
   ),
   catalog_administration: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní katalog'),
   product_barcode_administration: rule(
@@ -295,7 +295,7 @@ export const COMMERCIAL_PACKAGING = {
     ['GROWTH'],
     'ALIGNED',
     'DO_NOT_SELL',
-    'Growth/Contract; tenantem řízená správa providerů v běhu vypnutá',
+    'Growth/Contract; obchodním partnerem řízená správa providerů v běhu vypnutá',
   ),
   team_management_core: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní životní cyklus týmu FREE'),
   permission_management_rbac: rule(

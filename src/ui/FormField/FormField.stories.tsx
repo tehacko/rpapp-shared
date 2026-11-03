@@ -48,7 +48,7 @@ export const WithError: Story = {
 export const AdminWithError: Story = {
   args: {
     surface: 'admin',
-    label: 'Tenant code',
-    errorText: 'Tenant code is required',
+    label: 'Business partner code',
+    errorText: 'Business partner code is required',
   },
 };

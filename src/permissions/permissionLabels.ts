@@ -15,7 +15,11 @@ export const PERMISSION_DOMAIN_LABELS: Record<string, LocalizedLabel> = {
   principal: { en: 'Account access', cs: 'Přístup k účtu', sk: 'Prístup k účtu' },
   account: { en: 'Account', cs: 'Účet', sk: 'Účet' },
   permissions: { en: 'Permissions catalog', cs: 'Katalog oprávnění', sk: 'Katalóg oprávnení' },
-  tenant: { en: 'Tenant operations', cs: 'Provoz organizace', sk: 'Prevádzka organizácie' },
+  tenant: {
+    en: 'Business partner operations',
+    cs: 'Provoz obchodního partnera',
+    sk: 'Prevádzka obchodného partnera',
+  },
   platform: { en: 'Platform administration', cs: 'Správa platformy', sk: 'Správa platformy' },
   exceptions: { en: 'Exceptions', cs: 'Výjimky', sk: 'Výnimky' },
   compliance: { en: 'Compliance', cs: 'Compliance', sk: 'Compliance' },
@@ -211,18 +215,22 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     cs: 'Přepsání DPH u prodejního místa',
     sk: 'Prepísanie DPH u predajného miesta',
   },
-  configTenant: { en: 'Config tenant', cs: 'Nastavení organizace', sk: 'Nastavenie organizácie' },
+  configTenant: {
+    en: 'Config business partner',
+    cs: 'Nastavení obchodního partnera',
+    sk: 'Nastavenie obchodného partnera',
+  },
 
   // Exceptions
   crossTenantReplayExecute: {
-    en: 'Cross-tenant replay execute',
-    cs: 'Spuštění přehrání napříč organizacemi',
-    sk: 'Spustenie prehratia naprieč organizáciami',
+    en: 'Cross–business partner replay execute',
+    cs: 'Spuštění přehrání napříč obchodními partnery',
+    sk: 'Spustenie prehratia naprieč obchodnými partnermi',
   },
   tenantPermanentDelete: {
-    en: 'Tenant permanent delete',
-    cs: 'Trvalé smazání organizace',
-    sk: 'Trvalé zmazanie organizácie',
+    en: 'Business partner permanent delete',
+    cs: 'Trvalé smazání obchodního partnera',
+    sk: 'Trvalé zmazanie obchodného partnera',
   },
   refundResolve: { en: 'Refund resolve', cs: 'Vyřešení refundace', sk: 'Vyriešenie refundácie' },
   complianceSensitiveAccess: {
@@ -233,16 +241,20 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
 
   // Platform (short titles for rare advanced UI)
   users: { en: 'Platform users', cs: 'Uživatelé platformy', sk: 'Používatelia platformy' },
-  tenants: { en: 'Platform tenants', cs: 'Organizace platformy', sk: 'Organizácie platformy' },
+  tenants: {
+    en: 'Platform business partners',
+    cs: 'Obchodní partneři platformy',
+    sk: 'Obchodní partneri platformy',
+  },
   tenantPayments: {
-    en: 'Tenant payments defaults',
-    cs: 'Výchozí platby organizací',
-    sk: 'Predvolené platby organizácií',
+    en: 'Business partner payments defaults',
+    cs: 'Výchozí platby obchodních partnerů',
+    sk: 'Predvolené platby obchodných partnerov',
   },
   userTenantAssignments: {
-    en: 'User–tenant assignments',
-    cs: 'Přiřazení uživatelů k organizacím',
-    sk: 'Priradenie používateľov k organizáciám',
+    en: 'User–business partner assignments',
+    cs: 'Přiřazení uživatelů k obchodním partnerům',
+    sk: 'Priradenie používateľov k obchodným partnerom',
   },
   userCapabilities: {
     en: 'User capabilities',

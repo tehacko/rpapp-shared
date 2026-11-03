@@ -377,9 +377,9 @@ const RETAIL_DESCRIPTIONS = {
     sk: 'Počíta sa pri presmerovaní starej URL s kioskId na URL s identifikátorom predajného miesta. Raz za presmerovanie.',
   },
   [ANALYTICS_RETAIL_EVENTS.TENANT_SWITCHED]: {
-    en: 'Counts when a logged-in customer switches tenant context in the account shop flow. One count per switch.',
-    cs: 'Počítá se, když přihlášený zákazník přepne organizaci v účtu nebo obchodu. Jednou za přepnutí.',
-    sk: 'Počíta sa, keď prihlásený zákazník prepne organizáciu v účte alebo obchode. Raz za prepnutie.',
+    en: 'Counts when a logged-in customer switches business partner context in the account shop flow. One count per switch.',
+    cs: 'Počítá se, když přihlášený zákazník přepne obchodního partnera v účtu nebo obchodu. Jednou za přepnutí.',
+    sk: 'Počíta sa, keď prihlásený zákazník prepne obchodného partnera v účte alebo obchode. Raz za prepnutie.',
   },
   [ANALYTICS_RETAIL_EVENTS.SELLER_ASSISTED_SALE_COMPLETED]: {
     en: 'Counts when a seller-assisted basket transitions to PAID after an authoritative COMPLETED payment. One count per MarkPaid success (plan alias SELLER_ASSISTED_SALE_COMPLETED).',
