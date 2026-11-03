@@ -398,9 +398,9 @@ const DISCOVERY_DESCRIPTIONS: Record<
     sk: 'Počíta sa po úspešnom dokončení platformného vyhľadávania so stabilnými výsledkami. Raz za požiadavku vyhľadávania. Text dopytu sa nikdy neodosiela.',
   },
   [ANALYTICS_DISCOVERY_EVENTS.DISCOVERY_RESULT_SELECTED]: {
-    en: 'Counts when the customer opens or acts on a discovery search result (shop, product, tenant). One count per selection tied to the search request.',
-    cs: 'Počítá se, když zákazník otevře nebo použije výsledek vyhledávání (obchod, produkt, tenant). Jednou za výběr vázaný na požadavek vyhledávání.',
-    sk: 'Počíta sa, keď zákazník otvorí alebo použije výsledok vyhľadávania (obchod, produkt, tenant). Raz za výber viazaný na požiadavku vyhľadávania.',
+    en: 'Counts when the customer opens or acts on a discovery search result (shop, product, business partner). One count per selection tied to the search request.',
+    cs: 'Počítá se, když zákazník otevře nebo použije výsledek vyhledávání (obchod, produkt, obchodní partner). Jednou za výběr vázaný na požadavek vyhledávání.',
+    sk: 'Počíta sa, keď zákazník otvorí alebo použije výsledok vyhľadávania (obchod, produkt, obchodný partner). Raz za výber viazaný na požiadavku vyhľadávania.',
   },
 };
 

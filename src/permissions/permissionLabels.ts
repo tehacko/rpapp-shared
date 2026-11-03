@@ -216,7 +216,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     sk: 'Prepísanie DPH u predajného miesta',
   },
   configTenant: {
-    en: 'Config business partner',
+    en: 'Business partner config',
     cs: 'Nastavení obchodního partnera',
     sk: 'Nastavenie obchodného partnera',
   },
@@ -244,7 +244,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   tenants: {
     en: 'Platform business partners',
     cs: 'Obchodní partneři platformy',
-    sk: 'Obchodní partneri platformy',
+    sk: 'Obchodný partneri platformy',
   },
   tenantPayments: {
     en: 'Business partner payments defaults',
