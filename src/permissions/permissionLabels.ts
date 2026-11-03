@@ -244,7 +244,7 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
   tenants: {
     en: 'Platform business partners',
     cs: 'Obchodní partneři platformy',
-    sk: 'Obchodný partneri platformy',
+    sk: 'Obchodní partneri platformy',
   },
   tenantPayments: {
     en: 'Business partner payments defaults',

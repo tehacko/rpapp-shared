@@ -35,6 +35,13 @@ describe('permissionLabels', () => {
     expect(getPermissionDomainLabel('tenant', 'sk')).toBe('Prevádzka obchodného partnera');
   });
 
+  it('uses SK-aligned plural for platform tenants resource title', () => {
+    expect(PERMISSION_RESOURCE_LABELS.tenants.en).toBe('Platform business partners');
+    expect(PERMISSION_RESOURCE_LABELS.tenants.cs).toBe('Obchodní partneři platformy');
+    expect(PERMISSION_RESOURCE_LABELS.tenants.sk).toBe('Obchodní partneri platformy');
+    expect(PERMISSION_RESOURCE_LABELS.configTenant.en).toBe('Business partner config');
+  });
+
   it('resolves known resource titles in EN, CS, and SK', () => {
     expect(getPermissionResourceTitle('products', 'en')).toBe('Products');
     expect(getPermissionResourceTitle('products', 'cs')).toBe('Produkty');
