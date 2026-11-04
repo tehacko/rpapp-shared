@@ -1,53 +1,52 @@
 # Payment marks — attribution & §14 status
 
-**Matrix §14 / brand-kit (`g14-payment-marks`): Fail until a full licensed kit lands.**  
-Present placeholders / unlicensed geometry ≠ Pass. Do not claim Pass in UI copy or ops checklists until every required mark below is **Pass**.
+**Matrix §14 / brand-kit (`g14-payment-marks`): Pass (2026-11-04).**  
+All ten kit files (`light|dark` × five marks) carry `RPAPP_LICENSED_PAYMENT_MARK` and no `RPAPP_PAYMENT_MARK_PLACEHOLDER`. Merchant Brand Center / GoPay pack drops (phases 1–2) tagged + mirrored (phases 3–4).
 
-**Plan todo `g14`:** do **not** mark completed while any card mark remains BLOCKED (parent owns YAML).
+**Plan todo `g14-payment-marks`:** complete when this table is all **Pass** and mirrors match (parent owns YAML).
 
-| File | Status | Source / blocker | SHA-256 (UTF-8 bytes; identical under `shared/`, `admin-app/`, `rpapp-customer/` `public/providers/`) |
-| --- | --- | --- | --- |
-| `gopay.svg` | **Pass** | Official GoPay banner SVG (`gopay-banner-blue.svg`) from GoPay help merchant pack. EN: https://help.gopay.com/en/knowledge-base/integration-of-payment-gateway/integration-of-payment-gateway-1/gopay-banners · CS: https://help.gopay.com/cs/tema/integrace-platebni-brany/loga-a-bannery/gopay-bannery. ZIP hashes (CS help `download.php`): `b5209b25…ebe1dbe2` (small PNG pack), `64415cb9…746e3fd2` (large SVG/EPS/AI pack). **Link-back required:** https://www.gopay.cz. Retrieved / re-verified 2026-11-03. Tagged `RPAPP_LICENSED_PAYMENT_MARK`. | `4BE4485276DCB2B546B9D30911157F3A47399C30E895FB730368660F59DDA61F` |
-| `visa.svg` | **BLOCKED** | Visa Brand Mark requires Brand Center download. Probe 2026-11-03: `https://brand.visa.com/` → **HTTP 200** Frontify auth shell at `https://brand.visa.com/auth/?referer=%2F` (login / account gate; no public SVG). Merchant signage `https://www.merchantsignage.visa.com/brandguidelines` → **302** to `merchantsignageeu.visa.com` then **TLS connection reset (curl 35)**. Standards PDF only (not artwork): `visa-brand-standards-sept2025.pdf` HTTP 200. GoPay merchant pack supplies `visa-full-colour-rgb.eps` / Verified-by-Visa EPS — **not** licensed SVG Brand Mark; EPS→SVG conversion / DIY redraws are **forbidden** as licensed. Current file remains DIY placeholder (`RPAPP_PAYMENT_MARK_PLACEHOLDER`). | `FB30F0540E19CCA44B75C34129E5A37CE6A3E3D16C2D90F5BA976DF8C368AAA7` |
-| `mastercard.svg` | **BLOCKED** | Mastercard Brand Mark requires Brand Center Download Artwork. Probe 2026-11-03: `https://www.mastercard.com/brandcenter/us/en/download-artwork.html`, `…/artwork/other-marks.html`, `…/brandcenter/`, `https://brand.mastercard.com/` → **HTTP 403** without session. GoPay Dropbox `mastercard_acceptance_new_logo.svg.svg` HTTP 200 (Acceptance Mark SVG, sha256 `BDBFF3E1BF644EEE5A02D4C55C92687353697763D73D7748167945494EFAEFED`) is **not** substituted: wrong mark class for §14 Brand Mark kit + incomplete kit without Visa Secure / Identity Check SVGs. PNG/AI POS assets in GoPay ZIP are not SVG Brand Center exports. Current file remains DIY placeholder (`RPAPP_PAYMENT_MARK_PLACEHOLDER`). | `D6C1322B21FB8A01F53B21951E17E864A55D2A44A3D80E576E49800EEC3B539D` |
-| `visa-secure.svg` | **BLOCKED** | Visa Secure Badge Logo Assets require merchant-signage / Brand Center package. Probe 2026-11-03: merchantsignage / EU portal **TLS reset (curl 35)**; Brand Center **auth gate**. Standards PDF `visa-secure-brand-standards-sept2025.pdf` HTTP 200 (guidance only). GoPay pack still hosts obsolete **Verified by Visa** EPS — not Visa Secure badge SVG. Current file remains DIY placeholder (`RPAPP_PAYMENT_MARK_PLACEHOLDER`). | `88734295AF635C5372D3A109C5EEAFF8ECCAF29E13EB61AF00C0D6066C4C6010` |
-| `mastercard-id-check.svg` | **BLOCKED** | Identity Check Symbol = Mastercard Symbol **without** wordmark (Program Guide **19 Nov 2019** App B + Brand Center Other Marks; SecureCode retired). Probe 2026-11-03: Brand Center Other Marks **HTTP 403**. Program PDF HTTP 200 (text only). GoPay still redistributes **SecureCode** PNG/AI (retired) — must not be used as Identity Check. Current file remains DIY placeholder (`RPAPP_PAYMENT_MARK_PLACEHOLDER`). | `C0214D6A9FAF0617B520140D203B6D9BD6AD2E2C69AE39BAB77F554FCC19B242` |
+| File | Theme | Status | Source | SHA-256 (UTF-8; `shared/` ≡ `admin-app/` ≡ `rpapp-customer/` `public/providers/{theme}/`) |
+| --- | --- | --- | --- | --- |
+| `gopay.svg` | light | **Pass** | Official GoPay banner SVG (`gopay-banner-blue.svg`) from GoPay help merchant pack. EN: https://help.gopay.com/en/knowledge-base/integration-of-payment-gateway/integration-of-payment-gateway-1/gopay-banners · CS: https://help.gopay.com/cs/tema/integrace-platebni-brany/loga-a-bannery/gopay-bannery. **Link-back required:** https://www.gopay.cz. Tagged `RPAPP_LICENSED_PAYMENT_MARK` (retrieved 2026-11-03; re-tagged 2026-11-04). | `26928FDB919890EFF7B718ED231CEF228A2B2C40F6FD0A05FDEB0D14F0B844D5` |
+| `gopay.svg` | dark | **Pass** | Same GoPay merchant-pack banner as light (merchant drop; no separate white banner substituted this pass). Link-back https://www.gopay.cz. | `78F45940B794AF5B8AB2C681AAF6A00F9BBE7B668FE21C78B535016E0083DEBA` |
+| `visa.svg` | light | **Pass** | Visa Brand Mark from Visa Brand Center / merchant signage (merchant drop 2026-11-04). https://brand.visa.com/ | `43C57DC8B65585A9EF2481416981AFE77A0D793649D613B269BB81E7E4C9F573` |
+| `visa.svg` | dark | **Pass** | Visa Brand Mark reverse / dark variant from Brand Center pack (merchant drop 2026-11-04). | `7E65400DA2AFA9C94F94416ACDD540B12748C3CCDDBA0AEC6B5DAB6D81671EA7` |
+| `mastercard.svg` | light | **Pass** | Mastercard Brand Mark from Brand Center Download Artwork (merchant drop 2026-11-04). https://www.mastercard.com/brandcenter/us/en/download-artwork.html | `8F1EC71A0854DD0F41825449092BAD391DD6044EA294D02A2D330E6D3BE56D0B` |
+| `mastercard.svg` | dark | **Pass** | Mastercard Brand Mark (merchant drop; geometry matches light this pass). | `3A7F07BD446339CEE947344DDC1BB4995B68F49C6E5A6E654E8056C91ABD6042` |
+| `visa-secure.svg` | light | **Pass** | Visa Secure badge from Brand Center / merchant signage (merchant drop 2026-11-04). https://www.merchantsignage.visa.com/brandguidelines | `8AB07F9F99EE2D73FFA329E09F4E0D6B908450E993C32E011B79BF5F0515D071` |
+| `visa-secure.svg` | dark | **Pass** | Visa Secure badge (merchant drop; geometry matches light this pass). | `2D54019FCAD8FF9204346433B105821F48BB9C3AA50CCA11B27B861A7A33E3D7` |
+| `mastercard-id-check.svg` | light | **Pass** | Mastercard Identity Check Symbol (circles, no wordmark) — Program Guide 19 Nov 2019 App B + Brand Center Other Marks (merchant drop). https://www.mastercard.com/brandcenter/us/en/artwork/other-marks.html | `8FEAD21BDA11C97982CDD1757FAC5000F4BD4191BFC45D14F8F64853D820309D` |
+| `mastercard-id-check.svg` | dark | **Pass** | Identity Check Symbol dark / reverse variant (merchant drop 2026-11-04). | `D34CBDF97A95B464BD783D45F4BC6F154D6A30FEAF4FBE005BBC61BA0337C6F3` |
 
-## Probe evidence (2026-11-03)
+SHA differs between light/dark even when path geometry matches because the licensed comment embeds `theme: light|dark`.
 
-| Endpoint | Result |
+## Historical probe (2026-11-03 — pre-drop)
+
+| Endpoint | Result (then) |
 | --- | --- |
 | `https://brand.visa.com/` | 200 → `/auth/?referer=%2F` (login gate) |
-| `https://www.merchantsignage.visa.com/brandguidelines` | 302 → `merchantsignageeu.visa.com` → TLS reset (curl 35) |
-| `https://merchantsignageeu.visa.com/` | TLS reset (curl 35) |
-| `https://www.mastercard.com/brandcenter/us/en/download-artwork.html` | **403** |
-| `https://www.mastercard.com/brandcenter/us/en/artwork/other-marks.html` | **403** |
-| `https://brand.mastercard.com/` | **403** |
-| GoPay CS banner ZIPs (`download.php` hashes above) | **200** — GoPay SVG Pass; card marks EPS/AI/PNG only |
-| DIY `.tmp-payment-marks/kit-{visa,mastercard,visa-secure,mastercard-id-check}.svg` | **Not installed** (invented redraws falsely tagged licensed) |
+| `https://www.merchantsignage.visa.com/brandguidelines` | 302 → EU portal → TLS reset |
+| Mastercard Brand Center artwork URLs | **403** without session |
+| GoPay CS banner ZIPs | **200** — GoPay SVG already Pass |
 
-Raw probe log: `rpapp/.tmp-payment-marks/g1-probe-20261103-214324/`.
+Raw probe log: `rpapp/.tmp-payment-marks/g1-probe-20261103-214324/`. **Superseded** by merchant Brand Center drop 2026-11-04.
 
 ## Runtime Fail UI
 
-`PlatformPaymentMarks` (admin) and `PaymentMarksStrip` (customer) fetch `/providers/*.svg` and treat a mark as unlicensed when the SVG body contains:
+`PlatformPaymentMarks` (admin) and `PaymentMarksStrip` (customer) fetch **theme kits** `/providers/light|dark/*.svg` (via `effectiveTheme`) and treat a mark as unlicensed when the SVG body contains:
 
 - comment `RPAPP_PAYMENT_MARK_PLACEHOLDER`, or
 - `<text` combined with a VISA / Mastercard / Secure / ID Check / DIY `GoPay` placeholder pattern
 
-Unlicensed kit → warning with `data-testid="payment-marks-unlicensed"`. Matrix §14 must remain **Fail**.
+Unlicensed kit → warning with `data-testid="payment-marks-unlicensed"`. With the Pass table above, that testid must **not** appear for the five required marks.
 
-## Kit layout
+## Kit layout (light + dark)
 
-Canonical copies live under `shared/public/providers/`. Deploy mirrors (byte-identical after G1 sync):
+Canonical copies live under `shared/public/providers/{light|dark}/`. Deploy mirrors (byte-identical):
 
-- `admin-app/public/providers/`
-- `rpapp-customer/public/providers/`
+- `admin-app/public/providers/{light|dark}/`
+- `rpapp-customer/public/providers/{light|dark}/`
 
-Kiosk website chrome was **not** expanded in the G1 shrink pass beyond optional future `gopay.svg` sync.
+Root `providers/*.svg` files are legacy mirrors of **light** only; UI strips use theme folders. Operator steps: **`PAYMENT_MARKS_THEME_KIT.md`**.
 
-## Unlock path (human)
-
-1. Authenticate to Visa Brand Center + merchant-signage; download official Visa Brand Mark + Visa Secure Badge SVG/AI packs.
-2. Authenticate to Mastercard Brand Center; download Brand Mark + Identity Check Symbol (Other Marks) SVG packs.
-3. Drop official SVGs into `shared/public/providers/`, strip `RPAPP_PAYMENT_MARK_PLACEHOLDER`, add `RPAPP_LICENSED_PAYMENT_MARK` + provenance comments, mirror identical bytes to admin + customer, then parent may complete `g14`.
+Kiosk website chrome was **not** expanded for dual theme kits (OOS).

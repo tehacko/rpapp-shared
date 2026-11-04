@@ -13,13 +13,22 @@ describe('tenantPathResolution', () => {
     expect(getTenantCodeFromPath('/acme/sign-in')).toBe('acme');
   });
 
-  it('returns null for dev/admin/api/tenants/register prefixes', () => {
+  it('returns null for dev/admin/api/tenants/register/legal prefixes', () => {
     expect(getTenantCodeFromPath('/dev/login')).toBeNull();
     expect(getTenantCodeFromPath('/admin/login')).toBeNull();
     expect(getTenantCodeFromPath('/api/v1/foo')).toBeNull();
     expect(getTenantCodeFromPath('/tenants')).toBeNull();
     expect(getTenantCodeFromPath('/tenants/')).toBeNull();
     expect(getTenantCodeFromPath('/register')).toBeNull();
+    expect(getTenantCodeFromPath('/legal')).toBeNull();
+    expect(getTenantCodeFromPath('/legal/terms')).toBeNull();
+    expect(getTenantCodeFromPath('/legal/privacy')).toBeNull();
+    expect(getTenantCodeFromPath('/LEGAL/terms')).toBeNull();
+  });
+
+  it('keeps real tenant codes and account paths under tenant', () => {
+    expect(getTenantCodeFromPath('/railway-cafe/account/organization')).toBe('railway-cafe');
+    expect(getTenantCodeFromPath('/acme/account/organization/billing')).toBe('acme');
   });
 
   it('requires tenant in path', () => {

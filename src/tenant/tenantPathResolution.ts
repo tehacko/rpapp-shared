@@ -14,6 +14,8 @@ export const NON_TENANT_PATH_SEGMENTS = new Set([
   'tenants',
   /** Public self-serve tenant registration (admin Wave 2). */
   'register',
+  /** Platform SaaS public legal chrome (admin `/legal/*`). */
+  'legal',
 ]);
 
 export class TenantPathResolutionError extends Error {

@@ -1,12 +1,10 @@
 <!--
   RPAPP_LICENSED_PAYMENT_MARK
-  Official GoPay banner SVG from GoPay help merchant pack (gopay-banner-blue.svg).
-  EN: https://help.gopay.com/en/knowledge-base/integration-of-payment-gateway/integration-of-payment-gateway-1/gopay-banners
-  CS: https://help.gopay.com/cs/tema/integrace-platebni-brany/loga-a-bannery/gopay-bannery
-  Link-back required: https://www.gopay.cz
-  Retrieved: 2026-11-03
--->
-<svg width="100" height="35" viewBox="0 0 100 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+  source: Official GoPay banner SVG (gopay-banner-blue.svg) from GoPay help merchant pack | EN https://help.gopay.com/en/knowledge-base/integration-of-payment-gateway/integration-of-payment-gateway-1/gopay-banners | link-back https://www.gopay.cz
+  theme: light
+  retrieved: 2026-11-04
+  Dropped into shared/public/providers/light/ by merchant Brand Center / GoPay pack (phases 1-2).
+--><svg width="100" height="35" viewBox="0 0 100 35" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="100" height="35" rx="5" fill="#1899D6"/>
 <path d="M68.832 27.5C63.2954 27.5 60.0199 23.7568 60.1718 18.8904C60.366 12.6603 65.8519 7.5 72.3952 7.5C75.2026 7.5 77.4464 8.2264 78.9392 8.98934L78.0671 13.5965C76.1957 12.5786 74.5875 11.9653 71.9912 11.9653C67.9119 11.9653 65.2202 15.0137 65.118 18.3023C65.0361 20.9216 66.6118 23.0879 69.6578 23.0879C70.3469 23.0879 71.1445 22.9813 71.6789 22.848L72.8714 16.5472L77.5109 16.5482L75.7119 26.0558C73.7491 26.9656 71.1632 27.5 68.832 27.5Z" fill="white"/>
 <path d="M92.4999 16.8094L83.0138 11.1842L80.5064 24.3421L92.4999 16.8094Z" fill="white"/>
