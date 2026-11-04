@@ -1,10 +1,12 @@
 import { ENTITLEMENT_BLOCK_KEYS, SIMPLE_ENTITLEMENT_STATES } from '../types.js';
 import {
+  ALWAYS_ON_PRODUCT_CAPABILITY_IDS,
   NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS,
   PRODUCT_CAPABILITY_BLOCK_MAP,
   PRODUCT_CAPABILITY_IDS,
   PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN,
   entitlementBlockKeysForProductCapability,
+  isAlwaysOnProductCapability,
   isNeverActivateProductCapability,
   productCapabilityDisplayForEntitlementBlock,
   productCapabilityIdForEntitlementBlock,
@@ -54,6 +56,10 @@ describe('productCapabilityMap', () => {
     expect(isNeverActivateProductCapability('CAP-15')).toBe(true);
     expect(isPartnerApiNeverActivate('CAP-15')).toBe(true);
     expect([...NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS]).toEqual(['CAP-15']);
+    expect(isAlwaysOnProductCapability('CAP-16')).toBe(true);
+    expect(isAlwaysOnProductCapability('CAP-17')).toBe(false);
+    expect(isAlwaysOnProductCapability('CAP-18')).toBe(false);
+    expect([...ALWAYS_ON_PRODUCT_CAPABILITY_IDS]).toEqual(['CAP-16']);
 
     for (const capabilityId of PRODUCT_CAPABILITY_IDS) {
       const blockKeys = PRODUCT_CAPABILITY_BLOCK_MAP[capabilityId];
@@ -570,6 +576,37 @@ describe('mergeReadinessCell (platform override + CAP-15/n_a reject)', () => {
         declared: 'READY',
       }),
     ).toEqual({ ok: true, cell: 'NOT_READY' });
+  });
+
+  it('rejects CAP-16 overrides away from READY (always-on)', () => {
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-16',
+        declared: 'READY',
+        override: 'NOT_READY',
+      }),
+    ).toEqual({ ok: false, reason: 'CAP_ALWAYS_ON', cell: 'READY' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-16',
+        declared: 'READY',
+        override: 'READY',
+      }),
+    ).toEqual({ ok: true, cell: 'READY' });
+    expect(
+      mergeReadinessCell({
+        capabilityId: 'CAP-16',
+        declared: 'NOT_READY',
+      }),
+    ).toEqual({ ok: true, cell: 'READY' });
+    expect(
+      evaluateProductCapabilityReadiness({
+        capabilityId: 'CAP-16',
+        surface: 'admin',
+        mode: 'production',
+        override: 'NOT_READY',
+      }),
+    ).toBe('READY');
   });
 
   it('rejects overrides of declared n_a cells', () => {

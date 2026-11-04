@@ -44,12 +44,28 @@ export function isProductCapabilityId(value: string): value is ProductCapability
 /** CAP-15 Partner API — no entitlement blocks; never-activate. */
 export const PARTNER_API_CAPABILITY_ID: ProductCapabilityId = 'CAP-15';
 
+/**
+ * CAP-16 Platform foundation — runtime kernel (platform_core, transactions,
+ * payment_processing_runtime, outbox_runtime). Always-on / non-cancellable:
+ * readiness must stay READY or commerce + workers fail closed.
+ */
+export const PLATFORM_FOUNDATION_CAPABILITY_ID: ProductCapabilityId = 'CAP-16';
+
 export const NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS = [
   PARTNER_API_CAPABILITY_ID,
 ] as const satisfies readonly ProductCapabilityId[];
 
+/** Product CAPs that must remain READY (cannot cancel / NOT_READY). */
+export const ALWAYS_ON_PRODUCT_CAPABILITY_IDS = [
+  PLATFORM_FOUNDATION_CAPABILITY_ID,
+] as const satisfies readonly ProductCapabilityId[];
+
 export function isNeverActivateProductCapability(capabilityId: ProductCapabilityId): boolean {
   return (NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS as readonly string[]).includes(capabilityId);
+}
+
+export function isAlwaysOnProductCapability(capabilityId: ProductCapabilityId): boolean {
+  return (ALWAYS_ON_PRODUCT_CAPABILITY_IDS as readonly string[]).includes(capabilityId);
 }
 
 export const PRODUCT_CAPABILITY_BLOCK_MAP = {
@@ -97,7 +113,7 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
   'CAP-13': ['payment_cash'],
   'CAP-14': ['immediate_self_pickup', 'customer_self_collect', 'scheduled_pickup'],
   'CAP-15': [],
-  /** Internal / never-sold foundation — grids stay READY so G8 does not false-deny infra. */
+  /** Platform foundation — always-on kernel; never-sold commercially. */
   'CAP-16': [
     'platform_core',
     'dev_entitlement_policy_editor',
@@ -105,6 +121,7 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
     'payment_processing_runtime',
     'outbox_runtime',
   ],
+  /** Trust & compliance — operator domain; not runtime-kernel (editable readiness). */
   'CAP-17': [
     'audit_event_collection',
     'audit_logs_admin_ui',
@@ -115,6 +132,7 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
     'compliance_fiscal_modules',
     'comms_governance',
   ],
+  /** Receipts — commerce domain pack; kept separate from kernel CAP-16. */
   'CAP-18': ['receipt_delivery', 'receipt_provider_overrides'],
 } as const satisfies Record<ProductCapabilityId, readonly EntitlementBlockKey[]>;
 

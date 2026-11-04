@@ -5,8 +5,8 @@
  * SIMPLE on/softOffVisible/softOffHidden/off/hardOff collapse to READY vs NOT_READY.
  * Declared 18×4 grids are plan G8 production / test-mode (`explicitDevEnable`).
  * CAP-15 Partner API is always NOT_READY (never-activate) on every surface.
- * CAP-16..CAP-18 (foundation / trust / receipts) default READY so attribution does not
- * introduce false G8 denials for previously unmapped leftovers.
+ * CAP-16 Platform foundation is always READY (non-cancellable kernel) on every surface.
+ * CAP-17 / CAP-18 default READY; readiness remains editable (not runtime-kernel).
  *
  * NEVER import admin-app or up-backend into this module.
  */
@@ -18,6 +18,7 @@ import type {
 } from './types.js';
 import {
   entitlementBlockKeysForProductCapability,
+  isAlwaysOnProductCapability,
   isNeverActivateProductCapability,
   productCapabilityIdForEntitlementBlock,
   type ProductCapabilityId,
@@ -344,6 +345,9 @@ export function declaredProductCapabilityReadiness(
   if (isNeverActivateProductCapability(capabilityId)) {
     return 'NOT_READY';
   }
+  if (isAlwaysOnProductCapability(capabilityId)) {
+    return 'READY';
+  }
   const explicitDevEnable =
     options?.explicitDevEnable === true || options?.mode === 'test';
   return collapseProductCapabilityGridCell(
@@ -387,6 +391,9 @@ export function evaluateProductCapabilityReadiness(
   if (isNeverActivateProductCapability(input.capabilityId)) {
     return 'NOT_READY';
   }
+  if (isAlwaysOnProductCapability(input.capabilityId)) {
+    return 'READY';
+  }
   const effectiveCell = getProductCapabilityReadiness({
     capabilityId: input.capabilityId,
     surface: input.surface,
@@ -420,6 +427,9 @@ export function getProductCapabilityReadiness(input: {
 }): ProductCapabilityReadinessState {
   if (isNeverActivateProductCapability(input.capabilityId)) {
     return 'NOT_READY';
+  }
+  if (isAlwaysOnProductCapability(input.capabilityId)) {
+    return 'READY';
   }
   const declared = getDeclaredProductCapabilityGridCell(input.capabilityId, input.surface, {
     mode: input.mode,
@@ -596,7 +606,10 @@ export function isEntitlementBlockTestModeEnableAllowed(
   return isProductCapabilityTestModeEnableAllowed(capabilityId, options);
 }
 
-export type MergeReadinessCellRejectReason = 'CAP_15_NEVER_ACTIVATE' | 'N_A_IMMUTABLE';
+export type MergeReadinessCellRejectReason =
+  | 'CAP_15_NEVER_ACTIVATE'
+  | 'CAP_ALWAYS_ON'
+  | 'N_A_IMMUTABLE';
 
 export type MergeReadinessCellResult =
   | { readonly ok: true; readonly cell: ProductCapabilityGridCell }
@@ -609,8 +622,10 @@ export type MergeReadinessCellResult =
 /**
  * Merge a platform readiness override into a declared G8 cell.
  * CAP-15 is always NOT_READY (never-activate) — any non-NOT_READY override is rejected.
+ * Always-on CAPs (CAP-16) stay READY — any non-READY override is rejected.
  * Declared `n_a` is surface-scoped immutable — any non-`n_a` override is rejected.
- * When override is null/undefined, returns the declared cell (CAP-15 forced to NOT_READY).
+ * When override is null/undefined, returns the declared cell (CAP-15 forced to NOT_READY;
+ * always-on forced to READY).
  */
 export function mergeReadinessCell(input: {
   readonly capabilityId: ProductCapabilityId;
@@ -623,6 +638,14 @@ export function mergeReadinessCell(input: {
       return { ok: false, reason: 'CAP_15_NEVER_ACTIVATE', cell: 'NOT_READY' };
     }
     return { ok: true, cell: 'NOT_READY' };
+  }
+
+  if (isAlwaysOnProductCapability(input.capabilityId)) {
+    const override = input.override;
+    if (override !== undefined && override !== null && override !== 'READY') {
+      return { ok: false, reason: 'CAP_ALWAYS_ON', cell: 'READY' };
+    }
+    return { ok: true, cell: 'READY' };
   }
 
   if (input.declared === 'n_a') {

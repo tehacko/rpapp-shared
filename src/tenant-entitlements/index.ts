@@ -220,14 +220,17 @@ export type {
 } from './capabilityEntitlementRequirements.js';
 
 export {
+  ALWAYS_ON_PRODUCT_CAPABILITY_IDS,
   NEVER_ACTIVATE_PRODUCT_CAPABILITY_IDS,
   PARTNER_API_CAPABILITY_ID,
+  PLATFORM_FOUNDATION_CAPABILITY_ID,
   PRODUCT_CAPABILITY_BLOCK_KEYS,
   PRODUCT_CAPABILITY_BLOCK_MAP,
   PRODUCT_CAPABILITY_IDS,
   PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN,
   entitlementBlockKeysForProductCapability,
   getProductCapabilityBlockKeys,
+  isAlwaysOnProductCapability,
   isNeverActivateProductCapability,
   isProductCapabilityId,
   productCapabilityDisplayForEntitlementBlock,
