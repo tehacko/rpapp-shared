@@ -693,6 +693,16 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích změní nastavení platebního poskytovatele obchodního partnera. Jeden řádek za úspěšnou změnu.',
     sk: 'Zapíše sa, keď pracovníci platformy v dev nástrojoch zmenia nastavenie platobného poskytovateľa obchodného partnera. Jeden riadok za úspešnú zmenu.',
   },
+  'dev.tenant.multi_gateway_exception.set': {
+    en: 'Recorded when platform staff turn on the multi-gateway exception for a business partner via provider-policy Put. One line per transition to ON.',
+    cs: 'Zapíše se, když pracovníci platformy zapnou výjimku více bran u obchodního partnera přes Put provider-policy. Jeden řádek za přechod na ON.',
+    sk: 'Zapíše sa, keď pracovníci platformy zapnú výnimku viacerých brán u obchodného partnera cez Put provider-policy. Jeden riadok za prechod na ON.',
+  },
+  'dev.tenant.multi_gateway_exception.cleared': {
+    en: 'Recorded when platform staff clear the multi-gateway exception for a business partner via provider-policy Put (after extras disabled). One line per clear.',
+    cs: 'Zapíše se, když pracovníci platformy zruší výjimku více bran u obchodního partnera přes Put provider-policy (po vypnutí přebytků). Jeden řádek za zrušení.',
+    sk: 'Zapíše sa, keď pracovníci platformy zrušia výnimku viacerých brán u obchodného partnera cez Put provider-policy (po vypnutí prebytkov). Jeden riadok za zrušenie.',
+  },
   'dev.tenant.entitlement_policy.changed': {
     en: 'Recorded when platform staff change business partner feature-policy entitlement rows in dev tools. One line per successful save with revision metadata.',
     cs: 'Zapíše se, když pracovníci platformy v dev nástrojích změní řádky politiky funkcí (entitlement). Jeden řádek za úspěšné uložení s metadaty revize.',
@@ -1102,5 +1112,15 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     en: 'Recorded when delivery of a shipped order is acknowledged.',
     cs: 'Zapíše se, když je potvrzeno doručení odeslané objednávky.',
     sk: 'Zapíše sa, keď je potvrdené doručenie odoslanej objednávky.',
+  },
+  'dev.platform_gateway_readiness.verified': {
+    en: 'Recorded when platform staff verify a payment gateway brand for partner visibility (status ready). One line per successful verify.',
+    cs: 'Zapíše se, když pracovníci platformy potvrdí Ověření platební brány pro viditelnost partnerům (stav ready). Jeden řádek za úspěšné ověření.',
+    sk: 'Zapíše sa, keď pracovníci platformy potvrdia overenie platobnej brány pre viditeľnosť partnerom (stav ready). Jeden riadok za úspešné overenie.',
+  },
+  'dev.platform_gateway_readiness.revoked': {
+    en: 'Recorded when platform staff revoke a payment gateway brand verification (status revoked, never pending). May cascade bank-account default gateways.',
+    cs: 'Zapíše se, když pracovníci platformy odvolají Ověření platební brány (stav revoked, nikdy pending). Může přepsat výchozí brány na bankovních účtech.',
+    sk: 'Zapíše sa, keď pracovníci platformy odvolajú overenie platobnej brány (stav revoked, nikdy pending). Môže prepísať predvolené brány na bankových účtoch.',
   },
 };

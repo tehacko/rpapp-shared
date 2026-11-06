@@ -4,7 +4,8 @@
  * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
  * Package E: donation_recurring PRO+VALIDATE; tenant_ops_automation / restock_alerts PRO OPEN.
  * SoT v14: donation + tenant_ops_settings FREE; scheduled_pickup PRO; payment_multi_currency
- * GROWTH; bank_account_administration FREE + bank_account_providers GROWTH; receipt_delivery
+ * GROWTH; bank_account_administration FREE + bank_account_providers GROWTH (multi-rail/terminal);
+ * payment_rails_strategy owns provider attachments; receipt_delivery
  * NON_COMMERCIAL + receipt_provider_overrides GROWTH DO_NOT_SELL; shipping_light
  * FREE + OPEN (product: commercially available on Free; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON).
  * staff_pickup_scan FREE (§25 SPLIT closed vs scheduled_pickup PRO). Zero REFACTOR_REQUIRED.
@@ -197,7 +198,8 @@ export const COMMERCIAL_PACKAGING = {
     ['NON_COMMERCIAL'],
     'ALIGNED',
     'NOT_APPLICABLE',
-    'strategie providerů/integrací; ne přímý tarif',
+    // Attachment POST/DELETE + admin GET provider-status/readiness owned by this block.
+    'strategie providerů/integrací + bank account attachments; ne přímý tarif',
   ),
   payment_cash: rule(
     ['NON_COMMERCIAL'],
@@ -339,7 +341,7 @@ export const COMMERCIAL_PACKAGING = {
     ['GROWTH'],
     'ALIGNED',
     'OPEN',
-    'GROWTH multi-account / rails / attachments / provider complexity',
+    'GROWTH multi-rail CRUD / terminal / provider complexity',
   ),
   receipt_delivery: rule(
     ['NON_COMMERCIAL'],

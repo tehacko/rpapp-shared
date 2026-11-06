@@ -56,7 +56,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CORE_REQUIRED',
     parentKeys: [],
     adminNavSectionId: 'kiosks',
-    notes: 'Sales points in admin; DEV may HIDDEN+READ_ONLY (D-ENT-26)',
+    notes:
+      'Sales points in admin; seed default On/ALLOW_WRITES (incl. payment_only_lean). D-ENT-26 = DEV exceptional HIDDEN+READ_ONLY posture — not bookstore seed default.',
   },
   {
     blockKey: 'sales_point_individual_settings',
@@ -226,7 +227,8 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockKey: 'payment_rails_strategy',
     blockClass: 'CORE_REQUIRED',
     parentKeys: ['sales_point_management'],
-    notes: 'Bank/rails; always on — channel config via payment-entitlements tab',
+    notes:
+      'Bank/rails + provider attachments ownership; always on — channel config via payment-entitlements tab',
   },
   {
     blockKey: 'payment_cash',
@@ -470,7 +472,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     blockClass: 'CONDITIONAL',
     parentKeys: ['bank_account_administration'],
     notes:
-      'GROWTH multi-account / rails / attachments / provider complexity; basic bank CRUD stays on parent',
+      'GROWTH multi-rail CRUD / terminal / provider complexity; basic bank CRUD stays on parent',
   },
   {
     blockKey: 'receipt_delivery',

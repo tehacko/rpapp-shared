@@ -35,4 +35,14 @@ describe('coreRequiredPolicyAxes', () => {
     expect(axes.visibilityMode).toBe('VISIBLE');
     expect(axes.mutationMode).toBe('ALLOW_WRITES');
   });
+
+  it('forces On/ALLOW_WRITES for sales_point_management (G2 save heal; not bank resolve heal)', () => {
+    const states = applyTenantScopeToSimpleStates('PRODUCT_ONLY', 'KIOSK_ONLY');
+    const axes = resolveCoreRequiredPolicyAxesForBlock('sales_point_management', states);
+    expect(axes).toEqual({
+      runtimeMode: 'ENABLED',
+      visibilityMode: 'VISIBLE',
+      mutationMode: 'ALLOW_WRITES',
+    });
+  });
 });

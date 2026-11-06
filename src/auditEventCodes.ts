@@ -148,6 +148,8 @@ export const AUDIT_EVENT_CODES = [
   'dev.tenant.created',
   'dev.tenant.updated',
   'dev.tenant.provider.updated',
+  'dev.tenant.multi_gateway_exception.set',
+  'dev.tenant.multi_gateway_exception.cleared',
   'dev.tenant.entitlement_policy.changed',
   'dev.tenant.admin_capabilities.non_entitled_stripped',
   'payment.transaction.state_changed',
@@ -223,6 +225,8 @@ export const AUDIT_EVENT_CODES = [
   'ops.shipping.ready_to_ship',
   'ops.shipping.order_shipped',
   'ops.shipping.delivery_acknowledged',
+  'dev.platform_gateway_readiness.verified',
+  'dev.platform_gateway_readiness.revoked',
 ] as const;
 
 export type AuditEventCode = (typeof AUDIT_EVENT_CODES)[number];

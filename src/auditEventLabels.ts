@@ -693,6 +693,16 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Poskytovatel obchodního partnera upraven (platforma)',
     sk: 'Poskytovateľ obchodného partnera upravený (platforma)',
   },
+  'dev.tenant.multi_gateway_exception.set': {
+    en: 'Multi-gateway exception set (platform)',
+    cs: 'Výjimka více bran nastavena (platforma)',
+    sk: 'Výnimka viacerých brán nastavená (platforma)',
+  },
+  'dev.tenant.multi_gateway_exception.cleared': {
+    en: 'Multi-gateway exception cleared (platform)',
+    cs: 'Výjimka více bran zrušena (platforma)',
+    sk: 'Výnimka viacerých brán zrušená (platforma)',
+  },
   'dev.tenant.entitlement_policy.changed': {
     en: 'Business partner feature policy changed (platform)',
     cs: 'Změna politiky funkcí obchodního partnera (platforma)',
@@ -1102,6 +1112,16 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     en: 'Delivery acknowledged',
     cs: 'Doručení potvrzeno',
     sk: 'Doručenie potvrdené',
+  },
+  'dev.platform_gateway_readiness.verified': {
+    en: 'Platform gateway readiness verified',
+    cs: 'Platformové Ověření brány potvrzeno',
+    sk: 'Platformové overenie brány potvrdené',
+  },
+  'dev.platform_gateway_readiness.revoked': {
+    en: 'Platform gateway readiness revoked',
+    cs: 'Platformové Ověření brány odvoláno',
+    sk: 'Platformové overenie brány odvolané',
   },
 };
 
