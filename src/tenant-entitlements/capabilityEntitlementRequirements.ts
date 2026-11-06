@@ -365,6 +365,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "promo:events:manage",
     "promo:rewards:activate",
     "promo:rewards:read",
+    "storePolicies.advanced",
     "system:feature-flags:manage",
     "system:feature-flags:read",
     "system:health:manage",
@@ -459,6 +460,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "tenant.reconciliation.read",
     "tenant.shippingMethods.manage",
     "tenant.shippingMethods.read",
+    "tenant.storePolicies.advanced",
     "tenant.systemFeatureFlags.manage",
     "tenant.systemFeatureFlags.view",
     "tenant.systemHealth.manage",
@@ -951,6 +953,17 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ],
     requiredBlockKeys: [
       "compliance_fiscal_modules",
+    ] as const satisfies readonly EntitlementBlockKey[],
+    match: 'ALL',
+  },
+  // Store-policies Advanced HTML (G2 S-B) — same CORE block as merchant store-policies routes
+  {
+    authoringTokens: [
+      "tenant.storePolicies.advanced",
+      "storePolicies.advanced",
+    ],
+    requiredBlockKeys: [
+      "tenant_ops_settings",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
