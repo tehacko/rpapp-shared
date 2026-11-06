@@ -36,6 +36,15 @@ describe('FormField', () => {
     expect(wrapper?.className).toContain('form-field');
   });
 
+  it('merges className onto the default input without dropping surface styles', () => {
+    render(<FormField label="IBAN" surface="admin" className="font-mono" />);
+
+    const input = screen.getByRole('textbox', { name: 'IBAN' });
+    expect(input.className).toContain('font-mono');
+    expect(input.className).toContain('border-[var(--color-an-border)]');
+    expect(input.className).toContain('text-[var(--color-an-text)]');
+  });
+
   it('applies kiosk touch sizing with consumer tokens', () => {
     render(<FormField label="Phone" surface="kiosk" />);
 

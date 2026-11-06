@@ -145,12 +145,16 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         control = children;
       }
     } else {
+      const { className: restClassName, ...inputRest } = rest;
+      const inputClassName = [slots.input(), restClassName]
+        .filter((part): part is string => typeof part === 'string' && part.length > 0)
+        .join(' ');
       control = (
         <input
           ref={ref}
-          className={slots.input()}
+          className={inputClassName}
           required={required}
-          {...rest}
+          {...inputRest}
           {...controlA11y}
         />
       );
