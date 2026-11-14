@@ -6,6 +6,8 @@
  * `remainingSaleMajor` is required on list rows, optional on single-attempt GET.
  */
 
+import type { RefundProviderSlotProfileSnapshot } from './refundProviderSlotProfile.js';
+
 /** Attempt rail status — never map REQUIRES_ACTION / REVERSED / CANCELED to SUCCEEDED. */
 export const REFUND_ATTEMPT_STATUSES = [
   'PENDING',
@@ -111,6 +113,28 @@ export interface RefundReadItemDTO {
 }
 
 /**
+ * After-sale Context returnable line (F10-T14 / R53) — staff money create SoT.
+ * `quantityReturnable` / `returnableAmountMajor` already subtract reserved+succeeded.
+ * DPH/tax limb: sold-line snapshot + proportional returnable tax.
+ */
+export interface AfterSaleReturnableLineDTO {
+  readonly productId: number;
+  readonly variantId: number | null;
+  readonly quantitySold: number;
+  readonly quantityReturnable: number;
+  readonly paidAmountMajor: number;
+  readonly returnableAmountMajor: number;
+  /** VAT % snapshot from sale line (null when unset). */
+  readonly taxRate: number | null;
+  /** Sold-line tax amount snapshot (null when unset). */
+  readonly taxAmount: number | null;
+  /** Proportional tax still returnable (null when taxAmount unset). */
+  readonly returnableTaxAmountMajor: number | null;
+  readonly productNameSnapshot: string | null;
+  readonly variantNameSnapshot: string | null;
+}
+
+/**
  * Shared refund attempt read DTO (admin / pickup / customer / guest).
  * Staff-only: `businessBasis`. List rows also set `remainingSaleMajor`.
  */
@@ -118,6 +142,11 @@ export interface RefundReadDTO {
   readonly attemptId: string;
   readonly transactionId: number;
   readonly reference: string | null;
+  /**
+   * PSP / rail provider reference (`providerRefundId`) — staff UI G8.
+   * Distinct from `reference` (idempotency key).
+   */
+  readonly providerReferenceId?: string | null;
   readonly amountMajor: number;
   readonly currency: string;
   readonly staffReason: RefundStaffReason;
@@ -127,6 +156,11 @@ export interface RefundReadDTO {
   /** Null when the wire value is missing or not a locked attempt status. */
   readonly attemptStatus: RefundAttemptStatus | null;
   readonly customerStatus: RefundCustomerStatus;
+  /**
+   * Staff-facing rail failure / wait code (e.g. `CASH_HANDOFF_REQUIRED`).
+   * Optional — omit on customer/guest wire.
+   */
+  readonly providerFailureCode?: string | null;
   readonly slaBreachedAt: string | null;
   readonly items: readonly RefundReadItemDTO[];
   readonly createdAt: string;
@@ -137,6 +171,11 @@ export interface RefundReadDTO {
    * Omitted or null for staff list rows and while the document is not ready.
    */
   readonly downloadUrl?: string | null;
+  /**
+   * Staff-only PII-safe attempt-time slot profile bind (DELTA-REF-T04).
+   * Four axes + slotId + snapshotAt — prefer over live registry for method / Layer A.
+   */
+  readonly slotProfileSnapshot?: RefundProviderSlotProfileSnapshot | null;
 }
 
 /** Transaction refund list row — remaining cap is required. */
@@ -147,15 +186,15 @@ export interface RefundListReadDTO extends RefundReadDTO {
 /**
  * Customer/guest additive `refunds[]` placeholder when projection is REQUESTED
  * and zero `RefundAttempt` rows exist (AC-24 — never `returned`).
+ * No staffReason* on the wire (staff keep `RefundReadDTO`).
  */
 export interface RefundRequestedQueueReadDTO {
   readonly attemptId: null;
   readonly transactionId: number;
   readonly reference: null;
+  readonly providerReferenceId?: null;
   readonly amountMajor: number | null;
   readonly currency: string;
-  readonly staffReason: null;
-  readonly staffReasonChipCs: null;
   readonly method: null;
   readonly attemptStatus: null;
   readonly customerStatus: 'processing';
@@ -166,7 +205,18 @@ export interface RefundRequestedQueueReadDTO {
   readonly remainingSaleMajor?: number;
 }
 
-export type RefundCustomerFacingReadDTO = RefundReadDTO | RefundRequestedQueueReadDTO;
+/**
+ * Customer/guest attempt row — strips staffReason* / businessBasis / slotProfileSnapshot
+ * (staff keep `RefundReadDTO`).
+ */
+export type RefundCustomerAttemptFacingDTO = Omit<
+  RefundReadDTO,
+  'staffReason' | 'staffReasonChipCs' | 'businessBasis' | 'slotProfileSnapshot'
+>;
+
+export type RefundCustomerFacingReadDTO =
+  | RefundCustomerAttemptFacingDTO
+  | RefundRequestedQueueReadDTO;
 
 export function isRefundAttemptStatus(value: unknown): value is RefundAttemptStatus {
   return (

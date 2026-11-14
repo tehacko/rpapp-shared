@@ -19,6 +19,18 @@ const refundLineSchema = z
   })
   .strict();
 
+/** G6 / G2 — optional on wire; hard-required by Create when payoutEvidence=MANUAL_ATTESTATION. */
+const manualAttestationEvidenceSchema = z
+  .object({
+    evidenceType: z.string().min(1).max(200),
+    evidenceReference: z.string().min(1).max(500),
+    attestedByActorId: z.number().int().positive(),
+    attestedAt: z.string().datetime(),
+    notes: z.string().max(2000).nullable().optional(),
+    attachmentId: z.string().max(200).nullable().optional(),
+  })
+  .strict();
+
 export const createRefundAttemptBodySchema = z
   .object({
     transactionId: z.number().int().positive(),
@@ -30,6 +42,13 @@ export const createRefundAttemptBodySchema = z
     lines: z.array(refundLineSchema).min(1),
     note: z.string().max(2000).nullable().optional(),
     complaintCaseId: z.string().uuid().nullable().optional(),
+    /** G6 — required when slot payoutEvidence=MANUAL_ATTESTATION; settle blocked without it. */
+    manualAttestationEvidence: manualAttestationEvidenceSchema.optional(),
+    /**
+     * DELTA-REF-T05 / §16.3 — staff escalation approval required before BE offers/creates
+     * ALTERNATIVE_CASH under NATIVE_API_AVAILABLE ∧ PROVIDER_TRUTH (and MANUAL_EXTERNAL).
+     */
+    alternativeCashEscalationApproved: z.boolean().optional(),
   })
   .strict();
 
@@ -48,6 +67,10 @@ export const alternativeRefundBodySchema = z
     customerConsentToAltMethodAt: z.string().datetime().nullable().optional(),
     alternativeDestinationJson: z.record(z.string(), z.unknown()).nullable().optional(),
     transitionReason: z.string().min(1).max(2000).nullable().optional(),
+    /** G2 / G6 — same shape as create; required when slot payoutEvidence=MANUAL_ATTESTATION. */
+    manualAttestationEvidence: manualAttestationEvidenceSchema.optional(),
+    /** DELTA-REF-T05 — required with proven ORIGINAL failure for NATIVE∧PROVIDER_TRUTH alt cash. */
+    alternativeCashEscalationApproved: z.boolean().optional(),
   })
   .strict();
 
@@ -76,6 +99,18 @@ export function serializeCreateRefundAttemptBody(
       : {}),
     ...((input as CreateRefundAttemptBody).method !== undefined
       ? { method: (input as CreateRefundAttemptBody).method }
+      : {}),
+    ...((input as CreateRefundAttemptBody).manualAttestationEvidence !== undefined
+      ? {
+          manualAttestationEvidence: (input as CreateRefundAttemptBody)
+            .manualAttestationEvidence,
+        }
+      : {}),
+    ...((input as CreateRefundAttemptBody).alternativeCashEscalationApproved !== undefined
+      ? {
+          alternativeCashEscalationApproved: (input as CreateRefundAttemptBody)
+            .alternativeCashEscalationApproved,
+        }
       : {}),
   };
   const parsed = createRefundAttemptBodySchema.safeParse(candidate);
@@ -112,6 +147,12 @@ export function serializeAlternativeRefundBody(
       ? { alternativeDestinationJson: raw.alternativeDestinationJson }
       : {}),
     ...(raw.transitionReason !== undefined ? { transitionReason: raw.transitionReason } : {}),
+    ...(raw.manualAttestationEvidence !== undefined
+      ? { manualAttestationEvidence: raw.manualAttestationEvidence }
+      : {}),
+    ...(raw.alternativeCashEscalationApproved !== undefined
+      ? { alternativeCashEscalationApproved: raw.alternativeCashEscalationApproved }
+      : {}),
   };
   const parsed = alternativeRefundBodySchema.safeParse(candidate);
   if (!parsed.success) {
