@@ -101,6 +101,10 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'provider', labelKey: 'compliance.audit.metadata.provider' },
     { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
   ],
+  'customer.claim.link_denied': [
+    { key: 'reason', labelKey: 'compliance.audit.metadata.reason' },
+    { key: 'tenantId', labelKey: 'compliance.audit.metadata.tenantId' },
+  ],
   'admin.capability.granted': [
     { key: 'targetUserId', labelKey: 'compliance.audit.metadata.targetUserId' },
     { key: 'capability', labelKey: 'compliance.audit.metadata.capability' },

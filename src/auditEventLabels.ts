@@ -143,6 +143,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Odpojení Google/Apple u zákazníka zamítnuto',
     sk: 'Odpojenie Google/Apple u zákazníka zamietnuté',
   },
+  'customer.claim.link_denied': {
+    en: 'Customer claim link denied',
+    cs: 'Propojení objednávky k účtu zamítnuto',
+    sk: 'Prepojenie objednávky k účtu zamietnuté',
+  },
   'admin.invite.created': {
     en: 'Admin invite created',
     cs: 'Pozvánka administrátora vytvořena',

@@ -143,6 +143,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když zákazník zkusí odpojit poslední Google/Apple přihlášení bez záložního hesla. Jeden řádek za zamítnutý pokus.',
     sk: 'Zapíše sa, keď zákazník skúsi odpojiť posledné Google/Apple prihlásenie bez záložného hesla. Jeden riadok za zamietnutý pokus.',
   },
+  'customer.claim.link_denied': {
+    en: 'Recorded when a customer claim is denied (ID-only, paymentId for unowned, VS/bank/SS proof, or non-COMPLETED). One line per denied attempt. No ownership change.',
+    cs: 'Zapíše se, když je propojení objednávky k účtu zamítnuto (jen ID, paymentId u nevlastněné, VS/banka/SS, nebo ne-COMPLETED). Jeden řádek za zamítnutý pokus. Vlastnictví se nemění.',
+    sk: 'Zapíše sa, keď je prepojenie objednávky k účtu zamietnuté (len ID, paymentId pri nevlastnenej, VS/banka/SS, alebo nie-COMPLETED). Jeden riadok za zamietnutý pokus. Vlastníctvo sa nemení.',
+  },
   'admin.invite.created': {
     en: 'Recorded when a new administrator is invited by email and must set a password. One line per new invitation. The invitation link itself is not stored here.',
     cs: 'Zapíše se, když se pozve nový administrátor e-mailem a musí si nastavit heslo. Jeden řádek za novou pozvánku. Odkaz z pozvánky se sem neukládá.',

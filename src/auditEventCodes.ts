@@ -31,6 +31,7 @@ export const AUDIT_EVENT_CODES = [
   'customer.oidc.login',
   'customer.oidc.email_merged',
   'customer.oidc.link.remove_denied',
+  'customer.claim.link_denied',
   'admin.invite.created',
   'admin.invite.resent',
   'admin.invite.activated',

@@ -1,12 +1,15 @@
 /**
  * Keys-only SSOT for log metadata redaction.
  *
- * Backend imports {@link SHARED_SENSITIVE_META_KEYS} only — never OTP field `code`
- * (domain `code` / `errorCode` are legitimate API fields in Railway JSON).
+ * Backend imports {@link SHARED_SENSITIVE_META_KEYS} only — never bare OTP/API field
+ * `code` (domain `code` / `errorCode` are legitimate API fields in Railway JSON).
+ * Guest credential plaintext uses `accessCode` / `guestAccessCode` here; Route-5 /
+ * recovery request bodies that still name the field `code` are scrubbed in
+ * `validateRequest.redactForLogs` (not this shared list).
  * Client merges {@link CLIENT_ONLY_SENSITIVE_META_KEYS} on top.
  */
 
-/** Shared deny-list keys (FE + BE). Does NOT include OTP `code`. */
+/** Shared deny-list keys (FE + BE). Does NOT include OTP/API `code`. */
 export const SHARED_SENSITIVE_META_KEYS = [
   'apitoken',
   'apiToken',
@@ -20,6 +23,10 @@ export const SHARED_SENSITIVE_META_KEYS = [
   'refreshToken',
   'accesstoken',
   'accessToken',
+  'accesscode',
+  'accessCode',
+  'guestaccesscode',
+  'guestAccessCode',
   'password',
   'secret',
   'credentialsecret',
@@ -51,6 +58,7 @@ export const SHARED_SENSITIVE_META_KEYS = [
 /**
  * FE-only sensitive keys — MUST NOT be mirrored onto the backend deny-list.
  * OTP / verification `code` would collide with domain API fields.
+ * Backend request-body scrub for guest `code` lives in validateRequest.
  */
 export const CLIENT_ONLY_SENSITIVE_META_KEYS = ['code'] as const;
 

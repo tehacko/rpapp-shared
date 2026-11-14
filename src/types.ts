@@ -453,6 +453,13 @@ export interface CreateQRPaymentResponse {
   message?: string; // Optional message (e.g., "QR payment already exists (idempotent)")
 }
 
+/**
+ * @deprecated Legacy lean status sketch — **not** Contract-Public or Contract-Kiosk.
+ * - Public Route-1/2: `PublicCustomerPaymentStatus` / `PublicCustomerPaymentStatusDTO`
+ * - Kiosk Route-3 device-bound: `KioskPaymentStatusResponseDTO` / `PaymentStatusResponseDTO`
+ * See `payment/paymentStatusContracts.ts` and D-023 cutover note.
+ * Top-level `customerEmail` is DENY on both DELTA 01 status contracts.
+ */
 export interface PaymentStatusResponse {
   paymentId: string;
   status: TransactionStatus;
