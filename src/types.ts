@@ -178,7 +178,8 @@ export type CustomerDirectoryPublishGateCode =
   | 'BANK_METHOD'
   | 'METHOD_READINESS'
   | 'ORG_APPROVAL'
-  | 'TENANT_LIVE';
+  | 'TENANT_LIVE'
+  | 'STORE_POLICIES';
 
 /** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
 export interface CustomerDirectorySalesPointEligibility {

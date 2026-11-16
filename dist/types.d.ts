@@ -144,7 +144,7 @@ export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 /** Explicit public storefront presence — sole storefront signal (never infer from null geo). */
 export type SalesPointCustomerPresence = 'STOREFRONT' | 'ONLINE_ONLY';
 /** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
-export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS' | 'ORG_APPROVAL' | 'TENANT_LIVE';
+export type CustomerDirectoryPublishGateCode = 'STRUCTURAL' | 'STOCK' | 'PAY_READY' | 'PRODUCT' | 'SALES_POINT' | 'BANK_METHOD' | 'METHOD_READINESS' | 'ORG_APPROVAL' | 'TENANT_LIVE' | 'STORE_POLICIES';
 /** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
 export interface CustomerDirectorySalesPointEligibility {
     readonly salesPointId: number;
