@@ -84,8 +84,8 @@ export const PRODUCT_CAPABILITY_BLOCK_MAP = {
   'CAP-02': ['donation', 'donation_recurring'],
   'CAP-03': ['surface_customer', 'customer_auth_pwa'],
   'CAP-04': ['surface_kiosk', 'realtime_device_transport'],
-  // shipping_light: see PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN
-  'CAP-05': ['sales_point_management', 'sales_point_individual_settings'],
+  // shipping_light + eshop_* children: see PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN
+  'CAP-05': ['sales_point_management', 'sales_point_individual_settings', 'eshop'],
   'CAP-06': [
     'fulfillment_queue',
     'order_pickup_infrastructure',
@@ -145,6 +145,10 @@ export const PRODUCT_CAPABILITY_BLOCK_KEYS = PRODUCT_CAPABILITY_BLOCK_MAP;
  */
 export const PRODUCT_CAPABILITY_READINESS_EXCLUDED_CHILDREN = {
   shipping_light: 'CAP-05',
+  eshop_conversion: 'CAP-05',
+  eshop_notify_email: 'CAP-05',
+  eshop_notify_slack: 'CAP-05',
+  eshop_sms_metered: 'CAP-05',
   bank_account_providers: 'CAP-09',
 } as const satisfies Readonly<Partial<Record<EntitlementBlockKey, ProductCapabilityId>>>;
 

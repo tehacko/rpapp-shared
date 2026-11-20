@@ -16,6 +16,8 @@ const CUSTOMER_PWA_RESERVED_FIRST_SEGMENTS = [
   'checkout',
   'confirm-email',
   'donate',
+  'eshop',
+  'eshops',
   'favorites',
   'forgot-password',
   'help',
@@ -47,6 +49,8 @@ const HUB_COLLISION_SEGMENTS = [
   'favorites',
   'help',
   'shop',
+  'eshop',
+  'eshops',
 ] as const;
 
 describe('reservedSalesPointSlugs', () => {
@@ -92,6 +96,14 @@ describe('reservedSalesPointSlugs', () => {
     expect(resolveReservedSalesPointCollisionPath('railway-cafe', 'scan')).toBe('/scan');
     expect(resolveReservedSalesPointCollisionPath('railway-cafe', 'receipt-recovery')).toBe(
       '/receipt-recovery',
+    );
+    // Platform plural hub — never `/{tenant}/eshops` (tenant catalog is singular `/eshop`).
+    expect(resolveReservedSalesPointCollisionPath('railway-cafe', 'eshops')).toBe('/eshops');
+  });
+
+  it('resolveReservedSalesPointCollisionPath keeps tenant singular /eshop catalog', () => {
+    expect(resolveReservedSalesPointCollisionPath('railway-cafe', 'eshop')).toBe(
+      '/railway-cafe/eshop',
     );
   });
 });

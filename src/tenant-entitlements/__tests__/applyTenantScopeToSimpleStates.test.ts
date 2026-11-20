@@ -304,13 +304,19 @@ describe('isTenantScopeLockedBlock', () => {
     expect(isTenantScopeLockedBlock('donation_recurring', 'DONATION_ONLY', 'BOTH')).toBe(false);
   });
 
-  it('shipping_light defaults ON (FREE keep-on); bank_account_providers / receipt_provider_overrides stay hardOff', () => {
+  it('eshop + shipping_light default ON (FREE keep-on); Pro+ eshop children / SMS / GROWTH children stay off', () => {
     const both = applyTenantScopeToSimpleStates('BOTH', 'BOTH');
+    expect(both.eshop).toBe('on');
     expect(both.shipping_light).toBe('on');
+    expect(both.eshop_conversion).toBe('hardOff');
+    expect(both.eshop_notify_email).toBe('hardOff');
+    expect(both.eshop_notify_slack).toBe('hardOff');
+    expect(both.eshop_sms_metered).toBe('off');
     expect(both.bank_account_providers).toBe('hardOff');
     expect(both.receipt_provider_overrides).toBe('hardOff');
     // Technical baseline — scheduled_pickup stays ON; commercial DENY handles FREE under ENFORCE.
     expect(both.scheduled_pickup).toBe('on');
+    expect(isTenantScopeLockedBlock('eshop', 'BOTH', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('shipping_light', 'BOTH', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('bank_account_providers', 'BOTH', 'BOTH')).toBe(false);
     expect(isTenantScopeLockedBlock('receipt_provider_overrides', 'BOTH', 'BOTH')).toBe(false);

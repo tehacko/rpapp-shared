@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 60 blocks / catalogVersion 14 (§6.3).
+ * Authoritative tenant entitlement block catalog — 65 blocks / catalogVersion 15 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -67,12 +67,48 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
       'Per sales-point Mobilní obchod / mobile shop channel editor on Prodejní kanály. Default OFF — full-demo (railway-cafe / *-max) On',
   },
   {
+    blockKey: 'eshop',
+    blockClass: 'CONDITIONAL',
+    parentKeys: [],
+    adminNavSectionId: 'eshop',
+    notes:
+      'Canonical e-shop pack (alias eshop.basic) — FREE+OPEN; parent of shipping_light + eshop_conversion / eshop_notify_email / eshop_notify_slack / eshop_sms_metered. Not a sales point / not physical. Customer boot twin: VITE_CUSTOMER_ESHOPS_NAV_ENABLED (dual-deploy minimal=false / full V1B=true; see rpapp-customer/.env.example)',
+  },
+  {
+    blockKey: 'eshop_conversion',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['eshop'],
+    notes:
+      'Canonical child (alias eshop.conversion) — Pro+ soft CTAs (customer D2 / kiosk D5). Child of eshop; Free OFF',
+  },
+  {
+    blockKey: 'eshop_notify_email',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['eshop'],
+    notes:
+      'Canonical child — E-shop email notify; Pro+ OPEN; Free hide/disable; child of eshop',
+  },
+  {
+    blockKey: 'eshop_notify_slack',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['eshop'],
+    notes:
+      'Canonical child — E-shop Slack notify; Pro+ OPEN; Free hide/disable; child of eshop',
+  },
+  {
+    blockKey: 'eshop_sms_metered',
+    blockClass: 'CONDITIONAL',
+    parentKeys: ['eshop'],
+    notes:
+      'Canonical child (alias eshop.sms_metered) — assignable Pro+; DEFAULT_OFF / seed fail-closed OFF (Phase1 kill-switch + ledger; no provider)',
+  },
+  {
     blockKey: 'shipping_light',
     blockClass: 'CONDITIONAL',
-    parentKeys: ['sales_point_management'],
+    parentKeys: ['eshop'],
     capabilityHint: 'tenant.shippingMethods.read',
     notes:
-      'Shipping Light / Dodací politika — FREE+OPEN default ON; resolve heal (UNASSIGNED→FREE; Ent softOff/missing→ON; Ent hardOff sticks); SHIPPING_LIGHT_ENABLED default ON',
+      'Shipping Light / Dodací politika — FREE+OPEN default ON; parentKeys=[eshop] ONLY (not sales_point_management / not physical); resolve heal (UNASSIGNED→FREE; Ent softOff/missing→ON; Ent hardOff sticks); SHIPPING_LIGHT_ENABLED default ON',
   },
   {
     blockKey: 'catalog_administration',

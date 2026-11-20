@@ -1,6 +1,6 @@
 /**
  * Tenant entitlement policy — shared axis types and strategy shapes (ENT-PR-00).
- * Authoritative block list lives in catalog.ts (§6.3, 60 blocks / catalogVersion 14).
+ * Authoritative block list lives in catalog.ts (§6.3, 65 blocks / catalogVersion 15).
  */
 
 export const ENTITLEMENT_RUNTIME_MODES = ['ALWAYS_ON', 'ENABLED', 'DISABLED'] as const;
@@ -93,6 +93,14 @@ export const ENTITLEMENT_BLOCK_KEYS = [
   'transactions',
   'sales_point_management',
   'sales_point_individual_settings',
+  /** Canonical e-shop channel pack (prompt alias: eshop.basic). */
+  'eshop',
+  /** Prompt alias: eshop.conversion — Pro+ conversion CTAs. */
+  'eshop_conversion',
+  'eshop_notify_email',
+  'eshop_notify_slack',
+  /** Prompt alias: eshop.sms_metered — assignable; seed/default OFF fail-closed. */
+  'eshop_sms_metered',
   'shipping_light',
   'catalog_administration',
   'product_barcode_administration',
@@ -152,7 +160,7 @@ export const ENTITLEMENT_BLOCK_KEYS = [
 
 export type EntitlementBlockKey = (typeof ENTITLEMENT_BLOCK_KEYS)[number];
 
-export const TENANT_ENTITLEMENT_CATALOG_VERSION = 14 as const;
+export const TENANT_ENTITLEMENT_CATALOG_VERSION = 15 as const;
 export const TENANT_ENTITLEMENT_BLOCK_COUNT = ENTITLEMENT_BLOCK_KEYS.length;
 
 /** Self-serve commercial plan ladder (Package A). Organization/Enterprise is not in this enum. */

@@ -1,13 +1,15 @@
 /**
- * Package A/C/D/E — commercial packaging map for current catalog (60 keys / v14).
+ * Package A/C/D/E — commercial packaging map for current catalog (65 keys / v15).
  * Package C: analytics umbrella NON_COMMERCIAL; analytics_basic FREE; overview PRO;
  * explore GROWTH+DO_NOT_SELL. Package D: inventory/audit/team ops splits ALIGNED.
  * Package E: donation_recurring PRO+VALIDATE; tenant_ops_automation / restock_alerts PRO OPEN.
- * SoT v14: donation + tenant_ops_settings FREE; scheduled_pickup PRO; payment_multi_currency
+ * SoT v15: donation + tenant_ops_settings FREE; scheduled_pickup PRO; payment_multi_currency
  * GROWTH; bank_account_administration FREE + bank_account_providers GROWTH (multi-rail/terminal);
  * payment_rails_strategy owns provider attachments; receipt_delivery
  * NON_COMMERCIAL + receipt_provider_overrides GROWTH DO_NOT_SELL; shipping_light
- * FREE + OPEN (product: commercially available on Free; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON).
+ * FREE + OPEN (parentKeys=[eshop] only; resolve-time heal + SHIPPING_LIGHT_ENABLED default ON).
+ * E-shop: eshop FREE OPEN; conversion + notify email/slack PRO OPEN; eshop_sms_metered PRO OPEN
+ * assignable default OFF (DEFAULT_OFF / seed fail-closed).
  * staff_pickup_scan FREE (§25 SPLIT closed vs scheduled_pickup PRO). Zero REFACTOR_REQUIRED.
  * Runtime commercial projection (always ENFORCE ceiling) is Package G — this map +
  * `evaluateCommercialPackageDecision` remain the sole packaging SSOT (no second backend map).
@@ -130,11 +132,41 @@ export const COMMERCIAL_PACKAGING = {
     'NOT_APPLICABLE',
     'mechanismus zavádění/připravenosti; není tarif sám o sobě',
   ),
+  eshop: rule(
+    ['FREE'],
+    'ALIGNED',
+    'OPEN',
+    'E-shop channel (alias eshop.basic) — FREE+OPEN; parent of shipping_light + notify/conversion/sms children',
+  ),
+  eshop_conversion: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'E-shop conversion CTAs (alias eshop.conversion) — Pro+ OPEN; Free OFF',
+  ),
+  eshop_notify_email: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'E-shop email notify — Pro+ OPEN; Free hide/disable',
+  ),
+  eshop_notify_slack: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'E-shop Slack notify — Pro+ OPEN; Free hide/disable',
+  ),
+  eshop_sms_metered: rule(
+    ['PRO'],
+    'ALIGNED',
+    'OPEN',
+    'E-shop SMS metered (alias eshop.sms_metered) — Pro+ assignable; DEFAULT_OFF / seed fail-closed OFF',
+  ),
   shipping_light: rule(
     ['FREE'],
     'ALIGNED',
     'OPEN',
-    'Shipping Light / Dodací politika — FREE+OPEN default ON for all business partners; resolve heal (UNASSIGNED→FREE); Enterprise hardOff only to disable; SHIPPING_LIGHT_ENABLED default ON',
+    'Shipping Light / Dodací politika — FREE+OPEN default ON; parentKeys=[eshop] only; resolve heal (UNASSIGNED→FREE); Enterprise hardOff only to disable; SHIPPING_LIGHT_ENABLED default ON',
   ),
   catalog_administration: rule(['FREE'], 'ALIGNED', 'OPEN', 'základní katalog'),
   product_barcode_administration: rule(

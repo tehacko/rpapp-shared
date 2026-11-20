@@ -12,10 +12,10 @@ import {
 } from '../index.js';
 
 describe('commercialPackaging (Package A)', () => {
-  it('maps every current entitlement block key exactly once (A-AC-01 / SoT v14/60)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(60);
+  it('maps every current entitlement block key exactly once (A-AC-01 / SoT v15/65)', () => {
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(65);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,11 +24,11 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 14 (SoT packaging alignment)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
+  it('keeps catalog version 15 (e-shop entitlements prep)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
   });
 
-  it('has zero REFACTOR_REQUIRED keys (SoT v14)', () => {
+  it('has zero REFACTOR_REQUIRED keys (SoT v15)', () => {
     const refactorRequired = ENTITLEMENT_BLOCK_KEYS.filter(
       (key) => COMMERCIAL_PACKAGING[key].alignmentStatus === 'REFACTOR_REQUIRED',
     );
@@ -209,6 +209,32 @@ describe('commercialPackaging (Package A)', () => {
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
         'ALLOW',
       );
+    }
+  });
+
+  it('e-shop Free/Pro/Growth matrix: eshop FREE; conversion+notify PRO; SMS PRO assignable', () => {
+    expect(COMMERCIAL_PACKAGING.eshop).toMatchObject({
+      commercialPlacements: ['FREE'],
+      alignmentStatus: 'ALIGNED',
+      sellabilityStatus: 'OPEN',
+    });
+    for (const plan of COMMERCIAL_PLAN_IDS) {
+      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.eshop)).toBe('ALLOW');
+    }
+    for (const key of [
+      'eshop_conversion',
+      'eshop_notify_email',
+      'eshop_notify_slack',
+      'eshop_sms_metered',
+    ] as const) {
+      expect(COMMERCIAL_PACKAGING[key]).toMatchObject({
+        commercialPlacements: ['PRO'],
+        alignmentStatus: 'ALIGNED',
+        sellabilityStatus: 'OPEN',
+      });
+      expect(evaluateCommercialPackageDecision('FREE', COMMERCIAL_PACKAGING[key])).toBe('DENY');
+      expect(evaluateCommercialPackageDecision('PRO', COMMERCIAL_PACKAGING[key])).toBe('ALLOW');
+      expect(evaluateCommercialPackageDecision('GROWTH', COMMERCIAL_PACKAGING[key])).toBe('ALLOW');
     }
   });
 

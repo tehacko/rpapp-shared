@@ -10,6 +10,8 @@ export const RESERVED_SALES_POINT_SLUGS = [
   'checkout',
   'confirm-email',
   'donate',
+  'eshop',
+  'eshops',
   'favorites',
   'forgot-password',
   'help',
@@ -36,6 +38,7 @@ const RESERVED_SET = new Set<string>(RESERVED_SALES_POINT_SLUGS);
 /** Platform chrome hubs that are not tenant-scoped retail routes. */
 const PLATFORM_ONLY_HUBS = new Set([
   'browse',
+  'eshops',
   'favorites',
   'receipt-recovery',
   'scan',

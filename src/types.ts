@@ -165,8 +165,20 @@ export type OrderFulfillmentMode = 'PICKUP' | 'SHIPPING';
 
 export type SalesPointInteractionMode = 'CUSTOMER_FACING' | 'STAFF_OPERATED';
 
-/** Explicit public storefront presence — sole storefront signal (never infer from null geo). */
-export type SalesPointCustomerPresence = 'STOREFRONT' | 'ONLINE_ONLY';
+/** Explicit public storefront presence — STOREFRONT only after F12 ONLINE_ONLY purge. */
+export type SalesPointCustomerPresence = 'STOREFRONT';
+
+/**
+ * Product commerce affinity (default PHYSICAL).
+ * Independent of SalesPoint.customerPresence.
+ */
+export type ProductSalesChannel = 'PHYSICAL' | 'ESHOP' | 'BOTH';
+
+/**
+ * Order commerce channel on Transaction + OrderFulfillment.
+ * Never reuse Transaction.channel (KIOSK|WEB|APP|API).
+ */
+export type OrderCommerceChannel = 'SALES_POINT' | 'ESHOP';
 
 /** Stable publish-gate codes for Obchody directory eligibility (Wave 6 + Wave 5 org/live). */
 export type CustomerDirectoryPublishGateCode =
@@ -179,7 +191,9 @@ export type CustomerDirectoryPublishGateCode =
   | 'METHOD_READINESS'
   | 'ORG_APPROVAL'
   | 'TENANT_LIVE'
-  | 'STORE_POLICIES';
+  | 'STORE_POLICIES'
+  /** E-shop pay-ready fail-closed (settlement BA + PRODUCT_ONLY|BOTH + bankTransfer/gateway). */
+  | 'ESHOP_PAY_NOT_READY';
 
 /** REQUIRED per-SP Obchody eligibility on admin list/detail responses. */
 export interface CustomerDirectorySalesPointEligibility {

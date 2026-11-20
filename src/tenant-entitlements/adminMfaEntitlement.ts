@@ -18,6 +18,8 @@ export const DEFAULT_OFF_ROLLOUT_BLOCK_KEYS = [
   TENANT_BRAND_KIT_BLOCK_KEY,
   PAYMENT_MULTI_CURRENCY_BLOCK_KEY,
   'audit_logs_admin_ui',
+  /** E-shop SMS kill-switch — assignable Pro+; seed/full-demo fail-closed OFF. */
+  'eshop_sms_metered',
 ] as const satisfies readonly EntitlementBlockKey[];
 
 export function isDefaultOffRolloutBlockKey(blockKey: string): boolean {

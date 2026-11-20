@@ -23,7 +23,7 @@ import {
   getEntitlementBlockCatalogEntry,
 } from '../catalog.js';
 
-/** D0 additive targets — still present in catalog v14 (cumulative after Package E / SoT). */
+/** D0 additive targets — still present in catalog v15 (cumulative after Package E / SoT / e-shop). */
 const PACKAGE_D_BACKFILL_TARGETS = [
   'inventory_operations',
   'audit_intelligence',
@@ -41,10 +41,10 @@ const PACKAGE_D_TECHNICAL_BACKFILL_DERIVATION = {
 } as const satisfies Record<(typeof PACKAGE_D_BACKFILL_TARGETS)[number], string>;
 
 describe('Package D D0 technical backfill expectations', () => {
-  it('pins catalog v14/60 so D0 targets remain present as keys (cumulative after E)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(14);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(60);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(60);
+  it('pins catalog v15/65 so D0 targets remain present as keys (cumulative after E)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
     for (const target of PACKAGE_D_BACKFILL_TARGETS) {
       expect(ENTITLEMENT_BLOCK_KEYS).toContain(target);
     }
