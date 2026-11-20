@@ -178,6 +178,24 @@ export const AUDIT_METADATA_DISPLAY_FIELDS: Partial<
     { key: 'changedPlanIds', labelKey: 'compliance.audit.metadata.changedPlanIds' },
     { key: 'dryRun', labelKey: 'compliance.audit.metadata.dryRun' },
   ],
+  'admin.shop_policy_template.signed': [
+    { key: 'document', labelKey: 'compliance.audit.metadata.document' },
+    { key: 'locale', labelKey: 'compliance.audit.metadata.locale' },
+    { key: 'version', labelKey: 'compliance.audit.metadata.version' },
+    { key: 'effectiveFrom', labelKey: 'compliance.audit.metadata.effectiveFrom' },
+  ],
+  'admin.shop_policy_template.activated': [
+    { key: 'document', labelKey: 'compliance.audit.metadata.document' },
+    { key: 'locale', labelKey: 'compliance.audit.metadata.locale' },
+    { key: 'version', labelKey: 'compliance.audit.metadata.version' },
+    { key: 'previousActiveVersion', labelKey: 'compliance.audit.metadata.previousActiveVersion' },
+  ],
+  'admin.shop_policy_template.announced': [
+    { key: 'document', labelKey: 'compliance.audit.metadata.document' },
+    { key: 'locale', labelKey: 'compliance.audit.metadata.locale' },
+    { key: 'version', labelKey: 'compliance.audit.metadata.version' },
+    { key: 'emailsEnqueued', labelKey: 'compliance.audit.metadata.emailsEnqueued' },
+  ],
   'admin.retention.windows_updated': [
     { key: 'changedKeys', labelKey: 'compliance.audit.metadata.changedKeys' },
     { key: 'settingsVersion', labelKey: 'compliance.audit.metadata.settingsVersion' },

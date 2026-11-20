@@ -52,6 +52,10 @@ describe('permissionLabels', () => {
     expect(getPermissionResourceTitle('adminEvents.subscribe', 'sk')).toBe(
       'Admin udalosti — odber',
     );
+    expect(getPermissionResourceTitle('shopPolicyTemplates', 'en')).toBe(
+      'Shop policy templates',
+    );
+    expect(getPermissionResourceTitle('legalDocuments', 'en')).toBe('Legal documents');
   });
 
   it('resolves level labels for locale sk', () => {

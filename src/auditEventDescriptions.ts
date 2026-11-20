@@ -1063,6 +1063,21 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se, když admin nahradí dříve zveřejněný právní dokument.',
     sk: 'Zapíše sa, keď admin nahradí predtým zverejnený právny dokument.',
   },
+  'admin.shop_policy_template.signed': {
+    en: 'Recorded when a SUPER_DEV signs off a shop policy template draft with effectiveFrom.',
+    cs: 'Zapíše se, když SUPER_DEV podepíše draft šablony obchodních podmínek s effectiveFrom.',
+    sk: 'Zapíše sa, keď SUPER_DEV podpíše draft šablóny obchodných podmienok s effectiveFrom.',
+  },
+  'admin.shop_policy_template.activated': {
+    en: 'Recorded when a SIGNED shop policy template is activated (supersedes prior ACTIVE for document+locale).',
+    cs: 'Zapíše se, když je podepsaná šablona obchodních podmínek aktivována (nahradí předchozí ACTIVE pro document+locale).',
+    sk: 'Zapíše sa, keď je podpísaná šablóna obchodných podmienok aktivovaná (nahradí predchádzajúcu ACTIVE pre document+locale).',
+  },
+  'admin.shop_policy_template.announced': {
+    en: 'Recorded when ops announces an ACTIVE shop policy template to tenant admins (no tenant HTML mutation).',
+    cs: 'Zapíše se, když ops oznámí ACTIVE šablonu obchodních podmínek tenant adminům (bez mutace tenant HTML).',
+    sk: 'Zapíše sa, keď ops oznámi ACTIVE šablónu obchodných podmienok tenant adminom (bez mutácie tenant HTML).',
+  },
   'admin.shipping_address.support_accessed': {
     en: 'Recorded when support staff opens a customer shipping address in admin.',
     cs: 'Zapíše se, když podpora v adminu otevře dodací adresu zákazníka.',

@@ -2,7 +2,11 @@
  * @jest-environment jsdom
  */
 import { afterEach, describe, expect, it } from '@jest/globals';
-import { lockBodyScroll, setBackgroundInert } from './overlayFocus.js';
+import {
+  isPwaBlockingOverlayElement,
+  lockBodyScroll,
+  setBackgroundInert,
+} from './overlayFocus.js';
 
 describe('lockBodyScroll', () => {
   afterEach(() => {
@@ -104,5 +108,34 @@ describe('setBackgroundInert', () => {
     expect(sibling.hasAttribute('inert')).toBe(false);
 
     root.remove();
+  });
+
+  it('never inerts mounted PWA hard-gate overlays (data-*-pwa-blocking-overlay)', () => {
+    const page = document.createElement('div');
+    page.setAttribute('data-testid', 'page');
+    const hardGate = document.createElement('div');
+    hardGate.setAttribute('data-customer-pwa-blocking-overlay', '');
+    hardGate.setAttribute('data-testid', 'hard-gate');
+    const dialog = document.createElement('div');
+    dialog.setAttribute('data-testid', 'dialog');
+    document.body.append(page, hardGate, dialog);
+
+    expect(isPwaBlockingOverlayElement(hardGate)).toBe(true);
+    expect(isPwaBlockingOverlayElement(dialog)).toBe(false);
+
+    const clear = setBackgroundInert(dialog);
+
+    expect(page.hasAttribute('inert')).toBe(true);
+    expect(hardGate.hasAttribute('inert')).toBe(false);
+    expect(dialog.hasAttribute('inert')).toBe(false);
+
+    clear();
+
+    expect(page.hasAttribute('inert')).toBe(false);
+    expect(hardGate.hasAttribute('inert')).toBe(false);
+
+    page.remove();
+    hardGate.remove();
+    dialog.remove();
   });
 });

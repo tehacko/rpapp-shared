@@ -118,9 +118,24 @@ export function lockBodyScroll(): () => void {
 }
 
 /**
+ * Hard-gate PWA overlays (admin / customer / pickup) use
+ * `data-*-pwa-blocking-overlay`. Dialog/BottomSheet inert must never disable
+ * those while they are mounted — Update/Retry stays actionable.
+ */
+export function isPwaBlockingOverlayElement(element: Element): boolean {
+  for (const attr of Array.from(element.attributes)) {
+    if (attr.name.endsWith('-pwa-blocking-overlay')) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Mark page/backdrop siblings `inert` while an overlay is mounted.
  * Walks from `document.body`, leaves the keepAlive subtree interactive,
  * and inerts every node that is not keepAlive or an ancestor of it.
+ * Skips mounted PWA hard-gate overlays (`data-*-pwa-blocking-overlay`).
  * Callers (Dialog / BottomSheet) should hold the returned cleanup for the full
  * `useOverlayPresence` mounted lifetime — including exit fade — not clear when
  * `open` flips false.
@@ -139,6 +154,9 @@ export function setBackgroundInert(keepAlive: HTMLElement): () => void {
         continue;
       }
       if (child === keepAlive) {
+        continue;
+      }
+      if (isPwaBlockingOverlayElement(child)) {
         continue;
       }
       if (child.contains(keepAlive)) {

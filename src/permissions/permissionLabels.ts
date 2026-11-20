@@ -262,6 +262,16 @@ export const PERMISSION_RESOURCE_LABELS: Record<string, LocalizedLabel> = {
     sk: 'Oprávnenia používateľov',
   },
   retentionWorkers: { en: 'Retention workers', cs: 'Retention workery', sk: 'Retention workery' },
+  legalDocuments: {
+    en: 'Legal documents',
+    cs: 'Právní dokumenty',
+    sk: 'Právne dokumenty',
+  },
+  shopPolicyTemplates: {
+    en: 'Shop policy templates',
+    cs: 'Šablony obchodních podmínek',
+    sk: 'Šablóny obchodných podmienok',
+  },
   'outboxReplay.dryRun': {
     en: 'Outbox replay — dry run',
     cs: 'Přehrání outboxu — nácvik',

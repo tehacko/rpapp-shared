@@ -103,6 +103,7 @@ export {
   listFocusable,
   focusInitialInContainer,
   lockBodyScroll,
+  isPwaBlockingOverlayElement,
   setBackgroundInert,
 } from './overlay/overlayFocus.js';
 export { OVERLAY_EXIT_MS } from './overlay/overlayMotion.js';

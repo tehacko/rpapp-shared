@@ -1063,6 +1063,21 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Právní dokument nahrazen',
     sk: 'Právny dokument nahradený',
   },
+  'admin.shop_policy_template.signed': {
+    en: 'Shop policy template signed off',
+    cs: 'Šablona obchodních podmínek podepsána',
+    sk: 'Šablóna obchodných podmienok podpísaná',
+  },
+  'admin.shop_policy_template.activated': {
+    en: 'Shop policy template activated',
+    cs: 'Šablona obchodních podmínek aktivována',
+    sk: 'Šablóna obchodných podmienok aktivovaná',
+  },
+  'admin.shop_policy_template.announced': {
+    en: 'Shop policy template announced',
+    cs: 'Šablona obchodních podmínek oznámena',
+    sk: 'Šablóna obchodných podmienok oznámená',
+  },
   'admin.shipping_address.support_accessed': {
     en: 'Shipping address accessed by support',
     cs: 'Podpora zobrazila dodací adresu',
