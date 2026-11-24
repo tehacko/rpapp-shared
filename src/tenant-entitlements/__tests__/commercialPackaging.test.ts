@@ -12,10 +12,10 @@ import {
 } from '../index.js';
 
 describe('commercialPackaging (Package A)', () => {
-  it('maps every current entitlement block key exactly once (A-AC-01 / SoT v15/65)', () => {
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(65);
+  it('maps every current entitlement block key exactly once (A-AC-01 / SoT v16/64)', () => {
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(64);
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(64);
     for (const key of ENTITLEMENT_BLOCK_KEYS) {
       expect(COMMERCIAL_PACKAGING[key]).toBeDefined();
       expect(COMMERCIAL_PACKAGING[key].commercialPlacements.length).toBeGreaterThan(0);
@@ -24,11 +24,11 @@ describe('commercialPackaging (Package A)', () => {
     }
   });
 
-  it('keeps catalog version 15 (e-shop entitlements prep)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
+  it('keeps catalog version 16 (shipping_light folded into eshop pack)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(16);
   });
 
-  it('has zero REFACTOR_REQUIRED keys (SoT v15)', () => {
+  it('has zero REFACTOR_REQUIRED keys (SoT v16)', () => {
     const refactorRequired = ENTITLEMENT_BLOCK_KEYS.filter(
       (key) => COMMERCIAL_PACKAGING[key].alignmentStatus === 'REFACTOR_REQUIRED',
     );
@@ -197,27 +197,17 @@ describe('commercialPackaging (Package A)', () => {
     );
   });
 
-  it('shipping_light is FREE + OPEN (commercially available on Free; not SEPARATE_PRODUCT)', () => {
-    expect(COMMERCIAL_PACKAGING.shipping_light).toMatchObject({
-      commercialPlacements: ['FREE'],
-      alignmentStatus: 'ALIGNED',
-      sellabilityStatus: 'OPEN',
-    });
-    expect(COMMERCIAL_PACKAGING.shipping_light.commercialPlacements).not.toContain('SEPARATE_PRODUCT');
-    expect(COMMERCIAL_PACKAGING.shipping_light.commercialPlacements).not.toContain('GROWTH');
-    for (const plan of COMMERCIAL_PLAN_IDS) {
-      expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.shipping_light)).toBe(
-        'ALLOW',
-      );
-    }
-  });
-
-  it('e-shop Free/Pro/Growth matrix: eshop FREE; conversion+notify PRO; SMS PRO assignable', () => {
+  it('e-shop Free/Pro/Growth matrix: eshop FREE (shipping part of pack); conversion+notify PRO; SMS PRO assignable', () => {
     expect(COMMERCIAL_PACKAGING.eshop).toMatchObject({
       commercialPlacements: ['FREE'],
       alignmentStatus: 'ALIGNED',
       sellabilityStatus: 'OPEN',
     });
+    expect(COMMERCIAL_PACKAGING.eshop.rationale).toMatch(/shipping/i);
+    expect(COMMERCIAL_PACKAGING.eshop.rationale).toMatch(/part of this pack/i);
+    expect(
+      Object.prototype.hasOwnProperty.call(COMMERCIAL_PACKAGING, 'shipping_light'),
+    ).toBe(false);
     for (const plan of COMMERCIAL_PLAN_IDS) {
       expect(evaluateCommercialPackageDecision(plan, COMMERCIAL_PACKAGING.eshop)).toBe('ALLOW');
     }

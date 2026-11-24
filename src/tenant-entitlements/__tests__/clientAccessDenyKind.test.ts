@@ -1,4 +1,4 @@
-﻿import {
+import {
   CLIENT_ACCESS_DENY_KINDS,
   collectClientAccessDenyKinds,
   isClientAccessDenyKind,
@@ -26,10 +26,10 @@ const NON_UPGRADE_STATES: readonly ClientAccessPresentationState[] = [
 ];
 
 describe('clientAccessDenyKind (Package F f0-shared-deny-kind)', () => {
-  it('pins catalog v15/65 — deny kinds add no block keys', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+  it('pins catalog v16/64 — deny kinds add no block keys', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(16);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(64);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
     expect(CLIENT_ACCESS_DENY_KINDS).toEqual([
       'COMMERCIAL',
       'READINESS',

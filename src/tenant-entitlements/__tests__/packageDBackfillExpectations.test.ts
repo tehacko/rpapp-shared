@@ -41,10 +41,10 @@ const PACKAGE_D_TECHNICAL_BACKFILL_DERIVATION = {
 } as const satisfies Record<(typeof PACKAGE_D_BACKFILL_TARGETS)[number], string>;
 
 describe('Package D D0 technical backfill expectations', () => {
-  it('pins catalog v15/65 so D0 targets remain present as keys (cumulative after E)', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+  it('pins catalog v16/64 so D0 targets remain present as keys (cumulative after E)', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(16);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(64);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
     for (const target of PACKAGE_D_BACKFILL_TARGETS) {
       expect(ENTITLEMENT_BLOCK_KEYS).toContain(target);
     }

@@ -229,6 +229,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "dev:analytics:read",
     "dev:analytics:run",
     "dev:compliance:audit:read",
+    "dev:compliance:gdpr:manage",
     "dev:compliance:gdpr:read",
     "dev:outbox:approve:replay",
     "dev:outbox:manage",
@@ -324,6 +325,7 @@ export const CAPABILITY_ENTITLEMENT_LIVE_IDS_SNAPSHOT: readonly string[] = [
     "platform.categories.manage",
     "platform.categories.view",
     "platform.complianceAudit.view",
+    "platform.complianceGdpr.manage",
     "platform.complianceGdpr.view",
     "platform.complianceRetentionDelete.manage",
     "platform.devUsers.manage",
@@ -665,15 +667,14 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
-  // Shipping Light / delivery modality — sales_point_management ∧ shipping_light
-  // (route registry CT/PT-RBAC-365…369). Commercially FREE+OPEN; SIMPLE default ON.
+  // Shipping / delivery modality — gated by eshop pack only (CapMap 1b / G-13).
+  // Capability IDs tenant.shippingMethods.read|manage stay; no separate shipping_light block.
   {
     authoringTokens: [
       "tenant.shippingMethods.read/manage",
     ],
     requiredBlockKeys: [
-      "sales_point_management",
-      "shipping_light",
+      "eshop",
     ] as const satisfies readonly EntitlementBlockKey[],
     match: 'ALL',
   },
@@ -1089,6 +1090,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "platform.categories.manage",
       "platform.categories.view",
       "platform.complianceAudit.view",
+      "platform.complianceGdpr.manage",
       "platform.complianceGdpr.view",
       "platform.complianceRetentionDelete.manage",
       "platform.devUsers.manage",
@@ -1150,6 +1152,7 @@ const AUTHORING_REQUIREMENT_SEED: readonly AuthoringRequirementSeed[] = [
       "dev:analytics:read",
       "dev:analytics:run",
       "dev:compliance:audit:read",
+      "dev:compliance:gdpr:manage",
       "dev:compliance:gdpr:read",
       "dev:outbox:approve:replay",
       "dev:outbox:manage",

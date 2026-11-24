@@ -8,20 +8,20 @@ import {
 } from '../catalog.js';
 
 describe('tenant entitlement catalog', () => {
-  it('contains exactly 65 blocks', () => {
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
-    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(65);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+  it('contains exactly 64 blocks', () => {
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(64);
+    expect(TENANT_ENTITLEMENT_BLOCK_CATALOG).toHaveLength(64);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
   });
 
-  it('uses catalog version 15 after e-shop entitlements prep', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
+  it('uses catalog version 16 after shipping_light fold into eshop pack', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(16);
   });
 
   it('has unique blockKeys matching ENTITLEMENT_BLOCK_KEYS order', () => {
     const keysFromCatalog = TENANT_ENTITLEMENT_BLOCK_CATALOG.map((entry) => entry.blockKey);
     expect(keysFromCatalog).toEqual([...ENTITLEMENT_BLOCK_KEYS]);
-    expect(new Set(keysFromCatalog).size).toBe(65);
+    expect(new Set(keysFromCatalog).size).toBe(64);
   });
 
   it('includes tenant_brand_kit as CONDITIONAL default-off under tenant_ops_settings', () => {
@@ -46,12 +46,15 @@ describe('tenant entitlement catalog', () => {
     expect(individual.parentKeys).toEqual(['sales_point_management']);
   });
 
-  it('includes SoT v15 e-shop cluster + shipping_light parentKeys=[eshop] only', () => {
+  it('includes SoT v16 e-shop cluster (shipping folded into pack; CapMap G-13 → eshop)', () => {
     const eshop = getEntitlementBlockCatalogEntry('eshop');
     expect(eshop.blockClass).toBe('CONDITIONAL');
     expect(eshop.parentKeys).toEqual([]);
     expect(eshop.adminNavSectionId).toBe('eshop');
     expect(eshop.notes).toMatch(/alias eshop\.basic/i);
+    expect(eshop.notes).toMatch(/shipping/i);
+    expect(eshop.notes).toMatch(/part of this pack/i);
+    expect(isEntitlementBlockKey('shipping_light')).toBe(false);
 
     for (const childKey of [
       'eshop_conversion',
@@ -63,15 +66,6 @@ describe('tenant entitlement catalog', () => {
       expect(child.blockClass).toBe('CONDITIONAL');
       expect(child.parentKeys).toEqual(['eshop']);
     }
-
-    const shipping = getEntitlementBlockCatalogEntry('shipping_light');
-    expect(shipping.blockClass).toBe('CONDITIONAL');
-    expect(shipping.parentKeys).toEqual(['eshop']);
-    expect(shipping.parentKeys).not.toContain('sales_point_management');
-    expect(shipping.capabilityHint).toBe('tenant.shippingMethods.read');
-    expect(shipping.notes).toMatch(/FREE\+OPEN/i);
-    expect(shipping.notes).toMatch(/SHIPPING_LIGHT_ENABLED default ON/i);
-    expect(shipping.notes).not.toMatch(/Gate\s*0|G-13|DO_NOT_SELL/i);
 
     const bankProviders = getEntitlementBlockCatalogEntry('bank_account_providers');
     expect(bankProviders.blockClass).toBe('CONDITIONAL');

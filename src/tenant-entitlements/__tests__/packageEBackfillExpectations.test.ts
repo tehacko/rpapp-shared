@@ -46,10 +46,10 @@ const PACKAGE_E_TECHNICAL_BACKFILL_DERIVATION = {
 } as const satisfies Record<(typeof PACKAGE_E_BACKFILL_TARGETS)[number], string>;
 
 describe('Package E E1 technical backfill expectations', () => {
-  it('pins catalog v15/65 so E1 targets are present as keys', () => {
-    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(15);
-    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(65);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+  it('pins catalog v16/64 so E1 targets are present as keys', () => {
+    expect(TENANT_ENTITLEMENT_CATALOG_VERSION).toBe(16);
+    expect(TENANT_ENTITLEMENT_BLOCK_COUNT).toBe(64);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
     for (const target of PACKAGE_E_BACKFILL_TARGETS) {
       expect(ENTITLEMENT_BLOCK_KEYS).toContain(target);
     }
@@ -99,8 +99,8 @@ describe('Package E E1 technical backfill expectations', () => {
     }
   });
 
-  it('covers all 65 keys in commercialPackaging including E PRO placements', () => {
-    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(65);
+  it('covers all 64 keys in commercialPackaging including E PRO placements', () => {
+    expect(Object.keys(COMMERCIAL_PACKAGING)).toHaveLength(64);
     expect(COMMERCIAL_PACKAGING.donation_recurring).toMatchObject({
       commercialPlacements: ['PRO'],
       alignmentStatus: 'ALIGNED',

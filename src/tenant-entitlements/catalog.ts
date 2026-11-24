@@ -1,5 +1,5 @@
 /**
- * Authoritative tenant entitlement block catalog — 65 blocks / catalogVersion 15 (§6.3).
+ * Authoritative tenant entitlement block catalog — 64 blocks / catalogVersion 16 (§6.3).
  * Code catalogVersion must stay in sync with DB seed (ENT-PR-01).
  */
 import type {
@@ -72,7 +72,7 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: [],
     adminNavSectionId: 'eshop',
     notes:
-      'Canonical e-shop pack (alias eshop.basic) — FREE+OPEN; parent of shipping_light + eshop_conversion / eshop_notify_email / eshop_notify_slack / eshop_sms_metered. Not a sales point / not physical. Customer boot twin: VITE_CUSTOMER_ESHOPS_NAV_ENABLED (dual-deploy minimal=false / full V1B=true; see rpapp-customer/.env.example)',
+      'Canonical e-shop pack (alias eshop.basic) — FREE+OPEN; shipping / Dodací politika is part of this pack (CapMap G-13 → eshop only). Parent of eshop_conversion / eshop_notify_email / eshop_notify_slack / eshop_sms_metered. Not a sales point / not physical. Customer boot twin: VITE_CUSTOMER_ESHOPS_NAV_ENABLED (dual-deploy minimal=false / full V1B=true; see rpapp-customer/.env.example)',
   },
   {
     blockKey: 'eshop_conversion',
@@ -101,14 +101,6 @@ export const TENANT_ENTITLEMENT_BLOCK_CATALOG: readonly EntitlementBlockCatalogE
     parentKeys: ['eshop'],
     notes:
       'Canonical child (alias eshop.sms_metered) — assignable Pro+; DEFAULT_OFF / seed fail-closed OFF (Phase1 kill-switch + ledger; no provider)',
-  },
-  {
-    blockKey: 'shipping_light',
-    blockClass: 'CONDITIONAL',
-    parentKeys: ['eshop'],
-    capabilityHint: 'tenant.shippingMethods.read',
-    notes:
-      'Shipping Light / Dodací politika — FREE+OPEN default ON; parentKeys=[eshop] ONLY (not sales_point_management / not physical); resolve heal (UNASSIGNED→FREE; Ent softOff/missing→ON; Ent hardOff sticks); SHIPPING_LIGHT_ENABLED default ON',
   },
   {
     blockKey: 'catalog_administration',

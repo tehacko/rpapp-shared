@@ -245,18 +245,18 @@ describe('CAPABILITY_ENTITLEMENT_REQUIREMENTS shape', () => {
     expect(capabilitiesRequiringBlock('bank_account_providers')).toEqual([]);
   });
 
-  it('G-13: shippingMethods require sales_point_management ∧ shipping_light (FREE+OPEN CapMap AND)', () => {
+  it('G-13: shippingMethods require eshop only (CapMap 1b; shipping part of pack)', () => {
     expect(requiredBlocksForCapability('tenant.shippingMethods.read')).toEqual({
       kind: 'blocks',
-      blockKeys: ['sales_point_management', 'shipping_light'],
+      blockKeys: ['eshop'],
       match: 'ALL',
     });
     expect(requiredBlocksForCapability('tenant.shippingMethods.manage')).toEqual({
       kind: 'blocks',
-      blockKeys: ['sales_point_management', 'shipping_light'],
+      blockKeys: ['eshop'],
       match: 'ALL',
     });
-    expect(capabilitiesRequiringBlock('shipping_light')).toEqual(
+    expect(capabilitiesRequiringBlock('eshop')).toEqual(
       expect.arrayContaining(['tenant.shippingMethods.read', 'tenant.shippingMethods.manage']),
     );
   });

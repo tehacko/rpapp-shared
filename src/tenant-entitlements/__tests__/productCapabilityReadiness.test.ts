@@ -273,7 +273,7 @@ describe('G8 CAP grid collapse', () => {
     expect(entitlementBlockKeysForProductCapability('CAP-05')).toEqual([
       'sales_point_management',
       'sales_point_individual_settings',
-      // Parent e-shop pack is readiness-mapped; eshop_* / shipping_light stay excluded children.
+      // Parent e-shop pack is readiness-mapped; eshop_* stay excluded children.
       'eshop',
     ]);
     expect(entitlementBlockKeysForProductCapability('CAP-01')).toEqual([
@@ -329,7 +329,7 @@ describe('G8 CAP grid collapse', () => {
         mode: 'test',
       }),
     ).toBe(false);
-    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(65);
+    expect(ENTITLEMENT_BLOCK_KEYS).toHaveLength(64);
   });
 
   it.each([
