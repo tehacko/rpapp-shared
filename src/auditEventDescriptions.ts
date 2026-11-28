@@ -723,6 +723,11 @@ export const AUDIT_EVENT_DESCRIPTIONS: Record<AuditEventCode, LocalizedLabel> = 
     cs: 'Zapíše se automaticky, když platba přejde do nového stavu (zaplaceno, zrušeno atd.). Jeden řádek za změnu stavu. Když se zápis nepovede, platba se stejně změní.',
     sk: 'Zapíše sa automaticky, keď platba prejde do nového stavu (zaplatené, zrušené atď.). Jeden riadok za zmenu stavu. Keď sa zápis nepodarí, platba sa aj tak zmení.',
   },
+  'payment.eshop_hold.released_conflict': {
+    en: 'Recorded when a paid online-shop order cannot take stock because the hold was already released. One line per payment. A later retry reuses that line.',
+    cs: 'Zapíše se, když zaplacená objednávka z e-shopu nemůže odebrat sklad, protože rezervace už byla uvolněna. Jeden řádek za platbu. Pozdější opakování použije stejný řádek.',
+    sk: 'Zapíše sa, keď zaplatená objednávka z e-shopu nemôže odobrať sklad, pretože rezervácia už bola uvoľnená. Jeden riadok za platbu. Neskoršie opakovanie použije ten istý riadok.',
+  },
   'payment.admin_manual_complete': {
     en: 'Recorded when an admin marks a pending bank-transfer order as paid at the counter. One line per successful mark (idempotent replays reuse the same line).',
     cs: 'Zapíše se, když administrátor označí čekající bankovní objednávku jako zaplacenou u pokladny. Jeden řádek za úspěšné označení (opakované odeslání znovu použije stejný řádek).',

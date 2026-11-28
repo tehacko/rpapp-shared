@@ -723,6 +723,11 @@ const AUDIT_LABEL_OVERRIDES: Record<AuditEventCode, LocalizedLabel> = {
     cs: 'Změna stavu platby',
     sk: 'Zmena stavu platby',
   },
+  'payment.eshop_hold.released_conflict': {
+    en: 'Paid order with released stock hold',
+    cs: 'Zaplacená objednávka s uvolněnou rezervací skladu',
+    sk: 'Zaplatená objednávka s uvoľnenou rezervou skladu',
+  },
   'payment.admin_manual_complete': {
     en: 'Order marked paid (admin)',
     cs: 'Objednávka označena jako zaplacená (správce)',
